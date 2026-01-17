@@ -3,55 +3,104 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Nightshift</title>
-        
-        <!-- Google Fonts -->
+        <title>Nightshift | Codename SPEAR</title>
+
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Nunito:wght@300;400;600;700&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
 
-        <!-- Bootstrap CSS -->
-        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="../styles/header.css">
-        <link rel="stylesheet" href="../styles/footer.css">
-        <link rel="stylesheet" href="../styles/default-page.css">
-        <link rel="stylesheet" href="../styles/navbar-1.css">
+        <link rel="stylesheet" href="../../styles/header.css">
+        <link rel="stylesheet" href="../../styles/footer.css">
+        <link rel="stylesheet" href="../../styles/default-page.css">
+        <link rel="icon" type="image/x-icon" href="../../images/icons/nightshift.ico">
     </head>
 
 <body>
-    <!-- Header -->
     <div class="header">
-        <a href="../pages/home.html" class="hover-sound">
-            <img src="../images/index/nightshift-transparent.png" alt="Nightshift Logo">
+        <a href="../home.html" class="hover-sound">
+            <img src="../../images/index/nightshift-transparent.png" alt="Nightshift Logo">
         </a>
         <nav class="nav-links">
-            <a href="../pages/games.html" class="hover-sound">games</a>            
-            <a href="../pages/about.html" class="hover-sound">about</a>
-            <a href="../pages/contact.html" class="hover-sound">contact</a>
+            <a href="../games.html" class="hover-sound">games</a>
+            <a href="../about.html" class="hover-sound">about</a>
+            <a href="../contact.html" class="hover-sound">contact</a>
         </nav>
     </div>
-    <!-- Default Spacer For Header -->
     <div class="header-spacer"></div>
-    <!-- End Header -->
-    
-    <!-- Section: YouTube Video Embed -->
-    <div class="video-container">
-        <iframe width="1920" height="1080" src="https://www.youtube.com/embed/YOUR_VIDEO_ID" frameborder="0" allowfullscreen></iframe>
-    </div>
-    <!-- Section Temp: Text -->
-    <div class="section-WIP">
-        <h2>Site in Progress</h2>
-        <p>Please check back soon.</p>
-    </div>
-    
-     <!-- Footer -->
-     <footer>
+
+    <main>
+        <section class="hero section reveal">
+            <div>
+                <div class="eyebrow">Codename SPEAR</div>
+                <h1 class="hero-title">A systems-forward action experience built around pressure, timing, and progression.</h1>
+                <p class="hero-lede">This project is in early development. We are testing core combat loops, world pacing, and narrative hooks before expanding into full production.</p>
+                <div class="hero-actions">
+                    <a class="cta-btn primary hover-sound" href="../contact.html">Request updates</a>
+                    <a class="cta-btn ghost hover-sound" href="../games.html">Back to games</a>
+                </div>
+                <div class="stats">
+                    <div class="stat">
+                        <span class="stat-num">Preproduction</span>
+                        <span class="stat-label">Status</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-num">Systems</span>
+                        <span class="stat-label">Focus</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-num">Unreal</span>
+                        <span class="stat-label">Engine</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-card">
+                <div class="media-frame">
+                    <img src="../../images/home/nightshift-detailed-black.png" alt="Codename SPEAR concept frame">
+                </div>
+                <div class="tag-row">
+                    <span class="tag">Atmosphere</span>
+                    <span class="tag">Action</span>
+                    <span class="tag">Progression</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="section reveal delay-1">
+            <div class="section-title-row">
+                <h2>Design pillars</h2>
+                <p>The project blends layered combat with environmental storytelling and deliberate pacing.</p>
+            </div>
+            <div class="card-grid">
+                <div class="feature-card">
+                    <h3>Tempo-driven combat</h3>
+                    <p>Encounters are tuned to keep you in motion while rewarding precision and patience.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Meaningful upgrades</h3>
+                    <p>Progression choices reshape your tactics without flattening the challenge curve.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>World-as-system</h3>
+                    <p>Levels are built to reinforce mechanics and story beats, not just scenery.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section reveal delay-2">
+            <div class="section-wip">
+                <h2>Media reveal coming soon</h2>
+                <p class="muted">We are polishing a teaser and gameplay slice. Check back for the first look.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
         <div class="footer-menus">
             <ul class="footer-menu">
-                <li><a href="../pages/home.html">Home</a></li>
-                <li><a href="../pages/games.html">Games</a></li>
-                <li><a href="../pages/about.html">About</a></li>
-                <li><a href="../pages/contact.html">Contact</a></li>
+                <li><a href="../home.html">Home</a></li>
+                <li><a href="../games.html">Games</a></li>
+                <li><a href="../about.html">About</a></li>
+                <li><a href="../contact.html">Contact</a></li>
             </ul>
             <ul class="footer-menu">
                 <li><a href="https://www.epicgames.com/site/en-US/privacypolicy" target="_blank" rel="noopener noreferrer">Epic Privacy Policy</a></li>
@@ -60,36 +109,36 @@
                 <li><a href="#">Site Cookie Policy</a></li>
             </ul>
             <ul class="footer-menu">
-                <li><a href="#">Placeholder </a></li>
-                <li><a href="#">Placeholder 6</a></li>
-                <li><a href="#">Placeholder 7</a></li>
-                <li><a href="#">Placeholder 8</a></li>
+                <li><a href="#">Press Kit</a></li>
+                <li><a href="#">Brand Assets</a></li>
+                <li><a href="#">Careers</a></li>
+                <li><a href="#">Community</a></li>
             </ul>
         </div>
-        <!-- Social Bar with Lottie Animations -->
-            <div class="social-bar">
-                <a href="https://twitter.com" target="_blank" id="social1" class="social-icon"></a>
-                <a href="https://facebook.com" target="_blank" id="social2" class="social-icon"></a>
-                <a href="https://instagram.com" target="_blank" id="social3" class="social-icon"></a>
-            </div>
-        <p class="footer-copyright">&copy; 2025 Nightshift. All rights reserved.</p>
+        <div class="social-bar">
+            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="social-pill">X</a>
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="social-pill">IG</a>
+            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" class="social-pill">YT</a>
+        </div>
+        <p class="footer-copyright">Copyright 2025 Nightshift. All rights reserved.</p>
     </footer>
-    <!-- End Footer -->
 
-    <!-- JavaScript for Hover Sound -->
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // Function to play sound
+            const audio = new Audio("../../audio/bop.mp3");
+            audio.volume = 0.25;
+
             function playHoverSound() {
-                const audio = new Audio('../audio/bop.mp3'); // Path to your sound file
-                audio.play();
+                audio.currentTime = 0;
+                audio.play().catch(() => {});
             }
 
-            // Attach hover event listener to elements with the "hover-sound" class
-            document.querySelectorAll('.hover-sound').forEach((element) => {
-                element.addEventListener('mouseenter', playHoverSound);
+            document.querySelectorAll(".hover-sound").forEach((element) => {
+                element.addEventListener("mouseenter", playHoverSound);
             });
         });
     </script>
 </body>
 </html>
+
+

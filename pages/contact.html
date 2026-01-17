@@ -4,92 +4,117 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nightshift | Contact</title>
-    
-    <!-- Google Fonts -->
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Nunito:wght@300;400;600;700&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Bootstrap CSS -->
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../styles/header.css">
     <link rel="stylesheet" href="../styles/footer.css">
     <link rel="stylesheet" href="../styles/default-page.css">
-    <link rel="stylesheet" href="../styles/navbar-1.css">
-    <!-- Bootstrap's JS functionality -->
+    <link rel="icon" type="image/x-icon" href="../images/icons/nightshift.ico">
+
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 
 <body>
-    <!-- Header -->
     <div class="header">
-        <img src="../images/index/nightshift-transparent.png" alt="Nightshift Logo">
+        <a href="../pages/home.html" class="hover-sound">
+            <img src="../images/index/nightshift-transparent.png" alt="Nightshift Logo">
+        </a>
         <nav class="nav-links">
             <a href="../pages/home.html" class="hover-sound">home</a>
-            <a href="../pages/games.html" class="hover-sound">games</a>            
+            <a href="../pages/games.html" class="hover-sound">games</a>
             <a href="../pages/about.html" class="hover-sound">about</a>
         </nav>
     </div>
+    <div class="header-spacer"></div>
 
-    <!-- First section with background image -->
-    <div class="section spacer"></div>
+    <main>
+        <section class="page-hero section reveal">
+            <div class="eyebrow">Contact</div>
+            <h1>Talk to Nightshift</h1>
+            <p>Send feedback, report bugs, or reach out about partnerships. We read everything and respond as soon as we can.</p>
+        </section>
 
-    <!-- Section 1: Spacer  -->
-    <div class="section1"></div>
-    
-    <!-- Feedback Section -->
-    <section id="feedback-forms" class="section">
-        <div class="container-fluid">
-            <h2 class="mb-4 text-center">Feedback & Reports</h2>
-            <div class="accordion feedback-accordion" id="feedbackAccordion">
-                <!-- Website Bug Feedback Form -->
-                <div class="card">
-                    <div class="card-header" id="headingBugFeedback">
-                        <h2 class="mb-0">
-                            <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseBugFeedback" aria-expanded="true" aria-controls="collapseBugFeedback">
-                                Website Bug Feedback
-                            </button>
-                        </h2>
-                    </div>
-                    <div id="collapseBugFeedback" class="collapse show" aria-labelledby="headingBugFeedback" data-parent="#feedbackAccordion">
-                        <div class="card-body">
-                            <!-- Embedded Google Form for Website Bug Feedback -->
-                            <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSd4GVBHlfcea0tMCbXeEOZ_fKeg2no-WaAE_dK3PtITD8lQyg/viewform?embedded=true" width="100%" height="800" frameborder="0" marginheight="0" marginwidth="0">
-                                Loading…
-                            </iframe>
+        <section id="feedback-forms" class="section reveal delay-1">
+            <div class="container-fluid">
+                <h2 class="mb-4 text-center">Feedback and Reports</h2>
+                <div class="accordion feedback-accordion" id="feedbackAccordion">
+                    <div class="card">
+                        <div class="card-header" id="headingBugFeedback">
+                            <h2 class="mb-0">
+                                <button class="accordion-toggle" type="button" data-toggle="collapse" data-target="#collapseBugFeedback" aria-expanded="true" aria-controls="collapseBugFeedback">
+                                    Website Bug Feedback
+                                </button>
+                            </h2>
+                        </div>
+                        <div id="collapseBugFeedback" class="collapse show" aria-labelledby="headingBugFeedback" data-parent="#feedbackAccordion">
+                            <div class="card-body">
+                                <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSd4GVBHlfcea0tMCbXeEOZ_fKeg2no-WaAE_dK3PtITD8lQyg/viewform?embedded=true" width="100%" height="800" frameborder="0" marginheight="0" marginwidth="0">
+                                    Loading...
+                                </iframe>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <!-- Additional dropdown forms can be added here -->
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Section 3: Text -->
-    <div class="section3 text-center">
-        <h2>Site in Progress</h2>
-        <p>Please check back soon.</p>
-    </div>
-    
-    <!-- Footer -->
-    <footer class="text-center">
-        &copy; 2025 Nightshift. All rights reserved.
+        <section class="section reveal">
+            <div class="section-wip">
+                <h2>More channels coming soon</h2>
+                <p class="muted">We are building additional feedback portals for playtesters and community support.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-menus">
+            <ul class="footer-menu">
+                <li><a href="../pages/home.html">Home</a></li>
+                <li><a href="../pages/games.html">Games</a></li>
+                <li><a href="../pages/about.html">About</a></li>
+                <li><a href="../pages/contact.html">Contact</a></li>
+            </ul>
+            <ul class="footer-menu">
+                <li><a href="https://www.epicgames.com/site/en-US/privacypolicy" target="_blank" rel="noopener noreferrer">Epic Privacy Policy</a></li>
+                <li><a href="#">Nightshift Privacy Policy</a></li>
+                <li><a href="#">Applicant Privacy Policy</a></li>
+                <li><a href="#">Site Cookie Policy</a></li>
+            </ul>
+            <ul class="footer-menu">
+                <li><a href="#">Press Kit</a></li>
+                <li><a href="#">Brand Assets</a></li>
+                <li><a href="#">Careers</a></li>
+                <li><a href="#">Community</a></li>
+            </ul>
+        </div>
+        <div class="social-bar">
+            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="social-pill">X</a>
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="social-pill">IG</a>
+            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" class="social-pill">YT</a>
+        </div>
+        <p class="footer-copyright">Copyright 2025 Nightshift. All rights reserved.</p>
     </footer>
 
-    <!-- JavaScript for Hover Sound -->
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // Function to play sound
+            const audio = new Audio("../audio/bop.mp3");
+            audio.volume = 0.25;
+
             function playHoverSound() {
-                const audio = new Audio('../audio/bop.mp3'); // Path to your sound file
-                audio.play();
+                audio.currentTime = 0;
+                audio.play().catch(() => {});
             }
 
-            // Attach hover event listener to elements with the "hover-sound" class
-            document.querySelectorAll('.hover-sound').forEach((element) => {
-                element.addEventListener('mouseenter', playHoverSound);
+            document.querySelectorAll(".hover-sound").forEach((element) => {
+                element.addEventListener("mouseenter", playHoverSound);
             });
         });
     </script>
 </body>
 </html>
+

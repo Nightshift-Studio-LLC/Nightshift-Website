@@ -3,130 +3,109 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Knightshift | Development</title>
-    <!-- Bootstrap CSS CDN -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <title>Nightshift | Development</title>
 
-    <!-- Google Fonts CDN -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
 
-    <style>
-        /* General styling for the body */
-        body {
-            margin: 0; /* Remove default margin around the body */
-            font-family: 'Poppins', sans-serif; /* Apply Poppins font from Google Fonts */
-            background-color: #000000; /* Set background color to black using hex code */
-        }
-        
-        /* Header and footer styling */
-        header, footer {
-            font-family: 'Montserrat', sans-serif; /* Apply Montserrat font for header and footer */
-            position: fixed; /* Fix the header and footer to the top and bottom of the viewport */
-            width: 100%; /* Ensure they stretch across the full width of the viewport */
-            background-color: #333; /* Dark background color for both header and footer */
-            color: #fff; /* White text color for better contrast */
-            text-align: center; /* Center-align text inside the header and footer */
-            padding: 10px 0; /* Add padding to top and bottom for spacing */
-            z-index: 1000; /* Ensure they appear above other content */
-            left: 0; /* Align to the left edge of the viewport */
-        }
-        
-        header {
-            top: 0; /* Position header at the top of the viewport */
-        }
-        
-        footer {
-            bottom: 0; /* Position footer at the bottom of the viewport */
-        }
-
-        /* Main content container styling */
-        .main-container {
-            margin-top: 60px; /* Space for header */
-            margin-bottom: 60px; /* Space for footer */
-            min-height: calc(100vh - 120px); /* Set minimum height to full viewport height minus header and footer height */
-            overflow-y: scroll; /* Enable vertical scrolling if content overflows */
-        }
-
-        /* Custom scrollbar styling for WebKit browsers (Chrome, Safari) */
-        ::-webkit-scrollbar {
-            width: 12px; /* Set width of the scrollbar */
-        }
-
-        ::-webkit-scrollbar-track {
-            background: #000000; /* Black background for the scrollbar track */
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #333333; /* Dark gray background for the scrollbar thumb */
-            border-radius: 10px; /* Rounded corners for the scrollbar thumb */
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: #555555; /* Lighter gray color when hovering over the scrollbar thumb */
-        }
-
-        /* Card image styling */
-        .card-img-top {
-            width: 100%; /* Ensure the image stretches across the full width of the card */
-            height: auto; /* Maintain aspect ratio of the image */
-        }
-
-        /* Vertical section styling */
-        .vertical-section {
-            background-color: #007BFF; /* Set background color to blue */
-            color: #fff; /* Set text color to white */
-            padding: 20px; /* Add padding for spacing */
-            margin-top: 20px; /* Add margin to the top for spacing */
-        }
-    </style>
+    <link rel="stylesheet" href="../styles/header.css">
+    <link rel="stylesheet" href="../styles/footer.css">
+    <link rel="stylesheet" href="../styles/default-page.css">
+    <link rel="icon" type="image/x-icon" href="../images/icons/nightshift.ico">
 </head>
 <body>
-    <!-- Header -->
-    <header class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <!-- Navigation bar with Bootstrap classes -->
-        <a class="navbar-brand" href="index.html">Knightshift</a> <!-- Brand name/link -->
-        <ul class="navbar-nav ml-auto">
-            <!-- Navigation links -->
-            <li class="nav-item">
-                <a class="nav-link" href="index.html">Home</a> <!-- Link to Home page -->
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="development.html">Development</a> <!-- Link to Development page -->
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="showcase.html">3D Models</a> <!-- Link to 3D Models page -->
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="about.html">Portfolio</a> <!-- Link to About page -->
-            </li>
-        </ul>
-    </header>
+    <div class="header">
+        <a href="../pages/home.html" class="hover-sound">
+            <img src="../images/index/nightshift-transparent.png" alt="Nightshift Logo">
+        </a>
+        <nav class="nav-links">
+            <a href="../pages/home.html" class="hover-sound">home</a>
+            <a href="../pages/games.html" class="hover-sound">games</a>
+            <a href="../pages/about.html" class="hover-sound">about</a>
+            <a href="../pages/contact.html" class="hover-sound">contact</a>
+        </nav>
+    </div>
+    <div class="header-spacer"></div>
 
-    <!-- Main content -->
-    <main class="container mt-4 main-container">
-        <!-- Container for main content with Bootstrap styling -->
-        <h1 class="text-white">Welcome to Knightshift</h1>
-        <p class="text-white">Explore our projects and learn more about our development efforts.</p>
-        
-        <!-- New vertical section with blue background -->
-        <div class="vertical-section">
-            <h2>Development</h2>
-            <p>Discover our latest project and the innovative work we're doing to push the boundaries of technology and creativity.</p>
-        </div>
+    <main>
+        <section class="page-hero section reveal">
+            <div class="eyebrow">Development</div>
+            <h1>Progress updates from the Nightshift workshop.</h1>
+            <p>We share milestones, tooling experiments, and production learnings as we build our next project.</p>
+        </section>
+
+        <section class="section split reveal delay-1">
+            <div class="surface">
+                <h2 class="section-title">Current focus</h2>
+                <ul class="list">
+                    <li>Combat loop tuning and cadence.</li>
+                    <li>World traversal and encounter rhythm.</li>
+                    <li>Lighting pass for key hubs.</li>
+                </ul>
+            </div>
+            <div class="surface">
+                <h2 class="section-title">Latest experiments</h2>
+                <ul class="list">
+                    <li>AI reaction timing and pressure curves.</li>
+                    <li>Progression gates tied to world events.</li>
+                    <li>Audio layers for tension and release.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="section reveal delay-2">
+            <div class="section-wip">
+                <h2>Devlog archive coming soon</h2>
+                <p class="muted">We are curating posts and media. Check back for production notes and dev snapshots.</p>
+            </div>
+        </section>
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-dark text-white text-center py-3">
-        <!-- Footer with Bootstrap classes -->
-        <p>© 2025 Nightshift Studio LLC. All rights reserved.</p> <!-- Footer text -->
+    <footer>
+        <div class="footer-menus">
+            <ul class="footer-menu">
+                <li><a href="../pages/home.html">Home</a></li>
+                <li><a href="../pages/games.html">Games</a></li>
+                <li><a href="../pages/about.html">About</a></li>
+                <li><a href="../pages/contact.html">Contact</a></li>
+            </ul>
+            <ul class="footer-menu">
+                <li><a href="https://www.epicgames.com/site/en-US/privacypolicy" target="_blank" rel="noopener noreferrer">Epic Privacy Policy</a></li>
+                <li><a href="#">Nightshift Privacy Policy</a></li>
+                <li><a href="#">Applicant Privacy Policy</a></li>
+                <li><a href="#">Site Cookie Policy</a></li>
+            </ul>
+            <ul class="footer-menu">
+                <li><a href="#">Press Kit</a></li>
+                <li><a href="#">Brand Assets</a></li>
+                <li><a href="#">Careers</a></li>
+                <li><a href="#">Community</a></li>
+            </ul>
+        </div>
+        <div class="social-bar">
+            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="social-pill">X</a>
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="social-pill">IG</a>
+            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" class="social-pill">YT</a>
+        </div>
+        <p class="footer-copyright">Copyright 2025 Nightshift. All rights reserved.</p>
     </footer>
 
-    <!-- Bootstrap JS and dependencies -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <!-- Includes jQuery, Popper.js, and Bootstrap JS for interactive components -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const audio = new Audio("../audio/bop.mp3");
+            audio.volume = 0.25;
+
+            function playHoverSound() {
+                audio.currentTime = 0;
+                audio.play().catch(() => {});
+            }
+
+            document.querySelectorAll(".hover-sound").forEach((element) => {
+                element.addEventListener("mouseenter", playHoverSound);
+            });
+        });
+    </script>
 </body>
 </html>
+
