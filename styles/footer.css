@@ -1,71 +1,63 @@
-/* Footer styling */
 footer {
     width: 100%;
-    background-color: #000;
-    color: white;
-    font-family: 'Noto', sans-serif;
-    font-size: 0.9rem;
-    margin-top: auto;
-    padding: 20px 0;
+    background: rgba(6, 8, 14, 0.95);
+    color: var(--muted);
+    font-family: var(--font-body);
+    margin-top: 40px;
+    padding: 40px 0 24px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-/*********************************************************************************
- * FOOTER MENUS
- *********************************************************************************/
 .footer-menus {
-    display: flex;
-    justify-content: center; /* Center the menus horizontally */
-    gap: 40px; /* Reduce space between menus */
-    flex-wrap: wrap; /* Ensure menus are responsive */
-    margin-bottom: 15px; /* Space between menus and copyright text */
+    width: min(1100px, 92vw);
+    margin: 0 auto 24px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 24px;
 }
+
 .footer-menu {
     list-style: none;
-    font-family: 'Noto', sans-serif;
     padding: 0;
     margin: 0;
-    text-align: left; /* Left align individual menu items */
-    font-size: 0.3125rem !important; /* Force smaller font size */
+    text-align: left;
+    font-size: 0.85rem;
 }
+
 .footer-menu li {
-    margin: 5px 0;
+    margin: 8px 0;
 }
+
 .footer-menu a {
-    color: white;
+    color: var(--muted);
     text-decoration: none;
     transition: color 0.3s;
-    font-size: 0.3125rem !important; /* Force smaller font size */
 }
+
 .footer-menu a:hover {
-    color: #0a0a59;
-    font-size: 0.3125rem !important; /* Force smaller font size */
+    color: var(--accent);
 }
+
+.social-bar {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+
+.social-pill {
+    padding: 8px 14px;
+    border-radius: 999px;
+    border: 1px solid var(--stroke);
+    color: var(--ink);
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+}
+
 .footer-copyright {
     text-align: center;
     font-size: 0.8rem;
-}
-
-/*********************************************************************************
- * SCROLL SNAPPING
- *********************************************************************************/
-html {
-    scroll-snap-type: y mandatory;
-}
-.footer-copyright {
-    scroll-snap-align: start;
-    height: 75px;
-}
-/*********************************************************************************
- * SOCIAL BAR
- *********************************************************************************/
-.social-bar {
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-    margin-bottom: 10px;
-}
-
-.social-icon {
-    width: 50px;
-    height: 50px;
+    color: var(--muted);
 }

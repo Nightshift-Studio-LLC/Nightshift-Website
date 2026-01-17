@@ -4,86 +4,80 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nightshift | Games</title>
-    
-    <!-- Google Fonts -->
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Nunito:wght@300;400;600;700&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
 
-    <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../styles/header.css">
     <link rel="stylesheet" href="../styles/footer.css">
     <link rel="stylesheet" href="../styles/default-page.css">
-    <link rel="stylesheet" href="../styles/navbar-1.css">
     <link rel="stylesheet" href="../styles/games-menu.css">
-    <link rel="icon" type="image/png" href="../images/icons/Nightshift.png">
-    <link rel="shortcut icon" href="favicon.ico">    
-    <style>
-        .games-menu {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            padding: 50px 20px;
-            flex-wrap: wrap;
-            background-color: #111;
-        }
-        .game-item {
-            background-color: #222;
-            border-radius: 10px;
-            overflow: hidden;
-            text-align: center;
-            transition: transform 0.3s ease;
-            max-width: 300px;
-            flex: 1 1 calc(33.333% - 40px); /* Adjust width to prevent stretching */
-            margin: 20px; /* Add spacing */
-        }
-        .game-item img {
-            width: 100%;
-            height: auto;
-            border-bottom: 3px solid #ffcc00;
-        }
-    </style>
+    <link rel="icon" type="image/x-icon" href="../images/icons/nightshift.ico">
 </head>
 
 <body>
-    <!-- Header -->
     <div class="header">
-        <img src="../images/index/nightshift-transparent.png" alt="Nightshift Logo">
+        <a href="../pages/home.html" class="hover-sound">
+            <img src="../images/index/nightshift-transparent.png" alt="Nightshift Logo">
+        </a>
         <nav class="nav-links">
-            <a href="../pages/home.html" class="hover-sound">home</a>          
-            <a href="../pages/about.html" class="hover-sound">about</a>
-            <a href="../pages/contact.html" class="hover-sound">contact</a>
+            <a href="home.html" class="hover-sound">home</a>
+            <a href="games.html" class="hover-sound">games</a>
+            <a href="pricing.html" class="hover-sound">websites</a>
+            <a href="about.html" class="hover-sound">about</a>
+            <a href="contact.html" class="hover-sound">contact</a>
         </nav>
     </div>
-    <!-- Default Spacer For Header -->
     <div class="header-spacer"></div>
-    <!-- End Header -->
 
-    <!-- Games Menu -->
-    <section class="games-menu">
-        <div class="game-item">
-            <a href="../pages/codename-spear.html">
-                <img src="../images/games/codename-spear.jpg" alt="Codename SPEAR">
-                <h3>Codename SPEAR</h3>
-            </a>
-        </div>
-        <div class="game-item">
-            <a href="../pages/game-2.html">
-                <img src="../images/games/game-2.jpg" alt="Game 2">
-                <h3>Game 2</h3>
-            </a>
-        </div>
-        <div class="game-item">
-            <a href="../pages/game-3.html">
-                <img src="../images/games/game-3.jpg" alt="Game 3">
-                <h3>Game 3</h3>
-            </a>
-        </div>
-    </section>
+    <main>
+        <section class="page-hero section reveal">
+            <div class="eyebrow">Games</div>
+            <h1>Every project is built for systems depth and night-heavy atmosphere.</h1>
+            <p>We are early in the journey, but the tone is already locked. Here is what is in the pipeline and what is coming next.</p>
+        </section>
 
-     <!-- Footer -->
-     <footer>
+        <section class="games-menu section reveal delay-1">
+            <div class="games-grid">
+                <a class="game-card" href="../pages/games/spear.html">
+                    <img src="../images/home/nightshift-detailed-black.png" alt="Codename SPEAR concept">
+                    <div class="game-card-content">
+                        <h3>Codename SPEAR</h3>
+                        <p>Systems-forward action with long form progression.</p>
+                        <div class="tag-row">
+                            <span class="tag">Preproduction</span>
+                            <span class="tag">Online Service</span>
+                        </div>
+                    </div>
+                </a>
+                <div class="game-card">
+                    <img src="../images/home/nightshift-detailed-black.png" alt="Nightshift project placeholder">
+                    <div class="game-card-content">
+                        <h3>Codename ELDER</h3>
+                        <p>Co-op dungeon crawler built for tight teamwork and high-stakes runs. In preproduction now.</p>
+                        <div class="tag-row">
+                            <span class="tag">Co-op</span>
+                            <span class="tag">Dungeon Crawler</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="game-card">
+                    <img src="../images/home/nightshift-detailed-black.png" alt="Nightshift project placeholder">
+                    <div class="game-card-content">
+                        <h3>Codename SAINT</h3>
+                        <p>TBA.</p>
+                        <div class="tag-row">
+                            <span class="tag">Co-op</span>
+                            <span class="tag">Mission Chaos</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
         <div class="footer-menus">
             <ul class="footer-menu">
                 <li><a href="../pages/home.html">Home</a></li>
@@ -98,36 +92,38 @@
                 <li><a href="#">Site Cookie Policy</a></li>
             </ul>
             <ul class="footer-menu">
-                <li><a href="#">Placeholder </a></li>
-                <li><a href="#">Placeholder 6</a></li>
-                <li><a href="#">Placeholder 7</a></li>
-                <li><a href="#">Placeholder 8</a></li>
+                <li><a href="#">Press Kit</a></li>
+                <li><a href="#">Brand Assets</a></li>
+                <li><a href="#">Careers</a></li>
+                <li><a href="#">Community</a></li>
             </ul>
         </div>
-        <!-- Social Bar with Lottie Animations -->
-            <div class="social-bar">
-                <a href="https://twitter.com" target="_blank" id="social1" class="social-icon"></a>
-                <a href="https://facebook.com" target="_blank" id="social2" class="social-icon"></a>
-                <a href="https://instagram.com" target="_blank" id="social3" class="social-icon"></a>
-            </div>
-        <p class="footer-copyright">&copy; 2025 Nightshift. All rights reserved.</p>
+        <div class="social-bar">
+            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="social-pill">X</a>
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="social-pill">IG</a>
+            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" class="social-pill">YT</a>
+        </div>
+        <p class="footer-copyright">Copyright 2025 Nightshift. All rights reserved.</p>
     </footer>
-    <!-- End Footer -->
 
-    <!-- JavaScript for Hover Sound -->
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // Function to play sound
+            const audio = new Audio("../audio/bop.mp3");
+            audio.volume = 0.25;
+
             function playHoverSound() {
-                const audio = new Audio('../audio/bop.mp3'); // Path to your sound file
-                audio.play();
+                audio.currentTime = 0;
+                audio.play().catch(() => {});
             }
 
-            // Attach hover event listener to elements with the "hover-sound" class
-            document.querySelectorAll('.hover-sound').forEach((element) => {
-                element.addEventListener('mouseenter', playHoverSound);
+            document.querySelectorAll(".hover-sound").forEach((element) => {
+                element.addEventListener("mouseenter", playHoverSound);
             });
         });
     </script>
 </body>
 </html>
+
+
+
+

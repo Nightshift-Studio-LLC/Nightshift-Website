@@ -2,52 +2,61 @@
     position: fixed;
     top: 0;
     width: 100%;
-    height: 60px; /* Adjust to your desired height */
-    background-color: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(10px);
+    height: 72px;
+    background: rgba(5, 7, 12, 0.75);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(18px);
     display: flex;
-    justify-content: space-between; /* Align logo and navigation to opposite sides */
-    align-items: center; /* Vertically align items */
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 4vw;
     z-index: 1000;
 }
+
 .header img {
-    height: 50px;
+    height: 44px;
 }
 
-/*********************************************************************************
- * NAV BAR
- *********************************************************************************/
 .nav-links {
-    text-align: right; /* Align links to the right */
-}
-.nav-links a {
-    font-family: 'Montserrat', sans-serif;
-    color: white;
-    text-decoration: none;
-    font-weight: 500;
-    margin-left: 15px; /* Adds spacing between navigation links */
-    transition: color 0.3s, border-bottom 0.3s;
-    display: inline-block; /* Ensures the links remain inline */
-}
-.nav-links a:hover {
-    color: #0a0a59;
-}
-.nav-links a.active {
-    border-bottom: 2px solid #008CBA;
+    display: flex;
+    gap: 18px;
+    align-items: center;
 }
 
-/*********************************************************************************
- * SCROLL SNAPPING
- *********************************************************************************/
-/* Scroll Snap: Enforces vertical scroll snapping */
-html {
-    scroll-snap-type: y mandatory;
+.nav-links a {
+    font-family: var(--font-display);
+    color: var(--muted);
+    text-decoration: none;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    transition: color 0.3s;
 }
-/* Sections: Defines snap alignment and full-height sections */
-/*********************************************************************************
- * Ensure these get updated with the latest changes
- *********************************************************************************/
-.header {
-    scroll-snap-align: start; /* Ensures sections align properly */
-    height: 60px; /* Full viewport height */
+
+.nav-links a:hover {
+    color: var(--accent);
+}
+
+.nav-links a.active {
+    color: var(--accent);
+}
+
+@media (max-width: 720px) {
+    .header {
+        height: auto;
+        flex-direction: column;
+        gap: 10px;
+        padding: 12px 6vw;
+    }
+
+    .header img {
+        height: 40px;
+    }
+
+    .nav-links {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 12px;
+    }
 }
