@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Nightshift | About</title>
+        <title>Nightshift | Studio</title>
 
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -33,8 +33,7 @@
             <a href="games/hook.html">Codename HOOK</a>
         </div>
     </div>
-    <a href="websites.html" class="hover-sound">websites</a>
-    <a href="about.html" class="hover-sound">about</a>
+    <a href="studio.html" class="hover-sound">studio</a>
     <a href="contact.html" class="hover-sound">contact</a>
 </nav>
     </div>
@@ -42,7 +41,7 @@
 
     <main>
         <section class="page-hero section reveal">
-            <div class="eyebrow">About</div>
+            <div class="eyebrow">Studio</div>
             <h1>Nightshift is a Texas-based studio focused on deep systems and cinematic atmosphere.</h1>
             <p>Founded in 2025, we pair technical craftsmanship with bold art direction to build player-driven worlds. Our workflows are tuned for Unreal Engine, real-time iteration, and obsessive polish.</p>
         </section>
@@ -87,6 +86,31 @@
                 </div>
             </div>
         </section>
+
+        <section class="section reveal delay-2">
+            <div class="surface">
+                <div class="section-title-row">
+                    <h2>Websites</h2>
+                    <p>Fixed tiers for fast, modern builds with clean design and clear messaging.</p>
+                </div>
+                <div class="hero-actions">
+                    <a class="cta-btn primary hover-sound" href="websites.html">View website pricing</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="section reveal delay-2">
+            <div class="surface">
+                <div class="section-title-row">
+                    <h2>Epic Games FAB</h2>
+                    <p>Browse the Nightshift asset catalog and tool drops on FAB.</p>
+                </div>
+                <div class="hero-actions">
+                    <a class="cta-btn primary hover-sound" href="https://www.fab.com/">Visit the FAB store</a>
+                </div>
+            </div>
+        </section>
+
     </main>
 
     <footer>
@@ -94,7 +118,7 @@
             <ul class="footer-menu">
                 <li><a href="../pages/home.html">Home</a></li>
                 <li><a href="../pages/games.html">Games</a></li>
-                <li><a href="../pages/about.html">About</a></li>
+                <li><a href="../pages/studio.html">Studio</a></li>
                 <li><a href="../pages/contact.html">Contact</a></li>
             </ul>
             <ul class="footer-menu">
@@ -132,16 +156,14 @@
             if (page === "games.html" || path.includes("/games/")) {
                 active = "games";
             }
-            if (page === "websites.html") {
-                active = "websites";
-            }
-            if (page === "about.html") {
-                active = "about";
+            if (page === "studio.html" || page === "websites.html") {
+                active = "studio";
             }
             if (page === "contact.html") {
                 active = "contact";
             }
-document.querySelectorAll(".nav-links a").forEach((link) => {
+
+            document.querySelectorAll(".nav-links a").forEach((link) => {
                 const label = link.textContent.trim().toLowerCase();
                 if (label === active) {
                     link.classList.add("active");
@@ -160,6 +182,9 @@ document.querySelectorAll(".nav-links a").forEach((link) => {
     </script>
 </body>
 </html>
+
+
+
 
 
 

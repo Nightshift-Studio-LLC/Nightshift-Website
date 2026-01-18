@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="UTF-8">
@@ -33,8 +33,7 @@
             <a href="games/hook.html">Codename HOOK</a>
         </div>
     </div>
-    <a href="websites.html" class="hover-sound">websites</a>
-    <a href="about.html" class="hover-sound">about</a>
+    <a href="studio.html" class="hover-sound">studio</a>
     <a href="contact.html" class="hover-sound">contact</a>
 </nav>
     </div>
@@ -45,12 +44,12 @@
             <div>
                 <div class="eyebrow">Independent Studio</div>
                 <h1 class="hero-title">Nightshift builds systems-first worlds.</h1>
-                <p class="hero-lede">Atmospheric games that reward curiosity, grit, and player-driven decisions. Based in Texas, we design systems-first games with atmospheric worlds and player-driven progression. Our work favors slow-burn tension, meaningful decisions, and moments that hit when they land.</p>
+                <p class="hero-lede">Atmospheric games that reward curiosity, grit, and player choice.</p>
                 <div class="hero-actions">
                     <a class="cta-btn primary hover-sound" href="../pages/games.html">Explore games</a>
                     <a class="cta-btn ghost hover-sound" href="../pages/contact.html">Contact</a>
                 </div>
-                <div class="cred-strip">Unreal Engine • Systems-first • Texas</div>
+                <div class="cred-strip">Tone - Restraint - Intent</div>
                 <div class="stats">
                     <div class="stat">
                         <span class="stat-num">2025</span>
@@ -62,7 +61,7 @@
                     </div>
                     <div class="stat">
                         <span class="stat-num">Systems</span>
-                        <span class="stat-label">Driven</span>
+                        <span class="stat-label">Informed Play</span>
                     </div>
                 </div>
             </div>
@@ -73,21 +72,7 @@
                 <div class="tag-row">
                     <span class="tag">Atmosphere</span>
                     <span class="tag">Progression</span>
-                    <span class="tag">Narrative Systems</span>
-                </div>
-            </div>
-        </section>
-
-        <section class="section reveal delay-1">
-            <div class="long-cta">
-                <div>
-                    <div class="eyebrow">Studio Updates</div>
-                    <h2>Want updates as we build the next wave of systems-driven games?</h2>
-                    <p>Join the devlog list for milestone drops, early concept reveals, and playtest calls.</p>
-                </div>
-                <div class="long-cta-actions">
-                    <a class="cta-btn primary hover-sound" href="../pages/DevLog/devlog.html">Read the devlog</a>
-                    <a class="cta-btn ghost hover-sound" href="../pages/contact.html">Request updates</a>
+                    <span class="tag">Craft</span>
                 </div>
             </div>
         </section>
@@ -123,6 +108,20 @@
             </div>
         </section>
 
+        <section class="section reveal delay-1">
+            <div class="long-cta">
+                <div>
+                    <div class="eyebrow">Studio Updates</div>
+                    <h2>Want updates as we build our next game?</h2>
+                    <p>Join the devlog list for milestone drops, early concept reveals, and playtest calls.</p>
+                </div>
+                <div class="long-cta-actions">
+                    <a class="cta-btn primary hover-sound" href="../pages/DevLog/devlog.html">Read the devlog</a>
+                    <a class="cta-btn ghost hover-sound" href="../pages/contact.html">Request updates</a>
+                </div>
+            </div>
+        </section>
+
         <section class="callout reveal">
             <div class="callout-panel">
                 <div>
@@ -131,7 +130,7 @@
                 </div>
                 <div class="callout-actions">
                     <a class="cta-btn primary hover-sound" href="../pages/contact.html">Start a conversation</a>
-                    <a class="cta-btn ghost hover-sound" href="../pages/about.html">Learn about us</a>
+                    <a class="cta-btn ghost hover-sound" href="../pages/studio.html">Learn about us</a>
                 </div>
             </div>
         </section>
@@ -142,7 +141,7 @@
             <ul class="footer-menu">
                 <li><a href="../pages/home.html">Home</a></li>
                 <li><a href="../pages/games.html">Games</a></li>
-                <li><a href="../pages/about.html">About</a></li>
+                <li><a href="../pages/studio.html">Studio</a></li>
                 <li><a href="../pages/contact.html">Contact</a></li>
             </ul>
             <ul class="footer-menu">
@@ -180,16 +179,14 @@
             if (page === "games.html" || path.includes("/games/")) {
                 active = "games";
             }
-            if (page === "websites.html") {
-                active = "websites";
-            }
-            if (page === "about.html") {
-                active = "about";
+            if (page === "studio.html" || page === "websites.html") {
+                active = "studio";
             }
             if (page === "contact.html") {
                 active = "contact";
             }
-document.querySelectorAll(".nav-links a").forEach((link) => {
+
+            document.querySelectorAll(".nav-links a").forEach((link) => {
                 const label = link.textContent.trim().toLowerCase();
                 if (label === active) {
                     link.classList.add("active");
@@ -208,6 +205,9 @@ document.querySelectorAll(".nav-links a").forEach((link) => {
     </script>
 </body>
 </html>
+
+
+
 
 
 

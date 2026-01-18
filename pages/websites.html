@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="UTF-8">
@@ -33,8 +33,7 @@
             <a href="games/hook.html">Codename HOOK</a>
         </div>
     </div>
-    <a href="websites.html" class="hover-sound">websites</a>
-    <a href="about.html" class="hover-sound">about</a>
+    <a href="studio.html" class="hover-sound">studio</a>
     <a href="contact.html" class="hover-sound">contact</a>
 </nav>
     </div>
@@ -235,7 +234,7 @@
             <ul class="footer-menu">
                 <li><a href="../pages/home.html">Home</a></li>
                 <li><a href="../pages/games.html">Games</a></li>
-                <li><a href="../pages/about.html">About</a></li>
+                <li><a href="../pages/studio.html">Studio</a></li>
                 <li><a href="../pages/contact.html">Contact</a></li>
             </ul>
             <ul class="footer-menu">
@@ -273,16 +272,14 @@
             if (page === "games.html" || path.includes("/games/")) {
                 active = "games";
             }
-            if (page === "websites.html") {
-                active = "websites";
-            }
-            if (page === "about.html") {
-                active = "about";
+            if (page === "studio.html" || page === "websites.html") {
+                active = "studio";
             }
             if (page === "contact.html") {
                 active = "contact";
             }
-document.querySelectorAll(".nav-links a").forEach((link) => {
+
+            document.querySelectorAll(".nav-links a").forEach((link) => {
                 const label = link.textContent.trim().toLowerCase();
                 if (label === active) {
                     link.classList.add("active");
@@ -301,6 +298,9 @@ document.querySelectorAll(".nav-links a").forEach((link) => {
     </script>
 </body>
 </html>
+
+
+
 
 
 

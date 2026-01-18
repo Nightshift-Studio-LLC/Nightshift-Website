@@ -111,6 +111,12 @@ main {
     gap: 16px;
     flex-wrap: wrap;
     margin-bottom: 24px;
+    width: 100%;
+}
+
+.hero-actions .cta-btn {
+    flex: 1 1 0;
+    justify-content: center;
 }
 
 .cta-btn {
