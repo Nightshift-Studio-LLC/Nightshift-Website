@@ -300,6 +300,49 @@ main {
     gap: 24px;
 }
 
+.long-cta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    padding: 28px 32px;
+    border-radius: 22px;
+    border: 1px solid var(--stroke);
+    background: linear-gradient(120deg, rgba(14, 20, 38, 0.92), rgba(10, 14, 28, 0.8));
+    box-shadow: var(--shadow);
+}
+
+.long-cta h2 {
+    margin: 8px 0 10px;
+    font-family: var(--font-display);
+    font-size: clamp(1.6rem, 2vw + 1rem, 2.4rem);
+}
+
+.long-cta p {
+    margin: 0;
+    color: var(--muted);
+    max-width: 560px;
+}
+
+.long-cta-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+@media (max-width: 980px) {
+    .long-cta {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .long-cta-actions {
+        width: 100%;
+        justify-content: flex-start;
+    }
+}
+
 .callout-panel h3 {
     font-family: var(--font-display);
     margin: 0 0 12px;
