@@ -3,62 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nightshift | Development</title>
+    <title>Nightshift | Devlog Entry</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="../styles/header.css">
-    <link rel="stylesheet" href="../styles/footer.css">
-    <link rel="stylesheet" href="../styles/default-page.css">
-    <link rel="icon" type="image/x-icon" href="../images/icons/nightshift.ico">
+    <link rel="stylesheet" href="../../styles/header.css">
+    <link rel="stylesheet" href="../../styles/footer.css">
+    <link rel="stylesheet" href="../../styles/default-page.css">
+    <link rel="stylesheet" href="../../styles/devlog.css">
+    <link rel="icon" type="image/x-icon" href="../../images/icons/nightshift.ico">
 </head>
+
 <body>
     <div class="header">
-        <a href="../pages/home.html" class="hover-sound">
-            <img src="../images/index/nightshift-transparent.png" alt="Nightshift Logo">
+        <a href="../home.html" class="hover-sound">
+            <img src="../../images/index/nightshift-transparent.png" alt="Nightshift Logo">
         </a>
         <nav class="nav-links">
-            <a href="home.html" class="hover-sound">home</a>
-            <a href="games.html" class="hover-sound">games</a>
-            <a href="websites.html" class="hover-sound">websites</a>
-            <a href="about.html" class="hover-sound">about</a>
-            <a href="contact.html" class="hover-sound">contact</a>
+            <a href="../home.html" class="hover-sound">home</a>
+            <a href="../games.html" class="hover-sound">games</a>
+            <a href="../websites.html" class="hover-sound">websites</a>
+            <a href="../about.html" class="hover-sound">about</a>
+            <a href="../contact.html" class="hover-sound">contact</a>
         </nav>
     </div>
     <div class="header-spacer"></div>
 
     <main>
         <section class="page-hero section reveal">
-            <div class="eyebrow">Development</div>
-            <h1>Progress updates from the Nightshift workshop.</h1>
-            <p>We share milestones, tooling experiments, and production learnings as we build our next project.</p>
+            <div class="eyebrow">Devlog</div>
+            <h1>Post title goes here with a clear, punchy hook.</h1>
+            <p>Short summary of the update. Mention the current focus, what changed, and why it matters.</p>
+            <div class="hero-actions">
+                <a class="cta-btn ghost hover-sound" href="devlog.html">Back to devlog</a>
+            </div>
         </section>
 
-        <section class="section split reveal delay-1">
-            <div class="surface">
-                <h2 class="section-title">Current focus</h2>
-                <ul class="list">
-                    <li>Combat loop tuning and cadence.</li>
-                    <li>World traversal and encounter rhythm.</li>
-                    <li>Lighting pass for key hubs.</li>
-                </ul>
+        <section class="section reveal delay-1">
+            <div class="section-title-row">
+                <h2>Snapshot</h2>
+                <p>Quick metadata to anchor the entry.</p>
             </div>
             <div class="surface">
-                <h2 class="section-title">Latest experiments</h2>
                 <ul class="list">
-                    <li>AI reaction timing and pressure curves.</li>
-                    <li>Progression gates tied to world events.</li>
-                    <li>Audio layers for tension and release.</li>
+                    <li>Project: Codename SPEAR</li>
+                    <li>Date: Feb 12, 2026</li>
+                    <li>Status: Preproduction</li>
+                    <li>Tags: Combat, Progression, Atmosphere</li>
                 </ul>
             </div>
         </section>
 
         <section class="section reveal delay-2">
-            <div class="section-wip">
-                <h2>Devlog archive coming soon</h2>
-                <p class="muted">We are curating posts and media. Check back for production notes and dev snapshots.</p>
+            <div class="section-title-row">
+                <h2>What we tested</h2>
+                <p>Use short paragraphs and lists to keep the read fast.</p>
+            </div>
+            <div class="surface">
+                <p class="muted">Write 2-3 paragraphs here about the experiment, the goal, and the outcome. Include a clear takeaway.</p>
+                <ul class="list" style="margin-top: 16px;">
+                    <li>Key test: describe the experiment.</li>
+                    <li>Result: what worked, what did not.</li>
+                    <li>Next step: how you are iterating.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="section reveal delay-2">
+            <div class="section-title-row">
+                <h2>What is next</h2>
+                <p>Wrap with a tight set of follow-ups or questions.</p>
+            </div>
+            <div class="surface">
+                <p class="muted">Share the next milestone, experiment, or decision you are moving toward.</p>
             </div>
         </section>
     </main>
@@ -66,10 +85,10 @@
     <footer>
         <div class="footer-menus">
             <ul class="footer-menu">
-                <li><a href="../pages/home.html">Home</a></li>
-                <li><a href="../pages/games.html">Games</a></li>
-                <li><a href="../pages/about.html">About</a></li>
-                <li><a href="../pages/contact.html">Contact</a></li>
+                <li><a href="../home.html">Home</a></li>
+                <li><a href="../games.html">Games</a></li>
+                <li><a href="../about.html">About</a></li>
+                <li><a href="../contact.html">Contact</a></li>
             </ul>
             <ul class="footer-menu">
                 <li><a href="https://www.epicgames.com/site/en-US/privacypolicy" target="_blank" rel="noopener noreferrer">Epic Privacy Policy</a></li>
@@ -94,7 +113,7 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            const audio = new Audio("../audio/bop.mp3");
+            const audio = new Audio("../../audio/bop.mp3");
             audio.volume = 0.25;
 
             const path = window.location.pathname.toLowerCase();
@@ -131,9 +150,4 @@
     </script>
 </body>
 </html>
-
-
-
-
-
 

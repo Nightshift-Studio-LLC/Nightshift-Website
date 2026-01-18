@@ -7,7 +7,7 @@
 
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
 
         <link rel="stylesheet" href="../styles/header.css">
         <link rel="stylesheet" href="../styles/footer.css">
@@ -23,7 +23,7 @@
         <nav class="nav-links">
             <a href="home.html" class="hover-sound">home</a>
             <a href="games.html" class="hover-sound">games</a>
-            <a href="pricing.html" class="hover-sound">websites</a>
+            <a href="websites.html" class="hover-sound">websites</a>
             <a href="about.html" class="hover-sound">about</a>
             <a href="contact.html" class="hover-sound">contact</a>
         </nav>
@@ -34,12 +34,13 @@
         <section class="hero section reveal">
             <div>
                 <div class="eyebrow">Independent Studio</div>
-                <h1 class="hero-title">Nightshift builds Unreal Engine worlds that reward curiosity and grit.</h1>
-                <p class="hero-lede">Based in Texas, we focus on systems-first gameplay, atmospheric tone, and player-driven progression. We are crafting our next title with the patience of a slow burn and the punch of a midnight sprint.</p>
+                <h1 class="hero-title">Nightshift builds atmospheric, systems-first worlds that reward curiosity and grit.</h1>
+                <p class="hero-lede">Based in Texas, we design systems-first games with atmospheric worlds and player-driven progression. Our work favors slow-burn tension, meaningful decisions, and moments that hit hard when they land.</p>
                 <div class="hero-actions">
-                    <a class="cta-btn primary hover-sound" href="../pages/games.html">Explore projects</a>
-                    <a class="cta-btn ghost hover-sound" href="../pages/contact.html">Contact us</a>
+                    <a class="cta-btn primary hover-sound" href="../pages/games.html">Explore games</a>
+                    <a class="cta-btn ghost hover-sound" href="../pages/contact.html">Contact</a>
                 </div>
+                <div class="cred-strip">Unreal Engine • Systems-first • Texas</div>
                 <div class="stats">
                     <div class="stat">
                         <span class="stat-num">2025</span>
@@ -146,6 +147,28 @@
             const audio = new Audio("../audio/bop.mp3");
             audio.volume = 0.25;
 
+            const path = window.location.pathname.toLowerCase();
+            let active = "home";
+            if (path.includes("games")) {
+                active = "games";
+            }
+            if (path.includes("websites")) {
+                active = "websites";
+            }
+            if (path.includes("about")) {
+                active = "about";
+            }
+            if (path.includes("contact")) {
+                active = "contact";
+            }
+
+            document.querySelectorAll(".nav-links a").forEach((link) => {
+                const label = link.textContent.trim().toLowerCase();
+                if (label === active) {
+                    link.classList.add("active");
+                }
+            });
+
             function playHoverSound() {
                 audio.currentTime = 0;
                 audio.play().catch(() => {});
@@ -158,6 +181,9 @@
     </script>
 </body>
 </html>
+
+
+
 
 
 

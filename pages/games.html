@@ -7,7 +7,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="../styles/header.css">
     <link rel="stylesheet" href="../styles/footer.css">
@@ -24,7 +24,7 @@
         <nav class="nav-links">
             <a href="home.html" class="hover-sound">home</a>
             <a href="games.html" class="hover-sound">games</a>
-            <a href="pricing.html" class="hover-sound">websites</a>
+            <a href="websites.html" class="hover-sound">websites</a>
             <a href="about.html" class="hover-sound">about</a>
             <a href="contact.html" class="hover-sound">contact</a>
         </nav>
@@ -34,14 +34,17 @@
     <main>
         <section class="page-hero section reveal">
             <div class="eyebrow">Games</div>
-            <h1>Every project is built for systems depth and night-heavy atmosphere.</h1>
+            <h1>Every project is built for systems depth and deep atmosphere.</h1>
             <p>We are early in the journey, but the tone is already locked. Here is what is in the pipeline and what is coming next.</p>
+            <div class="hero-actions">
+                <a class="cta-btn primary hover-sound" href="DevLog/devlog.html">Read the devlog</a>
+            </div>
         </section>
 
         <section class="games-menu section reveal delay-1">
             <div class="games-grid">
                 <a class="game-card" href="../pages/games/spear.html">
-                    <img src="../images/home/nightshift-detailed-black.png" alt="Codename SPEAR concept">
+                    <img src="../images/games/spear/spear-concept.png" alt="Codename SPEAR concept art">
                     <div class="game-card-content">
                         <h3>Codename SPEAR</h3>
                         <p>Systems-forward action with long form progression.</p>
@@ -51,8 +54,8 @@
                         </div>
                     </div>
                 </a>
-                <div class="game-card">
-                    <img src="../images/home/nightshift-detailed-black.png" alt="Nightshift project placeholder">
+                <a class="game-card" href="../pages/games/elder.html">
+                    <img src="../images/games/elder/elder-concept.png" alt="Codename ELDER concept art">
                     <div class="game-card-content">
                         <h3>Codename ELDER</h3>
                         <p>Co-op dungeon crawler built for tight teamwork and high-stakes runs. In preproduction now.</p>
@@ -61,9 +64,9 @@
                             <span class="tag">Dungeon Crawler</span>
                         </div>
                     </div>
-                </div>
-                <div class="game-card">
-                    <img src="../images/home/nightshift-detailed-black.png" alt="Nightshift project placeholder">
+                </a>
+                <a class="game-card" href="../pages/games/saint.html">
+                    <img src="../images/games/saint/saint-concept.png" alt="Codename SAINT concept art">
                     <div class="game-card-content">
                         <h3>Codename SAINT</h3>
                         <p>TBA.</p>
@@ -72,7 +75,40 @@
                             <span class="tag">Mission Chaos</span>
                         </div>
                     </div>
-                </div>
+                </a>
+                <a class="game-card" href="../pages/games/hair.html">
+                    <img src="../images/games/hair/hair-concept.png" alt="Codename Hair concept art">
+                    <div class="game-card-content">
+                        <h3>Codename HAIR</h3>
+                        <p>News anchor team game. Film chaos and compete against rival news crews.</p>
+                        <div class="tag-row">
+                            <span class="tag">Team Game</span>
+                            <span class="tag">Competition</span>
+                        </div>
+                    </div>
+                </a>
+                <a class="game-card" href="../pages/games/barn.html">
+                    <img src="../images/games/barn/barn-concept.png" alt="Codename Barn concept art">
+                    <div class="game-card-content">
+                        <h3>Codename BARN</h3>
+                        <p>Asymmetric barnyard horror where dead farm animals haunt farmers trying to escape.</p>
+                        <div class="tag-row">
+                            <span class="tag">Asymmetric</span>
+                            <span class="tag">Horror</span>
+                        </div>
+                    </div>
+                </a>
+                <a class="game-card" href="../pages/games/hook.html">
+                    <img src="../images/games/hook/hook-concept.png" alt="Codename Hook concept art">
+                    <div class="game-card-content">
+                        <h3>Codename HOOK</h3>
+                        <p>Fishing sim with tournaments, yacht parties, social hubs, and trophy leaderboards.</p>
+                        <div class="tag-row">
+                            <span class="tag">Simulator</span>
+                            <span class="tag">Social</span>
+                        </div>
+                    </div>
+                </a>
             </div>
         </section>
     </main>
@@ -111,6 +147,28 @@
             const audio = new Audio("../audio/bop.mp3");
             audio.volume = 0.25;
 
+            const path = window.location.pathname.toLowerCase();
+            let active = "home";
+            if (path.includes("games")) {
+                active = "games";
+            }
+            if (path.includes("websites")) {
+                active = "websites";
+            }
+            if (path.includes("about")) {
+                active = "about";
+            }
+            if (path.includes("contact")) {
+                active = "contact";
+            }
+
+            document.querySelectorAll(".nav-links a").forEach((link) => {
+                const label = link.textContent.trim().toLowerCase();
+                if (label === active) {
+                    link.classList.add("active");
+                }
+            });
+
             function playHoverSound() {
                 audio.currentTime = 0;
                 audio.play().catch(() => {});
@@ -123,6 +181,9 @@
     </script>
 </body>
 </html>
+
+
+
 
 
 
