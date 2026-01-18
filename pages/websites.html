@@ -3,11 +3,11 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Nightshift | Website Pricing</title>
+        <title>Nightshift | Websites</title>
 
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
 
         <link rel="stylesheet" href="../styles/header.css">
         <link rel="stylesheet" href="../styles/footer.css">
@@ -21,18 +21,28 @@
             <img src="../images/index/nightshift-transparent.png" alt="Nightshift Logo">
         </a>
         <nav class="nav-links">
-            <a href="home.html" class="hover-sound">home</a>
-            <a href="games.html" class="hover-sound">games</a>
-            <a href="pricing.html" class="hover-sound">websites</a>
-            <a href="about.html" class="hover-sound">about</a>
-            <a href="contact.html" class="hover-sound">contact</a>
-        </nav>
+    <a href="home.html" class="hover-sound">home</a>
+    <div class="nav-item dropdown">
+        <a href="games.html" class="hover-sound">games</a>
+        <div class="dropdown-menu">
+            <a href="games/spear.html">Codename SPEAR</a>
+            <a href="games/elder.html">Codename ELDER</a>
+            <a href="games/saint.html">Codename SAINT</a>
+            <a href="games/hair.html">Codename HAIR</a>
+            <a href="games/barn.html">Codename BARN</a>
+            <a href="games/hook.html">Codename HOOK</a>
+        </div>
+    </div>
+    <a href="websites.html" class="hover-sound">websites</a>
+    <a href="about.html" class="hover-sound">about</a>
+    <a href="contact.html" class="hover-sound">contact</a>
+</nav>
     </div>
     <div class="header-spacer"></div>
 
     <main>
         <section class="page-hero section reveal">
-            <div class="eyebrow">Website Pricing</div>
+            <div class="eyebrow">Websites</div>
             <h1>Clear, fixed tiers for fast, modern websites.</h1>
             <p>Pick a tier that fits your launch. Every build is responsive, performance-minded, and tuned to your brand.</p>
             <div class="hero-actions">
@@ -43,7 +53,7 @@
 
         <section class="section reveal delay-1">
             <div class="section-title-row">
-                <h2>Option A — Hand-Built Websites</h2>
+                <h2>Hand-Built Websites</h2>
                 <p>No CMS bloat. Lightweight, fast, and clean. Great for local businesses and simple launches.</p>
             </div>
             <div class="pricing-grid">
@@ -120,6 +130,89 @@
             </div>
         </section>
 
+        <section class="section reveal delay-2">
+            <div class="section-title-row">
+                <h2>Web3 Websites</h2>
+                <p>Wallet-ready, token-aware experiences built for product launches and community hubs.</p>
+            </div>
+            <div class="pricing-grid">
+                <div class="price-card">
+                    <h3>Web3 Launch</h3>
+                    <div class="price">$1,250 <span>/ flat</span></div>
+                    <ul class="price-list">
+                        <li>1-3 pages</li>
+                        <li>Wallet connect integration</li>
+                        <li>Token-gated CTA blocks</li>
+                        <li>Analytics + event tracking</li>
+                    </ul>
+                </div>
+                <div class="price-card">
+                    <h3>Web3 Community</h3>
+                    <div class="price">$2,200 <span>/ flat</span></div>
+                    <ul class="price-list">
+                        <li>4-6 pages</li>
+                        <li>Membership gating</li>
+                        <li>Live mint or claim flow</li>
+                        <li>Discord / X embeds</li>
+                    </ul>
+                </div>
+                <div class="price-card">
+                    <h3>Web3 Protocol</h3>
+                    <div class="price">$3,800+ <span>/ flat</span></div>
+                    <ul class="price-list">
+                        <li>7-10 pages</li>
+                        <li>Custom data dashboards</li>
+                        <li>Multi-wallet support</li>
+                        <li>Launch support</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="section reveal delay-2">
+            <div class="section-title-row">
+                <h2>Maintenance</h2>
+                <p>Keep your site fresh, fast, and secure with ongoing updates.</p>
+            </div>
+            <div class="pricing-grid">
+                <div class="price-card">
+                    <h3>Maintenance Core</h3>
+                    <div class="price">$85 <span>/ month</span></div>
+                    <ul class="price-list">
+                        <li>Content updates</li>
+                        <li>Image swaps</li>
+                        <li>Basic performance checks</li>
+                        <li>Email support</li>
+                    </ul>
+                </div>
+                <div class="price-card">
+                    <h3>Maintenance Plus</h3>
+                    <div class="price">$175 <span>/ month</span></div>
+                    <ul class="price-list">
+                        <li>Priority edits</li>
+                        <li>Quarterly refresh</li>
+                        <li>SEO tune-ups</li>
+                        <li>Monthly analytics recap</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="section reveal delay-2">
+            <div class="section-title-row">
+                <h2>Trusted domain providers</h2>
+                <p>Reliable registrars I recommend for clean DNS management and good support.</p>
+            </div>
+            <div class="surface">
+                <ul class="list">
+                    <li>Cloudflare Registrar</li>
+                    <li>Namecheap</li>
+                    <li>Porkbun</li>
+                    <li>Squarespace Domains</li>
+                </ul>
+            </div>
+        </section>
+
         <section id="pricing-form" class="section reveal">
             <div class="section-title-row">
                 <h2>Website questionnaire</h2>
@@ -171,6 +264,31 @@
             const audio = new Audio("../audio/bop.mp3");
             audio.volume = 0.25;
 
+            const path = window.location.pathname.toLowerCase();
+            const page = path.split("/").pop();
+            let active = "home";
+            if (page === "" || page === "index.html" || page === "home.html") {
+                active = "home";
+            }
+            if (page === "games.html" || path.includes("/games/")) {
+                active = "games";
+            }
+            if (page === "websites.html") {
+                active = "websites";
+            }
+            if (page === "about.html") {
+                active = "about";
+            }
+            if (page === "contact.html") {
+                active = "contact";
+            }
+document.querySelectorAll(".nav-links a").forEach((link) => {
+                const label = link.textContent.trim().toLowerCase();
+                if (label === active) {
+                    link.classList.add("active");
+                }
+            });
+
             function playHoverSound() {
                 audio.currentTime = 0;
                 audio.play().catch(() => {});
@@ -183,5 +301,10 @@
     </script>
 </body>
 </html>
+
+
+
+
+
 
 

@@ -26,8 +26,10 @@
 
 .game-card img {
     width: 100%;
-    height: 220px;
-    object-fit: cover;
+    height: auto;
+    object-fit: contain;
+    background: rgba(8, 10, 18, 0.9);
+    display: block;
 }
 
 .game-card-content {

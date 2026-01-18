@@ -7,7 +7,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../styles/header.css">
@@ -25,12 +25,22 @@
             <img src="../images/index/nightshift-transparent.png" alt="Nightshift Logo">
         </a>
         <nav class="nav-links">
-            <a href="home.html" class="hover-sound">home</a>
-            <a href="games.html" class="hover-sound">games</a>
-            <a href="pricing.html" class="hover-sound">websites</a>
-            <a href="about.html" class="hover-sound">about</a>
-            <a href="contact.html" class="hover-sound">contact</a>
-        </nav>
+    <a href="home.html" class="hover-sound">home</a>
+    <div class="nav-item dropdown">
+        <a href="games.html" class="hover-sound">games</a>
+        <div class="dropdown-menu">
+            <a href="games/spear.html">Codename SPEAR</a>
+            <a href="games/elder.html">Codename ELDER</a>
+            <a href="games/saint.html">Codename SAINT</a>
+            <a href="games/hair.html">Codename HAIR</a>
+            <a href="games/barn.html">Codename BARN</a>
+            <a href="games/hook.html">Codename HOOK</a>
+        </div>
+    </div>
+    <a href="websites.html" class="hover-sound">websites</a>
+    <a href="about.html" class="hover-sound">about</a>
+    <a href="contact.html" class="hover-sound">contact</a>
+</nav>
     </div>
     <div class="header-spacer"></div>
 
@@ -107,6 +117,31 @@
             const audio = new Audio("../audio/bop.mp3");
             audio.volume = 0.25;
 
+            const path = window.location.pathname.toLowerCase();
+            const page = path.split("/").pop();
+            let active = "home";
+            if (page === "" || page === "index.html" || page === "home.html") {
+                active = "home";
+            }
+            if (page === "games.html" || path.includes("/games/")) {
+                active = "games";
+            }
+            if (page === "websites.html") {
+                active = "websites";
+            }
+            if (page === "about.html") {
+                active = "about";
+            }
+            if (page === "contact.html") {
+                active = "contact";
+            }
+document.querySelectorAll(".nav-links a").forEach((link) => {
+                const label = link.textContent.trim().toLowerCase();
+                if (label === active) {
+                    link.classList.add("active");
+                }
+            });
+
             function playHoverSound() {
                 audio.currentTime = 0;
                 audio.play().catch(() => {});
@@ -119,6 +154,11 @@
     </script>
 </body>
 </html>
+
+
+
+
+
 
 
 
