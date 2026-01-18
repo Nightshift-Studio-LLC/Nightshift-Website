@@ -17,6 +17,7 @@
     display: flex;
     flex-direction: column;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+    position: relative;
 }
 
 .game-card:hover {
@@ -36,6 +37,26 @@
     padding: 20px;
     display: grid;
     gap: 12px;
+}
+
+.game-card.is-production {
+    border-color: var(--accent);
+    box-shadow: 0 22px 46px rgba(255, 138, 43, 0.2);
+}
+
+.production-label {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid rgba(255, 138, 43, 0.6);
+    background: rgba(8, 10, 18, 0.75);
+    backdrop-filter: blur(8px);
 }
 
 .game-card h3 {

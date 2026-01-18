@@ -84,24 +84,17 @@
             </div>
             <div class="card-grid">
                 <div class="feature-card">
-                    <h3>Systems with consequences</h3>
+                    <h3 class="gradient-on-view">Systems with consequences</h3>
                     <p>We design systems around pressure and trade-offs, so player choices carry cost in combat, movement, and resources.</p>
                 </div>
                 <div class="feature-card">
-                    <h3>Atmosphere you can feel</h3>
+                    <h3 class="gradient-on-view">Atmosphere you can feel</h3>
                     <p>Tone comes from clear lighting, sound, and restraint. Not excess detail.</p>
                 </div>
                 <div class="feature-card">
-                    <h3>Progression you earn</h3>
+                    <h3 class="gradient-on-view">Progression you earn</h3>
                     <p>Progression emphasizes learning the systems before expanding player freedom.</p>
                 </div>
-            </div>
-        </section>
-
-        <section class="section reveal delay-2">
-            <div class="section-title-row">
-                <h2>In motion</h2>
-                <p>Latest trailer.</p>
             </div>
             <div class="video-frame">
                 <iframe src="https://www.youtube.com/embed/VIDEO_ID" title="Nightshift video" allowfullscreen></iframe>
@@ -201,6 +194,22 @@
             document.querySelectorAll(".hover-sound").forEach((element) => {
                 element.addEventListener("mouseenter", playHoverSound);
             });
+
+            const gradientTargets = document.querySelectorAll(".gradient-on-view");
+            if ("IntersectionObserver" in window && gradientTargets.length) {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach((entry) => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add("gradient-animate");
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.6 });
+
+                gradientTargets.forEach((target) => observer.observe(target));
+            } else {
+                gradientTargets.forEach((target) => target.classList.add("gradient-animate"));
+            }
         });
     </script>
 </body>

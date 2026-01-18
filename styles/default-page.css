@@ -217,6 +217,20 @@ main {
     color: var(--muted);
 }
 
+.hero .stats .stat,
+.hero .tag-row .tag {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+    animation: bubbleIn 0.6s ease forwards;
+}
+
+.hero .stats .stat:nth-child(1) { animation-delay: 0.35s; }
+.hero .stats .stat:nth-child(2) { animation-delay: 0.45s; }
+.hero .stats .stat:nth-child(3) { animation-delay: 0.55s; }
+.hero .tag-row .tag:nth-child(1) { animation-delay: 0.35s; }
+.hero .tag-row .tag:nth-child(2) { animation-delay: 0.45s; }
+.hero .tag-row .tag:nth-child(3) { animation-delay: 0.55s; }
+
 .section-title-row {
     display: flex;
     justify-content: space-between;
@@ -229,6 +243,21 @@ main {
     font-family: var(--font-display);
     font-size: clamp(1.6rem, 2vw + 1rem, 2.6rem);
     margin: 0;
+}
+
+.gradient-on-view {
+    position: relative;
+    color: var(--ink);
+    background-image: linear-gradient(120deg, #ffb457, #ff8a2b, #ff6a3d);
+    background-size: 200% 200%;
+    background-position: 0% 50%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.gradient-on-view.gradient-animate {
+    animation: orangeSweep 1.4s ease forwards;
 }
 
 .section-title-row p {
@@ -247,6 +276,7 @@ main {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 24px;
+    margin-bottom: 16px;
 }
 
 .feature-card {
@@ -535,6 +565,22 @@ main {
     }
 }
 
+@keyframes orangeSweep {
+    from {
+        background-position: 0% 50%;
+    }
+    to {
+        background-position: 100% 50%;
+    }
+}
+
+@keyframes bubbleIn {
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
 @media (max-width: 980px) {
     .hero,
     .split {
@@ -578,6 +624,18 @@ main {
         opacity: 1;
         transform: none;
         animation: none;
+    }
+
+    .hero .stats .stat,
+    .hero .tag-row .tag {
+        opacity: 1;
+        transform: none;
+        animation: none;
+    }
+
+    .gradient-on-view {
+        animation: none;
+        background-position: 0% 50%;
     }
 }
 
