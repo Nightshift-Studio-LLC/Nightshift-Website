@@ -1,16 +1,16 @@
 :root {
-    --bg-0: #050507;
-    --bg-1: #0b0d16;
-    --bg-2: #111425;
+    --bg-0: #000015;
+    --bg-1: #050b22;
+    --bg-2: #0b1430;
     --ink: #f4f6ff;
     --muted: #b3b9d2;
-    --accent: #59f0c2;
-    --accent-2: #ffb347;
-    --accent-3: #5ea2ff;
+    --accent: #ff8a2b;
+    --accent-2: #ffb457;
+    --accent-3: #ff6a3d;
     --stroke: rgba(255, 255, 255, 0.12);
     --shadow: 0 20px 50px rgba(5, 8, 20, 0.55);
-    --font-body: "Rajdhani", sans-serif;
-    --font-display: "Rajdhani", sans-serif;
+    --font-body: "Source Sans 3", sans-serif;
+    --font-display: "Source Sans 3", sans-serif;
 }
 
 * {
@@ -31,9 +31,9 @@ body::before {
     position: fixed;
     inset: 0;
     background:
-        radial-gradient(80% 60% at 10% 10%, rgba(88, 160, 255, 0.2), transparent 55%),
-        radial-gradient(60% 50% at 90% 15%, rgba(255, 179, 71, 0.18), transparent 55%),
-        linear-gradient(120deg, rgba(7, 10, 20, 0.95), rgba(9, 12, 24, 0.9));
+        radial-gradient(80% 60% at 10% 10%, rgba(46, 84, 190, 0.22), transparent 55%),
+        radial-gradient(60% 50% at 90% 15%, rgba(255, 138, 43, 0.18), transparent 55%),
+        linear-gradient(120deg, rgba(0, 0, 21, 0.95), rgba(6, 10, 26, 0.9));
     z-index: -2;
 }
 
@@ -69,7 +69,7 @@ main {
 }
 
 .section {
-    padding: 80px 0;
+    padding: 60px 0;
 }
 
 .header-spacer {
@@ -132,7 +132,7 @@ main {
 .cta-btn.primary {
     background: linear-gradient(120deg, var(--accent), var(--accent-3));
     color: #031318;
-    box-shadow: 0 12px 30px rgba(89, 240, 194, 0.35);
+    box-shadow: 0 12px 30px rgba(255, 138, 43, 0.35);
 }
 
 .cta-btn.ghost {
@@ -141,10 +141,18 @@ main {
     background: rgba(10, 12, 20, 0.4);
 }
 
+.cred-strip {
+    font-size: 0.85rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+}
+
 .stats {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 16px;
+    width: 100%;
 }
 
 .stat {
@@ -189,9 +197,9 @@ main {
 }
 
 .tag-row {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
     gap: 10px;
-    flex-wrap: wrap;
     margin-top: 16px;
 }
 
@@ -278,7 +286,7 @@ main {
 }
 
 .callout {
-    padding: 0 0 100px;
+    padding: 0 0 70px;
 }
 
 .callout-panel {
@@ -505,6 +513,15 @@ main {
         flex-direction: column;
         align-items: flex-start;
     }
+
+    .hero-actions {
+        width: 100%;
+    }
+
+    .hero-actions .cta-btn {
+        width: 100%;
+        justify-content: center;
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -514,5 +531,6 @@ main {
         animation: none;
     }
 }
+
 
 
