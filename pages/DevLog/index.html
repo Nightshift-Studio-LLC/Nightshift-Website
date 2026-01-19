@@ -1,0 +1,163 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nightshift | Devlog</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../../styles/header.css">
+    <link rel="stylesheet" href="../../styles/footer.css">
+    <link rel="stylesheet" href="../../styles/default-page.css">
+    <link rel="stylesheet" href="../../styles/devlog.css">
+    <link rel="icon" type="image/x-icon" href="../../images/icons/nightshift.ico">
+</head>
+
+<body>
+    <div class="header">
+        <a href="../home.html" class="hover-sound">
+            <img src="../../images/index/nightshift-transparent.png" alt="Nightshift Logo">
+        </a>
+
+        <nav class="nav-links">
+            <a href="../home.html" class="hover-sound">home</a>
+            <div class="nav-item dropdown">
+                <a href="../games.html" class="hover-sound">games</a>
+                <div class="dropdown-menu">
+                    <a href="../games/spear.html">Codename SPEAR</a>
+                    <a href="../games/elder.html">Codename ELDER</a>
+                    <a href="../games/saint.html">Codename SAINT</a>
+                    <a href="../games/hair.html">Codename HAIR</a>
+                    <a href="../games/barn.html">Codename BARN</a>
+                    <a href="../games/hook.html">Codename HOOK</a>
+                </div>
+            </div>
+            <a href="../studio.html" class="hover-sound">studio</a>
+            <a href="../contact.html" class="hover-sound">contact</a>
+        </nav>
+    </div>
+    <div class="header-spacer"></div>
+
+    
+    <main>
+        <section class="page-hero section reveal">
+            <div class="eyebrow">Devlog</div>
+            <h1>Milestones, experiments, and creative notes from the pipeline.</h1>
+            <p>We are documenting progress as we lock in systems, shape worlds, and refine the feel. Expect rough edges and honest updates.</p>
+            <div class="hero-actions">
+                <a class="cta-btn primary hover-sound" href="../games.html">Explore games</a>
+            </div>
+        </section>
+
+        <section class="section reveal delay-1">
+            <div class="section-title-row">
+                <h2>Latest entries</h2>
+                <p>Short reads on direction, prototypes, and what we are learning.</p>
+            </div>
+            <div class="devlog-grid">
+                
+                <article class="devlog-card">
+                    <div class="devlog-meta">
+                        <span>Codename SPEAR</span>
+                        <span>FEB 11, 2026</span>
+                    </div>
+                    <h3>Combat tempo tests and the first pressure loop</h3>
+                    <p>We prototyped a three-phase encounter flow to find the balance between momentum and deliberate timing.</p>
+                    <a class="devlog-cta hover-sound" href="posts/2026-02-12-combat-tempo.html">Read entry</a>
+                </article>
+                <article class="devlog-card">
+                    <div class="devlog-meta">
+                        <span>Codename ELDER</span>
+                        <span>JAN 27, 2026</span>
+                    </div>
+                    <h3>Dungeon cadence, loot risk, and team signals</h3>
+                    <p>Early layouts focus on escalating stress while making every callout meaningful for the squad.</p>
+                    <a class="devlog-cta hover-sound" href="posts/2026-01-28-dungeon-cadence.html">Read entry</a>
+                </article>
+                <article class="devlog-card">
+                    <div class="devlog-meta">
+                        <span>Codename SAINT</span>
+                        <span>JAN 09, 2026</span>
+                    </div>
+                    <h3>Mission chaos sketches and character silhouettes</h3>
+                    <p>We collected visual targets for the first strike fantasy and started mapping how teams improvise.</p>
+                    <a class="devlog-cta hover-sound" href="posts/2026-01-10-mission-chaos.html">Read entry</a>
+                </article>
+            </div>
+        </section>
+    </main>
+
+
+    <footer>
+        <div class="footer-menus">
+            <ul class="footer-menu">
+                <li><a href="../home.html">Home</a></li>
+                <li><a href="../games.html">Games</a></li>
+                <li><a href="../studio.html">Studio</a></li>
+                <li><a href="../contact.html">Contact</a></li>
+            </ul>
+            <ul class="footer-menu">
+                <li><a href="https://www.epicgames.com/site/en-US/privacypolicy" target="_blank" rel="noopener noreferrer">Epic Privacy Policy</a></li>
+                <li><a href="#">Nightshift Privacy Policy</a></li>
+                <li><a href="#">Applicant Privacy Policy</a></li>
+                <li><a href="#">Site Cookie Policy</a></li>
+            </ul>
+            <ul class="footer-menu">
+                <li><a href="#">Press Kit</a></li>
+                <li><a href="#">Brand Assets</a></li>
+                <li><a href="#">Careers</a></li>
+                <li><a href="#">Community</a></li>
+            </ul>
+        </div>
+        <div class="social-bar">
+            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="social-pill">X</a>
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="social-pill">IG</a>
+            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" class="social-pill">YT</a>
+        </div>
+        <p class="footer-copyright">Copyright 2025 Nightshift. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const audio = new Audio("../../audio/bop.mp3");
+            audio.volume = 0.25;
+
+            const path = window.location.pathname.toLowerCase();
+            const page = path.split("/").pop();
+            let active = "home";
+            if (page === "" || page === "index.html" || page === "home.html") {
+                active = "home";
+            }
+            if (page === "games.html" || path.includes("/games/")) {
+                active = "games";
+            }
+            if (page === "studio.html" || page === "websites.html") {
+                active = "studio";
+            }
+            if (page === "contact.html") {
+                active = "contact";
+            }
+
+            document.querySelectorAll(".nav-links a").forEach((link) => {
+                const label = link.textContent.trim().toLowerCase();
+                if (label === active) {
+                    link.classList.add("active");
+                }
+            });
+
+            function playHoverSound() {
+                audio.currentTime = 0;
+                audio.play().catch(() => {});
+            }
+
+            document.querySelectorAll(".hover-sound").forEach((element) => {
+                element.addEventListener("mouseenter", playHoverSound);
+            });
+        });
+    </script>
+</body>
+</html>

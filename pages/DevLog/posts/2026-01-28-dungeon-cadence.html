@@ -1,0 +1,149 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nightshift | Dungeon cadence, loot risk, and team signals</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../../../styles/header.css">
+    <link rel="stylesheet" href="../../../styles/footer.css">
+    <link rel="stylesheet" href="../../../styles/default-page.css">
+    <link rel="stylesheet" href="../../../styles/devlog.css">
+    <link rel="icon" type="image/x-icon" href="../../../images/icons/nightshift.ico">
+</head>
+
+<body>
+    <div class="header">
+        <a href="../../home.html" class="hover-sound">
+            <img src="../../../images/index/nightshift-transparent.png" alt="Nightshift Logo">
+        </a>
+
+        <nav class="nav-links">
+            <a href="../../home.html" class="hover-sound">home</a>
+            <div class="nav-item dropdown">
+                <a href="../../games.html" class="hover-sound">games</a>
+                <div class="dropdown-menu">
+                    <a href="../../games/spear.html">Codename SPEAR</a>
+                    <a href="../../games/elder.html">Codename ELDER</a>
+                    <a href="../../games/saint.html">Codename SAINT</a>
+                    <a href="../../games/hair.html">Codename HAIR</a>
+                    <a href="../../games/barn.html">Codename BARN</a>
+                    <a href="../../games/hook.html">Codename HOOK</a>
+                </div>
+            </div>
+            <a href="../../studio.html" class="hover-sound">studio</a>
+            <a href="../../contact.html" class="hover-sound">contact</a>
+        </nav>
+    </div>
+    <div class="header-spacer"></div>
+
+    
+    <main>
+        <section class="page-hero section reveal">
+            <div class="eyebrow">Devlog</div>
+            <h1>Dungeon cadence, loot risk, and team signals</h1>
+            <p>Early layouts focus on escalating stress while making every callout meaningful for the squad.</p>
+            <div class="hero-actions">
+                <a class="cta-btn ghost hover-sound" href="../index.html">Back to devlog</a>
+            </div>
+            <div class="tag-row"><span class="tag">Co-op</span><span class="tag">Dungeon</span><span class="tag">Risk</span></div>
+            <div class="media-frame devlog-hero"><img src="../../images/games/elder/elder-concept.png" alt="Dungeon cadence, loot risk, and team signals"></div>
+        </section>
+
+        <section class="section reveal delay-1">
+            <div class="surface">
+                <ul class="list">
+                    <li>Project: Codename ELDER</li>
+                    <li>Date: JAN 27, 2026</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="section reveal delay-2">
+            <div class="surface devlog-post-body">
+                <h2>Layout pacing</h2>
+<p>We are blocking rooms to keep squads moving while still creating pockets of safety. The pacing goal is to avoid long downtime while preserving short windows for regrouping.</p>
+<h2>Loot and pressure</h2>
+<p>Loot tables now bias toward meaningful choices rather than pure upgrades. That means every chest has an opportunity cost that the team has to discuss quickly.</p>
+<h2>Signals and roles</h2>
+<p>We are emphasizing role-based callouts so each player has a clear read on when to push, when to hold, and when to reset.</p>
+
+            </div>
+        </section>
+    </main>
+
+
+    <footer>
+        <div class="footer-menus">
+            <ul class="footer-menu">
+                <li><a href="../../home.html">Home</a></li>
+                <li><a href="../../games.html">Games</a></li>
+                <li><a href="../../studio.html">Studio</a></li>
+                <li><a href="../../contact.html">Contact</a></li>
+            </ul>
+            <ul class="footer-menu">
+                <li><a href="https://www.epicgames.com/site/en-US/privacypolicy" target="_blank" rel="noopener noreferrer">Epic Privacy Policy</a></li>
+                <li><a href="#">Nightshift Privacy Policy</a></li>
+                <li><a href="#">Applicant Privacy Policy</a></li>
+                <li><a href="#">Site Cookie Policy</a></li>
+            </ul>
+            <ul class="footer-menu">
+                <li><a href="#">Press Kit</a></li>
+                <li><a href="#">Brand Assets</a></li>
+                <li><a href="#">Careers</a></li>
+                <li><a href="#">Community</a></li>
+            </ul>
+        </div>
+        <div class="social-bar">
+            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="social-pill">X</a>
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="social-pill">IG</a>
+            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" class="social-pill">YT</a>
+        </div>
+        <p class="footer-copyright">Copyright 2025 Nightshift. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const audio = new Audio("../../../audio/bop.mp3");
+            audio.volume = 0.25;
+
+            const path = window.location.pathname.toLowerCase();
+            const page = path.split("/").pop();
+            let active = "home";
+            if (page === "" || page === "index.html" || page === "home.html") {
+                active = "home";
+            }
+            if (page === "games.html" || path.includes("/games/")) {
+                active = "games";
+            }
+            if (page === "studio.html" || page === "websites.html") {
+                active = "studio";
+            }
+            if (page === "contact.html") {
+                active = "contact";
+            }
+
+            document.querySelectorAll(".nav-links a").forEach((link) => {
+                const label = link.textContent.trim().toLowerCase();
+                if (label === active) {
+                    link.classList.add("active");
+                }
+            });
+
+            function playHoverSound() {
+                audio.currentTime = 0;
+                audio.play().catch(() => {});
+            }
+
+            document.querySelectorAll(".hover-sound").forEach((element) => {
+                element.addEventListener("mouseenter", playHoverSound);
+            });
+        });
+    </script>
+</body>
+</html>
