@@ -27,7 +27,6 @@
         <section class="hero">
             <div class="pill stagger" style="--delay: 0.05s;">Unreal Editor Utility</div>
             <h1 class="stagger" style="--delay: 0.1s;">Landsnap</h1>
-            <h2 class="stagger" style="--delay: 0.15s;">Tired of manually nudging actors to sit correctly on terrain or surfaces?</h2>
             <p class="lead stagger" style="--delay: 0.2s;">
                 <strong>LandSnap</strong> is a lightweight Unreal Editor utility that instantly snaps and aligns selected actors and splines to Landscapes
                 <strong>or designer-defined tagged surfaces</strong>, saving time and eliminating tedious manual adjustments during level design.
@@ -37,7 +36,10 @@
                 <span>No bloated systems.</span>
                 <span>Just fast, predictable placement.</span>
             </div>
-            <a class="cta-button stagger" style="--delay: 0.3s;" href="#documentation">Documentation</a>
+            <div class="cta-row stagger" style="--delay: 0.3s;">
+                <a class="cta-button" href="#documentation">Documentation</a>
+                <a class="cta-button fab" href="#">Get it on FAB</a>
+            </div>
         </section>
 
         <section class="section">
@@ -87,7 +89,140 @@
             <details class="doc-panel stagger" style="--delay: 0.1s;">
                 <summary>Documentation</summary>
                 <div class="doc-content">
-                    <p>Documentation will live here. This section is intentionally collapsed until the FAB listing is linked from the Studio page.</p>
+                    <div class="doc-block">
+                        <h4>1. Installation &amp; Activation</h4>
+                        <p>Copy the LandSnap plugin into your project’s <strong>Plugins/</strong> folder.</p>
+                        <p>Open Unreal Engine and go to <strong>Edit → Plugins</strong>.</p>
+                        <p>Enable <strong>LandSnap</strong> under the Editor category.</p>
+                        <p>Restart the editor when prompted.</p>
+                        <p>LandSnap is an Editor-only plugin and does not affect packaged builds.</p>
+                    </div>
+                    <div class="doc-block">
+                        <h4>2. User Interface &amp; Controls</h4>
+                        <h4>Toolbar Buttons</h4>
+                        <p>LandSnap adds buttons to the Level Editor toolbar:</p>
+                        <ul>
+                            <li class="doc-icon">
+                                <img src="../../images/landsnap/Icon40.png" alt="LandSnap icon">
+                                <strong>LandSnap</strong> — Snap selected actors to the surface below
+                            </li>
+                            <li class="doc-icon">
+                                <img src="../../images/landsnap/Icon40-spline.png" alt="LandSnap Splines icon">
+                                <strong>LandSnap Splines</strong> — Snap selected spline components to the surface
+                            </li>
+                        </ul>
+                        <p>These buttons work on the current selection and support multi-select.</p>
+                        <h4>Menu Entries</h4>
+                        <p>You can also access the same actions from the Window menu:</p>
+                        <ul>
+                            <li><strong>Window → LandSnap</strong></li>
+                            <li><strong>Window → LandSnap Splines</strong></li>
+                        </ul>
+                        <h4>Hotkeys</h4>
+                        <p>Default hotkeys are provided for faster workflow:</p>
+                        <ul>
+                            <li>Actor snap: Ctrl + Down Arrow</li>
+                            <li>Spline snap: Shift + Down Arrow</li>
+                        </ul>
+                        <p>Hotkeys can be customized in Editor Preferences.</p>
+                    </div>
+                    <div class="doc-block">
+                        <h4>3. Core Behavior</h4>
+                        <h4>Actor Snapping</h4>
+                        <p>When using the LandSnap button or hotkey:</p>
+                        <ul>
+                            <li>Selected actors are snapped to the surface below them.</li>
+                            <li>Landscapes are supported by default.</li>
+                            <li>Optional support for tagged static meshes can be enabled.</li>
+                            <li>Actors can align their rotation to the surface normal.</li>
+                            <li>A configurable Z Offset can be applied after snapping.</li>
+                        </ul>
+                        <h4>Placement Modes</h4>
+                        <ul>
+                            <li><strong>Pivot Snap:</strong> Snaps the actor’s pivot directly to the surface.</li>
+                            <li><strong>Pivot-Aware Bottom:</strong> Uses the actor’s bounds to place it naturally on the surface (recommended for props).</li>
+                        </ul>
+                        <p>LandSnap automatically traces both downward and upward to find the closest valid surface.</p>
+                        <h4>Spline Snapping</h4>
+                        <p>When using LandSnap Splines:</p>
+                        <ul>
+                            <li>Works with both Spline Components and Spline Mesh Components</li>
+                            <li>Spline points are snapped individually to the surface</li>
+                            <li>Optional alignment of spline up vectors to the surface normal</li>
+                            <li>Independent Z offset for splines</li>
+                        </ul>
+                        <p>This is ideal for roads, paths, fences, cables, and similar spline-based assets.</p>
+                    </div>
+                    <div class="doc-block">
+                        <h4>4. Settings</h4>
+                        <p>LandSnap exposes two settings panels in Editor Preferences.</p>
+                        <h4>4.1 LandSnap (Editor → Plugins → LandSnap)</h4>
+                        <p>General snapping behavior and controls.</p>
+                        <div class="table-wrap">
+                            <table class="doc-table">
+                                <thead>
+                                    <tr>
+                                        <th>Setting</th>
+                                        <th>Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>Debug Logging</td><td>Enables verbose debug output</td></tr>
+                                    <tr><td>Max Slope Angle</td><td>Maximum slope allowed for normal alignment</td></tr>
+                                    <tr><td>Trace Up / Down Distance</td><td>How far LandSnap searches for surfaces</td></tr>
+                                    <tr><td>Z Offset</td><td>Vertical offset applied after snapping actors</td></tr>
+                                    <tr><td>Actor Snap Enabled</td><td>Enables actor snapping</td></tr>
+                                    <tr><td>Actor Snap Hotkey</td><td>Hotkey for actor snapping</td></tr>
+                                    <tr><td>Spline Snap Hotkey</td><td>Hotkey for spline snapping</td></tr>
+                                    <tr><td>Align to Normal</td><td>Align actor rotation to surface normal</td></tr>
+                                    <tr><td>Preserve Yaw</td><td>Keep yaw when aligning to normal</td></tr>
+                                    <tr><td>Normal Push Placement</td><td>Push placement along the surface normal. If you want straight vertical drop, disable this.</td></tr>
+                                    <tr><td>Snap Pivot to Hit</td><td>Snap pivot directly to the hit point</td></tr>
+                                    <tr><td>Pivot-Aware Bottom</td><td>Use bounds-based bottom placement</td></tr>
+                                    <tr><td>Spline Z Offset</td><td>Vertical offset for spline snapping</td></tr>
+                                    <tr><td>Align Spline Up Vector</td><td>Align spline up vectors to surface normal</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <h4>4.2 LandSnap Surfaces (Editor → Plugins → LandSnap Surfaces)</h4>
+                        <p>Controls what surfaces are considered valid snap targets.</p>
+                        <div class="table-wrap">
+                            <table class="doc-table">
+                                <thead>
+                                    <tr>
+                                        <th>Setting</th>
+                                        <th>Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>Allow Landscape Surfaces</td><td>Enable snapping to landscapes</td></tr>
+                                    <tr><td>Allow Tagged Surfaces</td><td>Enable snapping to tagged meshes</td></tr>
+                                    <tr><td>Snap Surface Tags</td><td>Tags that mark valid snap surfaces</td></tr>
+                                    <tr><td>Allow Actor Tags</td><td>Check actor tags</td></tr>
+                                    <tr><td>Allow Component Tags</td><td>Check component tags</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <h4>Tagged Surface Rules</h4>
+                        <p>If <strong>Allow Tagged Surfaces</strong> is enabled, a surface is considered valid when:</p>
+                        <ul>
+                            <li>The actor has a matching tag (Actor Tags enabled), or</li>
+                            <li>The hit component has a matching tag (Component Tags enabled)</li>
+                        </ul>
+                        <p>Tags do not apply automatically — they must be added by the user.</p>
+                    </div>
+                    <div class="doc-block">
+                        <h4>5. Logging &amp; Debugging</h4>
+                        <p>LandSnap is silent by default.</p>
+                        <p>Debug output can be enabled in LandSnap settings</p>
+                        <p>When enabled, detailed information is written to the Output Log to assist with troubleshooting</p>
+                        <h4>Notes &amp; Limitations</h4>
+                        <ul>
+                            <li>Surfaces must have collision enabled (Visibility or WorldStatic)</li>
+                            <li>Very steep angles may require manual Z offset adjustment</li>
+                            <li>Tag-based snapping requires explicit tag setup</li>
+                        </ul>
+                    </div>
                 </div>
             </details>
         </section>
