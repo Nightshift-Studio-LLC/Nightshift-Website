@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LandSnap | Unreal Editor Utility</title>
+    <meta name="description" content="LandSnap is a lightweight Unreal Editor utility that snaps and aligns actors and splines to landscapes or tagged surfaces.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;600;700&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../../styles/footer.css">
+    <link rel="stylesheet" href="../../styles/landsnap.css">
+    <link rel="icon" type="image/x-icon" href="../../images/icons/nightshift.ico">
+</head>
+<body>
+    <div class="page-background" aria-hidden="true"></div>
+
+    <header class="site-header">
+        <a href="../home.html" class="logo-link" aria-label="Nightshift home">
+            <img src="../../images/index/nightshift-transparent.png" alt="Nightshift Logo">
+        </a>
+    </header>
+
+    <main class="page">
+        <section class="hero">
+            <div class="pill stagger" style="--delay: 0.05s;">Unreal Editor Utility</div>
+            <h1 class="stagger" style="--delay: 0.1s;">Landsnap</h1>
+            <h2 class="stagger" style="--delay: 0.15s;">Tired of manually nudging actors to sit correctly on terrain or surfaces?</h2>
+            <p class="lead stagger" style="--delay: 0.2s;">
+                <strong>LandSnap</strong> is a lightweight Unreal Editor utility that instantly snaps and aligns selected actors and splines to Landscapes
+                <strong>or designer-defined tagged surfaces</strong>, saving time and eliminating tedious manual adjustments during level design.
+            </p>
+            <div class="hero-lines stagger" style="--delay: 0.25s;">
+                <span>No complex setup.</span>
+                <span>No bloated systems.</span>
+                <span>Just fast, predictable placement.</span>
+            </div>
+            <a class="cta-button stagger" style="--delay: 0.3s;" href="#documentation">Documentation</a>
+        </section>
+
+        <section class="section">
+            <div class="section-header stagger" style="--delay: 0.05s;">
+                <div class="section-kicker">🔧 What LandSnap Does</div>
+            </div>
+            <div class="feature-grid">
+                <article class="feature-card stagger" style="--delay: 0.1s;">
+                    <h3>Snap Targets</h3>
+                    <ul>
+                        <li>Snaps selected <strong>Actors</strong>, <strong>Spline Components</strong> (paths, roads, guides), and <strong>Spline Mesh Components</strong></li>
+                        <li>Snap to <strong>Landscape</strong> surfaces</li>
+                        <li>Snap to <strong>tagged actors or components</strong> (author-controlled surface gating)</li>
+                        <li>Supports stacking / placement on valid tagged surfaces</li>
+                    </ul>
+                </article>
+                <article class="feature-card stagger" style="--delay: 0.15s;">
+                    <h3>Placement &amp; Alignment</h3>
+                    <ul>
+                        <li>Pivot-aware bottom alignment</li>
+                        <li>Optional alignment to surface normals</li>
+                        <li>Optional spline up-vector / direction alignment</li>
+                        <li>Handles start and end spline points</li>
+                        <li>Z Offset support</li>
+                        <li>Configurable trace distances</li>
+                        <li>Supports multiple actors at once</li>
+                        <li>Supports spawned actors below Landscape</li>
+                    </ul>
+                </article>
+                <article class="feature-card stagger" style="--delay: 0.2s;">
+                    <h3>Editor Integration</h3>
+                    <ul>
+                        <li>Toolbar buttons</li>
+                        <li>Editor Preferences settings panel</li>
+                        <li>Hotkey support (command-based)</li>
+                        <li class="muted">Defaults: CTRL + Down, SHIFT + Down</li>
+                        <li>Undo / Redo via scoped transactions</li>
+                        <li>Editor-only (no runtime impact)</li>
+                        <li>World Partition &amp; HLOD safe</li>
+                        <li>Optional debug line draw + logging <span class="muted">(Log LogLandSnap Verbose)</span></li>
+                    </ul>
+                </article>
+            </div>
+        </section>
+
+        <section id="documentation" class="section">
+            <details class="doc-panel stagger" style="--delay: 0.1s;">
+                <summary>Documentation</summary>
+                <div class="doc-content">
+                    <p>Documentation will live here. This section is intentionally collapsed until the FAB listing is linked from the Studio page.</p>
+                </div>
+            </details>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-menus">
+            <ul class="footer-menu">
+                <li><a href="../home.html">Home</a></li>
+                <li><a href="../games.html">Games</a></li>
+                <li><a href="../studio.html">Studio</a></li>
+                <li><a href="../contact.html">Contact</a></li>
+            </ul>
+            <ul class="footer-menu">
+                <li><a href="https://www.epicgames.com/site/en-US/privacypolicy" target="_blank" rel="noopener noreferrer">Epic Privacy Policy</a></li>
+                <li><a href="#">Nightshift Privacy Policy</a></li>
+                <li><a href="#">Applicant Privacy Policy</a></li>
+                <li><a href="#">Site Cookie Policy</a></li>
+            </ul>
+            <ul class="footer-menu">
+                <li><a href="#">Press Kit</a></li>
+                <li><a href="#">Brand Assets</a></li>
+                <li><a href="#">Careers</a></li>
+                <li><a href="#">Community</a></li>
+            </ul>
+        </div>
+        <div class="social-bar">
+            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="social-pill">X</a>
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="social-pill">IG</a>
+            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" class="social-pill">YT</a>
+        </div>
+        <p class="footer-copyright">Copyright 2025 Nightshift. All rights reserved.</p>
+    </footer>
+</body>
+</html>
