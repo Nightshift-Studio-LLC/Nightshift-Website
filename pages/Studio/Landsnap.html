@@ -26,7 +26,7 @@
     <main class="page">
         <section class="hero">
             <div class="pill stagger" style="--delay: 0.05s;">Unreal Editor Utility</div>
-            <h1 class="stagger" style="--delay: 0.1s;">Landsnap</h1>
+            <h1 class="stagger" style="--delay: 0.1s;">LandSnap</h1>
             <p class="lead stagger" style="--delay: 0.2s;">
                 <strong>LandSnap</strong> is a lightweight Unreal Editor utility that instantly snaps and aligns selected actors and splines to Landscapes
                 <strong>or designer-defined tagged surfaces</strong>, saving time and eliminating tedious manual adjustments during level design.
@@ -44,42 +44,108 @@
 
         <section class="section">
             <div class="section-header stagger" style="--delay: 0.05s;">
-                <div class="section-kicker">🔧 What LandSnap Does</div>
+                <div class="section-kicker">At a Glance</div>
+            </div>
+            <div class="feature-grid">
+                <article class="feature-card stagger" style="--delay: 0.1s;">
+                    <h3>Editor-first</h3>
+                    <ul>
+                        <li>Editor-only utility (no runtime impact)</li>
+                        <li>Undo / Redo safe via scoped transactions</li>
+                        <li>World Partition and HLOD safe</li>
+                    </ul>
+                </article>
+                <article class="feature-card stagger" style="--delay: 0.15s;">
+                    <h3>Fast by design</h3>
+                    <ul>
+                        <li>One-click snapping for actors and splines</li>
+                        <li>Consistent, predictable placement</li>
+                        <li>Conservative defaults that avoid over-tilting</li>
+                    </ul>
+                </article>
+                <article class="feature-card stagger" style="--delay: 0.2s;">
+                    <h3>Surface control</h3>
+                    <ul>
+                        <li>Landscape or tagged surface workflows</li>
+                        <li>Allow and ignore tags for targeted placement</li>
+                        <li>Controlled stacking on valid surfaces</li>
+                    </ul>
+                </article>
+            </div>
+        </section>
+
+        <section class="section">
+            <details class="doc-panel stagger" style="--delay: 0.1s;">
+                <summary>Quick Start &amp; Snap Targets</summary>
+                <div class="doc-content">
+                    <div class="doc-block">
+                        <h4>Quick Start (30 seconds)</h4>
+                        <ol>
+                            <li>Enable the LandSnap plugin and restart the editor</li>
+                            <li>Select one or more Actors or an Actor with a Spline</li>
+                            <li>Click <strong>LandSnap</strong> or <strong>LandSnap Splines</strong> (or use hotkeys)</li>
+                            <li>Adjust Z Offset, alignment, or size presets if needed</li>
+                        </ol>
+                        <p class="muted">Fast, predictable placement without the fuss.</p>
+                    </div>
+                    <div class="doc-block">
+                        <h4>Snap Targets</h4>
+                        <p>LandSnap can snap selected items to:</p>
+                        <ul>
+                            <li>Landscapes (default)</li>
+                            <li>Tagged Actors or Components (designer-controlled)</li>
+                        </ul>
+                        <p class="muted">Supports stacking, roads-on-meshes, or placement on custom geometry.</p>
+                    </div>
+                    <div class="doc-block">
+                        <h4>Tagged Surface Snapping</h4>
+                        <ol>
+                            <li>Add a tag (e.g. <code>SnapSurface</code>) to an Actor or Component</li>
+                            <li>Open <strong>Editor Preferences -> Plugins -> LandSnap</strong></li>
+                            <li>Enable <strong>Allow Tagged Surfaces</strong> and add tags to <strong>Snap Surface Tags</strong></li>
+                            <li>Select Actors or Splines and snap as normal</li>
+                        </ol>
+                        <p class="muted">Only tagged surfaces are valid when tagged snapping is enabled.</p>
+                    </div>
+                </div>
+            </details>
+        </section>
+
+        <section class="section">
+            <div class="section-header stagger" style="--delay: 0.05s;">
+                <div class="section-kicker">What LandSnap Does</div>
             </div>
             <div class="feature-grid">
                 <article class="feature-card stagger" style="--delay: 0.1s;">
                     <h3>Snap Targets</h3>
                     <ul>
-                        <li>Snaps selected <strong>Actors</strong>, <strong>Spline Components</strong> (paths, roads, guides), and <strong>Spline Mesh Components</strong></li>
+                        <li>Snaps selected <strong>Actors</strong>, <strong>Spline Components</strong>, and <strong>Spline Mesh Components</strong></li>
                         <li>Snap to <strong>Landscape</strong> surfaces</li>
-                        <li>Snap to <strong>tagged actors or components</strong> (author-controlled surface gating)</li>
-                        <li>Supports stacking / placement on valid tagged surfaces</li>
+                        <li>Snap to <strong>tagged actors or components</strong> (designer-controlled)</li>
+                        <li>Supports stacking on valid tagged surfaces</li>
                     </ul>
                 </article>
                 <article class="feature-card stagger" style="--delay: 0.15s;">
                     <h3>Placement &amp; Alignment</h3>
                     <ul>
-                        <li>Pivot-aware bottom alignment</li>
-                        <li>Optional alignment to surface normals</li>
-                        <li>Optional spline up-vector / direction alignment</li>
-                        <li>Handles start and end spline points</li>
+                        <li>Pivot snap or bounds-bottom placement</li>
+                        <li>Optional alignment to surface normals (preserve yaw)</li>
+                        <li>Optional spline up-vector alignment</li>
+                        <li>Handles actors above or below the surface</li>
                         <li>Z Offset support</li>
-                        <li>Configurable trace distances</li>
-                        <li>Supports multiple actors at once</li>
-                        <li>Supports spawned actors below Landscape</li>
+                        <li>Configurable trace distances and collision channel</li>
+                        <li>Multi-select snapping</li>
                     </ul>
                 </article>
                 <article class="feature-card stagger" style="--delay: 0.2s;">
-                    <h3>Editor Integration</h3>
+                    <h3>Footprint &amp; Stability</h3>
                     <ul>
-                        <li>Toolbar buttons</li>
-                        <li>Editor Preferences settings panel</li>
-                        <li>Hotkey support (command-based)</li>
-                        <li class="muted">Defaults: CTRL + Down, SHIFT + Down</li>
-                        <li>Undo / Redo via scoped transactions</li>
-                        <li>Editor-only (no runtime impact)</li>
-                        <li>World Partition &amp; HLOD safe</li>
-                        <li>Optional debug line draw + logging <span class="muted">(Log LogLandSnap Verbose)</span></li>
+                        <li>Convex footprint detection with best-fit plane alignment</li>
+                        <li>Experimental concave detection modes for uneven terrain</li>
+                        <li>Rotation-aware multi-pass settling on non-convex shapes</li>
+                        <li>Bounce floater fix for lingering gaps</li>
+                        <li>Size presets with auto-bucket selection</li>
+                        <li>Debug line draw and verbose logging (LogLandSnap)</li>
                     </ul>
                 </article>
             </div>
@@ -91,33 +157,26 @@
                 <div class="doc-content">
                     <div class="doc-block">
                         <h4>1. Installation &amp; Activation</h4>
-                        <p>Copy the LandSnap plugin into your project’s <strong>Plugins/</strong> folder.</p>
-                        <p>Open Unreal Engine and go to <strong>Edit → Plugins</strong>.</p>
+                        <p>Copy the LandSnap plugin into your project&apos;s <strong>Plugins/</strong> folder.</p>
+                        <p>Open Unreal Engine and go to <strong>Edit -> Plugins</strong>.</p>
                         <p>Enable <strong>LandSnap</strong> under the Editor category.</p>
                         <p>Restart the editor when prompted.</p>
-                        <p>LandSnap is an Editor-only plugin and does not affect packaged builds.</p>
+                        <p class="muted">LandSnap is an Editor-only plugin and does not affect packaged builds.</p>
                     </div>
                     <div class="doc-block">
-                        <h4>2. User Interface &amp; Controls</h4>
-                        <h4>Toolbar Buttons</h4>
+                        <h4>2. Toolbar Buttons &amp; Hotkeys</h4>
                         <p>LandSnap adds buttons to the Level Editor toolbar:</p>
                         <ul>
                             <li class="doc-icon">
                                 <img src="../../images/landsnap/Icon40.png" alt="LandSnap icon">
-                                <strong>LandSnap</strong> — Snap selected actors to the surface below
+                                <strong>LandSnap</strong> - Snap selected actors to the surface
                             </li>
                             <li class="doc-icon">
                                 <img src="../../images/landsnap/Icon40-spline.png" alt="LandSnap Splines icon">
-                                <strong>LandSnap Splines</strong> — Snap selected spline components to the surface
+                                <strong>LandSnap Splines</strong> - Snap selected spline components to the surface
                             </li>
                         </ul>
                         <p>These buttons work on the current selection and support multi-select.</p>
-                        <h4>Menu Entries</h4>
-                        <p>You can also access the same actions from the Window menu:</p>
-                        <ul>
-                            <li><strong>Window → LandSnap</strong></li>
-                            <li><strong>Window → LandSnap Splines</strong></li>
-                        </ul>
                         <h4>Hotkeys</h4>
                         <p>Default hotkeys are provided for faster workflow:</p>
                         <ul>
@@ -133,14 +192,14 @@
                         <ul>
                             <li>Selected actors are snapped to the surface below them.</li>
                             <li>Landscapes are supported by default.</li>
-                            <li>Optional support for tagged static meshes can be enabled.</li>
+                            <li>Optional support for tagged surfaces can be enabled.</li>
                             <li>Actors can align their rotation to the surface normal.</li>
                             <li>A configurable Z Offset can be applied after snapping.</li>
                         </ul>
                         <h4>Placement Modes</h4>
                         <ul>
-                            <li><strong>Pivot Snap:</strong> Snaps the actor’s pivot directly to the surface.</li>
-                            <li><strong>Pivot-Aware Bottom:</strong> Uses the actor’s bounds to place it naturally on the surface (recommended for props).</li>
+                            <li><strong>Pivot Snap:</strong> Snaps the actor&apos;s pivot directly to the surface.</li>
+                            <li><strong>Pivot-Aware Bottom:</strong> Uses the actor&apos;s bounds to place it naturally on the surface (recommended for props).</li>
                         </ul>
                         <p>LandSnap automatically traces both downward and upward to find the closest valid surface.</p>
                         <h4>Spline Snapping</h4>
@@ -155,9 +214,9 @@
                     </div>
                     <div class="doc-block">
                         <h4>4. Settings</h4>
-                        <p>LandSnap exposes two settings panels in Editor Preferences.</p>
-                        <h4>4.1 LandSnap (Editor → Plugins → LandSnap)</h4>
-                        <p>General snapping behavior and controls.</p>
+                        <p>LandSnap exposes settings in <strong>Editor Preferences -> Plugins -> LandSnap</strong>.</p>
+                        <h4>Settings Overview</h4>
+                        <h4>Alignment</h4>
                         <div class="table-wrap">
                             <table class="doc-table">
                                 <thead>
@@ -167,25 +226,19 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr><td>Debug Logging</td><td>Enables verbose debug output</td></tr>
-                                    <tr><td>Max Slope Angle</td><td>Maximum slope allowed for normal alignment</td></tr>
-                                    <tr><td>Trace Up / Down Distance</td><td>How far LandSnap searches for surfaces</td></tr>
-                                    <tr><td>Z Offset</td><td>Vertical offset applied after snapping actors</td></tr>
-                                    <tr><td>Actor Snap Enabled</td><td>Enables actor snapping</td></tr>
-                                    <tr><td>Actor Snap Hotkey</td><td>Hotkey for actor snapping</td></tr>
-                                    <tr><td>Spline Snap Hotkey</td><td>Hotkey for spline snapping</td></tr>
-                                    <tr><td>Align to Normal</td><td>Align actor rotation to surface normal</td></tr>
-                                    <tr><td>Preserve Yaw</td><td>Keep yaw when aligning to normal</td></tr>
-                                    <tr><td>Normal Push Placement</td><td>Push placement along the surface normal. If you want straight vertical drop, disable this.</td></tr>
-                                    <tr><td>Snap Pivot to Hit</td><td>Snap pivot directly to the hit point</td></tr>
-                                    <tr><td>Pivot-Aware Bottom</td><td>Use bounds-based bottom placement</td></tr>
-                                    <tr><td>Spline Z Offset</td><td>Vertical offset for spline snapping</td></tr>
-                                    <tr><td>Align Spline Up Vector</td><td>Align spline up vectors to surface normal</td></tr>
+                                    <tr>
+                                        <td>Align to Surface Normal</td>
+                                        <td>Aligns actors to surface normals (optional preserve yaw).</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Align Spline Up Vector</td>
+                                        <td>Aligns spline up vectors to the surface normal.</td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
-                        <h4>4.2 LandSnap Surfaces (Editor → Plugins → LandSnap Surfaces)</h4>
-                        <p>Controls what surfaces are considered valid snap targets.</p>
+
+                        <h4>Placement</h4>
                         <div class="table-wrap">
                             <table class="doc-table">
                                 <thead>
@@ -195,21 +248,119 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr><td>Allow Landscape Surfaces</td><td>Enable snapping to landscapes</td></tr>
-                                    <tr><td>Allow Tagged Surfaces</td><td>Enable snapping to tagged meshes</td></tr>
-                                    <tr><td>Snap Surface Tags</td><td>Tags that mark valid snap surfaces</td></tr>
-                                    <tr><td>Allow Actor Tags</td><td>Check actor tags</td></tr>
-                                    <tr><td>Allow Component Tags</td><td>Check component tags</td></tr>
+                                    <tr>
+                                        <td>Pivot-Aware Bottom</td>
+                                        <td>Uses bounds-based bottom placement for natural contact.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Z Offset</td>
+                                        <td>Applies a vertical offset after snapping.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Trace Distance</td>
+                                        <td>Controls how far down/up traces search for a surface.</td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
+
+                        <h4>Snap Surfaces</h4>
+                        <div class="table-wrap">
+                            <table class="doc-table">
+                                <thead>
+                                    <tr>
+                                        <th>Setting</th>
+                                        <th>Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Allow Landscape Surfaces</td>
+                                        <td>Enable snapping to landscapes.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Allow Tagged Surfaces</td>
+                                        <td>Enable snapping to tagged actors or components.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Snap Surface Tags</td>
+                                        <td>Tags that mark valid snap targets.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Ignore Surface Tags</td>
+                                        <td>Tags that block specific surfaces from snapping.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Allow Actor Tags</td>
+                                        <td>Checks tags on actors for matching snap surfaces.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Allow Component Tags</td>
+                                        <td>Checks tags on hit components for matching snap surfaces.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h4>Footprint &amp; Stability</h4>
+                        <div class="table-wrap">
+                            <table class="doc-table">
+                                <thead>
+                                    <tr>
+                                        <th>Setting</th>
+                                        <th>Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Convex Detection</td>
+                                        <td>Best-fit plane alignment for convex footprints.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Concave Detection (Experimental)</td>
+                                        <td>Concave detection modes for uneven terrain.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Bounce Floater Fix</td>
+                                        <td>Second-pass correction for lingering floating gaps.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Size Presets</td>
+                                        <td>Manual or auto bucket presets by actor size.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h4>Debug</h4>
+                        <div class="table-wrap">
+                            <table class="doc-table">
+                                <thead>
+                                    <tr>
+                                        <th>Setting</th>
+                                        <th>Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Debug Line Draw</td>
+                                        <td>Draws debug traces and helpers in the viewport.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Verbose Logging</td>
+                                        <td>Enables detailed Output Log traces (LogLandSnap).</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <p class="muted">LandSnap favors tunable, size-aware placement for predictable results.</p>
                         <h4>Tagged Surface Rules</h4>
                         <p>If <strong>Allow Tagged Surfaces</strong> is enabled, a surface is considered valid when:</p>
                         <ul>
                             <li>The actor has a matching tag (Actor Tags enabled), or</li>
                             <li>The hit component has a matching tag (Component Tags enabled)</li>
                         </ul>
-                        <p>Tags do not apply automatically — they must be added by the user.</p>
+                        <p>Tags do not apply automatically - they must be added by the user.</p>
                     </div>
                     <div class="doc-block">
                         <h4>5. Logging &amp; Debugging</h4>
@@ -218,13 +369,26 @@
                         <p>When enabled, detailed information is written to the Output Log to assist with troubleshooting</p>
                         <h4>Notes &amp; Limitations</h4>
                         <ul>
-                            <li>Surfaces must have collision enabled (Visibility or WorldStatic)</li>
-                            <li>Very steep angles may require manual Z offset adjustment</li>
-                            <li>Tag-based snapping requires explicit tag setup</li>
+                            <li>Editor-only plugin (no runtime or packaged build usage)</li>
+                            <li>Performance depends on trace count and actor complexity</li>
+                            <li>Extremely large selections may take longer to process</li>
                         </ul>
                     </div>
                 </div>
             </details>
+        </section>
+
+        <section class="section">
+            <div class="section-header stagger" style="--delay: 0.05s;">
+                <div class="section-kicker">Watch LandSnap</div>
+            </div>
+            <div class="video-embed stagger" style="--delay: 0.1s;">
+                <iframe
+                    src="https://www.youtube.com/embed/3kf6S1Dcyp4"
+                    title="LandSnap overview"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowfullscreen></iframe>
+            </div>
         </section>
     </main>
 
