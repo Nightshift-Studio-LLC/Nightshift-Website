@@ -108,7 +108,7 @@ const footerMarkup = (pagePrefix) => `
             <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="social-pill">IG</a>
             <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" class="social-pill">YT</a>
         </div>
-        <p class="footer-copyright">Copyright 2025 Nightshift. All rights reserved.</p>
+        <p class="footer-copyright">Copyright 2026 Nightshift. All rights reserved.</p>
     </footer>`;
 
 const layout = ({ title, body, assetPrefix, pagePrefix }) => `
@@ -314,3 +314,4 @@ if (process.argv.includes("--watch")) {
         process.exit(1);
     });
 }
+

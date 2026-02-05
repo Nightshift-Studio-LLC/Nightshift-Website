@@ -156,7 +156,7 @@ main {
 
 .stats {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 16px;
     width: 100%;
 }
@@ -398,6 +398,30 @@ main {
     font-weight: 600;
     letter-spacing: 0.02em;
     font-size: 0.9rem;
+}
+
+.fab-thumb-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.fab-thumb-title {
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    font-size: 0.92rem;
+}
+
+.fab-thumb-tag {
+    width: fit-content;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    background: rgba(255, 138, 43, 0.2);
 }
 
 .fab-thumb:hover {
