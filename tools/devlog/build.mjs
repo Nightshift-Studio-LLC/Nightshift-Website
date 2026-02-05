@@ -5,7 +5,7 @@ import { marked } from "marked";
 
 const root = process.cwd();
 const contentDir = path.join(root, "content", "devlog");
-const outDir = path.join(root, "pages", "devLog");
+const outDir = path.join(root, "pages", "DevLog");
 const postsDir = path.join(outDir, "posts");
 
 const monthShort = (dateObj) =>
