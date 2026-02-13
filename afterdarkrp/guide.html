@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AfterDarkRP | Guide</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="../styles/footer.css">
+</head>
+<body>
+    <nav class="site-nav" aria-label="AfterDarkRP navigation">
+        <a class="nav-brand" href="../pages/home.html" aria-label="Nightshift home">
+            <img src="../images/index/nightshift-transparent.png" alt="Nightshift Logo">
+        </a>
+        <ul class="nav-list">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="rules.html">Rules</a></li>
+            <li><a href="guide.html" class="active">Guide</a></li>
+            <li class="dropdown">
+                <button type="button">More</button>
+                <div class="dropdown-menu">
+                    <a href="about.html">About</a>
+                </div>
+            </li>
+        </ul>
+    </nav>
+
+    <main>
+        <div class="content stack">
+            <section class="hero">
+                <p class="eyebrow">Player Guide</p>
+                <h1>Guide</h1>
+                <p>Quick start for the current AfterDarkRP implementation, based on the live systems in the project folder.</p>
+            </section>
+
+            <section class="section">
+                <h2>Getting Started</h2>
+                <ul class="bullets">
+                    <li>Join as <strong>Citizen</strong> by default.</li>
+                    <li>Open Player Menu with <span class="kbd">Tab</span> to switch jobs and review salary paths.</li>
+                    <li>Open Pockets with <span class="kbd">B</span> for your slot inventory view (20-slot layout).</li>
+                    <li>Track cash/job from HUD in the lower-left corner.</li>
+                </ul>
+            </section>
+
+            <section class="section">
+                <h2>Core Controls</h2>
+                <div class="grid">
+                    <article class="card">
+                        <h3>General</h3>
+                        <ul class="bullets tight">
+                            <li><span class="kbd">E</span> Use / interact</li>
+                            <li><span class="kbd">Shift</span> Run modifier</li>
+                            <li><span class="kbd">G</span> Drop</li>
+                            <li><span class="kbd">V</span> Voice</li>
+                            <li><span class="kbd">Enter</span> Chat</li>
+                        </ul>
+                    </article>
+                    <article class="card">
+                        <h3>Menu + UI</h3>
+                        <ul class="bullets tight">
+                            <li><span class="kbd">Tab</span> Toggle Player Menu</li>
+                            <li><span class="kbd">B</span> Toggle Pockets</li>
+                            <li><span class="kbd">Esc</span> Close ATM/Crime panel</li>
+                            <li><span class="kbd">1-0</span> Inventory slot keys</li>
+                        </ul>
+                    </article>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>Money and Banking</h2>
+                <ul class="bullets">
+                    <li>Use ATM with <span class="kbd">E</span> while looking at an ATM.</li>
+                    <li>Withdraw/deposit amounts from the ATM panel presets or typed value.</li>
+                    <li>Bank is persistent; pocket cash can be dropped or lost on death.</li>
+                    <li>On death, current pocket cash becomes a nearby money bag pickup.</li>
+                </ul>
+            </section>
+
+            <section class="section">
+                <h2>Crime Terminal</h2>
+                <ul class="bullets">
+                    <li>Use <span class="kbd">E</span> on a crime terminal to open records.</li>
+                    <li>View wanted level, active charges, and outstanding fines.</li>
+                    <li>Pay custom amount or use Pay All Fines directly from the panel.</li>
+                </ul>
+            </section>
+
+            <section class="section">
+                <h2>Police Workflow (Current Build)</h2>
+                <ul class="bullets">
+                    <li><span class="kbd">Mouse1</span> applies police taze while aiming at a target player.</li>
+                    <li><span class="kbd">E</span> arrests a stunned target.</li>
+                    <li><span class="kbd">1</span> resolves detainee as charge/release.</li>
+                    <li><span class="kbd">2</span> sends detainee to prison with sentence from charge count.</li>
+                </ul>
+                <p class="meta">These are current interaction bindings from `NSDarkRPStatusInteractionSystem` and may change as weapon/loadout integration is finalized.</p>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-menus">
+            <ul class="footer-menu">
+                <li><a href="../pages/home.html">Home</a></li>
+                <li><a href="../pages/games.html">Games</a></li>
+                <li><a href="../pages/studio.html">Studio</a></li>
+                <li><a href="../pages/contact.html">Contact</a></li>
+            </ul>
+            <ul class="footer-menu">
+                <li><a href="#">Nightshift Privacy Policy</a></li>
+                <li><a href="#">Applicant Privacy Policy</a></li>
+                <li><a href="#">Website Cookie Policy</a></li>
+                <li><a href="https://www.epicgames.com/site/en-US/privacypolicy" target="_blank" rel="noopener noreferrer">Epic Privacy Policy</a></li>
+            </ul>
+            <ul class="footer-menu">
+                <li><a href="#">Press Kit</a></li>
+                <li><a href="#">Brand Assets</a></li>
+                <li><a href="#">Careers</a></li>
+                <li><a href="#">Community</a></li>
+            </ul>
+        </div>
+        <div class="social-bar">
+            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="social-pill">X</a>
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="social-pill">IG</a>
+            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" class="social-pill">YT</a>
+        </div>
+        <p class="footer-copyright">Copyright 2026 Nightshift. All rights reserved.</p>
+    </footer>
+</body>
+</html>

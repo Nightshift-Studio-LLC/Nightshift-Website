@@ -1,0 +1,157 @@
+:root {
+    color-scheme: dark;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    background: #000;
+    color: #fff;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    min-height: 100vh;
+}
+
+.site-nav {
+    width: 100%;
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #1a1a1a;
+}
+
+.nav-brand {
+    display: inline-flex;
+    align-items: center;
+}
+
+.nav-brand img {
+    height: 52px;
+    width: auto;
+    display: block;
+    opacity: 0.9;
+}
+
+.nav-brand img:hover {
+    opacity: 1;
+}
+
+.nav-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    gap: 24px;
+    align-items: center;
+}
+
+.nav-list a,
+.nav-list button {
+    color: #fff;
+    background: transparent;
+    border: 0;
+    text-decoration: none;
+    font-size: 0.95rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    opacity: 0.78;
+    cursor: pointer;
+    padding: 6px 0;
+}
+
+.nav-list a:hover,
+.nav-list button:hover,
+.nav-list a.active,
+.nav-list button.active {
+    opacity: 1;
+}
+
+.dropdown {
+    position: relative;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    min-width: 150px;
+    background: #0c0c0c;
+    border: 1px solid #2b2b2b;
+    border-radius: 6px;
+    padding: 8px;
+    display: none;
+}
+
+.dropdown-menu a {
+    display: block;
+    padding: 8px 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-size: 0.85rem;
+}
+
+.dropdown:hover .dropdown-menu,
+.dropdown:focus-within .dropdown-menu {
+    display: block;
+}
+
+main {
+    min-height: calc(100vh - 74px);
+    display: grid;
+    place-items: center;
+    text-align: center;
+    padding: 24px;
+}
+
+.content {
+    max-width: 780px;
+}
+
+h1 {
+    margin: 0 0 14px;
+    font-size: clamp(2rem, 5vw, 3.25rem);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+p {
+    margin: 0;
+    font-size: clamp(1rem, 2.1vw, 1.25rem);
+    line-height: 1.6;
+    opacity: 0.9;
+}
+
+.stack {
+    display: grid;
+    gap: 12px;
+}
+
+@media (max-width: 640px) {
+    .site-nav {
+        padding: 16px 14px;
+        gap: 12px;
+    }
+
+    .nav-list {
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 12px;
+    }
+
+    .nav-list a,
+    .nav-list button {
+        font-size: 0.82rem;
+    }
+
+    .nav-brand img {
+        height: 44px;
+        width: auto;
+    }
+}
