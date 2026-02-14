@@ -5,6 +5,7 @@
     --accent: #ffffff;
     --stroke: rgba(255, 255, 255, 0.2);
     --font-body: Arial, sans-serif;
+    --nav-height: 100px;
 }
 
 * {
@@ -23,24 +24,32 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    padding-top: var(--nav-height);
 }
 
 .site-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
     width: 100%;
     padding: 20px 24px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     border-bottom: 1px solid #1a1a1a;
+    background: rgba(0, 0, 0, 0.96);
 }
 
 .nav-brand {
     display: inline-flex;
     align-items: center;
+    gap: 10px;
 }
 
 .nav-brand img {
-    height: 52px;
+    height: 60px;
     width: auto;
     display: block;
     opacity: 0.9;
@@ -48,6 +57,21 @@ body {
 
 .nav-brand img:hover {
     opacity: 1;
+}
+
+.alpha-logo {
+    height: 42px;
+    width: auto;
+    display: block;
+    object-fit: contain;
+}
+
+.hero-alpha {
+    margin: 4px auto 10px;
+    display: block;
+    height: 122px;
+    width: auto;
+    object-fit: contain;
 }
 
 .nav-list {
@@ -150,7 +174,7 @@ p {
 }
 
 .eyebrow {
-    margin: 0 0 8px;
+    margin: 6px 0 0;
     letter-spacing: 0.08em;
     text-transform: uppercase;
     font-size: 0.85rem;
@@ -232,7 +256,55 @@ p {
     opacity: 0.82;
 }
 
+.hero-tagline {
+    text-transform: none;
+    letter-spacing: 0.01em;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.sbox-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    transform-style: preserve-3d;
+    will-change: transform;
+    transition: transform 0.2s ease;
+}
+
+.sbox-btn img {
+    height: 24px;
+    width: auto;
+    display: block;
+}
+
+.tilt-mirror:hover,
+.tilt-mirror:focus-visible {
+    animation: sboxTiltSimple 850ms ease-in-out infinite alternate;
+    outline: none;
+}
+
+@keyframes sboxTiltSimple {
+    0% {
+        transform: perspective(700px) rotateY(-12deg);
+    }
+    100% {
+        transform: perspective(700px) rotateY(12deg);
+    }
+}
+
 @media (max-width: 640px) {
+    :root {
+        --nav-height: 92px;
+    }
+
     .site-nav {
         padding: 16px 14px;
         gap: 12px;
@@ -250,8 +322,24 @@ p {
     }
 
     .nav-brand img {
-        height: 44px;
+        height: 48px;
         width: auto;
+    }
+
+    .alpha-logo {
+        height: 32px;
+    }
+
+    .hero-alpha {
+        height: 80px;
+    }
+
+    .hero-tagline {
+        gap: 8px;
+    }
+
+    .sbox-btn img {
+        height: 21px;
     }
 
     main {

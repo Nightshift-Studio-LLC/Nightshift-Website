@@ -79,3 +79,71 @@
         grid-template-columns: 1fr;
     }
 }
+
+.server-hosting {
+    padding: 6px 0 80px;
+}
+
+.hosting-grid {
+    margin-top: 18px;
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 24px;
+}
+
+.hosting-card {
+    border-radius: 20px;
+    border: 1px solid rgba(255, 138, 43, 0.45);
+    overflow: hidden;
+    background:
+        radial-gradient(circle at 15% 15%, rgba(255, 138, 43, 0.18), transparent 45%),
+        rgba(10, 12, 20, 0.78);
+    box-shadow: 0 20px 40px rgba(5, 8, 20, 0.45);
+    display: block;
+    text-decoration: none;
+    color: var(--ink);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.hosting-card img {
+    width: 100%;
+    max-height: 220px;
+    object-fit: contain;
+    background: rgba(8, 10, 18, 0.9);
+    display: block;
+    border-bottom: 1px solid rgba(255, 138, 43, 0.25);
+}
+
+.hosting-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(255, 138, 43, 0.8);
+    box-shadow: 0 28px 56px rgba(5, 8, 20, 0.6);
+}
+
+.hosting-card-content {
+    padding: 24px;
+    display: grid;
+    gap: 12px;
+}
+
+.hosting-badge {
+    justify-self: start;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid rgba(255, 138, 43, 0.6);
+    background: rgba(8, 10, 18, 0.68);
+}
+
+.hosting-card h3 {
+    margin: 0;
+    font-size: 1.35rem;
+}
+
+.hosting-card p {
+    margin: 0;
+    color: var(--muted);
+}

@@ -11,6 +11,7 @@
     <nav class="site-nav" aria-label="AfterDarkRP navigation">
         <a class="nav-brand" href="../pages/home.html" aria-label="Nightshift home">
             <img src="../images/index/nightshift-transparent.png" alt="Nightshift Logo">
+            <img class="alpha-logo" src="../images/afterdarkrp/afterdarkRP-alpha.png" alt="AfterDarkRP Alpha">
         </a>
         <ul class="nav-list">
             <li><a href="index.html" class="active">Home</a></li>
@@ -28,35 +29,22 @@
     <main>
         <div class="content stack">
             <section class="hero">
-                <p class="eyebrow">Nightshift Sandbox DarkRP</p>
-                <h1>AfterDarkRP</h1>
-                <p>Systems-first DarkRP built in s&box. Current implementation includes jobs, wallet + banking, wanted/fine records, police detention flow, prison/courthouse teleports, and custom UI panels.</p>
+                <img class="hero-alpha" src="../images/afterdarkrp/afterdarkRP-alpha-large.png" alt="AfterDarkRP Alpha">
+                <p class="eyebrow hero-tagline">
+                    <span>Nightshift's DarkRP for</span>
+                    <a class="sbox-btn tilt-mirror" href="https://sbox.game/" target="_blank" rel="noopener noreferrer" aria-label="Visit s&box">
+                        <img src="../images/ServerHosting/Sandbox/S&box_logo.png" alt="s&box">
+                    </a>
+                </p>
             </section>
 
             <section class="section">
-                <h2>Current Build Status</h2>
-                <div class="grid">
-                    <article class="card">
-                        <h3>Implemented</h3>
-                        <ul class="bullets">
-                            <li>Authoritative wallet with cash, bank persistence, payday cycle, and payment history.</li>
-                            <li>ATM interaction + panel (withdraw, deposit, deposit max).</li>
-                            <li>Crime terminal (wanted level, active charges, fine payment).</li>
-                            <li>Police taze, stun, arrest, detain decision, prison sentence timing.</li>
-                            <li>Justice spawn markers for courthouse/prison teleports.</li>
-                            <li>Death cash drops into pickup money bags.</li>
-                        </ul>
-                    </article>
-                    <article class="card">
-                        <h3>In Progress</h3>
-                        <ul class="bullets">
-                            <li>Final loadout and weapon grant wiring for custom utility weapons.</li>
-                            <li>Completion pass on entities and player permissions.</li>
-                            <li>Final balancing of taze application and criminal economy loops.</li>
-                        </ul>
-                    </article>
+                <div class="changelog-header">
+                    <h2>Changelog</h2>
+                    <a class="changelog-link" href="changelog.html">View full archive</a>
                 </div>
-                <p class="meta">Source: `darkrp_ns` code + docs snapshot from February 2026.</p>
+                <p class="subtle">Latest three updates. Older entries are archived in the full changelog.</p>
+                <div id="changelog-latest" class="changelog-list"></div>
             </section>
 
             <section class="section">
@@ -129,5 +117,6 @@
         </div>
         <p class="footer-copyright">Copyright 2026 Nightshift. All rights reserved.</p>
     </footer>
+    <script src="changelog.js"></script>
 </body>
 </html>

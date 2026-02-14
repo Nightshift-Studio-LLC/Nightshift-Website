@@ -72,9 +72,6 @@ const navMarkup = (pagePrefix) => `
                     <a href="${pagePrefix}/games/spear.html">Codename SPEAR</a>
                     <a href="${pagePrefix}/games/elder.html">Codename ELDER</a>
                     <a href="${pagePrefix}/games/saint.html">Codename SAINT</a>
-                    <a href="${pagePrefix}/games/hair.html">Codename HAIR</a>
-                    <a href="${pagePrefix}/games/barn.html">Codename BARN</a>
-                    <a href="${pagePrefix}/games/hook.html">Codename HOOK</a>
                 </div>
             </div>
             <a href="${pagePrefix}/studio.html" class="hover-sound">studio</a>
