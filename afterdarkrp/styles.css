@@ -106,11 +106,13 @@ body {
 
 .dropdown {
     position: relative;
+    padding-bottom: 10px;
+    margin-bottom: -10px;
 }
 
 .dropdown-menu {
     position: absolute;
-    top: calc(100% + 10px);
+    top: 100%;
     right: 0;
     min-width: 150px;
     background: #0c0c0c;
