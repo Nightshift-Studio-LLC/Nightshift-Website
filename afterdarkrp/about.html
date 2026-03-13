@@ -20,6 +20,7 @@
             <li class="dropdown">
                 <button type="button" class="active">More</button>
                 <div class="dropdown-menu">
+                    <a href="devlog.html">Devlog</a>
                     <a href="about.html" class="active">About</a>
                 </div>
             </li>
@@ -31,7 +32,7 @@
             <section class="hero">
                 <p class="eyebrow">About The Project</p>
                 <h1>About</h1>
-                <p>AfterDarkRP is Nightshift's sandbox roleplay server stack. This site content reflects the current project in `D:\Nightshift\ServerHosting\darkrp_ns`.</p>
+                <p>AfterDarkRP is Nightshift's sandbox roleplay server stack. This site content reflects the current internal development build.</p>
             </section>
 
             <section class="section">
@@ -40,7 +41,7 @@
                     <article class="card">
                         <h3>Engine + Stack</h3>
                         <ul class="bullets tight">
-                            <li>s&box project (`darkrp_ns.sbproj`)</li>
+                            <li>s&box project setup</li>
                             <li>C# gameplay systems</li>
                             <li>Razor-based in-game UI panels</li>
                             <li>Scene/prefab-driven world entities</li>
@@ -64,6 +65,9 @@
                 <ul class="bullets">
                     <li>HUD includes health ring, taze ring, cash, and current job.</li>
                     <li>Player Menu tabs: Wallet, Jobs, Entities, Players, Settings.</li>
+                    <li>Entities are grouped into Civil, Government, and Criminal categories.</li>
+                    <li>Government jobs do not see Civil/Criminal economy entities in the Entities tab.</li>
+                    <li>Gun entities/shipments are restricted to the Gun Dealer job only.</li>
                     <li>Player Pockets panel currently exposes 20 inventory slots.</li>
                     <li>ATM and Crime Terminal run as dedicated focused panels.</li>
                 </ul>
@@ -74,7 +78,7 @@
                 <ul class="bullets">
                     <li>Finalize job loadout assignment with custom tools (PhysGun/ToolGun scaffolds).</li>
                     <li>Expand police/criminal balancing around taze values and sentence pacing.</li>
-                    <li>Promote placeholder entity tab items to fully networked gameplay entities.</li>
+                    <li>Complete entity tab filtering so category visibility and job restrictions are enforced server-side.</li>
                     <li>Ship additional map interactions around courthouse/prison spawn markers.</li>
                 </ul>
                 <p class="meta">Last synced to source tree state: February 13, 2026.</p>

@@ -20,6 +20,7 @@
             <li class="dropdown">
                 <button type="button">More</button>
                 <div class="dropdown-menu">
+                    <a href="devlog.html">Devlog</a>
                     <a href="about.html">About</a>
                 </div>
             </li>
@@ -39,52 +40,48 @@
             </section>
 
             <section class="section">
-                <div class="changelog-header">
-                    <h2>Changelog</h2>
-                    <a class="changelog-link" href="changelog.html">View full archive</a>
-                </div>
-                <p class="subtle">Latest three updates. Older entries are archived in the full changelog.</p>
-                <div id="changelog-latest" class="changelog-list"></div>
+                <h2>Server Summary</h2>
+                <p>AfterDarkRP is Nightshift's custom DarkRP stack for s&box, focused on structured roleplay loops, a server-authoritative economy, and readable in-game systems.</p>
+                <p class="meta">Build source: internal development branch.</p>
             </section>
 
             <section class="section">
-                <h2>Job Roster (Current Catalog)</h2>
+                <h2>Current Focus</h2>
                 <div class="grid">
                     <article class="card">
-                        <h3>Civil</h3>
-                        <ul class="bullets tight">
-                            <li>Citizen - salary 45</li>
-                            <li>Trash Collector - salary 70</li>
-                            <li>Delivery Driver - salary 85</li>
+                        <h3>Core Systems</h3>
+                        <ul class="bullets">
+                            <li>Wallet, bank persistence, payday cadence, and payment history are active.</li>
+                            <li>Police and justice flow supports taze, detain/arrest, and prison timing.</li>
+                            <li>Crime status and fines are accessible through in-world terminal interactions.</li>
                         </ul>
                     </article>
                     <article class="card">
-                        <h3>Government</h3>
-                        <ul class="bullets tight">
-                            <li>Police - salary 110</li>
-                            <li>Mayor - salary 140</li>
-                            <li>Bodyguard - salary 95</li>
+                        <h3>Economy and Entities</h3>
+                        <ul class="bullets">
+                            <li>Door ownership/sign logic supports single, sliding, and double doors.</li>
+                            <li>Money printer and weapon shipment loops are wired and actively tuned.</li>
+                            <li>Pocket inventory and loadout routing include `ns_fists` default setup.</li>
                         </ul>
                     </article>
                     <article class="card">
-                        <h3>Criminal</h3>
-                        <ul class="bullets tight">
-                            <li>Thief - salary 120</li>
-                            <li>Mugger - salary 125</li>
-                            <li>Weed Grower - salary 130</li>
-                            <li>Car Thief - salary 135</li>
+                        <h3>Role Progression</h3>
+                        <ul class="bullets">
+                            <li>Civil, Government, and Criminal catalogs are populated with salary balancing.</li>
+                            <li>Mayor and SWAT paths use vote-gated progression.</li>
+                            <li>Gang roles and mugger loaded-wallet gameplay are active.</li>
                         </ul>
                     </article>
                     <article class="card">
-                        <h3>Core Economy Defaults</h3>
-                        <ul class="bullets tight">
-                            <li>Starting cash: 0</li>
-                            <li>Starting bank: 2,500</li>
-                            <li>Payday interval: 10 seconds</li>
-                            <li>Loaded wallet threshold: 1,500 pocket cash</li>
+                        <h3>Detailed Notes</h3>
+                        <ul class="bullets">
+                            <li>Full milestone detail moved to the Devlog page.</li>
+                            <li>Patch-by-patch history remains in Changelog archive.</li>
+                            <li>Use Guide for controls and Rules for policy baseline.</li>
                         </ul>
                     </article>
                 </div>
+                <p class="meta">For exact implementation details, open <a href="devlog.html">Devlog</a>.</p>
             </section>
         </div>
     </main>
@@ -117,6 +114,5 @@
         </div>
         <p class="footer-copyright">Copyright 2026 Nightshift. All rights reserved.</p>
     </footer>
-    <script src="changelog.js"></script>
 </body>
 </html>

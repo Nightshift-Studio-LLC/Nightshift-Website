@@ -17,6 +17,28 @@ const formatDate = (dateObj) => {
     return `${monthShort(dateObj)} ${day}, ${year}`;
 };
 
+const parseFrontmatterDate = (value, file) => {
+    if (value instanceof Date) {
+        return new Date(
+            value.getUTCFullYear(),
+            value.getUTCMonth(),
+            value.getUTCDate()
+        );
+    }
+
+    if (typeof value !== "string") {
+        throw new Error(`Invalid date in ${file}: ${value}`);
+    }
+
+    const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
+    if (!match) {
+        throw new Error(`Invalid date in ${file}: ${value}`);
+    }
+
+    const [, year, month, day] = match;
+    return new Date(Number(year), Number(month) - 1, Number(day));
+};
+
 const ensureDir = async (dir) => {
     await fs.mkdir(dir, { recursive: true });
 };
@@ -42,7 +64,7 @@ const readPosts = async () => {
         }
 
         const slug = path.basename(file, ".md");
-        const dateObj = new Date(data.date);
+        const dateObj = parseFrontmatterDate(data.date, file);
         if (Number.isNaN(dateObj.getTime())) {
             throw new Error(`Invalid date in ${file}: ${data.date}`);
         }

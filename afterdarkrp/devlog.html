@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AfterDarkRP | Devlog</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="../styles/footer.css">
+</head>
+<body>
+    <nav class="site-nav" aria-label="AfterDarkRP navigation">
+        <a class="nav-brand" href="../pages/home.html" aria-label="Nightshift home">
+            <img src="../images/index/nightshift-transparent.png" alt="Nightshift Logo">
+            <img class="alpha-logo" src="../images/afterdarkrp/afterdarkRP-alpha.png" alt="AfterDarkRP Alpha">
+        </a>
+        <ul class="nav-list">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="rules.html">Rules</a></li>
+            <li><a href="guide.html">Guide</a></li>
+            <li class="dropdown">
+                <button type="button" class="active">More</button>
+                <div class="dropdown-menu">
+                    <a href="devlog.html" class="active">Devlog</a>
+                    <a href="about.html">About</a>
+                </div>
+            </li>
+        </ul>
+    </nav>
+
+    <main>
+        <div class="content stack">
+            <section class="hero">
+                <p class="eyebrow">Development Log</p>
+                <h1>Devlog</h1>
+                <p>Detailed implementation snapshot for the current development build.</p>
+            </section>
+
+            <section class="section">
+                <h2>Current Build Status</h2>
+                <div class="grid">
+                    <article class="card">
+                        <h3>Implemented</h3>
+                        <ul class="bullets">
+                            <li>Authoritative wallet with cash, bank persistence, payday cycle, and payment history.</li>
+                            <li>ATM interaction + panel (withdraw, deposit, deposit max).</li>
+                            <li>Crime terminal (wanted level, active charges, fine payment) plus mayor and SWAT vote flow.</li>
+                            <li>Police taze, stun, arrest, detain decision, prison sentence timing.</li>
+                            <li>Justice spawn markers for courthouse/prison teleports.</li>
+                            <li>Death cash drops into pickup money bags.</li>
+                            <li>Weapon shipment flow + pocket inventory integration and `ns_fists` default loadout wiring.</li>
+                            <li>Door ownership/sign logic with single, sliding, and double door prefabs.</li>
+                            <li>Money printer host logic + latest physics stability patch.</li>
+                        </ul>
+                    </article>
+                    <article class="card">
+                        <h3>Active Polish</h3>
+                        <ul class="bullets">
+                            <li>Door interaction polish after the February 16, 2026 open-away-from-player updates.</li>
+                            <li>Economy and entity tuning for printer/shipment risk-reward pacing.</li>
+                            <li>UI cleanup and milestone hardening passes across the root panel and scene wiring.</li>
+                        </ul>
+                    </article>
+                </div>
+                <p class="meta">Source: internal build notes (February 2026).</p>
+            </section>
+
+            <section class="section">
+                <h2>Job Roster (Current Catalog)</h2>
+                <div class="grid">
+                    <article class="card">
+                        <h3>Civil</h3>
+                        <ul class="bullets tight">
+                            <li>Citizen - salary 20</li>
+                            <li>Testing/Dev Job (empty loadout) - salary 20</li>
+                            <li>Trash Collector - salary 15</li>
+                            <li>Delivery Worker - salary 22</li>
+                            <li>Business Owner - salary 40 (max 5)</li>
+                            <li>Smoothie Vendor - salary 28 (max 3)</li>
+                            <li>Gun Dealer - salary 45 (max 4)</li>
+                        </ul>
+                    </article>
+                    <article class="card">
+                        <h3>Government</h3>
+                        <ul class="bullets tight">
+                            <li>Cadet - salary 35 (max 6)</li>
+                            <li>Police - salary 45 (max 10)</li>
+                            <li>SWAT - salary 58 (max 8, vote required)</li>
+                            <li>Mayor - salary 65 (max 1, vote required)</li>
+                            <li>Bodyguard - salary 38</li>
+                        </ul>
+                    </article>
+                    <article class="card">
+                        <h3>Criminal</h3>
+                        <ul class="bullets tight">
+                            <li>Thief - salary 50</li>
+                            <li>Mugger - salary 52</li>
+                            <li>Red Gang - salary 54 (max 8)</li>
+                            <li>Green Gang - salary 54 (max 8)</li>
+                            <li>Blue Gang - salary 54 (max 8)</li>
+                            <li>Purple Gang - salary 54 (max 8)</li>
+                            <li>Weed Grower - salary 55</li>
+                        </ul>
+                    </article>
+                    <article class="card">
+                        <h3>Core Economy Defaults</h3>
+                        <ul class="bullets tight">
+                            <li>Starting cash: 0</li>
+                            <li>Starting bank: 2,500</li>
+                            <li>Payday interval: 10 seconds</li>
+                            <li>Loaded wallet threshold: 1,500 pocket cash</li>
+                        </ul>
+                    </article>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>Patch History</h2>
+                <p>For rolling entry-by-entry notes, open the <a href="changelog.html">Changelog archive</a>.</p>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-menus">
+            <ul class="footer-menu">
+                <li><a href="../pages/home.html">Home</a></li>
+                <li><a href="../pages/games.html">Games</a></li>
+                <li><a href="../pages/studio.html">Studio</a></li>
+                <li><a href="../pages/contact.html">Contact</a></li>
+            </ul>
+            <ul class="footer-menu">
+                <li><a href="#">Nightshift Privacy Policy</a></li>
+                <li><a href="#">Applicant Privacy Policy</a></li>
+                <li><a href="#">Website Cookie Policy</a></li>
+                <li><a href="https://www.epicgames.com/site/en-US/privacypolicy" target="_blank" rel="noopener noreferrer">Epic Privacy Policy</a></li>
+            </ul>
+            <ul class="footer-menu">
+                <li><a href="#">Press Kit</a></li>
+                <li><a href="#">Brand Assets</a></li>
+                <li><a href="#">Careers</a></li>
+                <li><a href="#">Community</a></li>
+            </ul>
+        </div>
+        <div class="social-bar">
+            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="social-pill">X</a>
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="social-pill">IG</a>
+            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" class="social-pill">YT</a>
+        </div>
+        <p class="footer-copyright">Copyright 2026 Nightshift. All rights reserved.</p>
+    </footer>
+</body>
+</html>

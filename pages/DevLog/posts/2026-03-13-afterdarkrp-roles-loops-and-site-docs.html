@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nightshift | AfterDarkRP sandbox progress and the pre-April launch push</title>
+    <title>Nightshift | AfterDarkRP roles, economy loops, and docs split since the last milestone</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -43,53 +43,65 @@
     <main>
         <section class="page-hero section reveal">
             <div class="eyebrow">Devlog</div>
-            <h1>AfterDarkRP sandbox progress and the pre-April launch push</h1>
-            <p>We are locking the core DarkRP systems and moving fast to launch before the April s&box release window.</p>
+            <h1>AfterDarkRP roles, economy loops, and docs split since the last milestone</h1>
+            <p>Since the February 13, 2026 launch-push post, AfterDarkRP has expanded its live role roster, tightened economy interactions, and split the public site into clearer guide, changelog, and devlog surfaces.</p>
             <div class="hero-actions">
                 <a class="cta-btn ghost hover-sound" href="../index.html">Back to devlog</a>
             </div>
-            <div class="tag-row"><span class="tag">DarkRP</span><span class="tag">Sandbox</span><span class="tag">Launch</span><span class="tag">Systems</span></div>
-            <div class="media-frame devlog-hero"><img src="../../images/afterdarkrp/afterdarkRP-alpha-large.png" alt="AfterDarkRP sandbox progress and the pre-April launch push"></div>
+            <div class="tag-row"><span class="tag">DarkRP</span><span class="tag">Sandbox</span><span class="tag">Economy</span><span class="tag">Jobs</span><span class="tag">UI</span></div>
+            <div class="media-frame devlog-hero"><img src="../../images/afterdarkrp/afterdarkRP-alpha-large.png" alt="AfterDarkRP roles, economy loops, and docs split since the last milestone"></div>
         </section>
 
         <section class="section reveal delay-1">
             <div class="surface">
                 <ul class="list">
                     <li>Project: AfterDarkRP</li>
-                    <li>Date: FEB 13, 2026</li>
+                    <li>Date: MAR 13, 2026</li>
                 </ul>
             </div>
         </section>
 
         <section class="section reveal delay-2">
             <div class="surface devlog-post-body">
-                <h2>Current progress snapshot</h2>
-<p>AfterDarkRP has moved from placeholder planning to a real playable systems stack. The current build has:</p>
+                <h2>What changed after the February 13 post</h2>
+<p>The last dev post on <strong>February 13, 2026</strong> focused on freezing scope for a pre-April launch push. Since then, the project snapshot has moved from broad MVP goals to a more concrete playable stack with clearer public-facing documentation.</p>
+<p>The biggest shift is that the AfterDarkRP site is no longer trying to present everything from one landing page. The public pages now split responsibilities more cleanly:</p>
 <ul>
-<li>Job catalog flow across Civil, Government, and Criminal roles.</li>
-<li>Wallet and bank economy with persistence, payday timing, and payment history.</li>
-<li>ATM and crime terminal interactions for daily city loop gameplay.</li>
-<li>Police status pipeline: taze, stun, arrest, detain decision, and prison sentence timing.</li>
-<li>Justice spawn markers for courthouse and prison routing.</li>
+<li>Home summarizes the current server focus.</li>
+<li>Devlog carries the deeper milestone snapshot.</li>
+<li>Changelog holds shorter patch-style history.</li>
+<li>Guide and Rules are positioned as player-facing references instead of internal notes.</li>
 </ul>
-<p>This gives us a working foundation for roleplay pressure, law enforcement response, and progression pacing.</p>
-<h2>Launch timing and urgency</h2>
-<p>We are in a deliberate rush to launch before the April s&amp;box release window. The goal is simple: arrive early with a stable core loop, then iterate live instead of waiting for a perfect first draft.</p>
-<p>That means current work is focused on:</p>
+<h2>Systems that are now clearer and more playable</h2>
+<p>The roleplay loop has filled in around the core economy and justice systems that were already live in mid-February.</p>
 <ul>
-<li>Stabilizing the police/criminal interaction loop under real player stress.</li>
-<li>Finishing loadout wiring for utility weapons and job-based role identity.</li>
-<li>Cleaning onboarding/UI clarity so first-session retention is higher.</li>
+<li>Door ownership and sign logic now cover single, sliding, and double-door setups.</li>
+<li>Weapon shipment and money printer loops are part of the current economy tuning pass.</li>
+<li>Pocket inventory and loadout flow now include the default <code>ns_fists</code> setup.</li>
+<li>Mayor and SWAT progression is treated as vote-gated instead of a flat roster pick.</li>
 </ul>
-<h2>What ships next</h2>
-<p>Before launch, we are targeting a minimum viable live package:</p>
+<p>That matters because the server is starting to look less like a systems demo and more like a usable rule set for real player behavior. The economy now has stronger reasons to move between banking, ownership, criminal pressure, and police response.</p>
+<h2>Roster expansion and role clarity</h2>
+<p>The job catalog has also expanded beyond the earlier high-level Civil, Government, and Criminal examples.</p>
+<p>Current public-facing snapshots now show:</p>
 <ul>
-<li>Reliable economy cycle with controlled inflation pressure.</li>
-<li>Predictable justice flow from arrest to release.</li>
-<li>Clear job choices with meaningful risk/reward differences.</li>
-<li>Server-facing documentation and rules that match implemented behavior.</li>
+<li>Civil roles like Business Owner, Smoothie Vendor, and Gun Dealer.</li>
+<li>Government progression from Cadet to Police, SWAT, Mayor, and Bodyguard.</li>
+<li>Criminal paths including Thief, Mugger, gang roles, and Weed Grower.</li>
 </ul>
-<p>After that first release, updates will move quickly based on player behavior and telemetry.</p>
+<p>This is a more useful milestone than just adding names to a menu. It makes balancing visible: salary spacing, role caps, vote requirements, and category identity are all now part of the design language players will actually see.</p>
+<h2>Documentation is now part of the product</h2>
+<p>Another real change since the last post is tone and structure. The site copy has been cleaned up to reference an internal development build instead of raw local project paths, and the documentation is being written like something players can use.</p>
+<p>That is small on paper but important for launch readiness. If the build is going public early, the rules, guide, changelog, and devlog all need to describe the same server honestly. This pass gets the project closer to that standard.</p>
+<h2>What comes next</h2>
+<p>The next obvious pressure points are polish rather than discovery:</p>
+<ul>
+<li>finish door interaction polish,</li>
+<li>keep tuning shipment and printer risk/reward,</li>
+<li>harden UI and root panel flow,</li>
+<li>and keep the police/criminal loop readable under live player stress.</li>
+</ul>
+<p>The project is still moving fast, but the difference from the February 13 milestone is that more of the stack is now visible, categorized, and explainable. That is usually the point where a prototype starts turning into a server.</p>
 
             </div>
         </section>
