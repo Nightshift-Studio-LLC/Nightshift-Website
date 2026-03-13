@@ -249,6 +249,14 @@ p {
     margin-top: 10px;
 }
 
+.section-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
 .grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -260,6 +268,46 @@ p {
     border-radius: 8px;
     background: #050505;
     padding: 14px;
+}
+
+.devlog-list {
+    display: grid;
+    gap: 14px;
+}
+
+.devlog-entry {
+    border: 1px solid #222;
+    border-radius: 8px;
+    background: #050505;
+    padding: 16px;
+}
+
+.entry-meta {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+    font-size: 0.82rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    opacity: 0.72;
+}
+
+.entry-link {
+    display: inline-flex;
+    align-items: center;
+    margin-top: 14px;
+    color: #fff;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 0.86rem;
+    opacity: 0.9;
+}
+
+.entry-link:hover,
+.entry-link:focus-visible {
+    opacity: 1;
 }
 
 .bullets {

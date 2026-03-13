@@ -1,0 +1,210 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nightshift | AfterDarkRP systems expansion and the first map-focus districts</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../../../styles/header.css">
+    <link rel="stylesheet" href="../../../styles/footer.css">
+    <link rel="stylesheet" href="../../../styles/default-page.css">
+    <link rel="stylesheet" href="../../../styles/devlog.css">
+    <link rel="icon" type="image/x-icon" href="../../../images/icons/nightshift.ico">
+</head>
+
+<body>
+    <div class="header">
+        <a href="../../home.html" class="hover-sound">
+            <img src="../../../images/index/nightshift-transparent.png" alt="Nightshift Logo">
+        </a>
+
+        <nav class="nav-links">
+            <a href="../../home.html" class="hover-sound">home</a>
+            <div class="nav-item dropdown">
+                <a href="../../games.html" class="hover-sound">games</a>
+                <div class="dropdown-menu">
+                    <a href="../../games/spear.html">Codename SPEAR</a>
+                    <a href="../../games/elder.html">Codename ELDER</a>
+                    <a href="../../games/saint.html">Codename SAINT</a>
+                </div>
+            </div>
+            <a href="../../studio.html" class="hover-sound">studio</a>
+            <a href="../../contact.html" class="hover-sound">contact</a>
+        </nav>
+    </div>
+    <div class="header-spacer"></div>
+
+    
+    <main>
+        <section class="page-hero section reveal">
+            <div class="eyebrow">Devlog</div>
+            <h1>AfterDarkRP systems expansion and the first map-focus districts</h1>
+            <p>Since the last devlog, AfterDarkRP has expanded across law, economy, shipments, printers, world interactions, and the first full Weed Grower pipeline, while map focus narrows around Ghetto 01 and Downtown.</p>
+            <div class="hero-actions">
+                <a class="cta-btn ghost hover-sound" href="../index.html">Back to devlog</a>
+            </div>
+            <div class="tag-row"><span class="tag">DarkRP</span><span class="tag">Sandbox</span><span class="tag">Map</span><span class="tag">Economy</span><span class="tag">Systems</span></div>
+            <div class="media-frame devlog-hero"><img src="../../images/afterdarkrp/afterdarkRP-alpha-large.png" alt="AfterDarkRP systems expansion and the first map-focus districts"></div>
+        </section>
+
+        <section class="section reveal delay-1">
+            <div class="surface">
+                <ul class="list">
+                    <li>Project: AfterDarkRP</li>
+                    <li>Date: MAR 13, 2026</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="section reveal delay-2">
+            <div class="surface devlog-post-body">
+                <h2>Since the last devlog</h2>
+<p>The last AfterDarkRP devlog on <strong>February 13, 2026</strong> was about locking the MVP shape before launch. Since then, the project has widened into a much more complete sandbox stack.</p>
+<p>This stretch of work added real depth across:</p>
+<ul>
+<li>job loadouts and native pickups,</li>
+<li>weapon shipments and money printer flow,</li>
+<li>mayor voting, police response, and prison handling,</li>
+<li>in-world panels and role-specific interactions,</li>
+<li>and the first full Weed Grower production chain.</li>
+</ul>
+<p>The result is that AfterDarkRP no longer reads like a collection of separate systems. It is starting to behave like a city with overlapping role pressure, economy loops, and location-based gameplay.</p>
+<h2>Core loop progress</h2>
+<p>Several of the systems that were only partially wired in February are now substantially more usable.</p>
+<ul>
+<li>Job-defined loadouts are in place and <code>ns_fists</code> integration is part of the normal baseline.</li>
+<li>Weapon shipments are working and tied more cleanly into role restrictions and interactions.</li>
+<li>Money printers moved through multiple stability and UI passes and now fit the economy loop more naturally.</li>
+<li>Door logic was expanded and refined so ownership, interaction, and open direction are more predictable.</li>
+</ul>
+<p>That combination matters because it strengthens the everyday DarkRP rhythm: claim space, manage risk, move goods, protect assets, and respond to pressure from other roles.</p>
+<h2>Law, crime, and government</h2>
+<p>The police and government side of the server has also moved well beyond its earlier placeholder phase.</p>
+<ul>
+<li>Mayor voting and law handling were expanded.</li>
+<li>Taze, arrest, prison, evidence, witness, and dispatch systems all received major work.</li>
+<li>Crime mission flow and escort-style mission timing were pushed much further toward playable state.</li>
+<li>Respawn, prison, and other supporting prefabs were added to reinforce the full arrest-to-resolution loop.</li>
+</ul>
+<p>This is one of the biggest changes in the build. The city now has much better support for consequences, response, and escalation instead of just isolated criminal actions.</p>
+<h2>New production chain: Weed Grower</h2>
+<p>The largest single addition since the last devlog is the Weed Grower pipeline.</p>
+<p>The system now spans:</p>
+<ul>
+<li>planters,</li>
+<li>soil and water supply,</li>
+<li>seeds and grow tents,</li>
+<li>cure stations and trim stations,</li>
+<li>packing stations, tray docking, and package handling,</li>
+<li>plus multiple dedicated UI panels and state tracking systems.</li>
+</ul>
+<p>A large part of early March was spent stabilizing that chain, cleaning regressions, and improving runtime behavior with better caching for colliders and rigidbodies. The overall direction is clear: this is meant to be a real criminal production loop, not a one-step entity gimmick.</p>
+<p>The current state looks strong through most of the planting-to-packing process, but the tray stage is still active work and not fully locked yet.</p>
+<h2>World and role expansion</h2>
+<p>Not every visible change was about one specific system. The broader sandbox also picked up:</p>
+<ul>
+<li>business-owner-facing world content,</li>
+<li>additional worker/vendor-style interactions,</li>
+<li>gang graffiti support,</li>
+<li>more in-world UI panels,</li>
+<li>and repeated scene/material passes across the active city spaces.</li>
+</ul>
+<p>This is important because AfterDarkRP is increasingly being built around place, not just menus. The more systems that live in the world itself, the more the server feels like a roleplay space instead of a UI wrapper.</p>
+<h2>Map progress tracker</h2>
+<p>Current district progress is best understood as a focused rollout rather than equal coverage everywhere.</p>
+<ul>
+<li><strong>Downtown</strong>: active early-focus district. Core world interactions, graffiti support, and city-facing role pressure are part of the current push.</li>
+<li><strong>Ghetto 01</strong>: active early-focus district. This is one of the main initial target spaces for roleplay activity and system density.</li>
+<li><strong>Train Station</strong>: present in the map structure, but not the primary early focus yet.</li>
+<li><strong>Terrain / wider city shell</strong>: supporting world structure is in progress, but not the current center of gameplay priority.</li>
+</ul>
+<p>Right now, the initial map emphasis is deliberately on <strong>Ghetto 01</strong> and <strong>Downtown</strong>. That is where the team can make role friction, criminal routes, and world interactions feel intentional first before trying to finish every district at the same depth.</p>
+<h2>What comes next</h2>
+<p>The next sensible push is less about adding random features and more about hardening what is already here:</p>
+<ul>
+<li>finish the weed tray and packing edge cases,</li>
+<li>continue economy tuning across printers, shipments, and criminal production,</li>
+<li>keep tightening law/crime readability under live play,</li>
+<li>and deepen Ghetto 01 and Downtown until they can carry the first real play sessions.</li>
+</ul>
+<p>This is a much larger build than the one described in the February 13 post. The difference now is not just more content. It is that the systems are starting to connect to place, role identity, and map focus in a way that makes the server feel coherent.</p>
+
+            </div>
+        </section>
+    </main>
+
+
+    <footer>
+        <div class="footer-menus">
+            <ul class="footer-menu">
+                <li><a href="../../home.html">Home</a></li>
+                <li><a href="../../games.html">Games</a></li>
+                <li><a href="../../studio.html">Studio</a></li>
+                <li><a href="../../contact.html">Contact</a></li>
+            </ul>
+            <ul class="footer-menu">
+                <li><a href="https://www.epicgames.com/site/en-US/privacypolicy" target="_blank" rel="noopener noreferrer">Epic Privacy Policy</a></li>
+                <li><a href="#">Nightshift Privacy Policy</a></li>
+                <li><a href="#">Applicant Privacy Policy</a></li>
+                <li><a href="#">Site Cookie Policy</a></li>
+            </ul>
+            <ul class="footer-menu">
+                <li><a href="#">Press Kit</a></li>
+                <li><a href="#">Brand Assets</a></li>
+                <li><a href="#">Careers</a></li>
+                <li><a href="#">Community</a></li>
+            </ul>
+        </div>
+        <div class="social-bar">
+            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="social-pill">X</a>
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="social-pill">IG</a>
+            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" class="social-pill">YT</a>
+        </div>
+        <p class="footer-copyright">Copyright 2026 Nightshift. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const audio = new Audio("../../../audio/bop.mp3");
+            audio.volume = 0.25;
+
+            const path = window.location.pathname.toLowerCase();
+            const page = path.split("/").pop();
+            let active = "home";
+            if (page === "" || page === "index.html" || page === "home.html") {
+                active = "home";
+            }
+            if (page === "games.html" || path.includes("/games/")) {
+                active = "games";
+            }
+            if (page === "studio.html" || page === "websites.html") {
+                active = "studio";
+            }
+            if (page === "contact.html") {
+                active = "contact";
+            }
+
+            document.querySelectorAll(".nav-links a").forEach((link) => {
+                const label = link.textContent.trim().toLowerCase();
+                if (label === active) {
+                    link.classList.add("active");
+                }
+            });
+
+            function playHoverSound() {
+                audio.currentTime = 0;
+                audio.play().catch(() => {});
+            }
+
+            document.querySelectorAll(".hover-sound").forEach((element) => {
+                element.addEventListener("mouseenter", playHoverSound);
+            });
+        });
+    </script>
+</body>
+</html>
