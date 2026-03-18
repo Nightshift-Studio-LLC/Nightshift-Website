@@ -1,204 +1,135 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nightshift | Devlog</title>
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-    <link rel="stylesheet" href="../../styles/header.css">
-    <link rel="stylesheet" href="../../styles/footer.css">
-    <link rel="stylesheet" href="../../styles/default-page.css">
-    <link rel="stylesheet" href="../../styles/devlog.css">
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="../../images/icons/nightshift.ico">
+    <link rel="stylesheet" href="../../styles/home-modus-mockup.css">
 </head>
-
 <body>
-    <div class="header">
-        <a href="../home.html" class="hover-sound">
-            <img src="../../images/index/nightshift-transparent.png" alt="Nightshift Logo">
+    <div class="screen-fx" aria-hidden="true"></div>
+    <header class="topbar">
+        <a class="brand hover-sound" href="../home.html" aria-label="Nightshift home">
+            <img src="../../images/index/nightshift-transparent.png" alt="Nightshift logo">
         </a>
-
-        <nav class="nav-links">
-            <a href="../home.html" class="hover-sound">home</a>
-            <div class="nav-item dropdown">
-                <a href="../games.html" class="hover-sound">games</a>
-                <div class="dropdown-menu">
-                    <a href="../games/spear.html">Codename SPEAR</a>
-                    <a href="../games/elder.html">Codename ELDER</a>
-                    <a href="../games/saint.html">Codename SAINT</a>
-                </div>
-            </div>
-            <a href="../studio.html" class="hover-sound">studio</a>
-            <a href="../contact.html" class="hover-sound">contact</a>
+        <nav class="utility-nav" aria-label="Primary">
+            <a href="../home.html" class="hover-sound">Home</a>
+            <a href="../games.html" class="hover-sound">Games</a>
+            <a href="../studio.html" class="hover-sound">Studio</a>
+            <a href="../DevLog/index.html" class="hover-sound active">Devlog</a>
+            <a href="../contact.html" class="hover-sound">Contact</a>
         </nav>
-    </div>
-    <div class="header-spacer"></div>
+        <div class="topbar-readout"><span>Devlog Feed</span><strong id="mockup-clock">00:00:00 CST</strong></div>
+    </header>
+    <main class="shell page-shell">
 
-    
-    <main>
-        <section class="page-hero section reveal">
-            <div class="eyebrow">Devlog</div>
-            <h1>Milestones, experiments, and creative notes from the pipeline.</h1>
-            <p>We are documenting progress as we lock in systems, shape worlds, and refine the feel. Expect rough edges and honest updates.</p>
-            <div class="hero-actions">
-                <a class="cta-btn primary hover-sound" href="../games.html">Explore games</a>
-            </div>
+        <section class="page-hero-grid">
+            <article class="page-hero-panel">
+                <p class="eyebrow">Devlog / public record</p>
+                <h1 class="page-title">Milestones, experiments, and creative notes from the pipeline.</h1>
+                <p class="page-lede">Nightshift documents progress as systems lock in, worlds take shape, and new public-facing surfaces come online.</p>
+                <div class="hero-actions"><a class="cta-btn primary hover-sound" href="../games.html">Explore Games</a></div>
+            </article>
+            <aside class="page-hero-panel">
+                <p class="eyebrow">Feed status</p>
+                <div class="stack-list">
+                    <div><span>Coverage</span><strong>Milestones / prototypes / operational notes</strong></div>
+                    <div><span>Primary focus</span><strong>AfterDarkRP + studio build direction</strong></div>
+                    <div><span>Format</span><strong>Short field reports and dated entries</strong></div>
+                </div>
+            </aside>
         </section>
-
-        <section class="section reveal delay-1">
-            <div class="section-title-row">
-                <h2>Latest entries</h2>
-                <p>Short reads on direction, prototypes, and what we are learning.</p>
-            </div>
+        <section class="panel feed-panel">
+            <div class="panel-heading"><p class="eyebrow">Latest Entries</p><h2>Current archive</h2></div>
             <div class="devlog-grid">
-                
-                <article class="devlog-card">
-                    <div class="devlog-meta">
-                        <span>AfterDarkRP</span>
-                        <span>MAR 13, 2026</span>
-                    </div>
-                    <h3>AfterDarkRP roles, economy loops, and docs split since the last milestone</h3>
-                    <p>Since the February 13, 2026 launch-push post, AfterDarkRP has expanded its live role roster, tightened economy interactions, and split the public site into clearer guide, changelog, and devlog surfaces.</p>
-                    <a class="devlog-cta hover-sound" href="posts/2026-03-13-afterdarkrp-roles-loops-and-site-docs.html">Read entry</a>
-                </article>
-                <article class="devlog-card">
-                    <div class="devlog-meta">
-                        <span>AfterDarkRP</span>
-                        <span>MAR 13, 2026</span>
-                    </div>
-                    <h3>AfterDarkRP systems expansion and the first map-focus districts</h3>
-                    <p>Since the last devlog, AfterDarkRP has expanded across law, economy, shipments, printers, world interactions, and the first full Weed Grower pipeline, while map focus narrows around Ghetto 01 and Downtown.</p>
-                    <a class="devlog-cta hover-sound" href="posts/2026-03-13-afterdarkrp-systems-world-and-map-focus.html">Read entry</a>
-                </article>
-                <article class="devlog-card">
-                    <div class="devlog-meta">
-                        <span>Nightshift</span>
-                        <span>MAR 13, 2026</span>
-                    </div>
-                    <h3>AfterDarkRP is now a visible WIP on the Nightshift site</h3>
-                    <p>AfterDarkRP is now represented on the Nightshift website as an active work in progress, with the deeper implementation details moved into its dedicated dev post.</p>
-                    <a class="devlog-cta hover-sound" href="posts/2026-03-13-nightshift-afterdarkrp-wip.html">Read entry</a>
-                </article>
-                <article class="devlog-card">
-                    <div class="devlog-meta">
-                        <span>AfterDarkRP</span>
-                        <span>FEB 13, 2026</span>
-                    </div>
-                    <h3>AfterDarkRP sandbox progress and the pre-April launch push</h3>
-                    <p>We are locking the core DarkRP systems and moving fast to launch before the April s&box release window.</p>
-                    <a class="devlog-cta hover-sound" href="posts/2026-02-13-afterdarkrp-sandbox-launch-push.html">Read entry</a>
-                </article>
-                <article class="devlog-card">
-                    <div class="devlog-meta">
-                        <span>Codename SPEAR</span>
-                        <span>FEB 12, 2026</span>
-                    </div>
-                    <h3>Combat tempo tests and the first pressure loop</h3>
-                    <p>We prototyped a three-phase encounter flow to find the balance between momentum and deliberate timing.</p>
-                    <a class="devlog-cta hover-sound" href="posts/2026-02-12-combat-tempo.html">Read entry</a>
-                </article>
-                <article class="devlog-card">
-                    <div class="devlog-meta">
-                        <span>LandSnap</span>
-                        <span>FEB 05, 2026</span>
-                    </div>
-                    <h3>LandSnap version 1.0.0 released</h3>
-                    <p>LandSnap 1.0.0 is officially released with the core placement workflow locked and ready for production use.</p>
-                    <a class="devlog-cta hover-sound" href="posts/2026-02-05-landsnap-1-0-0.html">Read entry</a>
-                </article>
-                <article class="devlog-card">
-                    <div class="devlog-meta">
-                        <span>Codename ELDER</span>
-                        <span>JAN 28, 2026</span>
-                    </div>
-                    <h3>Dungeon cadence, loot risk, and team signals</h3>
-                    <p>Early layouts focus on escalating stress while making every callout meaningful for the squad.</p>
-                    <a class="devlog-cta hover-sound" href="posts/2026-01-28-dungeon-cadence.html">Read entry</a>
-                </article>
-                <article class="devlog-card">
-                    <div class="devlog-meta">
-                        <span>Codename SAINT</span>
-                        <span>JAN 10, 2026</span>
-                    </div>
-                    <h3>Mission chaos sketches and character silhouettes</h3>
-                    <p>We collected visual targets for the first strike fantasy and started mapping how teams improvise.</p>
-                    <a class="devlog-cta hover-sound" href="posts/2026-01-10-mission-chaos.html">Read entry</a>
-                </article>
+            <article class="devlog-card">
+                <div class="devlog-meta"><span>AfterDarkRP</span><span>MAR 13, 2026</span></div>
+                <h3>AfterDarkRP roles, economy loops, and docs split since the last milestone</h3>
+                <p>Since the February 13, 2026 launch-push post, AfterDarkRP has expanded its live role roster, tightened economy interactions, and split the public site into clearer guide, changelog, and devlog surfaces.</p>
+                <a class="devlog-cta hover-sound" href="posts/2026-03-13-afterdarkrp-roles-loops-and-site-docs.html">Read entry</a>
+            </article>
+            <article class="devlog-card">
+                <div class="devlog-meta"><span>AfterDarkRP</span><span>MAR 13, 2026</span></div>
+                <h3>AfterDarkRP systems expansion and the first map-focus districts</h3>
+                <p>Since the last devlog, AfterDarkRP has expanded across law, economy, shipments, printers, world interactions, and the first full Weed Grower pipeline, while map focus narrows around Ghetto 01 and Downtown.</p>
+                <a class="devlog-cta hover-sound" href="posts/2026-03-13-afterdarkrp-systems-world-and-map-focus.html">Read entry</a>
+            </article>
+            <article class="devlog-card">
+                <div class="devlog-meta"><span>Nightshift</span><span>MAR 13, 2026</span></div>
+                <h3>AfterDarkRP is now a visible WIP on the Nightshift site</h3>
+                <p>AfterDarkRP is now represented on the Nightshift website as an active work in progress, with the deeper implementation details moved into its dedicated dev post.</p>
+                <a class="devlog-cta hover-sound" href="posts/2026-03-13-nightshift-afterdarkrp-wip.html">Read entry</a>
+            </article>
+            <article class="devlog-card">
+                <div class="devlog-meta"><span>AfterDarkRP</span><span>FEB 13, 2026</span></div>
+                <h3>AfterDarkRP sandbox progress and the pre-April launch push</h3>
+                <p>We are locking the core DarkRP systems and moving fast to launch before the April s&box release window.</p>
+                <a class="devlog-cta hover-sound" href="posts/2026-02-13-afterdarkrp-sandbox-launch-push.html">Read entry</a>
+            </article>
+            <article class="devlog-card">
+                <div class="devlog-meta"><span>Codename SPEAR</span><span>FEB 12, 2026</span></div>
+                <h3>Combat tempo tests and the first pressure loop</h3>
+                <p>We prototyped a three-phase encounter flow to find the balance between momentum and deliberate timing.</p>
+                <a class="devlog-cta hover-sound" href="posts/2026-02-12-combat-tempo.html">Read entry</a>
+            </article>
+            <article class="devlog-card">
+                <div class="devlog-meta"><span>LandSnap</span><span>FEB 05, 2026</span></div>
+                <h3>LandSnap version 1.0.0 released</h3>
+                <p>LandSnap 1.0.0 is officially released with the core placement workflow locked and ready for production use.</p>
+                <a class="devlog-cta hover-sound" href="posts/2026-02-05-landsnap-1-0-0.html">Read entry</a>
+            </article>
+            <article class="devlog-card">
+                <div class="devlog-meta"><span>Codename ELDER</span><span>JAN 28, 2026</span></div>
+                <h3>Dungeon cadence, loot risk, and team signals</h3>
+                <p>Early layouts focus on escalating stress while making every callout meaningful for the squad.</p>
+                <a class="devlog-cta hover-sound" href="posts/2026-01-28-dungeon-cadence.html">Read entry</a>
+            </article>
+            <article class="devlog-card">
+                <div class="devlog-meta"><span>Codename SAINT</span><span>JAN 10, 2026</span></div>
+                <h3>Mission chaos sketches and character silhouettes</h3>
+                <p>We collected visual targets for the first strike fantasy and started mapping how teams improvise.</p>
+                <a class="devlog-cta hover-sound" href="posts/2026-01-10-mission-chaos.html">Read entry</a>
+            </article>
             </div>
         </section>
+
+        <footer class="site-footer panel">
+
+            <section class="software-marquee-section" aria-label="Software used by Nightshift">
+                <div class="software-marquee"><div class="software-marquee-track">
+                    <span>Unreal / Source 2 / Enfusion / RAGE</span><span>Blender</span><span>Adobe Suite</span><span>Adobe 3D</span><span>Affinity Suite</span><span>Gaea 2.0</span><span>CC5</span><span>iClone 8</span><span>FruityLoops</span><span>VS Code</span><span>Visual Studio</span><span>GitHub</span><span>Git LFS</span><span>Git Pages</span><span>Wix</span><span>Codex</span>
+                    <span>Unreal / Source 2 / Enfusion / RAGE</span><span>Blender</span><span>Adobe Suite</span><span>Adobe 3D</span><span>Affinity Suite</span><span>Gaea 2.0</span><span>CC5</span><span>iClone 8</span><span>FruityLoops</span><span>VS Code</span><span>Visual Studio</span><span>GitHub</span><span>Git LFS</span><span>Git Pages</span><span>Wix</span><span>Codex</span>
+                </div></div>
+            </section>
+            <div class="footer-grid">
+                <div class="footer-column"><span>Primary routes</span><a class="hover-sound" href="../home.html">Home</a><a class="hover-sound" href="../games.html">Games</a><a class="hover-sound" href="../studio.html">Studio</a><a class="hover-sound" href="../contact.html">Contact</a></div>
+                <div class="footer-column"><span>Public records</span><a class="hover-sound" href="../DevLog/index.html">Devlog</a><a href="https://www.epicgames.com/site/en-US/privacypolicy" target="_blank" rel="noopener noreferrer">Epic Privacy Policy</a><a href="#">Nightshift Privacy Policy</a><a href="#">Applicant Privacy Policy</a></div>
+                <div class="footer-column"><span>External surfaces</span><a href="#">Press Kit</a><a href="#">Brand Assets</a><a href="#">Careers</a><a href="#">Community</a></div>
+            </div>
+            <div class="footer-bottom"><div class="social-row"><a class="action-pill hover-sound" href="https://twitter.com" target="_blank" rel="noopener noreferrer">X</a><a class="action-pill hover-sound" href="https://instagram.com" target="_blank" rel="noopener noreferrer">IG</a><a class="action-pill hover-sound" href="https://youtube.com" target="_blank" rel="noopener noreferrer">YT</a></div><p class="footer-note">Copyright 2026 Nightshift. All rights reserved.</p></div>
+        </footer>
     </main>
-
-
-    <footer>
-        <div class="footer-menus">
-            <ul class="footer-menu">
-                <li><a href="../home.html">Home</a></li>
-                <li><a href="../games.html">Games</a></li>
-                <li><a href="../studio.html">Studio</a></li>
-                <li><a href="../contact.html">Contact</a></li>
-            </ul>
-            <ul class="footer-menu">
-                <li><a href="https://www.epicgames.com/site/en-US/privacypolicy" target="_blank" rel="noopener noreferrer">Epic Privacy Policy</a></li>
-                <li><a href="#">Nightshift Privacy Policy</a></li>
-                <li><a href="#">Applicant Privacy Policy</a></li>
-                <li><a href="#">Site Cookie Policy</a></li>
-            </ul>
-            <ul class="footer-menu">
-                <li><a href="#">Press Kit</a></li>
-                <li><a href="#">Brand Assets</a></li>
-                <li><a href="#">Careers</a></li>
-                <li><a href="#">Community</a></li>
-            </ul>
-        </div>
-        <div class="social-bar">
-            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="social-pill">X</a>
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="social-pill">IG</a>
-            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" class="social-pill">YT</a>
-        </div>
-        <p class="footer-copyright">Copyright 2026 Nightshift. All rights reserved.</p>
-    </footer>
-
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const audio = new Audio("../../audio/bop.mp3");
             audio.volume = 0.25;
-
-            const path = window.location.pathname.toLowerCase();
-            const page = path.split("/").pop();
-            let active = "home";
-            if (page === "" || page === "index.html" || page === "home.html") {
-                active = "home";
+            const clock = document.getElementById("mockup-clock");
+            function updateClock() {
+                if (!clock) return;
+                clock.textContent = new Date().toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", second: "2-digit", timeZone: "America/Chicago", timeZoneName: "short" });
             }
-            if (page === "games.html" || path.includes("/games/")) {
-                active = "games";
-            }
-            if (page === "studio.html" || page === "websites.html") {
-                active = "studio";
-            }
-            if (page === "contact.html") {
-                active = "contact";
-            }
-
-            document.querySelectorAll(".nav-links a").forEach((link) => {
-                const label = link.textContent.trim().toLowerCase();
-                if (label === active) {
-                    link.classList.add("active");
-                }
-            });
-
-            function playHoverSound() {
-                audio.currentTime = 0;
-                audio.play().catch(() => {});
-            }
-
             document.querySelectorAll(".hover-sound").forEach((element) => {
-                element.addEventListener("mouseenter", playHoverSound);
+                element.addEventListener("mouseenter", function() {
+                    audio.currentTime = 0;
+                    audio.play().catch(() => {});
+                });
             });
+            updateClock();
+            window.setInterval(updateClock, 1000);
         });
     </script>
 </body>

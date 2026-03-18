@@ -1,191 +1,267 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Nightshift</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nightshift</title>
 
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-        <link rel="stylesheet" href="../styles/header.css">
-        <link rel="stylesheet" href="../styles/footer.css">
-        <link rel="stylesheet" href="../styles/default-page.css">
-        <link rel="icon" type="image/x-icon" href="../images/icons/nightshift.ico">
-    </head>
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="../images/icons/nightshift.ico">
+    <link rel="stylesheet" href="../styles/home-modus-mockup.css">
+</head>
 <body>
-    <div class="header">
-        <a href="../pages/home.html" class="hover-sound">
-            <img src="../images/index/nightshift-transparent.png" alt="Nightshift Logo">
+    <div class="screen-fx" aria-hidden="true"></div>
+
+    <header class="topbar">
+        <a class="brand hover-sound" href="home.html" aria-label="Nightshift home">
+            <img src="../images/index/nightshift-transparent.png" alt="Nightshift logo">
         </a>
-        <nav class="nav-links">
-    <a href="home.html" class="hover-sound">home</a>
-    <div class="nav-item dropdown">
-        <a href="games.html" class="hover-sound">games</a>
-        <div class="dropdown-menu">
-            <a href="games/spear.html">Codename SPEAR</a>
-            <a href="games/elder.html">Codename ELDER</a>
-            <a href="games/saint.html">Codename SAINT</a>
+
+        <nav class="utility-nav" aria-label="Primary">
+            <a href="home.html" class="hover-sound active">Home</a>
+            <a href="games.html" class="hover-sound">Games</a>
+            <a href="studio.html" class="hover-sound">Studio</a>
+            <a href="DevLog/index.html" class="hover-sound">Devlog</a>
+            <a href="contact.html" class="hover-sound">Contact</a>
+        </nav>
+
+        <div class="topbar-readout">
+            <span>Nightshift Home Relay</span>
+            <strong id="mockup-clock">00:00:00 CST</strong>
         </div>
-    </div>
-    <a href="studio.html" class="hover-sound">studio</a>
-    <a href="contact.html" class="hover-sound">contact</a>
-</nav>
-    </div>
-    <div class="header-spacer"></div>
+    </header>
 
-    <main>
-        <section class="hero section reveal">
-            <div>
-                <div class="eyebrow">Independent Studio</div>
-                <h1 class="hero-title">Nightshift builds systems-first worlds.</h1>
-                <p class="hero-lede">Atmospheric games that reward curiosity, grit, and player choice.</p>
-                <div class="hero-actions">
-                    <a class="cta-btn primary hover-sound" href="../pages/games.html">Explore games</a>
-                    <a class="cta-btn ghost hover-sound" href="../pages/contact.html">Contact</a>
+    <main class="shell">
+        <section class="hero-grid">
+            <article class="panel hero-copy">
+                <div class="micro-row">
+                    <span class="signal live">Live feed</span>
+                    <span class="signal">Studio node 01</span>
+                    <span class="signal">Public surface</span>
                 </div>
-                <div class="cred-strip">Tone - Restraint - Intent</div>
-                <div class="stats">
-                    <div class="stat">
-                        <span class="stat-num">Unreal</span>
-                        <span class="stat-label">Primary</span>
+
+                <p class="eyebrow">Nightshift / Systems-First Worlds</p>
+                <h1>Nightshift builds systems-first worlds.</h1>
+                <p class="lede">
+                    Player-driven outcomes sit at the center. Nightshift builds systems-first worlds where gameplay emerges from interaction, economy, and consequence.
+                </p>
+
+                <div class="action-row">
+                    <a class="action-pill primary hover-sound" href="games.html">Inspect Projects</a>
+                    <a class="action-pill hover-sound" href="DevLog/index.html">Open Devlog</a>
+                    <a class="action-pill hover-sound" href="studio.html">Review Studio</a>
+                </div>
+
+                <div class="summary-grid">
+                    <div class="summary-card">
+                        <span>Positioning</span>
+                        <strong>Systems-first worlds over scripted experiences</strong>
                     </div>
-                    <div class="stat">
-                        <span class="stat-num">Source 2</span>
-                        <span class="stat-label">Secondary</span>
+                    <div class="summary-card">
+                        <span>Tone</span>
+                        <strong>Grounded / emergent / consequence-driven</strong>
                     </div>
-                    <div class="stat">
-                        <span class="stat-num">Enfusion</span>
-                        <span class="stat-label">Secondary</span>
-                    </div>
-                    <div class="stat">
-                        <span class="stat-num">RAGE (Lua)</span>
-                        <span class="stat-label">Secondary</span>
+                    <div class="summary-card">
+                        <span>Why it fits</span>
+                        <strong>Every experience is shaped by systems, not prewritten outcomes</strong>
                     </div>
                 </div>
-            </div>
-            <div class="hero-card">
-                <div class="media-frame">
+            </article>
+
+            <aside class="panel hero-visual">
+                <div class="visual-frame">
                     <img src="../images/home/nightshift-detailed-black.png" alt="Sculpted pawn statue from Nightshift concept art">
+                    <div class="frame-overlay">
+                        <span>Atmosphere</span>
+                        <span>Progression</span>
+                        <span>Craft</span>
+                    </div>
                 </div>
-                <div class="tag-row">
-                    <span class="tag">Atmosphere</span>
-                    <span class="tag">Progression</span>
-                    <span class="tag">Craft</span>
+
+                <div class="status-list">
+                    <div class="status-line">
+                        <span>Featured Project</span>
+                        <strong>AfterDarkRP</strong>
+                    </div>
+                    <div class="status-line">
+                        <span>Current Priority</span>
+                        <strong>Persistent sandbox systems</strong>
+                    </div>
+                    <div class="status-line">
+                        <span>Routing</span>
+                        <strong>Games / Devlog / Contact</strong>
+                    </div>
                 </div>
-            </div>
+            </aside>
         </section>
 
-        <section class="section reveal delay-1">
-            <div class="section-title-row">
-                <h2>AfterDarkRP</h2>
-                <p>AfterDarkRP is the current priority: a live S&amp;box roleplay sandbox built around persistent economy loops, readable systems, and active iteration.</p>
-            </div>
-            <div class="card-grid">
-                <div class="feature-card">
-                    <h3 class="gradient-on-view">Persistent sandbox systems</h3>
-                    <p>Jobs, police, economy, and criminal loops are being built to overlap cleanly so the city feels systemic instead of scripted.</p>
+        <section class="model-grid">
+            <article class="panel model-panel">
+                <div class="panel-heading">
+                    <p class="eyebrow">Asset Feed</p>
+                    <h2>GLB Renderer</h2>
                 </div>
-                <div class="feature-card">
-                    <h3 class="gradient-on-view">Roleplay with structure</h3>
-                    <p>Core interactions are being tightened around readable rules, consistent incentives, and world-based friction.</p>
+                <div class="model-stage">
+                    <div class="model-canvas" id="fbx-renderer" aria-label="Interactive GLB model renderer"></div>
+                    <div class="model-stage-overlay">
+                        <span>moneyprinter.glb</span>
+                        <span>Orbit Enabled</span>
+                        <span id="fbx-status">Loading asset</span>
+                    </div>
                 </div>
-                <div class="feature-card">
-                    <h3 class="gradient-on-view">Built in public</h3>
-                    <p>Nightshift is using the site and devlog to show active progress while the server stack keeps evolving.</p>
+                <div class="model-readout">
+                    <div class="summary-card">
+                        <span>Asset</span>
+                        <strong>moneyprinter.glb loaded as a live world prop preview</strong>
+                    </div>
+                    <div class="summary-card">
+                        <span>Interaction</span>
+                        <strong>Drag to orbit / scroll to inspect</strong>
+                    </div>
+                    <div class="summary-card">
+                        <span>Current Readout</span>
+                        <strong>Economy-facing prop for sandbox loops and consequence systems</strong>
+                    </div>
                 </div>
-            </div>
-            <div class="video-frame">
-                <iframe src="https://www.youtube.com/embed/MmMQCShNscM" title="AfterDarkRP video" allowfullscreen></iframe>
-            </div>
+            </article>
         </section>
 
-        <section class="section reveal delay-1">
-            <div class="long-cta">
-                <div>
-                    <div class="eyebrow">Studio Updates</div>
-                    <h2>Want updates as we build our next game?</h2>
-                    <p>Join the devlog list for milestone drops, early concept reveals, and playtest calls.</p>
+        <section class="feed-grid">
+            <article class="panel feed-panel">
+                <div class="panel-heading">
+                    <p class="eyebrow">Interception Feed</p>
+                    <h2>Recent studio routes</h2>
                 </div>
-                <div class="long-cta-actions">
-                    <a class="cta-btn primary hover-sound" href="../pages/DevLog/index.html">Read the devlog</a>
-                    <a class="cta-btn ghost hover-sound" href="../pages/contact.html">Request updates</a>
+                <div class="feed-item">
+                    <span class="feed-tag">Devlog</span>
+                    <h3><a class="inline-link hover-sound" href="DevLog/posts/2026-03-13-nightshift-afterdarkrp-wip.html">Nightshift + AfterDarkRP WIP</a></h3>
+                    <p>Operational notes from current production work and the public-facing direction of the site.</p>
                 </div>
-            </div>
+                <div class="feed-item">
+                    <span class="feed-tag">Systems</span>
+                    <h3><a class="inline-link hover-sound" href="DevLog/posts/2026-03-13-afterdarkrp-systems-world-and-map-focus.html">Systems, world, and map focus</a></h3>
+                    <p>Build status around district development, world systems, and how the sandbox is being structured.</p>
+                </div>
+                <div class="feed-item media-feed">
+                    <span class="feed-tag">Video</span>
+                    <h3>AfterDarkRP field footage</h3>
+                    <div class="video-frame">
+                        <iframe src="https://www.youtube.com/embed/MmMQCShNscM" title="AfterDarkRP video" allowfullscreen></iframe>
+                    </div>
+                </div>
+            </article>
+
+            <aside class="panel notes-panel">
+                <div class="panel-heading">
+                    <p class="eyebrow">Contact Surface</p>
+                    <h2>External requests</h2>
+                </div>
+                <ul class="spec-list compact">
+                    <li>Reach out for partnerships, contractor roles, or press conversations.</li>
+                    <li>Use the devlog for public build history and milestone drops.</li>
+                    <li>Route direct studio inquiries through the main contact page.</li>
+                </ul>
+                <div class="action-row compact-actions">
+                    <a class="action-pill primary hover-sound" href="contact.html">Start Contact</a>
+                    <a class="action-pill hover-sound" href="studio.html">Review Studio</a>
+                </div>
+            </aside>
         </section>
 
-        <section class="callout reveal">
-            <div class="callout-panel">
-                <div>
-                    <h3>Looking for collaborators or press assets?</h3>
-                    <p>Reach out for partnerships, contractor roles, or to request a press kit.</p>
+        <footer class="site-footer panel">
+            <section class="software-marquee-section" aria-label="Software used by Nightshift">
+                <div class="software-marquee">
+                    <div class="software-marquee-track">
+                        <span>Unreal / Source 2 / Enfusion / RAGE</span>
+                        <span>Blender</span>
+                        <span>Adobe Suite</span>
+                        <span>Adobe 3D</span>
+                        <span>Affinity Suite</span>
+                        <span>Gaea 2.0</span>
+                        <span>CC5</span>
+                        <span>iClone 8</span>
+                        <span>FruityLoops</span>
+                        <span>VS Code</span>
+                        <span>Visual Studio</span>
+                        <span>GitHub</span><span>Git LFS</span><span>Git Pages</span><span>Wix</span><span>Codex</span>
+                        <span>Unreal / Source 2 / Enfusion / RAGE</span>
+                        <span>Blender</span>
+                        <span>Adobe Suite</span>
+                        <span>Adobe 3D</span>
+                        <span>Affinity Suite</span>
+                        <span>Gaea 2.0</span>
+                        <span>CC5</span>
+                        <span>iClone 8</span>
+                        <span>FruityLoops</span>
+                        <span>VS Code</span>
+                        <span>Visual Studio</span>
+                        <span>GitHub</span><span>Git LFS</span><span>Git Pages</span><span>Wix</span><span>Codex</span>
+                    </div>
                 </div>
-                <div class="callout-actions">
-                    <a class="cta-btn primary hover-sound" href="../pages/contact.html">Start a conversation</a>
-                    <a class="cta-btn ghost hover-sound" href="../pages/studio.html">Learn about us</a>
+            </section>
+
+            <div class="footer-grid">
+                <div class="footer-column">
+                    <span>Primary routes</span>
+                    <a class="hover-sound" href="home.html">Home</a>
+                    <a class="hover-sound" href="games.html">Games</a>
+                    <a class="hover-sound" href="studio.html">Studio</a>
+                    <a class="hover-sound" href="contact.html">Contact</a>
+                </div>
+                <div class="footer-column">
+                    <span>Public records</span>
+                    <a class="hover-sound" href="DevLog/index.html">Devlog</a>
+                    <a href="https://www.epicgames.com/site/en-US/privacypolicy" target="_blank" rel="noopener noreferrer">Epic Privacy Policy</a>
+                    <a href="#">Nightshift Privacy Policy</a>
+                    <a href="#">Applicant Privacy Policy</a>
+                </div>
+                <div class="footer-column">
+                    <span>External surfaces</span>
+                    <a href="#">Press Kit</a>
+                    <a href="#">Brand Assets</a>
+                    <a href="#">Careers</a>
+                    <a href="#">Community</a>
                 </div>
             </div>
-        </section>
+
+            <div class="footer-bottom">
+                <div class="social-row">
+                    <a class="action-pill hover-sound" href="https://twitter.com" target="_blank" rel="noopener noreferrer">X</a>
+                    <a class="action-pill hover-sound" href="https://instagram.com" target="_blank" rel="noopener noreferrer">IG</a>
+                    <a class="action-pill hover-sound" href="https://youtube.com" target="_blank" rel="noopener noreferrer">YT</a>
+                </div>
+                <p class="footer-note">Copyright 2026 Nightshift. All rights reserved.</p>
+            </div>
+        </footer>
     </main>
 
-    <footer>
-        <div class="footer-menus">
-            <ul class="footer-menu">
-                <li><a href="../pages/home.html">Home</a></li>
-                <li><a href="../pages/games.html">Games</a></li>
-                <li><a href="../pages/studio.html">Studio</a></li>
-                <li><a href="../pages/contact.html">Contact</a></li>
-            </ul>
-            <ul class="footer-menu">
-                <li><a href="#">Nightshift Privacy Policy</a></li>
-                <li><a href="#">Applicant Privacy Policy</a></li>
-                <li><a href="#">Website Cookie Policy</a></li>
-                <li><a href="https://www.epicgames.com/site/en-US/privacypolicy" target="_blank" rel="noopener noreferrer">Epic Privacy Policy</a></li>
-            </ul>
-            <ul class="footer-menu">
-                <li><a href="#">Press Kit</a></li>
-                <li><a href="#">Brand Assets</a></li>
-                <li><a href="#">Careers</a></li>
-                <li><a href="#">Community</a></li>
-            </ul>
-        </div>
-        <div class="social-bar">
-            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="social-pill">X</a>
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="social-pill">IG</a>
-            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" class="social-pill">YT</a>
-        </div>
-        <p class="footer-copyright">Copyright 2026 Nightshift. All rights reserved.</p>
-    </footer>
-
-    <script>
+    <script type="module">
         document.addEventListener("DOMContentLoaded", function() {
             const audio = new Audio("../audio/bop.mp3");
             audio.volume = 0.25;
 
-            const path = window.location.pathname.toLowerCase();
-            const page = path.split("/").pop();
-            let active = "home";
-            if (page === "" || page === "index.html" || page === "home.html") {
-                active = "home";
-            }
-            if (page === "games.html" || path.includes("/games/")) {
-                active = "games";
-            }
-            if (page === "studio.html" || page === "websites.html") {
-                active = "studio";
-            }
-            if (page === "contact.html") {
-                active = "contact";
-            }
+            const clock = document.getElementById("mockup-clock");
+            const status = document.getElementById("fbx-status");
+            const mount = document.getElementById("fbx-renderer");
 
-            document.querySelectorAll(".nav-links a").forEach((link) => {
-                const label = link.textContent.trim().toLowerCase();
-                if (label === active) {
-                    link.classList.add("active");
+            function updateClock() {
+                if (!clock) {
+                    return;
                 }
-            });
+
+                const now = new Date();
+                const formatted = now.toLocaleTimeString("en-US", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    second: "2-digit",
+                    timeZone: "America/Chicago",
+                    timeZoneName: "short"
+                });
+
+                clock.textContent = formatted;
+            }
 
             function playHoverSound() {
                 audio.currentTime = 0;
@@ -196,35 +272,148 @@
                 element.addEventListener("mouseenter", playHoverSound);
             });
 
-            const gradientTargets = document.querySelectorAll(".gradient-on-view");
-            if ("IntersectionObserver" in window && gradientTargets.length) {
-                const observer = new IntersectionObserver((entries) => {
-                    entries.forEach((entry) => {
-                        if (entry.isIntersecting) {
-                            entry.target.classList.add("gradient-animate");
-                            observer.unobserve(entry.target);
-                        }
-                    });
-                }, { threshold: 0.6 });
+            updateClock();
+            window.setInterval(updateClock, 1000);
 
-                gradientTargets.forEach((target) => observer.observe(target));
-            } else {
-                gradientTargets.forEach((target) => target.classList.add("gradient-animate"));
+            if (!mount) {
+                return;
             }
+
+            async function initModelViewer() {
+                try {
+                    const THREE = await import("https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js");
+                    const { OrbitControls } = await import("https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/controls/OrbitControls.js");
+                    const { GLTFLoader } = await import("https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/loaders/GLTFLoader.js");
+
+                    const scene = new THREE.Scene();
+                    scene.background = new THREE.Color(0x020402);
+                    scene.fog = new THREE.Fog(0x020402, 10, 34);
+
+                    const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 100);
+                    camera.position.set(0, 3.2, 8.5);
+
+                    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+                    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+                    renderer.outputColorSpace = THREE.SRGBColorSpace;
+                    renderer.shadowMap.enabled = true;
+                    mount.appendChild(renderer.domElement);
+
+                    const controls = new OrbitControls(camera, renderer.domElement);
+                    controls.enableDamping = true;
+                    controls.enablePan = false;
+                    controls.minDistance = 3.5;
+                    controls.maxDistance = 13;
+                    controls.target.set(0, 1.6, 0);
+
+                    const hemi = new THREE.HemisphereLight(0xbfe9cd, 0x040704, 1.5);
+                    scene.add(hemi);
+
+                    const keyLight = new THREE.DirectionalLight(0x8de2b2, 1.7);
+                    keyLight.position.set(4, 8, 6);
+                    keyLight.castShadow = true;
+                    scene.add(keyLight);
+
+                    const rimLight = new THREE.DirectionalLight(0xff3c12, 0.55);
+                    rimLight.position.set(-5, 3, -4);
+                    scene.add(rimLight);
+
+                    const grid = new THREE.GridHelper(20, 20, 0x0e662a, 0x0e662a);
+                    grid.material.opacity = 0.16;
+                    grid.material.transparent = true;
+                    scene.add(grid);
+
+                    const platform = new THREE.Mesh(
+                        new THREE.CylinderGeometry(2.4, 2.8, 0.4, 48),
+                        new THREE.MeshStandardMaterial({
+                            color: 0x081009,
+                            emissive: 0x0e662a,
+                            emissiveIntensity: 0.08,
+                            metalness: 0.35,
+                            roughness: 0.82
+                        })
+                    );
+                    platform.position.y = -0.2;
+                    platform.receiveShadow = true;
+                    scene.add(platform);
+
+                    const loader = new GLTFLoader();
+                    loader.load(
+                        "../models/fbx/moneyprinter.glb",
+                        (gltf) => {
+                            const object = gltf.scene;
+                            const box = new THREE.Box3().setFromObject(object);
+                            const size = box.getSize(new THREE.Vector3());
+                            const center = box.getCenter(new THREE.Vector3());
+                            const scale = 3.1 / Math.max(size.x, size.y, size.z || 1);
+
+                            object.scale.setScalar(scale);
+                            object.position.sub(center.multiplyScalar(scale));
+                            object.position.y += 0.95;
+
+                            object.traverse((child) => {
+                                if (child.isMesh) {
+                                    child.castShadow = true;
+                                    child.receiveShadow = true;
+
+                                    if (Array.isArray(child.material)) {
+                                        child.material.forEach((material) => {
+                                            material.color?.multiplyScalar(0.92);
+                                        });
+                                    } else if (child.material) {
+                                        child.material.color?.multiplyScalar(0.92);
+                                    }
+                                }
+                            });
+
+                            scene.add(object);
+                            if (status) {
+                                status.textContent = "Asset online";
+                            }
+                        },
+                        undefined,
+                        () => {
+                            if (status) {
+                                status.textContent = "Asset unavailable";
+                            }
+                            mount.classList.add("model-fallback");
+                            mount.innerHTML = "<span>GLB asset could not be loaded in this context.</span>";
+                        }
+                    );
+
+                    function resize() {
+                        const width = mount.clientWidth || 640;
+                        const height = mount.clientHeight || 420;
+                        camera.aspect = width / height;
+                        camera.updateProjectionMatrix();
+                        renderer.setSize(width, height, false);
+                    }
+
+                    const resizeObserver = new ResizeObserver(resize);
+                    resizeObserver.observe(mount);
+                    resize();
+
+                    const clock3d = new THREE.Clock();
+
+                    function animate() {
+                        const elapsed = clock3d.getElapsedTime();
+                        platform.rotation.y = elapsed * 0.22;
+                        controls.update();
+                        renderer.render(scene, camera);
+                        window.requestAnimationFrame(animate);
+                    }
+
+                    animate();
+                } catch (error) {
+                    if (status) {
+                        status.textContent = "Renderer offline";
+                    }
+                    mount.classList.add("model-fallback");
+                    mount.innerHTML = "<span>Model viewer dependencies failed to initialize.</span>";
+                }
+            }
+
+            initModelViewer();
         });
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-

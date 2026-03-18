@@ -1,221 +1,132 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Nightshift | Studio</title>
-
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-        <link rel="stylesheet" href="../styles/header.css">
-        <link rel="stylesheet" href="../styles/footer.css">
-        <link rel="stylesheet" href="../styles/default-page.css">
-        <link rel="icon" type="image/x-icon" href="../images/icons/nightshift.ico">
-    </head>
-
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nightshift | Studio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="../images/icons/nightshift.ico">
+    <link rel="stylesheet" href="../styles/home-modus-mockup.css">
+</head>
 <body>
-    <div class="header">
-        <a href="../pages/home.html" class="hover-sound">
-            <img src="../images/index/nightshift-transparent.png" alt="Nightshift Logo">
-        </a>
-        <nav class="nav-links">
-    <a href="home.html" class="hover-sound">home</a>
-    <div class="nav-item dropdown">
-        <a href="games.html" class="hover-sound">games</a>
-        <div class="dropdown-menu">
-            <a href="games/spear.html">Codename SPEAR</a>
-            <a href="games/elder.html">Codename ELDER</a>
-            <a href="games/saint.html">Codename SAINT</a>
-        </div>
-    </div>
-    <a href="studio.html" class="hover-sound">studio</a>
-    <a href="contact.html" class="hover-sound">contact</a>
-</nav>
-    </div>
-    <div class="header-spacer"></div>
+    <div class="screen-fx" aria-hidden="true"></div>
+    <header class="topbar">
+        <a class="brand hover-sound" href="home.html" aria-label="Nightshift home"><img src="../images/index/nightshift-transparent.png" alt="Nightshift logo"></a>
+        <nav class="utility-nav" aria-label="Primary">
+            <a href="home.html" class="hover-sound">Home</a>
+            <a href="games.html" class="hover-sound">Games</a>
+            <a href="studio.html" class="hover-sound active">Studio</a>
+            <a href="DevLog/index.html" class="hover-sound">Devlog</a>
+            <a href="contact.html" class="hover-sound">Contact</a>
+        </nav>
+        <div class="topbar-readout"><span>Studio Briefing</span><strong id="mockup-clock">00:00:00 CST</strong></div>
+    </header>
 
-    <main>
-        <section class="page-hero section reveal">
-            <div class="eyebrow">Studio</div>
-            <h1>Nightshift is a Texas-based studio focused on deep systems and cinematic atmosphere.</h1>
-            <p>Founded in 2025, we pair technical craftsmanship with bold art direction to build player-driven worlds. Our workflows are tuned for Unreal Engine, real-time iteration, and obsessive polish.</p>
+    <main class="shell page-shell">
+        <section class="page-hero-grid">
+            <article class="page-hero-panel">
+                <p class="eyebrow">Studio / identity</p>
+                <h1 class="page-title">Nightshift is a Texas studio focused on systems and atmosphere.</h1>
+                <p class="page-lede">Founded in 2025, Nightshift pairs technical craftsmanship with strong art direction to build player-driven worlds, live sandbox systems, and production surfaces that stay readable under pressure.</p>
+                <div class="hero-actions">
+                    <a class="cta-btn primary hover-sound" href="websites.html">Website Services</a>
+                    <a class="cta-btn hover-sound" href="contact.html">Open Contact</a>
+                </div>
+            </article>
+            <aside class="page-hero-panel">
+                <p class="eyebrow">Core stack</p>
+                <div class="stack-list">
+                    <div><span>Engines</span><strong>Unreal / Source 2 / Enfusion / RAGE</strong></div>
+                    <div><span>Content tools</span><strong>Blender / Adobe / Affinity / Gaea</strong></div>
+                    <div><span>Character + audio + code</span><strong>CC5 / iClone 8 / FruityLoops / VS / GitHub</strong></div>
+                </div>
+            </aside>
         </section>
 
-        <section class="section split reveal delay-1">
-            <div class="surface">
-                <h2 class="section-title">What we value</h2>
+        <section class="surface-grid">
+            <article class="surface-card">
+                <p class="eyebrow">What We Value</p>
+                <h3>How the studio evaluates work</h3>
                 <ul class="list">
-                    <li>Systems that create emergent stories, not scripted answers.</li>
+                    <li>Systems that create emergent stories instead of scripted answers.</li>
                     <li>Worlds that feel lived in, layered, and slightly dangerous.</li>
-                    <li>Progression that rewards mastery without losing tension.</li>
+                    <li>Progression that rewards mastery without flattening tension.</li>
                 </ul>
-            </div>
-            <div class="surface">
-                <h2 class="section-title">Toolkit</h2>
-                <p class="muted">We build with industry standard tools and a custom pipeline for rapid iteration.</p>
+            </article>
+            <article class="surface-card">
+                <p class="eyebrow">Operations</p>
+                <h3>How Nightshift works</h3>
                 <ul class="list">
-                    <li>Unreal Engine, Visual Studio, Visual Studio Code.</li>
-                    <li>Blender, Adobe Creative Suite, Substance Suite.</li>
-                    <li>Quadspinner Gaea, iClone, Character Creator.</li>
+                    <li>Prototype quickly and cut early when a loop is not proving itself.</li>
+                    <li>Treat lighting, materials, sound, and motion as one system.</li>
+                    <li>Use public-facing devlogs to keep current work visible and legible.</li>
                 </ul>
+            </article>
+        </section>
+
+        <section class="surface-grid">
+            <article class="surface-card">
+                <p class="eyebrow">Websites</p>
+                <h3>Fixed-tier site work</h3>
+                <p>Nightshift also ships fast static sites and client-facing web surfaces with clear scopes, clean messaging, and direct deployment support.</p>
+                <div class="hero-actions"><a class="cta-btn primary hover-sound" href="websites.html">View Website Pricing</a></div>
+            </article>
+            <article class="surface-card">
+                <p class="eyebrow">Support</p>
+                <h3>Donations and direct backing</h3>
+                <p>Support Nightshift directly and help fund longer development cycles, more public-facing updates, and broader production capacity.</p>
+                <div class="hero-actions"><a class="cta-btn primary hover-sound" href="Studio/Donations.html">Support The Studio</a></div>
+            </article>
+        </section>
+
+        <section class="panel feature-panel">
+            <div class="panel-heading"><p class="eyebrow">FAB</p><h2>Asset surfaces</h2></div>
+            <div class="fab-thumbs">
+                <a class="game-card hover-sound" href="Studio/Landsnap.html">
+                    <img src="../images/landsnap/FAB-thumbnail.png" alt="LandSnap on FAB">
+                    <div class="game-card-content"><h3>LandSnap</h3><p>Terrain placement tooling shipped on FAB for production workflows.</p><div class="tag-row"><span class="tag">FAB</span><span class="tag">1.0.0 Release</span></div></div>
+                </a>
+                <a class="game-card hover-sound" href="#">
+                    <img src="../images/landsnap/RPCForge-thumbnail.svg" alt="RPC Forge placeholder">
+                    <div class="game-card-content"><h3>RPC Forge</h3><p>In-development tooling surface for future release.</p><div class="tag-row"><span class="tag">FAB</span><span class="tag">In Development</span></div></div>
+                </a>
             </div>
         </section>
 
-        <section class="section reveal delay-2">
-            <div class="section-title-row">
-                <h2>How we operate</h2>
-                <p>Small team, clear focus. We prototype fast, test with intent, and polish the details that players notice.</p>
+        <footer class="site-footer panel">
+            <section class="software-marquee-section" aria-label="Software used by Nightshift"><div class="software-marquee"><div class="software-marquee-track">
+                <span>Unreal / Source 2 / Enfusion / RAGE</span><span>Blender</span><span>Adobe Suite</span><span>Adobe 3D</span><span>Affinity Suite</span><span>Gaea 2.0</span><span>CC5</span><span>iClone 8</span><span>FruityLoops</span><span>VS Code</span><span>Visual Studio</span><span>GitHub</span><span>Git LFS</span><span>Git Pages</span><span>Wix</span><span>Codex</span>
+                <span>Unreal / Source 2 / Enfusion / RAGE</span><span>Blender</span><span>Adobe Suite</span><span>Adobe 3D</span><span>Affinity Suite</span><span>Gaea 2.0</span><span>CC5</span><span>iClone 8</span><span>FruityLoops</span><span>VS Code</span><span>Visual Studio</span><span>GitHub</span><span>Git LFS</span><span>Git Pages</span><span>Wix</span><span>Codex</span>
+            </div></div></section>
+            <div class="footer-grid">
+                <div class="footer-column"><span>Primary routes</span><a class="hover-sound" href="home.html">Home</a><a class="hover-sound" href="games.html">Games</a><a class="hover-sound" href="studio.html">Studio</a><a class="hover-sound" href="contact.html">Contact</a></div>
+                <div class="footer-column"><span>Public records</span><a class="hover-sound" href="DevLog/index.html">Devlog</a><a href="https://www.epicgames.com/site/en-US/privacypolicy" target="_blank" rel="noopener noreferrer">Epic Privacy Policy</a><a href="#">Nightshift Privacy Policy</a><a href="#">Applicant Privacy Policy</a></div>
+                <div class="footer-column"><span>External surfaces</span><a href="#">Press Kit</a><a href="#">Brand Assets</a><a href="#">Careers</a><a href="#">Community</a></div>
             </div>
-            <div class="card-grid">
-                <div class="feature-card">
-                    <h3>Preproduction clarity</h3>
-                    <p>We validate gameplay loops early so every sprint builds toward the final experience.</p>
-                </div>
-                <div class="feature-card">
-                    <h3>Atmosphere pass</h3>
-                    <p>Lighting, materials, and sound are treated as a system, not a finish line.</p>
-                </div>
-                <div class="feature-card">
-                    <h3>Player-driven feel testing</h3>
-                    <p>We refine difficulty and pacing based on feeling, gameplay data, and feedback.</p>
-                </div>
-            </div>
-        </section>
-
-        <section class="section reveal delay-2">
-            <div class="surface">
-                <div class="section-title-row">
-                    <h2>Websites</h2>
-                    <p>Fixed tiers for fast, modern builds with clean design and clear messaging.</p>
-                </div>
-                <div class="hero-actions">
-                    <a class="cta-btn primary hover-sound" href="websites.html">View website pricing</a>
-                </div>
-            </div>
-        </section>
-
-        <section class="section reveal delay-2">
-            <div class="surface">
-                <div class="section-title-row">
-                    <h2>Epic Games FAB</h2>
-                    <p>Browse the Nightshift asset catalog and tool drops on FAB.</p>
-                </div>
-                <div class="hero-actions">
-                    <a class="cta-btn primary hover-sound" href="https://www.fab.com/">Visit the FAB store</a>
-                </div>
-                <div class="fab-thumbs">
-                    <a class="fab-thumb hover-sound" href="Studio/Landsnap.html">
-                        <img src="../images/landsnap/FAB-thumbnail.png" alt="LandSnap on FAB">
-                        <div class="fab-thumb-meta">
-                            <span class="fab-thumb-title">LandSnap</span>
-                            <span class="fab-thumb-tag">Version 1.0.0 Release</span>
-                        </div>
-                    </a>
-                    <a class="fab-thumb hover-sound" href="#">
-                        <img src="../images/landsnap/RPCForge-thumbnail.svg" alt="RPC Forge placeholder">
-                        <div class="fab-thumb-meta">
-                            <span class="fab-thumb-title">RPC Forge</span>
-                            <span class="fab-thumb-tag">In Development</span>
-                        </div>
-                    </a>
-                </div>
-            </div>
-        </section>
-
-        <section class="section reveal delay-2">
-            <div class="surface">
-                <div class="section-title-row">
-                    <h2>Donations</h2>
-                    <p>Support Nightshift directly and help us scale production for long-term development.</p>
-                </div>
-                <div class="hero-actions">
-                    <a class="cta-btn primary hover-sound" href="Studio/Donations.html">Support the studio</a>
-                </div>
-            </div>
-        </section>
-
+            <div class="footer-bottom"><div class="social-row"><a class="action-pill hover-sound" href="https://twitter.com" target="_blank" rel="noopener noreferrer">X</a><a class="action-pill hover-sound" href="https://instagram.com" target="_blank" rel="noopener noreferrer">IG</a><a class="action-pill hover-sound" href="https://youtube.com" target="_blank" rel="noopener noreferrer">YT</a></div><p class="footer-note">Copyright 2026 Nightshift. All rights reserved.</p></div>
+        </footer>
     </main>
-
-    <footer>
-        <div class="footer-menus">
-            <ul class="footer-menu">
-                <li><a href="../pages/home.html">Home</a></li>
-                <li><a href="../pages/games.html">Games</a></li>
-                <li><a href="../pages/studio.html">Studio</a></li>
-                <li><a href="../pages/contact.html">Contact</a></li>
-            </ul>
-            <ul class="footer-menu">
-                <li><a href="https://www.epicgames.com/site/en-US/privacypolicy" target="_blank" rel="noopener noreferrer">Epic Privacy Policy</a></li>
-                <li><a href="#">Nightshift Privacy Policy</a></li>
-                <li><a href="#">Applicant Privacy Policy</a></li>
-                <li><a href="#">Site Cookie Policy</a></li>
-            </ul>
-            <ul class="footer-menu">
-                <li><a href="#">Press Kit</a></li>
-                <li><a href="#">Brand Assets</a></li>
-                <li><a href="#">Careers</a></li>
-                <li><a href="#">Community</a></li>
-            </ul>
-        </div>
-        <div class="social-bar">
-            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="social-pill">X</a>
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="social-pill">IG</a>
-            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" class="social-pill">YT</a>
-        </div>
-        <p class="footer-copyright">Copyright 2026 Nightshift. All rights reserved.</p>
-    </footer>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const audio = new Audio("../audio/bop.mp3");
             audio.volume = 0.25;
-
-            const path = window.location.pathname.toLowerCase();
-            const page = path.split("/").pop();
-            let active = "home";
-            if (page === "" || page === "index.html" || page === "home.html") {
-                active = "home";
+            const clock = document.getElementById("mockup-clock");
+            function updateClock() {
+                if (!clock) return;
+                clock.textContent = new Date().toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", second: "2-digit", timeZone: "America/Chicago", timeZoneName: "short" });
             }
-            if (page === "games.html" || path.includes("/games/")) {
-                active = "games";
-            }
-            if (page === "studio.html" || page === "websites.html") {
-                active = "studio";
-            }
-            if (page === "contact.html") {
-                active = "contact";
-            }
-
-            document.querySelectorAll(".nav-links a").forEach((link) => {
-                const label = link.textContent.trim().toLowerCase();
-                if (label === active) {
-                    link.classList.add("active");
-                }
-            });
-
-            function playHoverSound() {
-                audio.currentTime = 0;
-                audio.play().catch(() => {});
-            }
-
             document.querySelectorAll(".hover-sound").forEach((element) => {
-                element.addEventListener("mouseenter", playHoverSound);
+                element.addEventListener("mouseenter", function() {
+                    audio.currentTime = 0;
+                    audio.play().catch(() => {});
+                });
             });
+            updateClock();
+            window.setInterval(updateClock, 1000);
         });
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-

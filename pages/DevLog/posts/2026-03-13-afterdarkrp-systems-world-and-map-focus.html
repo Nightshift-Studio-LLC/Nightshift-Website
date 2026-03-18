@@ -1,69 +1,53 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nightshift | AfterDarkRP systems expansion and the first map-focus districts</title>
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-    <link rel="stylesheet" href="../../../styles/header.css">
-    <link rel="stylesheet" href="../../../styles/footer.css">
-    <link rel="stylesheet" href="../../../styles/default-page.css">
-    <link rel="stylesheet" href="../../../styles/devlog.css">
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="../../../images/icons/nightshift.ico">
+    <link rel="stylesheet" href="../../../styles/home-modus-mockup.css">
 </head>
-
 <body>
-    <div class="header">
-        <a href="../../home.html" class="hover-sound">
-            <img src="../../../images/index/nightshift-transparent.png" alt="Nightshift Logo">
+    <div class="screen-fx" aria-hidden="true"></div>
+    <header class="topbar">
+        <a class="brand hover-sound" href="../../home.html" aria-label="Nightshift home">
+            <img src="../../../images/index/nightshift-transparent.png" alt="Nightshift logo">
         </a>
-
-        <nav class="nav-links">
-            <a href="../../home.html" class="hover-sound">home</a>
-            <div class="nav-item dropdown">
-                <a href="../../games.html" class="hover-sound">games</a>
-                <div class="dropdown-menu">
-                    <a href="../../games/spear.html">Codename SPEAR</a>
-                    <a href="../../games/elder.html">Codename ELDER</a>
-                    <a href="../../games/saint.html">Codename SAINT</a>
-                </div>
-            </div>
-            <a href="../../studio.html" class="hover-sound">studio</a>
-            <a href="../../contact.html" class="hover-sound">contact</a>
+        <nav class="utility-nav" aria-label="Primary">
+            <a href="../../home.html" class="hover-sound">Home</a>
+            <a href="../../games.html" class="hover-sound">Games</a>
+            <a href="../../studio.html" class="hover-sound">Studio</a>
+            <a href="../../DevLog/index.html" class="hover-sound active">Devlog</a>
+            <a href="../../contact.html" class="hover-sound">Contact</a>
         </nav>
-    </div>
-    <div class="header-spacer"></div>
+        <div class="topbar-readout"><span>Devlog Entry</span><strong id="mockup-clock">00:00:00 CST</strong></div>
+    </header>
+    <main class="shell page-shell">
 
-    
-    <main>
-        <section class="page-hero section reveal">
-            <div class="eyebrow">Devlog</div>
-            <h1>AfterDarkRP systems expansion and the first map-focus districts</h1>
-            <p>Since the last devlog, AfterDarkRP has expanded across law, economy, shipments, printers, world interactions, and the first full Weed Grower pipeline, while map focus narrows around Ghetto 01 and Downtown.</p>
-            <div class="hero-actions">
-                <a class="cta-btn ghost hover-sound" href="../index.html">Back to devlog</a>
-            </div>
-            <div class="tag-row"><span class="tag">DarkRP</span><span class="tag">Sandbox</span><span class="tag">Map</span><span class="tag">Economy</span><span class="tag">Systems</span></div>
-            <div class="media-frame devlog-hero"><img src="../../images/afterdarkrp/afterdarkRP-alpha-large.png" alt="AfterDarkRP systems expansion and the first map-focus districts"></div>
+        <section class="page-hero-grid">
+            <article class="page-hero-panel">
+                <p class="eyebrow">Devlog / entry</p>
+                <h1 class="page-title">AfterDarkRP systems expansion and the first map-focus districts</h1>
+                <p class="page-lede">Since the last devlog, AfterDarkRP has expanded across law, economy, shipments, printers, world interactions, and the first full Weed Grower pipeline, while map focus narrows around Ghetto 01 and Downtown.</p>
+                <div class="hero-actions"><a class="cta-btn hover-sound" href="../index.html">Back To Devlog</a></div>
+                <div class="tag-row"><span class="tag">DarkRP</span><span class="tag">Sandbox</span><span class="tag">Map</span><span class="tag">Economy</span><span class="tag">Systems</span></div>
+                <div class="media-frame devlog-hero"><img src="../../images/afterdarkrp/afterdarkRP-alpha-large.png" alt="AfterDarkRP systems expansion and the first map-focus districts"></div>
+            </article>
+            <aside class="page-hero-panel">
+                <p class="eyebrow">Entry metadata</p>
+                <div class="stack-list">
+                    <div><span>Project</span><strong>AfterDarkRP</strong></div>
+                    <div><span>Date</span><strong>MAR 13, 2026</strong></div>
+                    <div><span>Route</span><strong>Public archive</strong></div>
+                </div>
+            </aside>
         </section>
-
-        <section class="section reveal delay-1">
-            <div class="surface">
-                <ul class="list">
-                    <li>Project: AfterDarkRP</li>
-                    <li>Date: MAR 13, 2026</li>
-                </ul>
-            </div>
-        </section>
-
-        <section class="section reveal delay-2">
-            <div class="surface devlog-post-body">
-                <h2>Since the last devlog</h2>
+        <section class="panel feature-panel">
+            <div class="panel-heading"><p class="eyebrow">Field Notes</p><h2>Entry body</h2></div>
+            <div class="devlog-post-body"><h2>Since the last devlog</h2>
 <p>The last AfterDarkRP devlog on <strong>February 13, 2026</strong> was about locking the MVP shape before launch. Since then, the project has widened into a much more complete sandbox stack.</p>
 <p>This stretch of work added real depth across:</p>
 <ul>
@@ -124,6 +108,34 @@
 <li><strong>Terrain / wider city shell</strong>: supporting world structure is in progress, but not the current center of gameplay priority.</li>
 </ul>
 <p>Right now, the initial map emphasis is deliberately on <strong>Ghetto 01</strong> and <strong>Downtown</strong>. That is where the team can make role friction, criminal routes, and world interactions feel intentional first before trying to finish every district at the same depth.</p>
+<h2>Recent visual notes</h2>
+<p>The latest capture pass gives a better read on where map work is actually landing. Ghetto 01 has the most visible shape right now, the broader map view is far enough along to communicate route intent, and the newer previews are still very much in a blockout phase even with geo nodes already doing useful work. Most materials are placeholder at this stage.</p>
+<div class="devlog-gallery">
+<figure>
+<img src="../../../images/afterdarkrp/Devlogs/3-18-26/map.png" alt="AfterDarkRP district map overview">
+<figcaption>Current district map snapshot showing the broader shell around the focused rollout spaces.</figcaption>
+</figure>
+<figure>
+<img src="../../../images/afterdarkrp/Devlogs/3-18-26/ghetto_01_preview.png" alt="AfterDarkRP Ghetto 01 preview looking down a street">
+<figcaption>Ghetto 01 early street read with the current world-density pass in place.</figcaption>
+</figure>
+<figure>
+<img src="../../../images/afterdarkrp/Devlogs/3-18-26/ghetto_01_preview2.png" alt="AfterDarkRP Ghetto 01 preview showing another block angle">
+<figcaption>A second Ghetto 01 angle showing how the block rhythm and sightlines are shaping up for roleplay traffic.</figcaption>
+</figure>
+<figure>
+<img src="../../../images/afterdarkrp/Devlogs/3-18-26/ghetto_01_preview3.png" alt="AfterDarkRP Ghetto 01 preview showing a third environmental view">
+<figcaption>Additional Ghetto 01 environment pass with the district still reading as an early blockout rather than a finished art pass.</figcaption>
+</figure>
+<figure>
+<img src="../../../images/afterdarkrp/Devlogs/3-18-26/ghetto_01_preview4.png" alt="AfterDarkRP Ghetto 01 preview showing another early district blockout">
+<figcaption>Another Ghetto 01 preview showing how the space is being roughed in before materials and detail passes are properly locked.</figcaption>
+</figure>
+<figure>
+<img src="../../../images/afterdarkrp/Devlogs/3-18-26/trainstation_spawnarea_preview.png" alt="AfterDarkRP train station and spawn area early preview">
+<figcaption>Train station and spawn area preview in a very early state, mainly useful for route shape, scale, and layout checks right now.</figcaption>
+</figure>
+</div>
 <h2>What comes next</h2>
 <p>The next sensible push is less about adding random features and more about hardening what is already here:</p>
 <ul>
@@ -133,77 +145,42 @@
 <li>and deepen Ghetto 01 and Downtown until they can carry the first real play sessions.</li>
 </ul>
 <p>This is a much larger build than the one described in the February 13 post. The difference now is not just more content. It is that the systems are starting to connect to place, role identity, and map focus in a way that makes the server feel coherent.</p>
-
-            </div>
+</div>
         </section>
+
+        <footer class="site-footer panel">
+
+            <section class="software-marquee-section" aria-label="Software used by Nightshift">
+                <div class="software-marquee"><div class="software-marquee-track">
+                    <span>Unreal / Source 2 / Enfusion / RAGE</span><span>Blender</span><span>Adobe Suite</span><span>Adobe 3D</span><span>Affinity Suite</span><span>Gaea 2.0</span><span>CC5</span><span>iClone 8</span><span>FruityLoops</span><span>VS Code</span><span>Visual Studio</span><span>GitHub</span><span>Git LFS</span><span>Git Pages</span><span>Wix</span><span>Codex</span>
+                    <span>Unreal / Source 2 / Enfusion / RAGE</span><span>Blender</span><span>Adobe Suite</span><span>Adobe 3D</span><span>Affinity Suite</span><span>Gaea 2.0</span><span>CC5</span><span>iClone 8</span><span>FruityLoops</span><span>VS Code</span><span>Visual Studio</span><span>GitHub</span><span>Git LFS</span><span>Git Pages</span><span>Wix</span><span>Codex</span>
+                </div></div>
+            </section>
+            <div class="footer-grid">
+                <div class="footer-column"><span>Primary routes</span><a class="hover-sound" href="../../home.html">Home</a><a class="hover-sound" href="../../games.html">Games</a><a class="hover-sound" href="../../studio.html">Studio</a><a class="hover-sound" href="../../contact.html">Contact</a></div>
+                <div class="footer-column"><span>Public records</span><a class="hover-sound" href="../../DevLog/index.html">Devlog</a><a href="https://www.epicgames.com/site/en-US/privacypolicy" target="_blank" rel="noopener noreferrer">Epic Privacy Policy</a><a href="#">Nightshift Privacy Policy</a><a href="#">Applicant Privacy Policy</a></div>
+                <div class="footer-column"><span>External surfaces</span><a href="#">Press Kit</a><a href="#">Brand Assets</a><a href="#">Careers</a><a href="#">Community</a></div>
+            </div>
+            <div class="footer-bottom"><div class="social-row"><a class="action-pill hover-sound" href="https://twitter.com" target="_blank" rel="noopener noreferrer">X</a><a class="action-pill hover-sound" href="https://instagram.com" target="_blank" rel="noopener noreferrer">IG</a><a class="action-pill hover-sound" href="https://youtube.com" target="_blank" rel="noopener noreferrer">YT</a></div><p class="footer-note">Copyright 2026 Nightshift. All rights reserved.</p></div>
+        </footer>
     </main>
-
-
-    <footer>
-        <div class="footer-menus">
-            <ul class="footer-menu">
-                <li><a href="../../home.html">Home</a></li>
-                <li><a href="../../games.html">Games</a></li>
-                <li><a href="../../studio.html">Studio</a></li>
-                <li><a href="../../contact.html">Contact</a></li>
-            </ul>
-            <ul class="footer-menu">
-                <li><a href="https://www.epicgames.com/site/en-US/privacypolicy" target="_blank" rel="noopener noreferrer">Epic Privacy Policy</a></li>
-                <li><a href="#">Nightshift Privacy Policy</a></li>
-                <li><a href="#">Applicant Privacy Policy</a></li>
-                <li><a href="#">Site Cookie Policy</a></li>
-            </ul>
-            <ul class="footer-menu">
-                <li><a href="#">Press Kit</a></li>
-                <li><a href="#">Brand Assets</a></li>
-                <li><a href="#">Careers</a></li>
-                <li><a href="#">Community</a></li>
-            </ul>
-        </div>
-        <div class="social-bar">
-            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="social-pill">X</a>
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="social-pill">IG</a>
-            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" class="social-pill">YT</a>
-        </div>
-        <p class="footer-copyright">Copyright 2026 Nightshift. All rights reserved.</p>
-    </footer>
-
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const audio = new Audio("../../../audio/bop.mp3");
             audio.volume = 0.25;
-
-            const path = window.location.pathname.toLowerCase();
-            const page = path.split("/").pop();
-            let active = "home";
-            if (page === "" || page === "index.html" || page === "home.html") {
-                active = "home";
+            const clock = document.getElementById("mockup-clock");
+            function updateClock() {
+                if (!clock) return;
+                clock.textContent = new Date().toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", second: "2-digit", timeZone: "America/Chicago", timeZoneName: "short" });
             }
-            if (page === "games.html" || path.includes("/games/")) {
-                active = "games";
-            }
-            if (page === "studio.html" || page === "websites.html") {
-                active = "studio";
-            }
-            if (page === "contact.html") {
-                active = "contact";
-            }
-
-            document.querySelectorAll(".nav-links a").forEach((link) => {
-                const label = link.textContent.trim().toLowerCase();
-                if (label === active) {
-                    link.classList.add("active");
-                }
-            });
-
-            function playHoverSound() {
-                audio.currentTime = 0;
-                audio.play().catch(() => {});
-            }
-
             document.querySelectorAll(".hover-sound").forEach((element) => {
-                element.addEventListener("mouseenter", playHoverSound);
+                element.addEventListener("mouseenter", function() {
+                    audio.currentTime = 0;
+                    audio.play().catch(() => {});
+                });
             });
+            updateClock();
+            window.setInterval(updateClock, 1000);
         });
     </script>
 </body>

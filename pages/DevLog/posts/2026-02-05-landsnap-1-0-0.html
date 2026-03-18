@@ -1,69 +1,53 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nightshift | LandSnap version 1.0.0 released</title>
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-    <link rel="stylesheet" href="../../../styles/header.css">
-    <link rel="stylesheet" href="../../../styles/footer.css">
-    <link rel="stylesheet" href="../../../styles/default-page.css">
-    <link rel="stylesheet" href="../../../styles/devlog.css">
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="../../../images/icons/nightshift.ico">
+    <link rel="stylesheet" href="../../../styles/home-modus-mockup.css">
 </head>
-
 <body>
-    <div class="header">
-        <a href="../../home.html" class="hover-sound">
-            <img src="../../../images/index/nightshift-transparent.png" alt="Nightshift Logo">
+    <div class="screen-fx" aria-hidden="true"></div>
+    <header class="topbar">
+        <a class="brand hover-sound" href="../../home.html" aria-label="Nightshift home">
+            <img src="../../../images/index/nightshift-transparent.png" alt="Nightshift logo">
         </a>
-
-        <nav class="nav-links">
-            <a href="../../home.html" class="hover-sound">home</a>
-            <div class="nav-item dropdown">
-                <a href="../../games.html" class="hover-sound">games</a>
-                <div class="dropdown-menu">
-                    <a href="../../games/spear.html">Codename SPEAR</a>
-                    <a href="../../games/elder.html">Codename ELDER</a>
-                    <a href="../../games/saint.html">Codename SAINT</a>
-                </div>
-            </div>
-            <a href="../../studio.html" class="hover-sound">studio</a>
-            <a href="../../contact.html" class="hover-sound">contact</a>
+        <nav class="utility-nav" aria-label="Primary">
+            <a href="../../home.html" class="hover-sound">Home</a>
+            <a href="../../games.html" class="hover-sound">Games</a>
+            <a href="../../studio.html" class="hover-sound">Studio</a>
+            <a href="../../DevLog/index.html" class="hover-sound active">Devlog</a>
+            <a href="../../contact.html" class="hover-sound">Contact</a>
         </nav>
-    </div>
-    <div class="header-spacer"></div>
+        <div class="topbar-readout"><span>Devlog Entry</span><strong id="mockup-clock">00:00:00 CST</strong></div>
+    </header>
+    <main class="shell page-shell">
 
-    
-    <main>
-        <section class="page-hero section reveal">
-            <div class="eyebrow">Devlog</div>
-            <h1>LandSnap version 1.0.0 released</h1>
-            <p>LandSnap 1.0.0 is officially released with the core placement workflow locked and ready for production use.</p>
-            <div class="hero-actions">
-                <a class="cta-btn ghost hover-sound" href="../index.html">Back to devlog</a>
-            </div>
-            <div class="tag-row"><span class="tag">Release</span><span class="tag">LandSnap</span><span class="tag">Unreal</span></div>
-            <div class="media-frame devlog-hero"><img src="../../images/landsnap/FAB-thumbnail.png" alt="LandSnap version 1.0.0 released"></div>
+        <section class="page-hero-grid">
+            <article class="page-hero-panel">
+                <p class="eyebrow">Devlog / entry</p>
+                <h1 class="page-title">LandSnap version 1.0.0 released</h1>
+                <p class="page-lede">LandSnap 1.0.0 is officially released with the core placement workflow locked and ready for production use.</p>
+                <div class="hero-actions"><a class="cta-btn hover-sound" href="../index.html">Back To Devlog</a></div>
+                <div class="tag-row"><span class="tag">Release</span><span class="tag">LandSnap</span><span class="tag">Unreal</span></div>
+                <div class="media-frame devlog-hero"><img src="../../images/landsnap/FAB-thumbnail.png" alt="LandSnap version 1.0.0 released"></div>
+            </article>
+            <aside class="page-hero-panel">
+                <p class="eyebrow">Entry metadata</p>
+                <div class="stack-list">
+                    <div><span>Project</span><strong>LandSnap</strong></div>
+                    <div><span>Date</span><strong>FEB 05, 2026</strong></div>
+                    <div><span>Route</span><strong>Public archive</strong></div>
+                </div>
+            </aside>
         </section>
-
-        <section class="section reveal delay-1">
-            <div class="surface">
-                <ul class="list">
-                    <li>Project: LandSnap</li>
-                    <li>Date: FEB 05, 2026</li>
-                </ul>
-            </div>
-        </section>
-
-        <section class="section reveal delay-2">
-            <div class="surface devlog-post-body">
-                <h2>LandSnap version 1.0.0 released</h2>
+        <section class="panel feature-panel">
+            <div class="panel-heading"><p class="eyebrow">Field Notes</p><h2>Entry body</h2></div>
+            <div class="devlog-post-body"><h2>LandSnap version 1.0.0 released</h2>
 <p>LandSnap v1.0.0 is now live.</p>
 <p>This release marks the first stable version of the toolset and locks in the core placement workflow for day-to-day production use.</p>
 <p><img src="../../images/landsnap/RPCForge-thumbnail.svg" alt="LandSnap preview"></p>
@@ -76,77 +60,42 @@
 </ul>
 <h2>What comes next</h2>
 <p>Next updates will focus on quality-of-life improvements, edge-case handling, and targeted iteration from creator feedback.</p>
-
-            </div>
+</div>
         </section>
+
+        <footer class="site-footer panel">
+
+            <section class="software-marquee-section" aria-label="Software used by Nightshift">
+                <div class="software-marquee"><div class="software-marquee-track">
+                    <span>Unreal / Source 2 / Enfusion / RAGE</span><span>Blender</span><span>Adobe Suite</span><span>Adobe 3D</span><span>Affinity Suite</span><span>Gaea 2.0</span><span>CC5</span><span>iClone 8</span><span>FruityLoops</span><span>VS Code</span><span>Visual Studio</span><span>GitHub</span><span>Git LFS</span><span>Git Pages</span><span>Wix</span><span>Codex</span>
+                    <span>Unreal / Source 2 / Enfusion / RAGE</span><span>Blender</span><span>Adobe Suite</span><span>Adobe 3D</span><span>Affinity Suite</span><span>Gaea 2.0</span><span>CC5</span><span>iClone 8</span><span>FruityLoops</span><span>VS Code</span><span>Visual Studio</span><span>GitHub</span><span>Git LFS</span><span>Git Pages</span><span>Wix</span><span>Codex</span>
+                </div></div>
+            </section>
+            <div class="footer-grid">
+                <div class="footer-column"><span>Primary routes</span><a class="hover-sound" href="../../home.html">Home</a><a class="hover-sound" href="../../games.html">Games</a><a class="hover-sound" href="../../studio.html">Studio</a><a class="hover-sound" href="../../contact.html">Contact</a></div>
+                <div class="footer-column"><span>Public records</span><a class="hover-sound" href="../../DevLog/index.html">Devlog</a><a href="https://www.epicgames.com/site/en-US/privacypolicy" target="_blank" rel="noopener noreferrer">Epic Privacy Policy</a><a href="#">Nightshift Privacy Policy</a><a href="#">Applicant Privacy Policy</a></div>
+                <div class="footer-column"><span>External surfaces</span><a href="#">Press Kit</a><a href="#">Brand Assets</a><a href="#">Careers</a><a href="#">Community</a></div>
+            </div>
+            <div class="footer-bottom"><div class="social-row"><a class="action-pill hover-sound" href="https://twitter.com" target="_blank" rel="noopener noreferrer">X</a><a class="action-pill hover-sound" href="https://instagram.com" target="_blank" rel="noopener noreferrer">IG</a><a class="action-pill hover-sound" href="https://youtube.com" target="_blank" rel="noopener noreferrer">YT</a></div><p class="footer-note">Copyright 2026 Nightshift. All rights reserved.</p></div>
+        </footer>
     </main>
-
-
-    <footer>
-        <div class="footer-menus">
-            <ul class="footer-menu">
-                <li><a href="../../home.html">Home</a></li>
-                <li><a href="../../games.html">Games</a></li>
-                <li><a href="../../studio.html">Studio</a></li>
-                <li><a href="../../contact.html">Contact</a></li>
-            </ul>
-            <ul class="footer-menu">
-                <li><a href="https://www.epicgames.com/site/en-US/privacypolicy" target="_blank" rel="noopener noreferrer">Epic Privacy Policy</a></li>
-                <li><a href="#">Nightshift Privacy Policy</a></li>
-                <li><a href="#">Applicant Privacy Policy</a></li>
-                <li><a href="#">Site Cookie Policy</a></li>
-            </ul>
-            <ul class="footer-menu">
-                <li><a href="#">Press Kit</a></li>
-                <li><a href="#">Brand Assets</a></li>
-                <li><a href="#">Careers</a></li>
-                <li><a href="#">Community</a></li>
-            </ul>
-        </div>
-        <div class="social-bar">
-            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="social-pill">X</a>
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="social-pill">IG</a>
-            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" class="social-pill">YT</a>
-        </div>
-        <p class="footer-copyright">Copyright 2026 Nightshift. All rights reserved.</p>
-    </footer>
-
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const audio = new Audio("../../../audio/bop.mp3");
             audio.volume = 0.25;
-
-            const path = window.location.pathname.toLowerCase();
-            const page = path.split("/").pop();
-            let active = "home";
-            if (page === "" || page === "index.html" || page === "home.html") {
-                active = "home";
+            const clock = document.getElementById("mockup-clock");
+            function updateClock() {
+                if (!clock) return;
+                clock.textContent = new Date().toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", second: "2-digit", timeZone: "America/Chicago", timeZoneName: "short" });
             }
-            if (page === "games.html" || path.includes("/games/")) {
-                active = "games";
-            }
-            if (page === "studio.html" || page === "websites.html") {
-                active = "studio";
-            }
-            if (page === "contact.html") {
-                active = "contact";
-            }
-
-            document.querySelectorAll(".nav-links a").forEach((link) => {
-                const label = link.textContent.trim().toLowerCase();
-                if (label === active) {
-                    link.classList.add("active");
-                }
-            });
-
-            function playHoverSound() {
-                audio.currentTime = 0;
-                audio.play().catch(() => {});
-            }
-
             document.querySelectorAll(".hover-sound").forEach((element) => {
-                element.addEventListener("mouseenter", playHoverSound);
+                element.addEventListener("mouseenter", function() {
+                    audio.currentTime = 0;
+                    audio.play().catch(() => {});
+                });
             });
+            updateClock();
+            window.setInterval(updateClock, 1000);
         });
     </script>
 </body>

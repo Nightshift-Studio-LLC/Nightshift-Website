@@ -4,159 +4,94 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nightshift | Contact</title>
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../styles/header.css">
-    <link rel="stylesheet" href="../styles/footer.css">
-    <link rel="stylesheet" href="../styles/default-page.css">
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="../images/icons/nightshift.ico">
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="../styles/home-modus-mockup.css">
 </head>
-
 <body>
-    <div class="header">
-        <a href="../pages/home.html" class="hover-sound">
-            <img src="../images/index/nightshift-transparent.png" alt="Nightshift Logo">
-        </a>
-        <nav class="nav-links">
-    <a href="home.html" class="hover-sound">home</a>
-    <div class="nav-item dropdown">
-        <a href="games.html" class="hover-sound">games</a>
-        <div class="dropdown-menu">
-            <a href="games/spear.html">Codename SPEAR</a>
-            <a href="games/elder.html">Codename ELDER</a>
-            <a href="games/saint.html">Codename SAINT</a>
-        </div>
-    </div>
-    <a href="studio.html" class="hover-sound">studio</a>
-    <a href="contact.html" class="hover-sound">contact</a>
-</nav>
-    </div>
-    <div class="header-spacer"></div>
+    <div class="screen-fx" aria-hidden="true"></div>
+    <header class="topbar">
+        <a class="brand hover-sound" href="home.html" aria-label="Nightshift home"><img src="../images/index/nightshift-transparent.png" alt="Nightshift logo"></a>
+        <nav class="utility-nav" aria-label="Primary">
+            <a href="home.html" class="hover-sound">Home</a>
+            <a href="games.html" class="hover-sound">Games</a>
+            <a href="studio.html" class="hover-sound">Studio</a>
+            <a href="DevLog/index.html" class="hover-sound">Devlog</a>
+            <a href="contact.html" class="hover-sound active">Contact</a>
+        </nav>
+        <div class="topbar-readout"><span>External Relay</span><strong id="mockup-clock">00:00:00 CST</strong></div>
+    </header>
 
-    <main>
-        <section class="page-hero section reveal">
-            <div class="eyebrow">Contact</div>
-            <h1>Talk to Nightshift</h1>
-            <p>Send feedback, report bugs, or reach out about partnerships. We read everything and respond as soon as we can.</p>
-        </section>
-
-        <section id="feedback-forms" class="section reveal delay-1">
-            <div class="container-fluid">
-                <h2 class="mb-4 text-center">Feedback and Reports</h2>
-                <div class="accordion feedback-accordion" id="feedbackAccordion">
-                    <div class="card">
-                        <div class="card-header" id="headingBugFeedback">
-                            <h2 class="mb-0">
-                                <button class="accordion-toggle" type="button" data-toggle="collapse" data-target="#collapseBugFeedback" aria-expanded="true" aria-controls="collapseBugFeedback">
-                                    Website Bug Feedback
-                                </button>
-                            </h2>
-                        </div>
-                        <div id="collapseBugFeedback" class="collapse show" aria-labelledby="headingBugFeedback" data-parent="#feedbackAccordion">
-                            <div class="card-body">
-                                <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSd4GVBHlfcea0tMCbXeEOZ_fKeg2no-WaAE_dK3PtITD8lQyg/viewform?embedded=true" width="100%" height="800" frameborder="0" marginheight="0" marginwidth="0">
-                                    Loading...
-                                </iframe>
-                            </div>
-                        </div>
-                    </div>
+    <main class="shell page-shell">
+        <section class="page-hero-grid">
+            <article class="page-hero-panel">
+                <p class="eyebrow">Contact / intake</p>
+                <h1 class="page-title">Talk to Nightshift.</h1>
+                <p class="page-lede">Use the primary form for site issues, project questions, partnerships, press requests, or general studio contact. The current public contact path stays centralized so requests do not get lost.</p>
+                <div class="hero-actions"><a class="cta-btn primary hover-sound" href="#feedback-form">Open Form</a><a class="cta-btn hover-sound" href="DevLog/index.html">Read Devlog</a></div>
+            </article>
+            <aside class="page-hero-panel">
+                <p class="eyebrow">Current channels</p>
+                <div class="stack-list">
+                    <div><span>Primary intake</span><strong>Website bug + studio contact form</strong></div>
+                    <div><span>Secondary route</span><strong>Direct page links and devlog references</strong></div>
+                    <div><span>Status</span><strong>Additional portals in progress</strong></div>
                 </div>
-            </div>
+            </aside>
         </section>
-
-        <section class="section reveal">
-            <div class="section-wip">
-                <h2>More channels coming soon</h2>
-                <p class="muted">We are building additional feedback portals for playtesters and community support.</p>
-            </div>
+        <section class="contact-grid">
+            <article class="contact-panel">
+                <p class="eyebrow">Routing Notes</p>
+                <h3>What this channel is for</h3>
+                <ul class="list">
+                    <li>Website bugs, broken links, and content issues.</li>
+                    <li>Partnership requests, contractor outreach, and press contact.</li>
+                    <li>General questions about Nightshift projects or current development.</li>
+                </ul>
+                <div class="section-wip"><h3>Additional channels coming soon</h3><p>Dedicated playtester intake and community support surfaces are planned, but the shared relay remains the public entry point for now.</p></div>
+            </article>
+            <article class="contact-panel" id="feedback-form">
+                <p class="eyebrow">Primary Form</p>
+                <h3>Feedback and reports</h3>
+                <div class="form-frame">
+                    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSd4GVBHlfcea0tMCbXeEOZ_fKeg2no-WaAE_dK3PtITD8lQyg/viewform?embedded=true" title="Nightshift contact form">Loading...</iframe>
+                </div>
+            </article>
         </section>
+        <footer class="site-footer panel">
+            <section class="software-marquee-section" aria-label="Software used by Nightshift"><div class="software-marquee"><div class="software-marquee-track">
+                <span>Unreal / Source 2 / Enfusion / RAGE</span><span>Blender</span><span>Adobe Suite</span><span>Adobe 3D</span><span>Affinity Suite</span><span>Gaea 2.0</span><span>CC5</span><span>iClone 8</span><span>FruityLoops</span><span>VS Code</span><span>Visual Studio</span><span>GitHub</span><span>Git LFS</span><span>Git Pages</span><span>Wix</span><span>Codex</span>
+                <span>Unreal / Source 2 / Enfusion / RAGE</span><span>Blender</span><span>Adobe Suite</span><span>Adobe 3D</span><span>Affinity Suite</span><span>Gaea 2.0</span><span>CC5</span><span>iClone 8</span><span>FruityLoops</span><span>VS Code</span><span>Visual Studio</span><span>GitHub</span><span>Git LFS</span><span>Git Pages</span><span>Wix</span><span>Codex</span>
+            </div></div></section>
+            <div class="footer-grid">
+                <div class="footer-column"><span>Primary routes</span><a class="hover-sound" href="home.html">Home</a><a class="hover-sound" href="games.html">Games</a><a class="hover-sound" href="studio.html">Studio</a><a class="hover-sound" href="contact.html">Contact</a></div>
+                <div class="footer-column"><span>Public records</span><a class="hover-sound" href="DevLog/index.html">Devlog</a><a href="https://www.epicgames.com/site/en-US/privacypolicy" target="_blank" rel="noopener noreferrer">Epic Privacy Policy</a><a href="#">Nightshift Privacy Policy</a><a href="#">Applicant Privacy Policy</a></div>
+                <div class="footer-column"><span>External surfaces</span><a href="#">Press Kit</a><a href="#">Brand Assets</a><a href="#">Careers</a><a href="#">Community</a></div>
+            </div>
+            <div class="footer-bottom"><div class="social-row"><a class="action-pill hover-sound" href="https://twitter.com" target="_blank" rel="noopener noreferrer">X</a><a class="action-pill hover-sound" href="https://instagram.com" target="_blank" rel="noopener noreferrer">IG</a><a class="action-pill hover-sound" href="https://youtube.com" target="_blank" rel="noopener noreferrer">YT</a></div><p class="footer-note">Copyright 2026 Nightshift. All rights reserved.</p></div>
+        </footer>
     </main>
-
-    <footer>
-        <div class="footer-menus">
-            <ul class="footer-menu">
-                <li><a href="../pages/home.html">Home</a></li>
-                <li><a href="../pages/games.html">Games</a></li>
-                <li><a href="../pages/studio.html">Studio</a></li>
-                <li><a href="../pages/contact.html">Contact</a></li>
-            </ul>
-            <ul class="footer-menu">
-                <li><a href="https://www.epicgames.com/site/en-US/privacypolicy" target="_blank" rel="noopener noreferrer">Epic Privacy Policy</a></li>
-                <li><a href="#">Nightshift Privacy Policy</a></li>
-                <li><a href="#">Applicant Privacy Policy</a></li>
-                <li><a href="#">Site Cookie Policy</a></li>
-            </ul>
-            <ul class="footer-menu">
-                <li><a href="#">Press Kit</a></li>
-                <li><a href="#">Brand Assets</a></li>
-                <li><a href="#">Careers</a></li>
-                <li><a href="#">Community</a></li>
-            </ul>
-        </div>
-        <div class="social-bar">
-            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="social-pill">X</a>
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="social-pill">IG</a>
-            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" class="social-pill">YT</a>
-        </div>
-        <p class="footer-copyright">Copyright 2026 Nightshift. All rights reserved.</p>
-    </footer>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const audio = new Audio("../audio/bop.mp3");
             audio.volume = 0.25;
-
-            const path = window.location.pathname.toLowerCase();
-            const page = path.split("/").pop();
-            let active = "home";
-            if (page === "" || page === "index.html" || page === "home.html") {
-                active = "home";
+            const clock = document.getElementById("mockup-clock");
+            function updateClock() {
+                if (!clock) return;
+                clock.textContent = new Date().toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", second: "2-digit", timeZone: "America/Chicago", timeZoneName: "short" });
             }
-            if (page === "games.html" || path.includes("/games/")) {
-                active = "games";
-            }
-            if (page === "studio.html" || page === "websites.html") {
-                active = "studio";
-            }
-            if (page === "contact.html") {
-                active = "contact";
-            }
-
-            document.querySelectorAll(".nav-links a").forEach((link) => {
-                const label = link.textContent.trim().toLowerCase();
-                if (label === active) {
-                    link.classList.add("active");
-                }
-            });
-
-            function playHoverSound() {
-                audio.currentTime = 0;
-                audio.play().catch(() => {});
-            }
-
             document.querySelectorAll(".hover-sound").forEach((element) => {
-                element.addEventListener("mouseenter", playHoverSound);
+                element.addEventListener("mouseenter", function() {
+                    audio.currentTime = 0;
+                    audio.play().catch(() => {});
+                });
             });
+            updateClock();
+            window.setInterval(updateClock, 1000);
         });
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-

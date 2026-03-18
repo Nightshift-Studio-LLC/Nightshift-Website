@@ -1,308 +1,132 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Nightshift | Websites</title>
-
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-        <link rel="stylesheet" href="../styles/header.css">
-        <link rel="stylesheet" href="../styles/footer.css">
-        <link rel="stylesheet" href="../styles/default-page.css">
-        <link rel="icon" type="image/x-icon" href="../images/icons/nightshift.ico">
-    </head>
-
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nightshift | Websites</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="../images/icons/nightshift.ico">
+    <link rel="stylesheet" href="../styles/home-modus-mockup.css">
+</head>
 <body>
-    <div class="header">
-        <a href="../pages/home.html" class="hover-sound">
-            <img src="../images/index/nightshift-transparent.png" alt="Nightshift Logo">
-        </a>
-        <nav class="nav-links">
-    <a href="home.html" class="hover-sound">home</a>
-    <div class="nav-item dropdown">
-        <a href="games.html" class="hover-sound">games</a>
-        <div class="dropdown-menu">
-            <a href="games/spear.html">Codename SPEAR</a>
-            <a href="games/elder.html">Codename ELDER</a>
-            <a href="games/saint.html">Codename SAINT</a>
-        </div>
-    </div>
-    <a href="studio.html" class="hover-sound">studio</a>
-    <a href="contact.html" class="hover-sound">contact</a>
-</nav>
-    </div>
-    <div class="header-spacer"></div>
+    <div class="screen-fx" aria-hidden="true"></div>
+    <header class="topbar">
+        <a class="brand hover-sound" href="home.html" aria-label="Nightshift home"><img src="../images/index/nightshift-transparent.png" alt="Nightshift logo"></a>
+        <nav class="utility-nav" aria-label="Primary">
+            <a href="home.html" class="hover-sound">Home</a>
+            <a href="games.html" class="hover-sound">Games</a>
+            <a href="studio.html" class="hover-sound active">Studio</a>
+            <a href="DevLog/index.html" class="hover-sound">Devlog</a>
+            <a href="contact.html" class="hover-sound">Contact</a>
+        </nav>
+        <div class="topbar-readout"><span>Website Services</span><strong id="mockup-clock">00:00:00 CST</strong></div>
+    </header>
 
-    <main>
-        <section class="page-hero section reveal">
-            <div class="eyebrow">Websites</div>
-            <h1>Clear, fixed tiers for fast, modern websites.</h1>
-            <p>Pick a tier that fits your launch. Every build is responsive, performance-minded, and tuned to your brand.</p>
-            <div class="hero-actions">
-                <a class="cta-btn primary hover-sound" href="#pricing-form">Request a quote</a>
-                <a class="cta-btn ghost hover-sound" href="../pages/contact.html">Ask a quick question</a>
-            </div>
+    <main class="shell page-shell">
+        <section class="page-hero-grid">
+            <article class="page-hero-panel">
+                <p class="eyebrow">Websites / fixed tiers</p>
+                <h1 class="page-title">Clear, fixed tiers for fast modern websites.</h1>
+                <p class="page-lede">Nightshift offers lightweight marketing sites and launch surfaces built for readability, responsive performance, and direct deployment without CMS bloat.</p>
+                <div class="hero-actions"><a class="cta-btn primary hover-sound" href="#pricing-form">Request A Quote</a><a class="cta-btn hover-sound" href="contact.html">Ask A Question</a></div>
+            </article>
+            <aside class="page-hero-panel">
+                <p class="eyebrow">Service mode</p>
+                <div class="stack-list">
+                    <div><span>Delivery model</span><strong>Fixed scope, hand-built pages</strong></div>
+                    <div><span>Best fit</span><strong>Launch pages, local businesses, web products</strong></div>
+                    <div><span>Support</span><strong>Deployment, content updates, maintenance</strong></div>
+                </div>
+            </aside>
         </section>
 
-        <section class="section reveal delay-1">
-            <div class="section-title-row">
-                <h2>Hand-Built Websites</h2>
-                <p>No CMS bloat. Lightweight, fast, and clean. Great for local businesses and simple launches.</p>
-            </div>
+        <section class="panel feature-panel">
+            <div class="panel-heading"><p class="eyebrow">Hand-Built Websites</p><h2>Static site tiers</h2></div>
             <div class="pricing-grid">
-                <div class="price-card">
-                    <h3>Starter Static</h3>
-                    <div class="price">$500 <span>/ flat</span></div>
-                    <ul class="price-list">
-                        <li>1-3 pages</li>
-                        <li>Custom HTML/CSS</li>
-                        <li>Mobile-responsive</li>
-                        <li>Basic SEO</li>
-                        <li>Contact form</li>
-                    </ul>
-                </div>
-                <div class="price-card">
-                    <h3>Standard Static</h3>
-                    <div class="price">$900 <span>/ flat</span></div>
-                    <ul class="price-list">
-                        <li>4-6 pages</li>
-                        <li>Light JS interactions</li>
-                        <li>Image optimization</li>
-                        <li>Analytics setup</li>
-                    </ul>
-                </div>
-                <div class="price-card">
-                    <h3>Enhanced Static</h3>
-                    <div class="price">$1,500 <span>/ flat</span></div>
-                    <ul class="price-list">
-                        <li>7-10 pages</li>
-                        <li>Animations</li>
-                        <li>Performance optimization</li>
-                        <li>Deployment + domain hookup</li>
-                    </ul>
-                </div>
+                <article class="price-card"><h3>Starter Static</h3><div class="price">$500 <span>/ flat</span></div><ul class="price-list"><li>1-3 pages</li><li>Custom HTML/CSS</li><li>Mobile responsive</li><li>Basic SEO</li><li>Contact form</li></ul></article>
+                <article class="price-card"><h3>Standard Static</h3><div class="price">$900 <span>/ flat</span></div><ul class="price-list"><li>4-6 pages</li><li>Light JS interactions</li><li>Image optimization</li><li>Analytics setup</li></ul></article>
+                <article class="price-card"><h3>Enhanced Static</h3><div class="price">$1,500 <span>/ flat</span></div><ul class="price-list"><li>7-10 pages</li><li>Animations</li><li>Performance optimization</li><li>Deployment + domain hookup</li></ul></article>
             </div>
         </section>
 
-        <section class="section reveal delay-2">
-            <div class="section-title-row">
-                <h2>Wix Websites</h2>
-                <p>Client-friendly editing with hosting included. Best when you want to own updates.</p>
-            </div>
+        <section class="panel feature-panel">
+            <div class="panel-heading"><p class="eyebrow">Wix Websites</p><h2>Editable client surfaces</h2></div>
             <div class="pricing-grid">
-                <div class="price-card">
-                    <h3>Wix Basic</h3>
-                    <div class="price">$750 <span>/ flat</span></div>
-                    <ul class="price-list">
-                        <li>3-5 pages</li>
-                        <li>Theme customization</li>
-                        <li>Mobile optimization</li>
-                        <li>Best for solo owners</li>
-                    </ul>
-                </div>
-                <div class="price-card">
-                    <h3>Wix Business</h3>
-                    <div class="price">$1,250 <span>/ flat</span></div>
-                    <ul class="price-list">
-                        <li>6-10 pages</li>
-                        <li>Branding and structure</li>
-                        <li>Basic SEO</li>
-                        <li>Form integrations</li>
-                    </ul>
-                </div>
-                <div class="price-card">
-                    <h3>Wix Advanced</h3>
-                    <div class="price">$2,500+ <span>/ flat</span></div>
-                    <ul class="price-list">
-                        <li>eCommerce or bookings</li>
-                        <li>Memberships or gated content</li>
-                        <li>Custom layouts</li>
-                        <li>Best for shops and services</li>
-                    </ul>
-                </div>
+                <article class="price-card"><h3>Wix Basic</h3><div class="price">$750 <span>/ flat</span></div><ul class="price-list"><li>3-5 pages</li><li>Theme customization</li><li>Mobile optimization</li><li>Best for solo owners</li></ul></article>
+                <article class="price-card"><h3>Wix Business</h3><div class="price">$1,250 <span>/ flat</span></div><ul class="price-list"><li>6-10 pages</li><li>Branding and structure</li><li>Basic SEO</li><li>Form integrations</li></ul></article>
+                <article class="price-card"><h3>Wix Advanced</h3><div class="price">$2,500+ <span>/ flat</span></div><ul class="price-list"><li>eCommerce or bookings</li><li>Memberships or gated content</li><li>Custom layouts</li><li>Best for shops and services</li></ul></article>
             </div>
         </section>
 
-        <section class="section reveal delay-2">
-            <div class="section-title-row">
-                <h2>Web3 Websites</h2>
-                <p>Wallet-ready, token-aware experiences built for product launches and community hubs.</p>
-            </div>
-            <div class="pricing-grid">
-                <div class="price-card">
-                    <h3>Web3 Launch</h3>
-                    <div class="price">$1,250 <span>/ flat</span></div>
-                    <ul class="price-list">
-                        <li>1-3 pages</li>
-                        <li>Wallet connect integration</li>
-                        <li>Token-gated CTA blocks</li>
-                        <li>Analytics + event tracking</li>
-                    </ul>
-                </div>
-                <div class="price-card">
-                    <h3>Web3 Community</h3>
-                    <div class="price">$2,200 <span>/ flat</span></div>
-                    <ul class="price-list">
-                        <li>4-6 pages</li>
-                        <li>Membership gating</li>
-                        <li>Live mint or claim flow</li>
-                        <li>Discord / X embeds</li>
-                    </ul>
-                </div>
-                <div class="price-card">
-                    <h3>Web3 Protocol</h3>
-                    <div class="price">$3,800+ <span>/ flat</span></div>
-                    <ul class="price-list">
-                        <li>7-10 pages</li>
-                        <li>Custom data dashboards</li>
-                        <li>Multi-wallet support</li>
-                        <li>Launch support</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <section class="section reveal delay-2">
-            <div class="section-title-row">
-                <h2>Maintenance</h2>
-                <p>Keep your site fresh, fast, and secure with ongoing updates.</p>
-            </div>
-            <div class="pricing-grid">
-                <div class="price-card">
-                    <h3>Maintenance Core</h3>
-                    <div class="price">$85 <span>/ month</span></div>
-                    <ul class="price-list">
-                        <li>Content updates</li>
-                        <li>Image swaps</li>
-                        <li>Basic performance checks</li>
-                        <li>Email support</li>
-                    </ul>
-                </div>
-                <div class="price-card">
-                    <h3>Maintenance Plus</h3>
-                    <div class="price">$175 <span>/ month</span></div>
-                    <ul class="price-list">
-                        <li>Priority edits</li>
-                        <li>Quarterly refresh</li>
-                        <li>SEO tune-ups</li>
-                        <li>Monthly analytics recap</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <section class="section reveal delay-2">
-            <div class="section-title-row">
-                <h2>Trusted domain providers</h2>
-                <p>Reliable registrars I recommend for clean DNS management and good support.</p>
-            </div>
-            <div class="surface">
+        <section class="surface-grid">
+            <article class="surface-card">
+                <p class="eyebrow">Web3 Websites</p>
+                <h3>Wallet-ready launches</h3>
                 <ul class="list">
-                    <li>Cloudflare Registrar</li>
-                    <li>Namecheap</li>
-                    <li>Porkbun</li>
-                    <li>Squarespace Domains</li>
+                    <li>Web3 Launch: $1,250 flat for 1-3 pages with wallet connect and token-gated calls to action.</li>
+                    <li>Web3 Community: $2,200 flat for 4-6 pages with membership gating and launch support.</li>
+                    <li>Web3 Protocol: $3,800+ flat for dashboard-heavy, multi-wallet product surfaces.</li>
                 </ul>
-            </div>
+            </article>
+            <article class="surface-card">
+                <p class="eyebrow">Maintenance</p>
+                <h3>Ongoing support</h3>
+                <ul class="list">
+                    <li>Maintenance Core: $85 per month for content edits, image swaps, and performance checks.</li>
+                    <li>Maintenance Plus: $175 per month for priority edits, SEO tune-ups, and analytics recaps.</li>
+                    <li>Recommended registrars: Cloudflare Registrar, Namecheap, Porkbun, Squarespace Domains.</li>
+                </ul>
+            </article>
         </section>
 
-        <section id="pricing-form" class="section reveal">
-            <div class="section-title-row">
-                <h2>Website questionnaire</h2>
-                <p>Drop your details and I will follow up with timing, pricing, and next steps.</p>
-            </div>
-            <div class="surface">
-                <div class="section-wip">
-                    <h2>Google Form coming soon</h2>
-                    <p class="muted">Replace the embed below with your live form URL when it is ready.</p>
-                </div>
-                <div class="video-frame" style="margin-top: 24px;">
-                    <iframe src="YOUR_GOOGLE_FORM_EMBED_URL" title="Nightshift Website Questionnaire" allowfullscreen></iframe>
-                </div>
-            </div>
+        <section class="contact-grid" id="pricing-form">
+            <article class="contact-panel">
+                <p class="eyebrow">Questionnaire</p>
+                <h3>Request a build quote</h3>
+                <p>Drop your details and Nightshift will follow up with timing, scope, and the right tier for your project.</p>
+                <div class="section-wip"><h3>Form slot reserved</h3><p>Replace the placeholder embed with the live intake form when it is ready.</p></div>
+            </article>
+            <article class="contact-panel">
+                <p class="eyebrow">Form Surface</p>
+                <h3>Pending embed</h3>
+                <div class="form-frame"><iframe src="about:blank" title="Nightshift website questionnaire"></iframe></div>
+            </article>
         </section>
+
+        <footer class="site-footer panel">
+            <section class="software-marquee-section" aria-label="Software used by Nightshift"><div class="software-marquee"><div class="software-marquee-track">
+                <span>Unreal / Source 2 / Enfusion / RAGE</span><span>Blender</span><span>Adobe Suite</span><span>Adobe 3D</span><span>Affinity Suite</span><span>Gaea 2.0</span><span>CC5</span><span>iClone 8</span><span>FruityLoops</span><span>VS Code</span><span>Visual Studio</span><span>GitHub</span><span>Git LFS</span><span>Git Pages</span><span>Wix</span><span>Codex</span>
+                <span>Unreal / Source 2 / Enfusion / RAGE</span><span>Blender</span><span>Adobe Suite</span><span>Adobe 3D</span><span>Affinity Suite</span><span>Gaea 2.0</span><span>CC5</span><span>iClone 8</span><span>FruityLoops</span><span>VS Code</span><span>Visual Studio</span><span>GitHub</span><span>Git LFS</span><span>Git Pages</span><span>Wix</span><span>Codex</span>
+            </div></div></section>
+            <div class="footer-grid">
+                <div class="footer-column"><span>Primary routes</span><a class="hover-sound" href="home.html">Home</a><a class="hover-sound" href="games.html">Games</a><a class="hover-sound" href="studio.html">Studio</a><a class="hover-sound" href="contact.html">Contact</a></div>
+                <div class="footer-column"><span>Public records</span><a class="hover-sound" href="DevLog/index.html">Devlog</a><a href="https://www.epicgames.com/site/en-US/privacypolicy" target="_blank" rel="noopener noreferrer">Epic Privacy Policy</a><a href="#">Nightshift Privacy Policy</a><a href="#">Applicant Privacy Policy</a></div>
+                <div class="footer-column"><span>External surfaces</span><a href="#">Press Kit</a><a href="#">Brand Assets</a><a href="#">Careers</a><a href="#">Community</a></div>
+            </div>
+            <div class="footer-bottom"><div class="social-row"><a class="action-pill hover-sound" href="https://twitter.com" target="_blank" rel="noopener noreferrer">X</a><a class="action-pill hover-sound" href="https://instagram.com" target="_blank" rel="noopener noreferrer">IG</a><a class="action-pill hover-sound" href="https://youtube.com" target="_blank" rel="noopener noreferrer">YT</a></div><p class="footer-note">Copyright 2026 Nightshift. All rights reserved.</p></div>
+        </footer>
     </main>
-
-    <footer>
-        <div class="footer-menus">
-            <ul class="footer-menu">
-                <li><a href="../pages/home.html">Home</a></li>
-                <li><a href="../pages/games.html">Games</a></li>
-                <li><a href="../pages/studio.html">Studio</a></li>
-                <li><a href="../pages/contact.html">Contact</a></li>
-            </ul>
-            <ul class="footer-menu">
-                <li><a href="https://www.epicgames.com/site/en-US/privacypolicy" target="_blank" rel="noopener noreferrer">Epic Privacy Policy</a></li>
-                <li><a href="#">Nightshift Privacy Policy</a></li>
-                <li><a href="#">Applicant Privacy Policy</a></li>
-                <li><a href="#">Site Cookie Policy</a></li>
-            </ul>
-            <ul class="footer-menu">
-                <li><a href="#">Press Kit</a></li>
-                <li><a href="#">Brand Assets</a></li>
-                <li><a href="#">Careers</a></li>
-                <li><a href="#">Community</a></li>
-            </ul>
-        </div>
-        <div class="social-bar">
-            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="social-pill">X</a>
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="social-pill">IG</a>
-            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" class="social-pill">YT</a>
-        </div>
-        <p class="footer-copyright">Copyright 2026 Nightshift. All rights reserved.</p>
-    </footer>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const audio = new Audio("../audio/bop.mp3");
             audio.volume = 0.25;
-
-            const path = window.location.pathname.toLowerCase();
-            const page = path.split("/").pop();
-            let active = "home";
-            if (page === "" || page === "index.html" || page === "home.html") {
-                active = "home";
+            const clock = document.getElementById("mockup-clock");
+            function updateClock() {
+                if (!clock) return;
+                clock.textContent = new Date().toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", second: "2-digit", timeZone: "America/Chicago", timeZoneName: "short" });
             }
-            if (page === "games.html" || path.includes("/games/")) {
-                active = "games";
-            }
-            if (page === "studio.html" || page === "websites.html") {
-                active = "studio";
-            }
-            if (page === "contact.html") {
-                active = "contact";
-            }
-
-            document.querySelectorAll(".nav-links a").forEach((link) => {
-                const label = link.textContent.trim().toLowerCase();
-                if (label === active) {
-                    link.classList.add("active");
-                }
-            });
-
-            function playHoverSound() {
-                audio.currentTime = 0;
-                audio.play().catch(() => {});
-            }
-
             document.querySelectorAll(".hover-sound").forEach((element) => {
-                element.addEventListener("mouseenter", playHoverSound);
+                element.addEventListener("mouseenter", function() {
+                    audio.currentTime = 0;
+                    audio.play().catch(() => {});
+                });
             });
+            updateClock();
+            window.setInterval(updateClock, 1000);
         });
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
