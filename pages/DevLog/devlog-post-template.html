@@ -4,164 +4,132 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nightshift | Devlog Entry</title>
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-    <link rel="stylesheet" href="../../styles/header.css">
-    <link rel="stylesheet" href="../../styles/footer.css">
-    <link rel="stylesheet" href="../../styles/default-page.css">
-    <link rel="stylesheet" href="../../styles/devlog.css">
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="../../images/icons/nightshift.ico">
+    <link rel="stylesheet" href="../../styles/home-modus-mockup.css">
 </head>
-
 <body>
-    <div class="header">
-        <a href="/" class="hover-sound">
-            <img src="../../images/index/nightshift-transparent.png" alt="Nightshift Logo">
+    <div class="screen-fx" aria-hidden="true"></div>
+    <header class="topbar">
+        <a class="brand hover-sound" href="/" aria-label="Nightshift home">
+            <img src="../../images/index/nightshift-transparent.png" alt="Nightshift logo">
         </a>
-        <nav class="nav-links">
-    <a href="/" class="hover-sound">home</a>
-    <div class="nav-item dropdown">
-        <a href="../games.html" class="hover-sound">games</a>
-        <div class="dropdown-menu">
-            <a href="../games/spear.html">Codename SPEAR</a>
-            <a href="../games/elder.html">Codename ELDER</a>
-            <a href="../games/saint.html">Codename SAINT</a>
-        </div>
-    </div>
-    <a href="../studio.html" class="hover-sound">studio</a>
-    <a href="../contact.html" class="hover-sound">contact</a>
-</nav>
-    </div>
-    <div class="header-spacer"></div>
+        <nav class="utility-nav" aria-label="Primary">
+            <a href="/" class="hover-sound">Home</a>
+            <a href="../games.html" class="hover-sound">Games</a>
+            <a href="../studio.html" class="hover-sound">Studio</a>
+            <a href="../DevLog/index.html" class="hover-sound active">Devlog</a>
+            <a href="../contact.html" class="hover-sound">Contact</a>
+        </nav>
+        <div class="topbar-readout"><span>Devlog Entry</span><strong id="mockup-clock">00:00:00 CST</strong></div>
+    </header>
 
-    <main>
-        <section class="page-hero section reveal">
-            <div class="eyebrow">Devlog</div>
-            <h1>Post title goes here with a clear, punchy hook.</h1>
-            <p>Short summary of the update. Mention the current focus, what changed, and why it matters.</p>
-            <div class="hero-actions">
-                <a class="cta-btn ghost hover-sound" href="devlog.html">Back to devlog</a>
-            </div>
+    <main class="shell page-shell">
+        <section class="page-hero-grid">
+            <article class="page-hero-panel">
+                <p class="eyebrow">Devlog / template</p>
+                <h1 class="page-title">Post title goes here with a clear, punchy hook.</h1>
+                <p class="page-lede">Short summary of the update. Mention the current focus, what changed, and why it matters.</p>
+                <div class="hero-actions"><a class="cta-btn hover-sound" href="index.html">Back to Devlog</a></div>
+            </article>
+            <aside class="page-hero-panel">
+                <p class="eyebrow">Entry metadata</p>
+                <div class="stack-list">
+                    <div><span>Project</span><strong>Codename SPEAR</strong></div>
+                    <div><span>Date</span><strong>Feb 12, 2026</strong></div>
+                    <div><span>Status</span><strong>Preproduction</strong></div>
+                </div>
+            </aside>
         </section>
 
-        <section class="section reveal delay-1">
-            <div class="section-title-row">
-                <h2>Snapshot</h2>
-                <p>Quick metadata to anchor the entry.</p>
-            </div>
-            <div class="surface">
+        <section class="surface-grid">
+            <article class="surface-card">
+                <p class="eyebrow">Snapshot</p>
+                <h3>Quick metadata to anchor the entry</h3>
                 <ul class="list">
                     <li>Project: Codename SPEAR</li>
                     <li>Date: Feb 12, 2026</li>
                     <li>Status: Preproduction</li>
                     <li>Tags: Combat, Progression, Atmosphere</li>
                 </ul>
-            </div>
-        </section>
-
-        <section class="section reveal delay-2">
-            <div class="section-title-row">
-                <h2>What we tested</h2>
-                <p>Use short paragraphs and lists to keep the read fast.</p>
-            </div>
-            <div class="surface">
-                <p class="muted">Write 2-3 paragraphs here about the experiment, the goal, and the outcome. Include a clear takeaway.</p>
-                <ul class="list" style="margin-top: 16px;">
-                    <li>Key test: describe the experiment.</li>
-                    <li>Result: what worked, what did not.</li>
-                    <li>Next step: how you are iterating.</li>
+            </article>
+            <article class="surface-card">
+                <p class="eyebrow">Use notes</p>
+                <h3>What this template should do</h3>
+                <ul class="list">
+                    <li>Lead with one sharp change or insight.</li>
+                    <li>Keep paragraphs short and operational.</li>
+                    <li>Link to a game, tool, or public surface where relevant.</li>
                 </ul>
-            </div>
+            </article>
         </section>
 
-        <section class="section reveal delay-2">
-            <div class="section-title-row">
-                <h2>What is next</h2>
-                <p>Wrap with a tight set of follow-ups or questions.</p>
+        <section class="panel notes-panel">
+            <div class="panel-heading">
+                <p class="eyebrow">What We Tested</p>
+                <h2>Use short paragraphs and lists to keep the read fast.</h2>
             </div>
-            <div class="surface">
-                <p class="muted">Share the next milestone, experiment, or decision you are moving toward.</p>
-            </div>
+            <p class="muted">Write two or three paragraphs here about the experiment, the goal, and the outcome. Close the section with one takeaway that clearly explains why the work matters.</p>
+            <ul class="list">
+                <li>Key test: describe the experiment.</li>
+                <li>Result: what worked, what did not.</li>
+                <li>Next step: how the next iteration changes.</li>
+            </ul>
         </section>
+
+        <section class="panel notes-panel">
+            <div class="panel-heading">
+                <p class="eyebrow">What Is Next</p>
+                <h2>Wrap with a tight set of follow-ups or open questions.</h2>
+            </div>
+            <p class="muted">Share the next milestone, experiment, or decision the team is moving toward.</p>
+        </section>
+
+        <footer class="site-footer panel">
+            <section class="software-marquee-section" aria-label="Software used by Nightshift">
+                <div class="software-marquee"><div class="software-marquee-track">
+                    <span>Unreal / Source 2 / Enfusion / RAGE</span><span>Blender</span><span>Adobe Suite</span><span>Adobe 3D</span><span>Affinity Suite</span><span>Gaea 2.0</span><span>CC5</span><span>iClone 8</span><span>FruityLoops</span><span>VS Code</span><span>Visual Studio</span><span>GitHub</span><span>Git LFS</span><span>Git Pages</span><span>Wix</span><span>Codex</span>
+                    <span>Unreal / Source 2 / Enfusion / RAGE</span><span>Blender</span><span>Adobe Suite</span><span>Adobe 3D</span><span>Affinity Suite</span><span>Gaea 2.0</span><span>CC5</span><span>iClone 8</span><span>FruityLoops</span><span>VS Code</span><span>Visual Studio</span><span>GitHub</span><span>Git LFS</span><span>Git Pages</span><span>Wix</span><span>Codex</span>
+                </div></div>
+            </section>
+            <div class="footer-grid">
+                <div class="footer-column"><span>Primary routes</span><a class="hover-sound" href="/">Home</a><a class="hover-sound" href="../games.html">Games</a><a class="hover-sound" href="../studio.html">Studio</a><a class="hover-sound" href="../contact.html">Contact</a></div>
+                <div class="footer-column"><span>Public records</span><a class="hover-sound" href="../DevLog/index.html">Devlog</a><a href="https://www.epicgames.com/site/en-US/privacypolicy" target="_blank" rel="noopener noreferrer">Epic Privacy Policy</a><a href="#">Nightshift Privacy Policy</a><a href="#">Applicant Privacy Policy</a></div>
+                <div class="footer-column"><span>External surfaces</span><a href="#">Press Kit</a><a href="#">Brand Assets</a><a href="#">Careers</a><a href="#">Community</a></div>
+            </div>
+            <div class="footer-bottom"><div class="social-row"><a class="action-pill hover-sound" href="https://twitter.com" target="_blank" rel="noopener noreferrer">X</a><a class="action-pill hover-sound" href="https://instagram.com" target="_blank" rel="noopener noreferrer">IG</a><a class="action-pill hover-sound" href="https://youtube.com" target="_blank" rel="noopener noreferrer">YT</a></div><p class="footer-note">Copyright 2026 Nightshift. All rights reserved.</p></div>
+        </footer>
     </main>
-
-    <footer>
-        <div class="footer-menus">
-            <ul class="footer-menu">
-                <li><a href="/">Home</a></li>
-                <li><a href="../games.html">Games</a></li>
-                <li><a href="../studio.html">Studio</a></li>
-                <li><a href="../contact.html">Contact</a></li>
-            </ul>
-            <ul class="footer-menu">
-                <li><a href="https://www.epicgames.com/site/en-US/privacypolicy" target="_blank" rel="noopener noreferrer">Epic Privacy Policy</a></li>
-                <li><a href="#">Nightshift Privacy Policy</a></li>
-                <li><a href="#">Applicant Privacy Policy</a></li>
-                <li><a href="#">Site Cookie Policy</a></li>
-            </ul>
-            <ul class="footer-menu">
-                <li><a href="#">Press Kit</a></li>
-                <li><a href="#">Brand Assets</a></li>
-                <li><a href="#">Careers</a></li>
-                <li><a href="#">Community</a></li>
-            </ul>
-        </div>
-        <div class="social-bar">
-            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="social-pill">X</a>
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="social-pill">IG</a>
-            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" class="social-pill">YT</a>
-        </div>
-        <p class="footer-copyright">Copyright 2026 Nightshift. All rights reserved.</p>
-    </footer>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const audio = new Audio("../../audio/bop.mp3");
             audio.volume = 0.25;
+            const clock = document.getElementById("mockup-clock");
 
-            const path = window.location.pathname.toLowerCase();
-            const page = path.split("/").pop();
-            let active = "home";
-            if (page === "" || page === "index.html" || page === "home.html") {
-                active = "home";
-            }
-            if (page === "games.html" || path.includes("/games/")) {
-                active = "games";
-            }
-            if (page === "studio.html" || page === "websites.html") {
-                active = "studio";
-            }
-            if (page === "contact.html") {
-                active = "contact";
-            }
-
-            document.querySelectorAll(".nav-links a").forEach((link) => {
-                const label = link.textContent.trim().toLowerCase();
-                if (label === active) {
-                    link.classList.add("active");
-                }
-            });
-
-            function playHoverSound() {
-                audio.currentTime = 0;
-                audio.play().catch(() => {});
+            function updateClock() {
+                if (!clock) return;
+                clock.textContent = new Date().toLocaleTimeString("en-US", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    second: "2-digit",
+                    timeZone: "America/Chicago",
+                    timeZoneName: "short"
+                });
             }
 
             document.querySelectorAll(".hover-sound").forEach((element) => {
-                element.addEventListener("mouseenter", playHoverSound);
+                element.addEventListener("mouseenter", function() {
+                    audio.currentTime = 0;
+                    audio.play().catch(() => {});
+                });
             });
+
+            updateClock();
+            window.setInterval(updateClock, 1000);
         });
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-

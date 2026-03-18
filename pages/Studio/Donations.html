@@ -1,139 +1,123 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Nightshift | Donations</title>
-
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-        <link rel="stylesheet" href="../../styles/header.css">
-        <link rel="stylesheet" href="../../styles/footer.css">
-        <link rel="stylesheet" href="../../styles/default-page.css">
-        <link rel="icon" type="image/x-icon" href="../../images/icons/nightshift.ico">
-    </head>
-
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nightshift | Donations</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="../../images/icons/nightshift.ico">
+    <link rel="stylesheet" href="../../styles/home-modus-mockup.css">
+</head>
 <body>
-    <div class="header">
-        <a href="/" class="hover-sound">
-            <img src="../../images/index/nightshift-transparent.png" alt="Nightshift Logo">
+    <div class="screen-fx" aria-hidden="true"></div>
+    <header class="topbar">
+        <a class="brand hover-sound" href="/" aria-label="Nightshift home">
+            <img src="../../images/index/nightshift-transparent.png" alt="Nightshift logo">
         </a>
-        <nav class="nav-links">
-            <a href="/" class="hover-sound">home</a>
-            <div class="nav-item dropdown">
-                <a href="../games.html" class="hover-sound">games</a>
-                <div class="dropdown-menu">
-                    <a href="../games/spear.html">Codename SPEAR</a>
-                    <a href="../games/elder.html">Codename ELDER</a>
-                    <a href="../games/saint.html">Codename SAINT</a>
-                </div>
-            </div>
-            <a href="../studio.html" class="hover-sound">studio</a>
-            <a href="../contact.html" class="hover-sound">contact</a>
+        <nav class="utility-nav" aria-label="Primary">
+            <a href="/" class="hover-sound">Home</a>
+            <a href="../games.html" class="hover-sound">Games</a>
+            <a href="../studio.html" class="hover-sound active">Studio</a>
+            <a href="../contact.html" class="hover-sound">Contact</a>
         </nav>
-    </div>
-    <div class="header-spacer"></div>
+        <div class="topbar-readout"><span>Funding Surface</span><strong id="mockup-clock">00:00:00 CST</strong></div>
+    </header>
 
-    <main>
-        <section class="page-hero section reveal">
-            <div class="eyebrow">Donations</div>
-            <h1>Nightshift Studio is self funded. Help fund our war chest.</h1>
-            <p>Your support helps us move faster, stay independent, and ship with higher quality.</p>
-        </section>
-
-        <section class="section reveal delay-1">
-            <div class="surface">
-                <h2 class="section-title">Donation Links</h2>
-                <p class="muted">Add your live donation URLs below.</p>
-                <div class="hero-actions">
-                    <a class="cta-btn primary hover-sound" href="#">PayPal (Add Link)</a>
-                    <a class="cta-btn ghost hover-sound" href="#">Patreon (Add Link)</a>
-                    <a class="cta-btn ghost hover-sound" href="#">USDC Crypto (Add Link)</a>
+    <main class="shell page-shell">
+        <section class="page-hero-grid">
+            <article class="page-hero-panel">
+                <p class="eyebrow">Donations / support</p>
+                <h1 class="page-title">Nightshift Studio is self funded. Help fund our war chest.</h1>
+                <p class="page-lede">Direct support helps Nightshift move faster, stay independent, and cover the tools, contractors, and production runway needed to ship stronger work.</p>
+            </article>
+            <aside class="page-hero-panel">
+                <p class="eyebrow">Backing model</p>
+                <div class="stack-list">
+                    <div><span>Priority</span><strong>Speed up production without outside control</strong></div>
+                    <div><span>Use case</span><strong>Tooling, specialists, software, and launch prep</strong></div>
+                    <div><span>Status</span><strong>Links placeholder until payment rails go live</strong></div>
                 </div>
+            </aside>
+        </section>
+
+        <section class="panel notes-panel">
+            <div class="section-wip">
+                <h2>Donation links</h2>
+                <p class="muted">Drop the live URLs into these actions when each funding surface is ready.</p>
+            </div>
+            <div class="hero-actions">
+                <a class="cta-btn primary hover-sound" href="#">PayPal</a>
+                <a class="cta-btn hover-sound" href="#">Patreon</a>
+                <a class="cta-btn hover-sound" href="#">USDC Crypto</a>
             </div>
         </section>
 
-        <section class="section reveal delay-2">
-            <div class="surface">
-                <h2 class="section-title">Financial Goals</h2>
+        <section class="surface-grid">
+            <article class="surface-card">
+                <p class="eyebrow">Funding goals</p>
+                <h3>What support unlocks first</h3>
                 <ul class="list">
-                    <li>Hire employees to supplement AI outsourcing and hat wearing.</li>
-                    <li>Tool acquisition to secure internal pipeline across engines.</li>
-                    <li>Launch a AAA quality title in time.</li>
+                    <li>Hire contractors and part-time specialists to remove pipeline bottlenecks.</li>
+                    <li>Acquire engine, art, and production tools needed for a stable internal stack.</li>
+                    <li>Extend runway for shipping a higher-quality flagship release.</li>
                 </ul>
-            </div>
+            </article>
+            <article class="surface-card">
+                <p class="eyebrow">Why it matters</p>
+                <h3>What faster funding changes</h3>
+                <ul class="list">
+                    <li>Less context switching across many hats.</li>
+                    <li>More time spent on systems, polish, documentation, and business development.</li>
+                    <li>Better consistency across public releases and studio-facing tools.</li>
+                </ul>
+            </article>
         </section>
-    </main>
 
-    <footer>
-        <div class="footer-menus">
-            <ul class="footer-menu">
-                <li><a href="/">Home</a></li>
-                <li><a href="../../pages/games.html">Games</a></li>
-                <li><a href="../../pages/studio.html">Studio</a></li>
-                <li><a href="../../pages/contact.html">Contact</a></li>
-            </ul>
-            <ul class="footer-menu">
-                <li><a href="https://www.epicgames.com/site/en-US/privacypolicy" target="_blank" rel="noopener noreferrer">Epic Privacy Policy</a></li>
-                <li><a href="#">Nightshift Privacy Policy</a></li>
-                <li><a href="#">Applicant Privacy Policy</a></li>
-                <li><a href="#">Site Cookie Policy</a></li>
-            </ul>
-            <ul class="footer-menu">
-                <li><a href="#">Press Kit</a></li>
-                <li><a href="#">Brand Assets</a></li>
-                <li><a href="#">Careers</a></li>
-                <li><a href="#">Community</a></li>
-            </ul>
-        </div>
-        <div class="social-bar">
-            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="social-pill">X</a>
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="social-pill">IG</a>
-            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" class="social-pill">YT</a>
-        </div>
-        <p class="footer-copyright">Copyright 2026 Nightshift. All rights reserved.</p>
-    </footer>
+        <footer class="site-footer panel">
+            <section class="software-marquee-section" aria-label="Software used by Nightshift">
+                <div class="software-marquee"><div class="software-marquee-track">
+                    <span>Unreal / Source 2 / Enfusion / RAGE</span><span>Blender</span><span>Adobe Suite</span><span>Adobe 3D</span><span>Affinity Suite</span><span>Gaea 2.0</span><span>CC5</span><span>iClone 8</span><span>Marvelous Designer</span><span>Ornatrix</span><span>FruityLoops</span><span>VS Code</span><span>Visual Studio</span><span>GitHub</span><span>Git LFS</span><span>Git Pages</span><span>Wix</span><span>Codex</span>
+                    <span>Unreal / Source 2 / Enfusion / RAGE</span><span>Blender</span><span>Adobe Suite</span><span>Adobe 3D</span><span>Affinity Suite</span><span>Gaea 2.0</span><span>CC5</span><span>iClone 8</span><span>Marvelous Designer</span><span>Ornatrix</span><span>FruityLoops</span><span>VS Code</span><span>Visual Studio</span><span>GitHub</span><span>Git LFS</span><span>Git Pages</span><span>Wix</span><span>Codex</span>
+                </div></div>
+            </section>
+            <div class="footer-grid">
+                <div class="footer-column"><span>Primary routes</span><a class="hover-sound" href="/">Home</a><a class="hover-sound" href="../games.html">Games</a><a class="hover-sound" href="../studio.html">Studio</a><a class="hover-sound" href="../contact.html">Contact</a></div>
+                <div class="footer-column"><span>Public records</span><a class="hover-sound" href="../DevLog/index.html">Devlog</a><a href="https://www.epicgames.com/site/en-US/privacypolicy" target="_blank" rel="noopener noreferrer">Epic Privacy Policy</a><a href="#">Nightshift Privacy Policy</a><a href="#">Applicant Privacy Policy</a></div>
+                <div class="footer-column"><span>External surfaces</span><a href="#">Press Kit</a><a href="#">Brand Assets</a><a href="#">Careers</a><a href="#">Community</a></div>
+            </div>
+            <div class="footer-bottom"><div class="social-row"><a class="action-pill hover-sound" href="https://twitter.com" target="_blank" rel="noopener noreferrer">X</a><a class="action-pill hover-sound" href="https://instagram.com" target="_blank" rel="noopener noreferrer">IG</a><a class="action-pill hover-sound" href="https://youtube.com" target="_blank" rel="noopener noreferrer">YT</a></div><p class="footer-note">Copyright 2026 Nightshift. All rights reserved.</p></div>
+        </footer>
+    </main>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const audio = new Audio("../../audio/bop.mp3");
             audio.volume = 0.25;
+            const clock = document.getElementById("mockup-clock");
 
-            const path = window.location.pathname.toLowerCase();
-            const page = path.split("/").pop();
-            let active = "home";
-            if (page === "" || page === "index.html" || page === "home.html") {
-                active = "home";
-            }
-            if (page === "games.html" || path.includes("/games/")) {
-                active = "games";
-            }
-            if (page === "studio.html" || page === "websites.html" || path.includes("/studio/")) {
-                active = "studio";
-            }
-            if (page === "contact.html") {
-                active = "contact";
-            }
-
-            document.querySelectorAll(".nav-links a").forEach((link) => {
-                const label = link.textContent.trim().toLowerCase();
-                if (label === active) {
-                    link.classList.add("active");
-                }
-            });
-
-            function playHoverSound() {
-                audio.currentTime = 0;
-                audio.play().catch(() => {});
+            function updateClock() {
+                if (!clock) return;
+                clock.textContent = new Date().toLocaleTimeString("en-US", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    second: "2-digit",
+                    timeZone: "America/Chicago",
+                    timeZoneName: "short"
+                });
             }
 
             document.querySelectorAll(".hover-sound").forEach((element) => {
-                element.addEventListener("mouseenter", playHoverSound);
+                element.addEventListener("mouseenter", function() {
+                    audio.currentTime = 0;
+                    audio.play().catch(() => {});
+                });
             });
+
+            updateClock();
+            window.setInterval(updateClock, 1000);
         });
     </script>
 </body>
 </html>
-
