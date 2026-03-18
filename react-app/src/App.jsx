@@ -9,7 +9,7 @@ export default function App() {
           components without replacing the current pages.
         </p>
         <div className="actions">
-          <a className="button primary" href="/pages/home.html">
+          <a className="button primary" href="/">
             Open static home
           </a>
           <span className="button secondary">Edit react-app/src/App.jsx</span>
@@ -18,3 +18,4 @@ export default function App() {
     </main>
   );
 }
+

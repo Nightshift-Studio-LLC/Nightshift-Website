@@ -535,7 +535,7 @@ h3 {
 .hero-actions,
 .tag-row {
     display: flex;
-    gap: 12px;
+    gap: 8px;
     flex-wrap: wrap;
 }
 
@@ -581,14 +581,22 @@ h3 {
 
 .tag {
     min-height: auto;
-    padding: 8px 12px;
+    padding: 8px 10px;
     font-size: 0.72rem;
+}
+
+.page-hero-panel .tag-row {
+    margin-top: 10px;
 }
 
 .media-frame {
     border: 1px solid var(--line);
     overflow: hidden;
     background: #000;
+}
+
+.media-frame.is-hidden {
+    display: none;
 }
 
 .media-frame img {

@@ -13,11 +13,11 @@
 <body>
     <div class="screen-fx" aria-hidden="true"></div>
     <header class="topbar">
-        <a class="brand hover-sound" href="../../home.html" aria-label="Nightshift home">
+        <a class="brand hover-sound" href="/" aria-label="Nightshift home">
             <img src="../../../images/index/nightshift-transparent.png" alt="Nightshift logo">
         </a>
         <nav class="utility-nav" aria-label="Primary">
-            <a href="../../home.html" class="hover-sound">Home</a>
+            <a href="/" class="hover-sound">Home</a>
             <a href="../../games.html" class="hover-sound">Games</a>
             <a href="../../studio.html" class="hover-sound">Studio</a>
             <a href="../../DevLog/index.html" class="hover-sound active">Devlog</a>
@@ -157,7 +157,7 @@
                 </div></div>
             </section>
             <div class="footer-grid">
-                <div class="footer-column"><span>Primary routes</span><a class="hover-sound" href="../../home.html">Home</a><a class="hover-sound" href="../../games.html">Games</a><a class="hover-sound" href="../../studio.html">Studio</a><a class="hover-sound" href="../../contact.html">Contact</a></div>
+                <div class="footer-column"><span>Primary routes</span><a class="hover-sound" href="/">Home</a><a class="hover-sound" href="../../games.html">Games</a><a class="hover-sound" href="../../studio.html">Studio</a><a class="hover-sound" href="../../contact.html">Contact</a></div>
                 <div class="footer-column"><span>Public records</span><a class="hover-sound" href="../../DevLog/index.html">Devlog</a><a href="https://www.epicgames.com/site/en-US/privacypolicy" target="_blank" rel="noopener noreferrer">Epic Privacy Policy</a><a href="#">Nightshift Privacy Policy</a><a href="#">Applicant Privacy Policy</a></div>
                 <div class="footer-column"><span>External surfaces</span><a href="#">Press Kit</a><a href="#">Brand Assets</a><a href="#">Careers</a><a href="#">Community</a></div>
             </div>
@@ -168,6 +168,19 @@
         document.addEventListener("DOMContentLoaded", function() {
             const audio = new Audio("../../../audio/bop.mp3");
             audio.volume = 0.25;
+            function hideEmptyDevlogHero() {
+                document.querySelectorAll(".devlog-hero img").forEach((img) => {
+                    const frame = img.closest(".media-frame");
+                    if (!frame) return;
+                    const hideFrame = () => frame.classList.add("is-hidden");
+                    const src = (img.getAttribute("src") || "").trim();
+                    if (!src || (img.complete && img.naturalWidth === 0)) {
+                        hideFrame();
+                        return;
+                    }
+                    img.addEventListener("error", hideFrame, { once: true });
+                });
+            }
             const clock = document.getElementById("mockup-clock");
             function updateClock() {
                 if (!clock) return;
@@ -179,9 +192,11 @@
                     audio.play().catch(() => {});
                 });
             });
+            hideEmptyDevlogHero();
             updateClock();
             window.setInterval(updateClock, 1000);
         });
     </script>
 </body>
 </html>
+
