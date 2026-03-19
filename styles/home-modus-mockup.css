@@ -705,6 +705,41 @@ h3 {
     background: linear-gradient(180deg, rgba(8, 8, 8, 0.96), rgba(0, 0, 0, 0.98));
 }
 
+.placeholder-art {
+    position: relative;
+    overflow: hidden;
+}
+
+.placeholder-art img {
+    width: 100%;
+    height: 100%;
+}
+
+.placeholder-art-label {
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 12px;
+    border: 1px solid rgba(255, 0, 0, 0.55);
+    background: rgba(20, 0, 0, 0.82);
+    color: #ffd7d7;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 0.72rem;
+    line-height: 1.4;
+    text-shadow: 0 0 12px rgba(255, 0, 0, 0.32);
+    box-shadow:
+        0 0 0 1px rgba(255, 0, 0, 0.12),
+        0 0 24px rgba(255, 0, 0, 0.18);
+    pointer-events: none;
+    z-index: 1;
+}
+
 .game-card-content,
 .hosting-card-content {
     padding: 20px;
@@ -840,6 +875,11 @@ h3 {
     width: 100%;
     height: 100%;
     object-fit: cover;
+}
+
+.carousel-item .placeholder-art {
+    width: 100%;
+    height: 100%;
 }
 
 .carousel-nav {
