@@ -2,7 +2,7 @@
 title: AfterDarkRP map work continues while code progress narrows around Ghetto 01
 date: 2026-03-22
 game: Nightshift
-excerpt: Map work is still moving, and code is still progressing, but AfterDarkRP has slowed around a narrower target: getting Ghetto 01 playable and reaching the point where server-sided code can actually be tested. Weed growing is close, with the sell loop still left to lock.
+excerpt: "Map work is still moving, and code is still progressing, but AfterDarkRP has slowed around a narrower target: getting Ghetto 01 playable and reaching the point where server-sided code can actually be tested. Weed growing is close, with the sell loop still left to lock."
 tags:
   - Nightshift
   - AfterDarkRP

@@ -463,8 +463,40 @@ h3 {
     grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
+.devlog-archive-layout {
+    display: grid;
+    grid-template-columns: minmax(220px, 0.3fr) minmax(0, 1fr);
+    gap: 24px;
+    align-items: start;
+}
+
+.devlog-archive-content,
+.devlog-archive-links {
+    display: grid;
+    gap: 18px;
+}
+
+.devlog-month-section {
+    display: grid;
+    gap: 16px;
+    scroll-margin-top: 120px;
+}
+
 .games-grid.current-slate-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.games-grid.current-slate-grid .game-card-image {
+    aspect-ratio: 2 / 3;
+    background: #000;
+}
+
+.games-grid.current-slate-grid .game-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
 }
 
 .contact-grid {
@@ -478,6 +510,7 @@ h3 {
 .page-hero-panel,
 .surface-card,
 .devlog-card,
+.devlog-archive-rail,
 .game-card,
 .hosting-card,
 .price-card,
@@ -492,6 +525,7 @@ h3 {
 .page-hero-panel,
 .surface-card,
 .devlog-card,
+.devlog-archive-rail,
 .hosting-card,
 .price-card,
 .contact-panel {
@@ -501,6 +535,7 @@ h3 {
 .page-hero-panel::before,
 .surface-card::before,
 .devlog-card::before,
+.devlog-archive-rail::before,
 .hosting-card::before,
 .price-card::before,
 .contact-panel::before {
@@ -514,6 +549,7 @@ h3 {
 .page-hero-panel > *,
 .surface-card > *,
 .devlog-card > *,
+.devlog-archive-rail > *,
 .hosting-card > *,
 .price-card > *,
 .contact-panel > * {
@@ -626,6 +662,61 @@ h3 {
     display: grid;
     gap: 10px;
     margin-top: 18px;
+}
+
+.devlog-archive-heading h3,
+.devlog-month-heading h3 {
+    margin: 8px 0 0;
+}
+
+.devlog-archive-rail {
+    position: sticky;
+    top: 112px;
+    display: grid;
+    gap: 20px;
+}
+
+.devlog-archive-year {
+    display: grid;
+    gap: 12px;
+}
+
+.devlog-archive-year-label {
+    display: block;
+    font-family: var(--heading);
+    font-size: 1.25rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.devlog-archive-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 14px;
+    border: 1px solid var(--line);
+    background: linear-gradient(180deg, rgba(6, 6, 6, 0.94), rgba(0, 0, 0, 0.96));
+    color: var(--muted);
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    transition: border-color 160ms ease, color 160ms ease, box-shadow 160ms ease;
+}
+
+.devlog-archive-link strong {
+    color: var(--text);
+    font-family: var(--heading);
+    letter-spacing: 0.06em;
+}
+
+.devlog-archive-link:hover {
+    border-color: rgba(255, 0, 0, 0.42);
+    color: var(--accent-hot);
+    box-shadow:
+        inset 0 0 0 1px rgba(255, 0, 0, 0.12),
+        0 0 18px rgba(255, 0, 0, 0.22),
+        0 0 34px rgba(255, 0, 0, 0.14);
 }
 
 .stack-list > div,
@@ -774,6 +865,14 @@ h3 {
     margin-top: 20px;
 }
 
+.devlog-hero img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    object-position: center;
+    display: block;
+}
+
 .devlog-post-body h2,
 .devlog-post-body h3 {
     margin-top: 0;
@@ -792,7 +891,10 @@ h3 {
 .devlog-post-body img {
     display: block;
     width: 100%;
+    max-width: 100%;
     height: auto;
+    object-fit: contain;
+    object-position: center;
     border: 1px solid var(--line);
     margin: 18px 0;
 }
@@ -800,10 +902,20 @@ h3 {
 .devlog-post-body video {
     display: block;
     width: 100%;
+    max-width: 100%;
     height: auto;
+    object-fit: contain;
+    object-position: center;
     border: 1px solid var(--line);
     background: #000;
     margin: 18px 0;
+}
+
+.devlog-post-body .media-frame img,
+.devlog-post-body .media-frame video {
+    height: auto;
+    object-fit: contain;
+    object-position: center;
 }
 
 .devlog-gallery {
@@ -1302,12 +1414,17 @@ h3 {
     .footer-grid,
     .page-hero-grid,
     .surface-grid,
+    .devlog-archive-layout,
     .devlog-grid,
     .games-grid,
     .pricing-grid,
     .contact-grid,
     .fab-thumbs {
         grid-template-columns: 1fr;
+    }
+
+    .devlog-archive-rail {
+        position: static;
     }
 
     .game-stat-grid,
@@ -1392,6 +1509,7 @@ h3 {
     .page-hero-panel,
     .surface-card,
     .devlog-card,
+    .devlog-archive-rail,
     .contact-panel,
     .price-card {
         padding: 16px;

@@ -11,10 +11,17 @@ const postsDir = path.join(outDir, "posts");
 const monthShort = (dateObj) =>
     dateObj.toLocaleString("en-US", { month: "short" }).toUpperCase();
 
+const monthLong = (dateObj) =>
+    dateObj.toLocaleString("en-US", { month: "long" });
+
 const formatDate = (dateObj) => {
     const day = String(dateObj.getDate()).padStart(2, "0");
     return `${monthShort(dateObj)} ${day}, ${dateObj.getFullYear()}`;
 };
+
+const archiveConfig = [
+    { year: 2026, months: [3, 2] },
+];
 
 const parseFrontmatterDate = (value, file) => {
     if (value instanceof Date) {
@@ -59,6 +66,32 @@ const readPosts = async () => {
     }
 
     return posts.sort((a, b) => b.dateObj - a.dateObj);
+};
+
+const groupPostsByMonth = (posts) => {
+    const groups = [];
+
+    for (const post of posts) {
+        const year = post.dateObj.getFullYear();
+        const month = post.dateObj.getMonth() + 1;
+        const key = `${year}-${String(month).padStart(2, "0")}`;
+        const currentGroup = groups.at(-1);
+
+        if (!currentGroup || currentGroup.key !== key) {
+            groups.push({
+                key,
+                year,
+                month,
+                monthName: monthLong(post.dateObj),
+                posts: [post],
+            });
+            continue;
+        }
+
+        currentGroup.posts.push(post);
+    }
+
+    return groups;
 };
 
 const softwareMarquee = () => `
@@ -134,13 +167,46 @@ ${footerMarkup(pagePrefix)}
 </html>`;
 
 const renderIndex = (posts) => {
-    const cards = posts.map((post) => `
+    const renderCard = (post) => `
             <article class="devlog-card">
                 <div class="devlog-meta"><span>${post.game}</span><span>${formatDate(post.dateObj)}</span></div>
                 <h3>${post.title}</h3>
                 <p>${post.excerpt}</p>
                 <a class="devlog-cta hover-sound" href="posts/${post.slug}.html">Read entry</a>
-            </article>`).join("");
+            </article>`;
+    const monthGroups = groupPostsByMonth(posts);
+    const archiveNav = archiveConfig.map(({ year, months }) => {
+        const links = months.map((month) => {
+            const key = `${year}-${String(month).padStart(2, "0")}`;
+            const group = monthGroups.find((entry) => entry.key === key);
+
+            if (!group) return "";
+
+            return `
+                    <a class="devlog-archive-link hover-sound" href="#archive-${group.key}">
+                        <span>${group.monthName}</span>
+                        <strong>${String(group.posts.length).padStart(2, "0")}</strong>
+                    </a>`;
+        }).join("");
+
+        if (!links.trim()) return "";
+
+        return `
+                <div class="devlog-archive-year">
+                    <span class="devlog-archive-year-label">${year}</span>
+                    <div class="devlog-archive-links">${links}
+                    </div>
+                </div>`;
+    }).join("");
+    const monthSections = monthGroups.map((group) => `
+                <section class="devlog-month-section" id="archive-${group.key}">
+                    <div class="devlog-month-heading">
+                        <p class="eyebrow">${group.year} Archive</p>
+                        <h3>${group.monthName}</h3>
+                    </div>
+                    <div class="devlog-grid">${group.posts.map(renderCard).join("")}
+                    </div>
+                </section>`).join("");
 
     return layout({
         title: "Nightshift | Devlog",
@@ -165,8 +231,17 @@ const renderIndex = (posts) => {
             </aside>
         </section>
         <section class="panel feed-panel">
-            <div class="panel-heading"><p class="eyebrow">Latest Entries</p><h2>Current archive</h2></div>
-            <div class="devlog-grid">${cards}
+            <div class="panel-heading"><p class="eyebrow">Latest Entries</p><h2>Recent Logs</h2></div>
+            <div class="devlog-archive-layout">
+                <aside class="devlog-archive-rail" aria-label="Devlog archives">
+                    <div class="devlog-archive-heading">
+                        <p class="eyebrow">Actual Archives</p>
+                        <h3>Browse by date</h3>
+                    </div>
+                    ${archiveNav}
+                </aside>
+                <div class="devlog-archive-content">${monthSections}
+                </div>
             </div>
         </section>`,
     });
@@ -210,7 +285,9 @@ const renderPost = (post) => {
 const build = async () => {
     const posts = await readPosts();
     await ensureDir(postsDir);
-    await fs.writeFile(path.join(outDir, "index.html"), renderIndex(posts));
+    const indexMarkup = renderIndex(posts);
+    await fs.writeFile(path.join(outDir, "index.html"), indexMarkup);
+    await fs.writeFile(path.join(outDir, "devlog.html"), indexMarkup);
     for (const post of posts) {
         await fs.writeFile(path.join(postsDir, `${post.slug}.html`), renderPost(post));
     }
