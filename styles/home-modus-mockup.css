@@ -463,6 +463,10 @@ h3 {
     grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
+.games-grid.current-slate-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
 .contact-grid {
     grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.22fr);
 }
@@ -790,6 +794,15 @@ h3 {
     width: 100%;
     height: auto;
     border: 1px solid var(--line);
+    margin: 18px 0;
+}
+
+.devlog-post-body video {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--line);
+    background: #000;
     margin: 18px 0;
 }
 

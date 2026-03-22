@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nightshift | AfterDarkRP map work continues as code validation waits on Engine</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="../../../images/icons/nightshift.ico">
+    <link rel="stylesheet" href="../../../styles/home-modus-mockup.css">
+</head>
+<body>
+    <div class="screen-fx" aria-hidden="true"></div>
+    <header class="topbar">
+        <a class="brand hover-sound" href="/" aria-label="Nightshift home">
+            <img src="../../../images/index/nightshift-transparent.png" alt="Nightshift logo">
+        </a>
+        <nav class="utility-nav" aria-label="Primary">
+            <a href="/" class="hover-sound">Home</a>
+            <a href="../../games.html" class="hover-sound">Games</a>
+            <a href="../../studio.html" class="hover-sound">Studio</a>
+            <a href="../../DevLog/index.html" class="hover-sound active">Devlog</a>
+            <a href="../../contact.html" class="hover-sound">Contact</a>
+        </nav>
+        <div class="topbar-readout"><span>Devlog Entry</span><strong id="mockup-clock">00:00:00 CST</strong></div>
+    </header>
+    <main class="shell page-shell">
+
+        <section class="page-hero-grid">
+            <article class="page-hero-panel">
+                <p class="eyebrow">Devlog / entry</p>
+                <h1 class="page-title">AfterDarkRP map work continues as code validation waits on Engine</h1>
+                <p class="page-lede">Map work is still moving, and code is still progressing, but AfterDarkRP has slowed around a narrower target: getting Ghetto 01 playable and reaching the point where server-sided code can actually be tested. Weed growing is close, with the sell loop still left to lock.</p>
+                <div class="hero-actions"><a class="cta-btn hover-sound" href="../index.html">Back To Devlog</a></div>
+                <div class="tag-row"><span class="tag">Nightshift</span><span class="tag">AfterDarkRP</span><span class="tag">Map</span><span class="tag">Client Work</span><span class="tag">Website</span></div>
+                <div class="media-frame devlog-hero"><img src="../../../images/afterdarkrp/Devlogs/3-18-26/ghetto_01_preview-ingame.png" alt="AfterDarkRP map work continues as code validation waits on Engine"></div>
+            </article>
+            <aside class="page-hero-panel">
+                <p class="eyebrow">Entry metadata</p>
+                <div class="stack-list">
+                    <div><span>Project</span><strong>Nightshift</strong></div>
+                    <div><span>Date</span><strong>MAR 22, 2026</strong></div>
+                    <div><span>Route</span><strong>Public archive</strong></div>
+                </div>
+            </aside>
+        </section>
+        <section class="panel feature-panel">
+            <div class="panel-heading"><p class="eyebrow">Field Notes</p><h2>Entry body</h2></div>
+            <div class="devlog-post-body"><h2>Where things stand</h2>
+<p>The honest short version is that <strong>map work is still moving</strong>, and <strong>code is still making progress</strong>, but AfterDarkRP has not had the same amount of uninterrupted focus lately because client work has been taking priority inside the studio. Since the last public post on <strong>March 13, 2026</strong>, progress has been real, but it has been narrower and more environment-facing than systems-heavy.</p>
+<p>That is why this entry is mostly about the city itself. The main visible movement right now is continued work on the map, especially around the Ghetto 01 space, where blockout, proportions, and street readability are getting pushed forward. The practical slowdown is that deeper system testing only goes so far until Ghetto 01 is playable enough to support it and until server-sided code can actually be run and checked properly.</p>
+<h2>New map reads</h2>
+<p>The latest captures show where the environment is landing, but the screenshot below also shows the real project blocker more directly: I still cannot properly boot and run the server-side code in this setup yet, so deeper testing is blocked by that limitation rather than by missing art polish alone.</p>
+<div class="devlog-gallery">
+<figure>
+<img src="../../../images/afterdarkrp/Devlogs/3-18-26/ghetto_01_preview-ingame.png" alt="AfterDarkRP Ghetto 01 in-engine street preview">
+<figcaption>Latest in-engine Ghetto 01 street read with the district still in active blockout and material placeholder territory.</figcaption>
+</figure>
+<figure>
+<img src="../../../images/afterdarkrp/Devlogs/3-18-26/ghetto_01_preview5.png" alt="AfterDarkRP Ghetto 01 preview showing another district angle">
+<figcaption>Another new Ghetto 01 angle showing the current massing, street rhythm, and overall district silhouette.</figcaption>
+</figure>
+<figure>
+<video controls autoplay muted loop preload="metadata" playsinline>
+<source src="../../../video/building-preview.mp4" type="video/mp4">
+Your browser does not support the video tag.
+</video>
+<figcaption>Building preview used for current LOD testing while trying to hold 100+ FPS without stripping the district down too aggressively.</figcaption>
+</figure>
+<figure>
+<img src="../../../images/afterdarkrp/Devlogs/3-18-26/roadblock.png" alt="Documentation screenshot showing the current addon-project code limitation">
+<figcaption>Documentation reference showing the current blocker: this addon-project path still cannot boot and run server-side code yet.</figcaption>
+</figure>
+</div>
+<p>The building pass is also doing technical work, not just visual work. A big part of the current test is LOD behavior: how much structure, breakup, and readable detail can stay on screen while still retaining <strong>100+ FPS</strong>. The target is to balance that cost honestly so the district keeps its density without turning into a performance sink.</p>
+<p>The point of this stage is to work around the current limitation as honestly as possible. Until server-side code can actually be booted and tested properly, the useful work is getting Ghetto 01 playable enough to support cleaner validation later instead of pretending the main blocker is just unfinished visuals.</p>
+<h2>Code progress is still happening</h2>
+<p>This is not a case where map work replaced code entirely. Code is still moving. The main difference is that the remaining programming work is increasingly gated by playability and test conditions instead of just implementation time.</p>
+<p>The clearest example is weed growing. The loop is close, and the main missing piece right now is the <strong>sell loop</strong> rather than the whole production chain. That is a much better place to be than a few weeks ago, but it also means the next useful testing pass depends on having a space that can actually support the loop under real server conditions.</p>
+<h2>Other changes since March 13, 2026</h2>
+<p>Even with less direct AfterDarkRP feature time, the public-facing side of the project and studio has still changed quite a bit since the last blog post.</p>
+<ul>
+<li>The AfterDarkRP site was converted to cleaner directory-style routes across the main public pages, which makes the project read more like a real product surface instead of a loose set of files.</li>
+<li>The Nightshift site went through a broader visual overhaul across the studio, game, contact, and devlog pages.</li>
+<li>Studio-facing surfaces now make website services, direct support, and FAB tooling more visible on the main site.</li>
+<li>Placeholder sample art is now labeled more clearly across the game pages and older devlog entries so mock assets do not read like final production captures.</li>
+</ul>
+<h2>What that means for AfterDarkRP</h2>
+<p>The tradeoff is straightforward: some of the last stretch went into client work and public-facing studio cleanup instead of deep server feature pushes. I would rather say that directly than pretend there was a huge gameplay milestone where there was not.</p>
+<p>AfterDarkRP is still active. The difference is that the current progress is concentrated on getting <strong>Ghetto 01 playable</strong>, keeping code moving where it can, and reaching the point where <strong>server-sided code can actually be run and tested</strong> instead of assumed.</p>
+<h2>What comes next</h2>
+<ul>
+<li>Keep pushing the map until Ghetto 01 has a stronger playable read in-engine.</li>
+<li>Finish the weed-growing sell loop once the map and testing conditions support a cleaner pass.</li>
+<li>Return more direct focus to AfterDarkRP systems as client work pressure eases.</li>
+<li>Continue tightening the public-facing site so the project stays readable while development pace shifts week to week.</li>
+</ul>
+<p>The work is still moving. It is just moving through the map, testability, and studio schedule first.</p>
+</div>
+        </section>
+
+        <footer class="site-footer panel">
+
+            <section class="software-marquee-section" aria-label="Software used by Nightshift">
+                <div class="software-marquee"><div class="software-marquee-track">
+                    <span>Unreal / Source 2 / Enfusion / RAGE</span><span>Blender</span><span>Adobe Suite</span><span>Adobe 3D</span><span>Affinity Suite</span><span>Gaea 2.0</span><span>CC5</span><span>iClone 8</span><span>FruityLoops</span><span>VS Code</span><span>Visual Studio</span><span>GitHub</span><span>Git LFS</span><span>Git Pages</span><span>Wix</span><span>Obsidian</span><span>Codex</span>
+                    <span>Unreal / Source 2 / Enfusion / RAGE</span><span>Blender</span><span>Adobe Suite</span><span>Adobe 3D</span><span>Affinity Suite</span><span>Gaea 2.0</span><span>CC5</span><span>iClone 8</span><span>FruityLoops</span><span>VS Code</span><span>Visual Studio</span><span>GitHub</span><span>Git LFS</span><span>Git Pages</span><span>Wix</span><span>Obsidian</span><span>Codex</span>
+                </div></div>
+            </section>
+            <div class="footer-grid">
+                <div class="footer-column"><span>Primary routes</span><a class="hover-sound" href="/">Home</a><a class="hover-sound" href="../../games.html">Games</a><a class="hover-sound" href="../../studio.html">Studio</a><a class="hover-sound" href="../../contact.html">Contact</a></div>
+                <div class="footer-column"><span>Public records</span><a class="hover-sound" href="../../DevLog/index.html">Devlog</a><a href="https://www.epicgames.com/site/en-US/privacypolicy" target="_blank" rel="noopener noreferrer">Epic Privacy Policy</a><a href="#">Nightshift Privacy Policy</a><a href="#">Applicant Privacy Policy</a></div>
+                <div class="footer-column"><span>External surfaces</span><a href="#">Press Kit</a><a href="#">Brand Assets</a><a href="#">Careers</a><a href="#">Community</a></div>
+            </div>
+            <div class="footer-bottom"><div class="social-row"><a class="action-pill hover-sound" href="https://twitter.com" target="_blank" rel="noopener noreferrer">X</a><a class="action-pill hover-sound" href="https://instagram.com" target="_blank" rel="noopener noreferrer">IG</a><a class="action-pill hover-sound" href="https://youtube.com" target="_blank" rel="noopener noreferrer">YT</a></div><p class="footer-note">Copyright 2026 Nightshift. All rights reserved.</p></div>
+        </footer>
+    </main>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const audio = new Audio("../../../audio/bop.mp3");
+            audio.volume = 0.25;
+            function hideEmptyDevlogHero() {
+                document.querySelectorAll(".devlog-hero img").forEach((img) => {
+                    const frame = img.closest(".media-frame");
+                    if (!frame) return;
+                    const hideFrame = () => frame.classList.add("is-hidden");
+                    const src = (img.getAttribute("src") || "").trim();
+                    if (!src || (img.complete && img.naturalWidth === 0)) {
+                        hideFrame();
+                        return;
+                    }
+                    img.addEventListener("error", hideFrame, { once: true });
+                });
+            }
+            const clock = document.getElementById("mockup-clock");
+            function updateClock() {
+                if (!clock) return;
+                clock.textContent = new Date().toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", second: "2-digit", timeZone: "America/Chicago", timeZoneName: "short" });
+            }
+            document.querySelectorAll(".hover-sound").forEach((element) => {
+                element.addEventListener("mouseenter", function() {
+                    audio.currentTime = 0;
+                    audio.play().catch(() => {});
+                });
+            });
+            hideEmptyDevlogHero();
+            updateClock();
+            window.setInterval(updateClock, 1000);
+        });
+    </script>
+</body>
+</html>
