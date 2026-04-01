@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nightshift | AfterDarkRP pushes Ghetto 01 further with stronger materials and street readability</title>
+    <title>Nightshift | AfterDarkRP pushes Ghetto 01 further with optimization passes, LOD work, and stronger street readability</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -30,11 +30,11 @@
         <section class="page-hero-grid">
             <article class="page-hero-panel">
                 <p class="eyebrow">Devlog / entry</p>
-                <h1 class="page-title">AfterDarkRP pushes Ghetto 01 further with stronger materials and street readability</h1>
-                <p class="page-lede">Since the March 22 devlog, AfterDarkRP has kept pushing Ghetto 01 toward a playable read with better material treatment, cleaner intersections, and a more convincing city-block silhouette, even while deeper systems validation still waits on a stronger testable map state.</p>
+                <h1 class="page-title">AfterDarkRP pushes Ghetto 01 further with optimization passes, LOD work, and stronger street readability</h1>
+                <p class="page-lede">Since the March 22 devlog, AfterDarkRP has kept pushing Ghetto 01 toward a playable read with interior optimization, LOD creation, light optimization, better material treatment, and cleaner intersections, even while deeper systems validation still waits on a stronger testable map state.</p>
                 <div class="hero-actions"><a class="cta-btn hover-sound" href="../index.html">Back To Devlog</a></div>
                 <div class="tag-row"><span class="tag">AfterDarkRP</span><span class="tag">Map</span><span class="tag">Materials</span><span class="tag">Environment</span><span class="tag">Ghetto 01</span></div>
-                <div class="media-frame devlog-hero"><img src="../../../images/afterdarkrp/Devlogs/3-31-26/03.png" alt="AfterDarkRP pushes Ghetto 01 further with stronger materials and street readability"></div>
+                <div class="media-frame devlog-hero"><img src="../../../images/afterdarkrp/Devlogs/3-31-26/03.png" alt="AfterDarkRP pushes Ghetto 01 further with optimization passes, LOD work, and stronger street readability"></div>
             </article>
             <aside class="page-hero-panel">
                 <p class="eyebrow">Entry metadata</p>
@@ -49,7 +49,15 @@
             <div class="panel-heading"><p class="eyebrow">Field Notes</p><h2>Entry body</h2></div>
             <div class="devlog-post-body"><h2>Since the last devlog</h2>
 <p>The last public update on <strong>March 22, 2026</strong> was mostly about a narrower push: keep moving the map, keep code progressing where possible, and get <strong>Ghetto 01</strong> into a state that can support more meaningful server-side testing.</p>
-<p>That core reality has not changed, but the district does read better now than it did a week ago. The newest work is less about announcing a fresh gameplay system and more about pushing the environment out of raw blockout territory so the city starts feeling intentional instead of merely assembled.</p>
+<p>That core reality has not changed, but the district does read better now than it did a week ago. The newest work is less about announcing a fresh gameplay system and more about pushing the environment out of raw blockout territory so the city starts feeling intentional, performant, and testable instead of merely assembled.</p>
+<h2>Optimization work is part of the story</h2>
+<p>This pass was not only about making screenshots look better. A real part of the work went into <strong>interior optimization</strong>, <strong>LOD creation</strong>, and <strong>light optimization</strong> so the district has a better chance of holding up once more of the city is active at once.</p>
+<ul>
+<li>Interior spaces are being trimmed and simplified so they stop carrying unnecessary cost before they are even in full gameplay use.</li>
+<li>LOD work is being pushed so buildings and larger environment pieces can read correctly at distance without forcing the client to pay full detail all the time.</li>
+<li>Lighting is being optimized so the nighttime atmosphere can stay intact without turning every block into a performance problem.</li>
+</ul>
+<p>That optimization layer matters because Ghetto 01 is supposed to become playable space, not just a set of promo angles. If the district cannot hold together under real movement and real camera reads, then deeper systems testing still gets delayed.</p>
 <h2>Materials and street read are improving</h2>
 <p>The clearest change in the latest captures is that <strong>Ghetto 01 is starting to hold together as an actual street space</strong>. Buildings have more convincing surface treatment, window reads are stronger, traffic lights and intersections are giving the roads more structure, and the district silhouette is less abstract than it was in the previous post.</p>
 <p>It is still not a final-art pass, and it is still visibly in progress, but the environment is doing a better job of communicating:</p>
@@ -64,28 +72,34 @@
 <div class="devlog-gallery">
 <figure>
 <img src="../../../images/afterdarkrp/Devlogs/3-31-26/01.png" alt="AfterDarkRP Ghetto 01 intersection preview with improved building materials and traffic lights">
-<figcaption>Intersection view showing stronger material definition, clearer traffic control, and a more usable sense of street scale than the earlier blockout-heavy pass.</figcaption>
+<figcaption>Intersection view showing stronger material definition, clearer traffic control, and a more usable sense of street scale while optimization work continues under the hood.</figcaption>
 </figure>
 <figure>
 <img src="../../../images/afterdarkrp/Devlogs/3-31-26/02.png" alt="AfterDarkRP district angle showing building massing and road layout in Ghetto 01">
-<figcaption>Another district angle where the road layout, sidewalk edge, and corner massing are starting to read like a city block instead of a temporary shell.</figcaption>
+<figcaption>Another district angle where the road layout, sidewalk edge, and corner massing are starting to read like a city block instead of a temporary shell, with LOD work helping the wider view hold together better.</figcaption>
 </figure>
 <figure>
 <img src="../../../images/afterdarkrp/Devlogs/3-31-26/03.png" alt="AfterDarkRP street preview showing lit windows and a longer Ghetto 01 road read">
-<figcaption>Longer street read with better window treatment and stronger nighttime atmosphere while the environment pass continues to tighten.</figcaption>
+<figcaption>Longer street read with better window treatment and stronger nighttime atmosphere while lighting and environment optimization continue to tighten the district.</figcaption>
 </figure>
 <figure>
 <video controls autoplay muted loop preload="metadata" playsinline>
 <source src="../../../images/afterdarkrp/Devlogs/3-31-26/materials.mp4" type="video/mp4">
 Your browser does not support the video tag.
 </video>
-<figcaption>Short material-pass preview showing the district in motion while building surfaces, lighting reads, and road structure keep getting dialed in.</figcaption>
+<figcaption>Short material-pass preview showing the district in motion while building surfaces, LOD behavior, interior cleanup, and lighting reads keep getting dialed in.</figcaption>
 </figure>
 </div>
 
 <h2>What has not changed yet</h2>
 <p>The honest version is still the same one from the March 22 entry: deeper systems validation is gated by having a stronger playable map state first.</p>
 <p>That means this stretch is more about <strong>making the world testable</strong> than about claiming a large new code milestone. The underlying systems work described in the last devlog still matters, but the immediate requirement is getting Ghetto 01 into better condition for real in-engine and eventually server-sided checks.</p>
+<p>Right now that includes practical environment-side work such as:</p>
+<ul>
+<li>optimizing interiors before they become a bigger drag on the build,</li>
+<li>creating and validating LODs across the district shell,</li>
+<li>and tightening lights so the scene keeps its mood without wasting budget.</li>
+</ul>
 <h2>Parallel site work</h2>
 <p>Outside the map itself, the public-facing site also kept moving in smaller ways during this stretch.</p>
 <ul>
@@ -97,10 +111,11 @@ Your browser does not support the video tag.
 <h2>What comes next</h2>
 <ul>
 <li>Keep tightening Ghetto 01 materials, silhouettes, and intersection readability.</li>
+<li>Continue the interior, LOD, and light optimization passes so the map is easier to trust under live play conditions.</li>
 <li>Push the district further out of placeholder territory so traversal and encounter flow are easier to judge.</li>
 <li>Return to deeper system validation once the map supports cleaner real-world testing conditions.</li>
 </ul>
-<p>This is still a map-first phase. The difference now is that the district is beginning to read less like scaffolding and more like a place.</p>
+<p>This is still a map-first phase. The difference now is that the district is beginning to read less like scaffolding and more like a place that can actually support the next round of testing.</p>
 </div>
         </section>
 
