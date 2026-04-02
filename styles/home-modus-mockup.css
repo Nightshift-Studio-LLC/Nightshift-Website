@@ -348,6 +348,7 @@ h3 {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    position: relative;
     padding: 0 18px;
     border: 1px solid var(--line-strong);
     border-radius: 999px;
@@ -355,6 +356,8 @@ h3 {
     color: var(--text);
     letter-spacing: 0.12em;
     text-transform: uppercase;
+    overflow: hidden;
+    isolation: isolate;
     transition:
         transform 180ms ease,
         border-color 180ms ease,
@@ -370,6 +373,50 @@ h3 {
     box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
 }
 
+.action-pill::before,
+.action-pill::after,
+.cta-btn::before,
+.cta-btn::after,
+.devlog-cta::before,
+.devlog-cta::after {
+    content: "";
+    position: absolute;
+    pointer-events: none;
+    z-index: -1;
+    opacity: 0;
+}
+
+.action-pill::before,
+.cta-btn::before,
+.devlog-cta::before {
+    inset: -1px;
+    background:
+        linear-gradient(
+            112deg,
+            transparent 14%,
+            rgba(136, 215, 255, 0.08) 34%,
+            rgba(255, 154, 86, 0.2) 50%,
+            rgba(136, 215, 255, 0.08) 66%,
+            transparent 86%
+        );
+    transform: translateX(-140%) skewX(-20deg);
+    transition: transform 440ms cubic-bezier(0.22, 1, 0.36, 1), opacity 160ms ease;
+}
+
+.action-pill::after,
+.cta-btn::after,
+.devlog-cta::after {
+    inset: 0;
+    background:
+        repeating-linear-gradient(
+            180deg,
+            rgba(255, 255, 255, 0.08) 0 1px,
+            transparent 1px 4px
+        );
+    mix-blend-mode: screen;
+    transform: translateX(-1px) scaleY(1);
+}
+
 .action-pill:hover {
     border-color: rgba(255, 154, 86, 0.46);
     color: var(--text);
@@ -378,6 +425,20 @@ h3 {
         inset 0 0 0 1px rgba(255, 255, 255, 0.06),
         0 0 24px rgba(255, 154, 86, 0.14),
         0 18px 34px rgba(0, 0, 0, 0.32);
+}
+
+.action-pill:hover::before,
+.cta-btn:hover::before,
+.devlog-cta:hover::before {
+    opacity: 1;
+    transform: translateX(135%) skewX(-20deg);
+}
+
+.action-pill:hover::after,
+.cta-btn:hover::after,
+.devlog-cta:hover::after {
+    opacity: 0.34;
+    animation: buttonDistort 360ms ease;
 }
 
 .inline-link {
@@ -652,6 +713,7 @@ h3 {
     align-items: center;
     justify-content: center;
     min-height: 46px;
+    position: relative;
     padding: 0 18px;
     border: 1px solid var(--line-strong);
     border-radius: 999px;
@@ -659,6 +721,8 @@ h3 {
     color: var(--text);
     letter-spacing: 0.12em;
     text-transform: uppercase;
+    overflow: hidden;
+    isolation: isolate;
     transition:
         transform 180ms ease,
         border-color 180ms ease,
@@ -1246,6 +1310,21 @@ h3 {
     }
     to {
         transform: translateX(calc(-50% - (var(--marquee-gap) / 2)));
+    }
+}
+
+@keyframes buttonDistort {
+    0% {
+        transform: translateX(-2px) skewX(0deg) scaleY(1);
+    }
+    25% {
+        transform: translateX(1px) skewX(-8deg) scaleY(1.03);
+    }
+    55% {
+        transform: translateX(-1px) skewX(6deg) scaleY(0.98);
+    }
+    100% {
+        transform: translateX(0) skewX(0deg) scaleY(1);
     }
 }
 
