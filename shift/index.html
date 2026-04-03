@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nightshift | Employee Shift</title>
+    <meta name="robots" content="noindex, nofollow, noarchive">
+    <link rel="canonical" href="/shift/">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="../images/icons/nightshift.ico">
+    <link rel="stylesheet" href="../styles/home-modus-mockup.css">
+    <link rel="stylesheet" href="../styles/shift.css">
+</head>
+<body>
+    <div class="screen-fx" aria-hidden="true"></div>
+    <header class="topbar">
+        <a class="brand hover-sound" href="/" aria-label="Nightshift home">
+            <img src="../images/index/nightshift-transparent.png" alt="Nightshift logo">
+        </a>
+        <nav class="utility-nav" aria-label="Primary">
+            <a href="/" class="hover-sound">Home</a>
+            <a href="../pages/studio.html" class="hover-sound">Studio</a>
+            <a href="../pages/DevLog/index.html" class="hover-sound">Devlog</a>
+            <a href="../pages/contact.html" class="hover-sound">Contact</a>
+            <a href="/shift/" class="hover-sound active">Shift</a>
+        </nav>
+        <div class="topbar-readout">
+            <span>Employee Relay</span>
+            <strong id="mockup-clock">00:00:00 CST</strong>
+        </div>
+    </header>
+
+    <main class="shell page-shell shift-shell" data-auth="locked">
+        <section class="page-hero-grid">
+            <article class="page-hero-panel">
+                <p class="eyebrow">Employee / Shift Relay</p>
+                <h1 class="page-title">A controlled route for staff-facing links, notes, and active handoff points.</h1>
+                <p class="page-lede">This surface stays out of the public navigation flow and requires a passcode before the internal cards below become usable. The goal is fast routing, not public discovery.</p>
+                <div class="hero-actions">
+                    <a class="cta-btn primary hover-sound" href="#employee-access">Unlock Route</a>
+                    <a class="cta-btn hover-sound" href="../pages/contact.html">External Contact</a>
+                </div>
+                <div class="shift-readout-grid" aria-label="Route status">
+                    <div class="shift-readout-card">
+                        <span>Route</span>
+                        <strong>/shift/</strong>
+                    </div>
+                    <div class="shift-readout-card">
+                        <span>Access mode</span>
+                        <strong>Session-gated</strong>
+                    </div>
+                    <div class="shift-readout-card">
+                        <span>Indexing</span>
+                        <strong>Noindex applied</strong>
+                    </div>
+                </div>
+            </article>
+
+            <aside class="page-hero-panel access-panel" id="employee-access">
+                <p class="eyebrow">Access Control</p>
+                <div class="access-state" aria-live="polite">
+                    <span class="access-indicator" id="access-indicator" aria-hidden="true"></span>
+                    <strong id="access-state-label">Locked</strong>
+                </div>
+                <p class="access-copy">Enter the employee passcode to unlock the relay for this browser session.</p>
+                <form class="secure-form" id="employee-access-form">
+                    <label class="secure-label" for="employee-passcode">Passcode</label>
+                    <div class="secure-input-row">
+                        <input
+                            id="employee-passcode"
+                            name="employee-passcode"
+                            class="secure-input"
+                            type="password"
+                            inputmode="numeric"
+                            autocomplete="current-password"
+                            maxlength="6"
+                            required
+                            aria-describedby="access-feedback">
+                        <button class="cta-btn primary hover-sound" type="submit">Unlock</button>
+                    </div>
+                </form>
+                <button class="cta-btn ghost hover-sound lock-button" id="lock-session-button" type="button" hidden>Lock Session</button>
+                <p class="access-feedback" id="access-feedback">Enter the six-digit code. Access clears when the browser session ends or when you lock the route manually.</p>
+                <noscript>
+                    <p class="access-feedback error">JavaScript is required for the access gate on this page.</p>
+                </noscript>
+            </aside>
+        </section>
+
+        <section class="surface-card employee-note">
+            <p class="eyebrow">Routing Notes</p>
+            <h3>What this page is for</h3>
+            <p>This is an internal relay surface for employee-facing routing, quick status references, and shared operational links. Keep it focused and practical.</p>
+        </section>
+
+        <div class="employee-area" id="employee-area" aria-hidden="true">
+            <section class="surface-grid">
+                <article class="surface-card">
+                    <p class="eyebrow">Shift Brief</p>
+                    <h3>Use this route for direct handoff traffic</h3>
+                    <ul class="list">
+                        <li>Keep current internal links grouped here instead of scattering them across public pages.</li>
+                        <li>Use the relay for staff notes, temporary routing, or a current-shift checklist.</li>
+                        <li>Rotate or replace cards as operations change without touching the public site structure.</li>
+                    </ul>
+                </article>
+
+                <article class="surface-card">
+                    <p class="eyebrow">Current Access</p>
+                    <h3>Session rules</h3>
+                    <ul class="list">
+                        <li>The page unlocks only after the passcode is entered correctly.</li>
+                        <li>Access persists for the current browser session through `sessionStorage`.</li>
+                        <li>Use the lock control to clear access immediately on a shared machine.</li>
+                    </ul>
+                </article>
+            </section>
+
+            <section class="surface-grid">
+                <article class="surface-card">
+                    <p class="eyebrow">Quick Links</p>
+                    <h3>Primary routing targets</h3>
+                    <div class="hero-actions">
+                        <a class="cta-btn primary hover-sound" href="/">Main Site</a>
+                        <a class="cta-btn hover-sound" href="../pages/DevLog/index.html">Devlog</a>
+                        <a class="cta-btn hover-sound" href="../pages/contact.html">Contact</a>
+                        <a class="cta-btn hover-sound" href="https://ns-tx.com/afterdarkrp">AfterDarkRP</a>
+                    </div>
+                </article>
+
+                <article class="surface-card">
+                    <p class="eyebrow">Ops Checklist</p>
+                    <h3>Suggested content to keep here</h3>
+                    <ul class="list">
+                        <li>Daily priorities, active blockers, and escalation contacts.</li>
+                        <li>Links to scheduling docs, payroll tools, or internal announcements.</li>
+                        <li>Temporary campaign links that should not live in the public nav.</li>
+                    </ul>
+                </article>
+            </section>
+        </div>
+
+        <footer class="site-footer panel">
+            <section class="software-marquee-section" aria-label="Software used by Nightshift">
+                <div class="software-marquee">
+                    <div class="software-marquee-track">
+                        <span>Unreal / Source 2 / Enfusion / RAGE</span><span>Blender</span><span>Adobe Suite</span><span>Adobe 3D</span><span>Affinity Suite</span><span>Gaea 2.0</span><span>CC5</span><span>iClone 8</span><span>Marvelous Designer</span><span>Ornatrix</span><span>FruityLoops</span><span>VS Code</span><span>Visual Studio</span><span>GitHub</span><span>Git LFS</span><span>Git Pages</span><span>Wix</span><span>Obsidian</span><span>Codex</span>
+                        <span>Unreal / Source 2 / Enfusion / RAGE</span><span>Blender</span><span>Adobe Suite</span><span>Adobe 3D</span><span>Affinity Suite</span><span>Gaea 2.0</span><span>CC5</span><span>iClone 8</span><span>Marvelous Designer</span><span>Ornatrix</span><span>FruityLoops</span><span>VS Code</span><span>Visual Studio</span><span>GitHub</span><span>Git LFS</span><span>Git Pages</span><span>Wix</span><span>Obsidian</span><span>Codex</span>
+                    </div>
+                </div>
+            </section>
+            <div class="footer-grid">
+                <div class="footer-column"><span>Primary routes</span><a class="hover-sound" href="/">Home</a><a class="hover-sound" href="../pages/games.html">Games</a><a class="hover-sound" href="../pages/studio.html">Studio</a><a class="hover-sound" href="../pages/contact.html">Contact</a></div>
+                <div class="footer-column"><span>Internal surface</span><a class="hover-sound" href="/shift/">Shift Relay</a><a class="hover-sound" href="../pages/DevLog/index.html">Devlog</a><a href="https://www.epicgames.com/site/en-US/privacypolicy" target="_blank" rel="noopener noreferrer">Epic Privacy Policy</a><a href="#">Applicant Privacy Policy</a></div>
+                <div class="footer-column"><span>External surfaces</span><a href="#">Press Kit</a><a href="#">Brand Assets</a><a href="#">Careers</a><a href="#">Community</a></div>
+            </div>
+            <div class="footer-bottom">
+                <div class="social-row"><a class="action-pill hover-sound" href="https://twitter.com" target="_blank" rel="noopener noreferrer">X</a><a class="action-pill hover-sound" href="https://instagram.com" target="_blank" rel="noopener noreferrer">IG</a><a class="action-pill hover-sound" href="https://www.youtube.com/@nstx" target="_blank" rel="noopener noreferrer">YT</a></div>
+                <p class="footer-note">Copyright 2026 Nightshift. All rights reserved.</p>
+            </div>
+        </footer>
+    </main>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const ACCESS_HASH = "a1f9e158d166fb63938a1cffdaea9c2b69148688caed2a52b6001508e7e1edd4";
+            const STORAGE_KEY = "nightshift-shift-access";
+            const audio = new Audio("../audio/bop.mp3");
+            const clock = document.getElementById("mockup-clock");
+            const form = document.getElementById("employee-access-form");
+            const input = document.getElementById("employee-passcode");
+            const feedback = document.getElementById("access-feedback");
+            const lockButton = document.getElementById("lock-session-button");
+            const shell = document.querySelector(".shift-shell");
+            const employeeArea = document.getElementById("employee-area");
+            const accessStateLabel = document.getElementById("access-state-label");
+            const accessIndicator = document.getElementById("access-indicator");
+
+            audio.volume = 0.25;
+
+            function updateClock() {
+                if (!clock) {
+                    return;
+                }
+
+                clock.textContent = new Date().toLocaleTimeString("en-US", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    second: "2-digit",
+                    timeZone: "America/Chicago",
+                    timeZoneName: "short"
+                });
+            }
+
+            function setAccessState(unlocked, message) {
+                document.body.classList.toggle("employee-authenticated", unlocked);
+                shell.dataset.auth = unlocked ? "unlocked" : "locked";
+                employeeArea.setAttribute("aria-hidden", unlocked ? "false" : "true");
+                accessStateLabel.textContent = unlocked ? "Unlocked" : "Locked";
+                accessIndicator.classList.toggle("is-unlocked", unlocked);
+                lockButton.hidden = !unlocked;
+
+                if (unlocked) {
+                    form.setAttribute("hidden", "");
+                } else {
+                    form.removeAttribute("hidden");
+                }
+
+                feedback.textContent = message;
+                feedback.classList.toggle("error", !unlocked && message !== "Enter the six-digit code. Access clears when the browser session ends or when you lock the route manually.");
+
+                if (!unlocked) {
+                    input.value = "";
+                }
+            }
+
+            async function sha256(value) {
+                const encoded = new TextEncoder().encode(value);
+                const digest = await window.crypto.subtle.digest("SHA-256", encoded);
+                return Array.from(new Uint8Array(digest)).map((byte) => byte.toString(16).padStart(2, "0")).join("");
+            }
+
+            form.addEventListener("submit", async function(event) {
+                event.preventDefault();
+
+                const value = input.value.trim();
+
+                if (!value) {
+                    setAccessState(false, "Enter the employee passcode before continuing.");
+                    input.focus();
+                    return;
+                }
+
+                feedback.classList.remove("error");
+                feedback.textContent = "Checking passcode...";
+
+                try {
+                    const hash = await sha256(value);
+
+                    if (hash === ACCESS_HASH) {
+                        window.sessionStorage.setItem(STORAGE_KEY, "approved");
+                        setAccessState(true, "Employee relay unlocked for this browser session.");
+                    } else {
+                        window.sessionStorage.removeItem(STORAGE_KEY);
+                        setAccessState(false, "Passcode rejected. Try again.");
+                        input.focus();
+                    }
+                } catch (error) {
+                    setAccessState(false, "This browser cannot verify the passcode on this page.");
+                }
+            });
+
+            lockButton.addEventListener("click", function() {
+                window.sessionStorage.removeItem(STORAGE_KEY);
+                setAccessState(false, "Access locked. Enter the passcode to unlock the relay again.");
+                input.focus();
+            });
+
+            document.querySelectorAll(".hover-sound").forEach((element) => {
+                element.addEventListener("mouseenter", function() {
+                    audio.currentTime = 0;
+                    audio.play().catch(() => {});
+                });
+            });
+
+            if (window.sessionStorage.getItem(STORAGE_KEY) === "approved") {
+                setAccessState(true, "Employee relay unlocked for this browser session.");
+            } else {
+                setAccessState(false, "Enter the six-digit code. Access clears when the browser session ends or when you lock the route manually.");
+                input.focus();
+            }
+
+            updateClock();
+            window.setInterval(updateClock, 1000);
+        });
+    </script>
+</body>
+</html>
