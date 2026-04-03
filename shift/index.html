@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nightshift | Employee Shift</title>
     <meta name="robots" content="noindex, nofollow, noarchive">
+    <meta name="nightshift-analytics-endpoint" content="/api/analytics">
     <link rel="canonical" href="/shift/">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -96,6 +97,92 @@
         </section>
 
         <div class="employee-area" id="employee-area" aria-hidden="true">
+            <section class="surface-card analytics-status-card">
+                <div class="analytics-status-heading">
+                    <div>
+                        <p class="eyebrow">Site Analytics</p>
+                        <h3>First-party traffic readout</h3>
+                    </div>
+                    <button class="cta-btn hover-sound analytics-refresh" id="analytics-refresh-button" type="button">Refresh Data</button>
+                </div>
+                <p class="analytics-status-copy" id="analytics-status">Unlock the route to load the current analytics summary.</p>
+            </section>
+
+            <section class="analytics-metric-grid" aria-label="Analytics overview">
+                <article class="surface-card analytics-metric-card">
+                    <span>Views / 24h</span>
+                    <strong id="metric-views-day">--</strong>
+                    <p>Page views in the last day.</p>
+                </article>
+                <article class="surface-card analytics-metric-card">
+                    <span>Views / 7d</span>
+                    <strong id="metric-views-week">--</strong>
+                    <p>Page views in the last week.</p>
+                </article>
+                <article class="surface-card analytics-metric-card">
+                    <span>Views / 30d</span>
+                    <strong id="metric-views-range">--</strong>
+                    <p>Rolling 30 day page views.</p>
+                </article>
+                <article class="surface-card analytics-metric-card">
+                    <span>Approx visitors / 30d</span>
+                    <strong id="metric-visitors-range">--</strong>
+                    <p>24 hour anonymous visitor tokens.</p>
+                </article>
+                <article class="surface-card analytics-metric-card">
+                    <span>Tracked events / 30d</span>
+                    <strong id="metric-events-range">--</strong>
+                    <p>Outbound clicks and custom events.</p>
+                </article>
+                <article class="surface-card analytics-metric-card">
+                    <span>Last refresh</span>
+                    <strong id="metric-last-refresh">--</strong>
+                    <p>Dashboard payload generation time.</p>
+                </article>
+            </section>
+
+            <section class="surface-grid analytics-grid">
+                <article class="surface-card analytics-panel">
+                    <p class="eyebrow">Top Pages</p>
+                    <h3>Most viewed routes</h3>
+                    <div class="analytics-list" id="analytics-top-pages"></div>
+                </article>
+
+                <article class="surface-card analytics-panel">
+                    <p class="eyebrow">Traffic Sources</p>
+                    <h3>Referrer hosts</h3>
+                    <div class="analytics-list" id="analytics-referrers"></div>
+                </article>
+            </section>
+
+            <section class="surface-grid analytics-grid">
+                <article class="surface-card analytics-panel">
+                    <p class="eyebrow">Daily Trend</p>
+                    <h3>Page views by day</h3>
+                    <div class="analytics-bars" id="analytics-daily-views"></div>
+                </article>
+
+                <article class="surface-card analytics-panel">
+                    <p class="eyebrow">Audience Mix</p>
+                    <h3>Device split</h3>
+                    <div class="analytics-list" id="analytics-devices"></div>
+                </article>
+            </section>
+
+            <section class="surface-grid analytics-grid">
+                <article class="surface-card analytics-panel">
+                    <p class="eyebrow">Regions</p>
+                    <h3>Country and state mix</h3>
+                    <div class="analytics-list" id="analytics-regions"></div>
+                </article>
+
+                <article class="surface-card analytics-panel">
+                    <p class="eyebrow">Events</p>
+                    <h3>Top tracked actions</h3>
+                    <div class="analytics-list" id="analytics-events"></div>
+                </article>
+            </section>
+
             <section class="surface-grid">
                 <article class="surface-card">
                     <p class="eyebrow">Shift Brief</p>
@@ -163,118 +250,6 @@
         </footer>
     </main>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const ACCESS_HASH = "a1f9e158d166fb63938a1cffdaea9c2b69148688caed2a52b6001508e7e1edd4";
-            const STORAGE_KEY = "nightshift-shift-access";
-            const audio = new Audio("../audio/bop.mp3");
-            const clock = document.getElementById("mockup-clock");
-            const form = document.getElementById("employee-access-form");
-            const input = document.getElementById("employee-passcode");
-            const feedback = document.getElementById("access-feedback");
-            const lockButton = document.getElementById("lock-session-button");
-            const shell = document.querySelector(".shift-shell");
-            const employeeArea = document.getElementById("employee-area");
-            const accessStateLabel = document.getElementById("access-state-label");
-            const accessIndicator = document.getElementById("access-indicator");
-
-            audio.volume = 0.25;
-
-            function updateClock() {
-                if (!clock) {
-                    return;
-                }
-
-                clock.textContent = new Date().toLocaleTimeString("en-US", {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                    second: "2-digit",
-                    timeZone: "America/Chicago",
-                    timeZoneName: "short"
-                });
-            }
-
-            function setAccessState(unlocked, message) {
-                document.body.classList.toggle("employee-authenticated", unlocked);
-                shell.dataset.auth = unlocked ? "unlocked" : "locked";
-                employeeArea.setAttribute("aria-hidden", unlocked ? "false" : "true");
-                accessStateLabel.textContent = unlocked ? "Unlocked" : "Locked";
-                accessIndicator.classList.toggle("is-unlocked", unlocked);
-                lockButton.hidden = !unlocked;
-
-                if (unlocked) {
-                    form.setAttribute("hidden", "");
-                } else {
-                    form.removeAttribute("hidden");
-                }
-
-                feedback.textContent = message;
-                feedback.classList.toggle("error", !unlocked && message !== "Enter the six-digit code. Access clears when the browser session ends or when you lock the route manually.");
-
-                if (!unlocked) {
-                    input.value = "";
-                }
-            }
-
-            async function sha256(value) {
-                const encoded = new TextEncoder().encode(value);
-                const digest = await window.crypto.subtle.digest("SHA-256", encoded);
-                return Array.from(new Uint8Array(digest)).map((byte) => byte.toString(16).padStart(2, "0")).join("");
-            }
-
-            form.addEventListener("submit", async function(event) {
-                event.preventDefault();
-
-                const value = input.value.trim();
-
-                if (!value) {
-                    setAccessState(false, "Enter the employee passcode before continuing.");
-                    input.focus();
-                    return;
-                }
-
-                feedback.classList.remove("error");
-                feedback.textContent = "Checking passcode...";
-
-                try {
-                    const hash = await sha256(value);
-
-                    if (hash === ACCESS_HASH) {
-                        window.sessionStorage.setItem(STORAGE_KEY, "approved");
-                        setAccessState(true, "Employee relay unlocked for this browser session.");
-                    } else {
-                        window.sessionStorage.removeItem(STORAGE_KEY);
-                        setAccessState(false, "Passcode rejected. Try again.");
-                        input.focus();
-                    }
-                } catch (error) {
-                    setAccessState(false, "This browser cannot verify the passcode on this page.");
-                }
-            });
-
-            lockButton.addEventListener("click", function() {
-                window.sessionStorage.removeItem(STORAGE_KEY);
-                setAccessState(false, "Access locked. Enter the passcode to unlock the relay again.");
-                input.focus();
-            });
-
-            document.querySelectorAll(".hover-sound").forEach((element) => {
-                element.addEventListener("mouseenter", function() {
-                    audio.currentTime = 0;
-                    audio.play().catch(() => {});
-                });
-            });
-
-            if (window.sessionStorage.getItem(STORAGE_KEY) === "approved") {
-                setAccessState(true, "Employee relay unlocked for this browser session.");
-            } else {
-                setAccessState(false, "Enter the six-digit code. Access clears when the browser session ends or when you lock the route manually.");
-                input.focus();
-            }
-
-            updateClock();
-            window.setInterval(updateClock, 1000);
-        });
-    </script>
+    <script src="/scripts/shift-dashboard.js"></script>
 </body>
 </html>

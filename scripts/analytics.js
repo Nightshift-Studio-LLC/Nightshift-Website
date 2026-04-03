@@ -1,0 +1,216 @@
+(() => {
+    const script = document.currentScript;
+    const endpointBase = (script?.dataset.analyticsEndpoint || "/api/analytics").replace(/\/$/, "");
+    const hostname = window.location.hostname;
+
+    if (
+        hostname === "localhost" ||
+        hostname === "127.0.0.1" ||
+        hostname === "::1" ||
+        window.location.pathname.startsWith("/shift/")
+    ) {
+        return;
+    }
+
+    const VISITOR_STORAGE_KEY = "nightshift-analytics-visitor";
+    const VISITOR_TTL_MS = 24 * 60 * 60 * 1000;
+    const sentKeys = new Set();
+
+    function sanitizeText(value, max = 160) {
+        if (typeof value !== "string") {
+            return "";
+        }
+
+        return value.replace(/\s+/g, " ").trim().slice(0, max);
+    }
+
+    function isSameOrigin(url) {
+        try {
+            return new URL(url, window.location.href).origin === window.location.origin;
+        } catch (_error) {
+            return false;
+        }
+    }
+
+    function classifyDevice() {
+        const ua = navigator.userAgent || "";
+        const width = window.innerWidth || screen.width || 0;
+
+        if (/ipad|tablet/i.test(ua) || (width >= 768 && width <= 1024 && "ontouchstart" in window)) {
+            return "tablet";
+        }
+
+        if (/mobi|android|iphone|ipod/i.test(ua) || width < 768) {
+            return "mobile";
+        }
+
+        return "desktop";
+    }
+
+    function generateVisitorId() {
+        const bytes = new Uint8Array(16);
+        window.crypto.getRandomValues(bytes);
+        return Array.from(bytes, (byte) => byte.toString(16).padStart(2, "0")).join("");
+    }
+
+    function getVisitorId() {
+        try {
+            const raw = window.localStorage.getItem(VISITOR_STORAGE_KEY);
+            const now = Date.now();
+
+            if (raw) {
+                const parsed = JSON.parse(raw);
+                if (
+                    parsed &&
+                    typeof parsed.id === "string" &&
+                    typeof parsed.expiresAt === "number" &&
+                    parsed.expiresAt > now
+                ) {
+                    return parsed.id;
+                }
+            }
+
+            const next = {
+                id: generateVisitorId(),
+                expiresAt: now + VISITOR_TTL_MS,
+            };
+
+            window.localStorage.setItem(VISITOR_STORAGE_KEY, JSON.stringify(next));
+            return next.id;
+        } catch (_error) {
+            return "";
+        }
+    }
+
+    const visitorId = getVisitorId();
+
+    function buildPayload(partial) {
+        return {
+            eventType: partial.eventType || "pageview",
+            eventName: sanitizeText(partial.eventName || "", 80),
+            path: window.location.pathname || "/",
+            pageTitle: sanitizeText(document.title || "", 140),
+            referrer: document.referrer || "",
+            siteHost: window.location.host,
+            deviceType: classifyDevice(),
+            viewportWidth: window.innerWidth || 0,
+            viewportHeight: window.innerHeight || 0,
+            language: sanitizeText(navigator.language || "", 24),
+            timezone: sanitizeText(Intl.DateTimeFormat().resolvedOptions().timeZone || "", 64),
+            visitorId,
+            linkUrl: partial.linkUrl || "",
+            linkText: sanitizeText(partial.linkText || "", 120),
+        };
+    }
+
+    function sendPayload(payload) {
+        if (payload.eventType === "pageview") {
+            const pageviewKey = `${payload.eventType}|${payload.path}`;
+            if (sentKeys.has(pageviewKey)) {
+                return;
+            }
+            sentKeys.add(pageviewKey);
+        }
+
+        const body = JSON.stringify(payload);
+        const url = `${endpointBase}/collect`;
+
+        try {
+            if (navigator.sendBeacon) {
+                const blob = new Blob([body], { type: "application/json" });
+                navigator.sendBeacon(url, blob);
+                return;
+            }
+        } catch (_error) {
+            // Fall through to fetch.
+        }
+
+        fetch(url, {
+            method: "POST",
+            headers: {
+                "content-type": "application/json",
+            },
+            body,
+            keepalive: true,
+            credentials: "omit",
+        }).catch(() => {});
+    }
+
+    function trackPageView() {
+        sendPayload(buildPayload({ eventType: "pageview" }));
+    }
+
+    function trackClick(event) {
+        const target = event.target instanceof Element ? event.target.closest("[data-analytics-event], a[href]") : null;
+
+        if (!target) {
+            return;
+        }
+
+        const customName = target.getAttribute("data-analytics-event");
+        const href = target.getAttribute("href") || "";
+        let absoluteHref = "";
+
+        if (href) {
+            try {
+                absoluteHref = new URL(href, window.location.href).toString();
+            } catch (_error) {
+                absoluteHref = href;
+            }
+        }
+
+        if (customName) {
+            sendPayload(
+                buildPayload({
+                    eventType: "event",
+                    eventName: customName,
+                    linkUrl: absoluteHref,
+                    linkText: target.getAttribute("data-analytics-label") || target.textContent || "",
+                })
+            );
+            return;
+        }
+
+        if (!href) {
+            return;
+        }
+
+        if (href.startsWith("mailto:")) {
+            sendPayload(
+                buildPayload({
+                    eventType: "event",
+                    eventName: "mailto_click",
+                    linkUrl: href,
+                    linkText: target.textContent || href,
+                })
+            );
+            return;
+        }
+
+        if (href.startsWith("tel:")) {
+            sendPayload(
+                buildPayload({
+                    eventType: "event",
+                    eventName: "phone_click",
+                    linkUrl: href,
+                    linkText: target.textContent || href,
+                })
+            );
+            return;
+        }
+
+        if (!isSameOrigin(absoluteHref) || target.getAttribute("target") === "_blank") {
+            sendPayload(
+                buildPayload({
+                    eventType: "event",
+                    eventName: "external_link_click",
+                    linkUrl: absoluteHref,
+                    linkText: target.textContent || absoluteHref,
+                })
+            );
+        }
+    }
+
+    trackPageView();
+    document.addEventListener("click", trackClick, { passive: true });
+})();

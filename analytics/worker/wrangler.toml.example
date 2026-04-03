@@ -1,0 +1,15 @@
+name = "nightshift-analytics"
+main = "src/index.js"
+compatibility_date = "2026-04-02"
+
+[vars]
+ALLOWED_ORIGINS = "https://ns-tx.com,https://www.ns-tx.com"
+RETENTION_DAYS = "30"
+
+[[d1_databases]]
+binding = "ANALYTICS_DB"
+database_name = "nightshift-analytics"
+database_id = "replace-with-your-d1-id"
+
+[triggers]
+crons = ["0 8 * * *"]

@@ -124,6 +124,7 @@ const layout = ({ title, body, assetPrefix, pagePrefix, readout }) => `<!DOCTYPE
     <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="${assetPrefix}/images/icons/nightshift.ico">
     <link rel="stylesheet" href="${assetPrefix}/styles/home-modus-mockup.css">
+    <script defer src="/scripts/analytics.js" data-analytics-endpoint="/api/analytics"></script>
 </head>
 <body>
     <div class="screen-fx" aria-hidden="true"></div>
