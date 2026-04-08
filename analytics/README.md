@@ -20,7 +20,9 @@ This folder contains a minimal first-party analytics pipeline for the public Nig
 
 ## Expected route layout
 
-The public site sends events to `/api/analytics/collect` and the employee dashboard reads `/api/analytics/dashboard`.
+The public site sends events to `/api/analytics/collect`.
+
+The old `/api/analytics/dashboard` route has been retired. Do not expose analytics dashboards or staff tooling from a public static page.
 
 Recommended deployment:
 
@@ -35,13 +37,7 @@ Recommended deployment:
 2. Apply [schema.sql](/g:/4.%20Websites/goodmittens.github.io/analytics/schema.sql).
 3. Copy [wrangler.toml.example](/g:/4.%20Websites/goodmittens.github.io/analytics/worker/wrangler.toml.example) to `wrangler.toml`.
 4. Fill in the D1 database id and your allowed origins.
-5. Set the worker secret:
-
-```powershell
-wrangler secret put SHIFT_DASHBOARD_PASSCODE
-```
-
-Use the same passcode you want the `/shift/` dashboard to send to the worker.
+5. Deploy without a public dashboard secret. If you previously used `SHIFT_DASHBOARD_PASSCODE`, rotate or remove it from the worker environment.
 
 ## Deploy
 

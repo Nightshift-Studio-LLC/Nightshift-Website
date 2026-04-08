@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nightshift | Employee Shift</title>
     <meta name="robots" content="noindex, nofollow, noarchive">
-    <meta name="nightshift-analytics-endpoint" content="/api/analytics">
     <link rel="canonical" href="/shift/">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -28,20 +27,20 @@
             <a href="/shift/" class="hover-sound active">Shift</a>
         </nav>
         <div class="topbar-readout">
-            <span>Employee Relay</span>
-            <strong id="mockup-clock">00:00:00 CST</strong>
+            <span>Route Status</span>
+            <strong>Retired</strong>
         </div>
     </header>
 
-    <main class="shell page-shell shift-shell" data-auth="locked">
+    <main class="shell page-shell shift-shell">
         <section class="page-hero-grid">
             <article class="page-hero-panel">
-                <p class="eyebrow">Employee / Shift Relay</p>
-                <h1 class="page-title">A controlled route for staff-facing links, notes, and active handoff points.</h1>
-                <p class="page-lede">This surface stays out of the public navigation flow and requires a passcode before the internal cards below become usable. The goal is fast routing, not public discovery.</p>
+                <p class="eyebrow">Internal Surface / Retired</p>
+                <h1 class="page-title">The public shift relay has been taken offline.</h1>
+                <p class="page-lede">This route no longer carries employee links, handoff notes, or analytics access. Internal operations have been moved off the public site.</p>
                 <div class="hero-actions">
-                    <a class="cta-btn primary hover-sound" href="#employee-access">Unlock Route</a>
-                    <a class="cta-btn hover-sound" href="../pages/contact.html">External Contact</a>
+                    <a class="cta-btn primary hover-sound" href="/">Return Home</a>
+                    <a class="cta-btn hover-sound" href="../pages/contact.html">Contact Nightshift</a>
                 </div>
                 <div class="shift-readout-grid" aria-label="Route status">
                     <div class="shift-readout-card">
@@ -49,166 +48,60 @@
                         <strong>/shift/</strong>
                     </div>
                     <div class="shift-readout-card">
-                        <span>Access mode</span>
-                        <strong>Session-gated</strong>
+                        <span>Mode</span>
+                        <strong>Publicly disabled</strong>
                     </div>
                     <div class="shift-readout-card">
-                        <span>Indexing</span>
-                        <strong>Noindex applied</strong>
+                        <span>State</span>
+                        <strong>Retired</strong>
                     </div>
                 </div>
             </article>
 
-            <aside class="page-hero-panel access-panel" id="employee-access">
-                <p class="eyebrow">Access Control</p>
+            <aside class="page-hero-panel access-panel">
+                <p class="eyebrow">Status</p>
                 <div class="access-state" aria-live="polite">
-                    <span class="access-indicator" id="access-indicator" aria-hidden="true"></span>
-                    <strong id="access-state-label">Locked</strong>
+                    <span class="access-indicator is-retired" aria-hidden="true"></span>
+                    <strong>Public access removed</strong>
                 </div>
-                <p class="access-copy">Enter the employee passcode to unlock the relay for this browser session.</p>
-                <form class="secure-form" id="employee-access-form">
-                    <label class="secure-label" for="employee-passcode">Passcode</label>
-                    <div class="secure-input-row">
-                        <input
-                            id="employee-passcode"
-                            name="employee-passcode"
-                            class="secure-input"
-                            type="password"
-                            inputmode="numeric"
-                            autocomplete="current-password"
-                            maxlength="6"
-                            required
-                            aria-describedby="access-feedback">
-                        <button class="cta-btn primary hover-sound" type="submit">Unlock</button>
-                    </div>
-                </form>
-                <button class="cta-btn ghost hover-sound lock-button" id="lock-session-button" type="button" hidden>Lock Session</button>
-                <p class="access-feedback" id="access-feedback">Enter the six-digit code. Access clears when the browser session ends or when you lock the route manually.</p>
-                <noscript>
-                    <p class="access-feedback error">JavaScript is required for the access gate on this page.</p>
-                </noscript>
+                <p class="access-copy">Any staff-only routing, operations notes, or reporting now belongs behind a real private system instead of a public static page.</p>
+                <p class="status-note">If you were looking for an internal handoff surface, use your private ops tooling or contact the site owner directly.</p>
             </aside>
         </section>
 
         <section class="surface-card employee-note">
-            <p class="eyebrow">Routing Notes</p>
-            <h3>What this page is for</h3>
-            <p>This is an internal relay surface for employee-facing routing, quick status references, and shared operational links. Keep it focused and practical.</p>
+            <p class="eyebrow">Change Notice</p>
+            <h3>Why this route changed</h3>
+            <p>The original concept was useful, but a client-side passcode on a public static site is not a safe place for staff traffic or internal analytics access.</p>
         </section>
 
-        <div class="employee-area" id="employee-area" aria-hidden="true">
-            <section class="surface-card analytics-status-card">
-                <div class="analytics-status-heading">
-                    <div>
-                        <p class="eyebrow">Site Analytics</p>
-                        <h3>First-party traffic readout</h3>
-                    </div>
-                    <button class="cta-btn hover-sound analytics-refresh" id="analytics-refresh-button" type="button">Refresh Data</button>
-                </div>
-                <p class="analytics-status-copy" id="analytics-status">Unlock the route to load the current analytics summary.</p>
-            </section>
-
-            <section class="analytics-metric-grid" aria-label="Analytics overview">
-                <article class="surface-card analytics-metric-card">
-                    <span>Views / 24h</span>
-                    <strong id="metric-views-day">--</strong>
-                    <p>Page views in the last day.</p>
-                </article>
-                <article class="surface-card analytics-metric-card">
-                    <span>Views / 7d</span>
-                    <strong id="metric-views-week">--</strong>
-                    <p>Page views in the last week.</p>
-                </article>
-                <article class="surface-card analytics-metric-card">
-                    <span>Views / 30d</span>
-                    <strong id="metric-views-range">--</strong>
-                    <p>Rolling 30 day page views.</p>
-                </article>
-                <article class="surface-card analytics-metric-card">
-                    <span>Approx visitors / 30d</span>
-                    <strong id="metric-visitors-range">--</strong>
-                    <p>24 hour anonymous visitor tokens.</p>
-                </article>
-                <article class="surface-card analytics-metric-card">
-                    <span>Tracked events / 30d</span>
-                    <strong id="metric-events-range">--</strong>
-                    <p>Outbound clicks and custom events.</p>
-                </article>
-                <article class="surface-card analytics-metric-card">
-                    <span>Last refresh</span>
-                    <strong id="metric-last-refresh">--</strong>
-                    <p>Dashboard payload generation time.</p>
-                </article>
-            </section>
-
-            <section class="surface-grid analytics-grid">
-                <article class="surface-card analytics-panel">
-                    <p class="eyebrow">Top Pages</p>
-                    <h3>Most viewed routes</h3>
-                    <div class="analytics-list" id="analytics-top-pages"></div>
-                </article>
-
-                <article class="surface-card analytics-panel">
-                    <p class="eyebrow">Traffic Sources</p>
-                    <h3>Referrer hosts</h3>
-                    <div class="analytics-list" id="analytics-referrers"></div>
-                </article>
-            </section>
-
-            <section class="surface-grid analytics-grid">
-                <article class="surface-card analytics-panel">
-                    <p class="eyebrow">Daily Trend</p>
-                    <h3>Page views by day</h3>
-                    <div class="analytics-bars" id="analytics-daily-views"></div>
-                </article>
-
-                <article class="surface-card analytics-panel">
-                    <p class="eyebrow">Audience Mix</p>
-                    <h3>Device split</h3>
-                    <div class="analytics-list" id="analytics-devices"></div>
-                </article>
-            </section>
-
-            <section class="surface-grid analytics-grid">
-                <article class="surface-card analytics-panel">
-                    <p class="eyebrow">Regions</p>
-                    <h3>Country and state mix</h3>
-                    <div class="analytics-list" id="analytics-regions"></div>
-                </article>
-
-                <article class="surface-card analytics-panel">
-                    <p class="eyebrow">Events</p>
-                    <h3>Top tracked actions</h3>
-                    <div class="analytics-list" id="analytics-events"></div>
-                </article>
-            </section>
-
+        <div class="surface-grid">
             <section class="surface-grid">
                 <article class="surface-card">
-                    <p class="eyebrow">Shift Brief</p>
-                    <h3>Use this route for direct handoff traffic</h3>
+                    <p class="eyebrow">Current State</p>
+                    <h3>This page is now a public placeholder</h3>
                     <ul class="list">
-                        <li>Keep current internal links grouped here instead of scattering them across public pages.</li>
-                        <li>Use the relay for staff notes, temporary routing, or a current-shift checklist.</li>
-                        <li>Rotate or replace cards as operations change without touching the public site structure.</li>
+                        <li>No passcode prompt is shipped here anymore.</li>
+                        <li>No employee notes, quick links, or analytics panels remain on this route.</li>
+                        <li>No browser-stored access state is used on this page.</li>
                     </ul>
                 </article>
 
                 <article class="surface-card">
-                    <p class="eyebrow">Current Access</p>
-                    <h3>Session rules</h3>
+                    <p class="eyebrow">Private Ops</p>
+                    <h3>Move internal traffic off the public site</h3>
                     <ul class="list">
-                        <li>The page unlocks only after the passcode is entered correctly.</li>
-                        <li>Access persists for the current browser session through `sessionStorage`.</li>
-                        <li>Use the lock control to clear access immediately on a shared machine.</li>
+                        <li>Keep staff links in private tooling with real authentication.</li>
+                        <li>Store secrets only in server-side systems or managed secret storage.</li>
+                        <li>Treat any previously used shift passcodes as compromised and rotate them.</li>
                     </ul>
                 </article>
             </section>
 
             <section class="surface-grid">
                 <article class="surface-card">
-                    <p class="eyebrow">Quick Links</p>
-                    <h3>Primary routing targets</h3>
+                    <p class="eyebrow">Public Routes</p>
+                    <h3>Safe destinations still available</h3>
                     <div class="hero-actions">
                         <a class="cta-btn primary hover-sound" href="/">Main Site</a>
                         <a class="cta-btn hover-sound" href="../pages/DevLog/index.html">Devlog</a>
@@ -218,12 +111,12 @@
                 </article>
 
                 <article class="surface-card">
-                    <p class="eyebrow">Ops Checklist</p>
-                    <h3>Suggested content to keep here</h3>
+                    <p class="eyebrow">Ops Reminder</p>
+                    <h3>Next security step</h3>
                     <ul class="list">
-                        <li>Daily priorities, active blockers, and escalation contacts.</li>
-                        <li>Links to scheduling docs, payroll tools, or internal announcements.</li>
-                        <li>Temporary campaign links that should not live in the public nav.</li>
+                        <li>Rotate any passcode or worker secret previously associated with this route.</li>
+                        <li>Remove old bookmarks that pointed staff here for handoff or analytics access.</li>
+                        <li>Keep future internal dashboards behind server-side auth instead of public static pages.</li>
                     </ul>
                 </article>
             </section>
@@ -250,6 +143,5 @@
         </footer>
     </main>
 
-    <script src="/scripts/shift-dashboard.js"></script>
 </body>
 </html>
