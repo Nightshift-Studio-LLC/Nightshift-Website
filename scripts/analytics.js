@@ -6,8 +6,7 @@
     if (
         hostname === "localhost" ||
         hostname === "127.0.0.1" ||
-        hostname === "::1" ||
-        window.location.pathname.startsWith("/shift/")
+        hostname === "::1"
     ) {
         return;
     }
