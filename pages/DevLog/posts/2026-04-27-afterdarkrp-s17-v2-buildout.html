@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nightshift | AfterDarkRP pushes S17 forward with map buildout, lighting passes, and new world rules</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="../../../images/icons/nightshift.ico">
+    <link rel="stylesheet" href="../../../styles/home-modus-mockup.css">
+    <script defer src="/scripts/analytics.js" data-analytics-endpoint="/api/analytics"></script>
+</head>
+<body>
+    <div class="screen-fx" aria-hidden="true"></div>
+    <header class="topbar">
+        <a class="brand hover-sound" href="../../home.html" aria-label="Nightshift home">
+            <img src="../../../images/index/nightshift-transparent.png" alt="Nightshift logo">
+        </a>
+        <nav class="utility-nav" aria-label="Primary">
+            <a href="../../home.html" class="hover-sound">Home</a>
+            <a href="../../games.html" class="hover-sound">Games</a>
+            <a href="../../studio.html" class="hover-sound">Studio</a>
+            <a href="../../DevLog/index.html" class="hover-sound active">Devlog</a>
+            <a href="../../contact.html" class="hover-sound">Contact</a>
+        </nav>
+        <div class="topbar-readout"><span>Devlog Entry</span><strong id="mockup-clock">00:00:00 CST</strong></div>
+    </header>
+    <main class="shell page-shell">
+
+        <section class="page-hero-grid">
+            <article class="page-hero-panel">
+                <p class="eyebrow">Devlog / entry</p>
+                <h1 class="page-title">AfterDarkRP pushes S17 forward with map buildout, lighting passes, and new world rules</h1>
+                <p class="page-lede">The last month in AfterDarkRP was not one isolated feature drop. It was a sustained push across S17 map buildout, materials and lighting polish, prop and toolgun protections, gameplay support systems, and the first resident NPC/navigation layer aimed at making the city feel denser and more controllable.</p>
+                <div class="hero-actions"><a class="cta-btn hover-sound" href="../index.html">Back To Devlog</a></div>
+                <div class="tag-row"><span class="tag">AfterDarkRP</span><span class="tag">S17</span><span class="tag">Map</span><span class="tag">Lighting</span><span class="tag">NPCs</span></div>
+                <div class="media-frame devlog-hero"><img src="../../../images/afterdarkrp/Devlogs/4-27-26/s17v2-01.png" alt="AfterDarkRP pushes S17 forward with map buildout, lighting passes, and new world rules"></div>
+            </article>
+            <aside class="page-hero-panel">
+                <p class="eyebrow">Entry metadata</p>
+                <div class="stack-list">
+                    <div><span>Project</span><strong>AfterDarkRP</strong></div>
+                    <div><span>Date</span><strong>APR 27, 2026</strong></div>
+                    <div><span>Route</span><strong>Public archive</strong></div>
+                </div>
+            </aside>
+        </section>
+        <section class="panel feature-panel">
+            <div class="panel-heading"><p class="eyebrow">Field Notes</p><h2>Entry body</h2></div>
+            <div class="devlog-post-body"><h2>Since the March 31 devlog</h2>
+<p>The last public AfterDarkRP update focused on <strong>Ghetto 01</strong>, material work, LOD coverage, and getting the district closer to a testable state.</p>
+<p>The month after that did not slow down into one small cleanup pass. The actual <code>darkrp_ns</code> repo shows a sustained stretch of work across:</p>
+<ul>
+<li>the original map being scrapped in favor of a much larger-scale <strong>Version 2</strong> direction,</li>
+<li><strong>S17 map buildout</strong>,</li>
+<li>repeated <strong>lighting and material passes</strong>,</li>
+<li>more scene structure and support assets,</li>
+<li>stronger <strong>prop and toolgun policy</strong> for live-play reliability,</li>
+<li>and the first real <strong>resident NPC/navigation layer</strong> for making the city feel inhabited instead of staged.</li>
+</ul>
+<p>This was not one headline feature. It was a broad push to make the world bigger, more readable, and harder to break.</p>
+<h2>The project pivoted to a larger Version 2 map</h2>
+<p>One of the most important reality checks from this month is that the earlier map direction was effectively <strong>scrapped in favor of Version 2</strong>, with a much larger overall scale.</p>
+<p>That is not a small revision. It changes what the current work actually means. A lot of the month was not just polish on an old shell. It was production effort going into a broader city direction with more room to find the real limits of the engine, the scene, and the project structure before locking the rest of the world around it.</p>
+<p>That also explains why some of the work reads like foundational world-building rather than finish-line content. The map target itself got bigger.</p>
+<h2>S17 kept expanding</h2>
+<p>The clearest story in the repo is that <strong>S17</strong> kept picking up real mass.</p>
+<p>Across early and mid April, the project added and revised:</p>
+<ul>
+<li>more <strong>Downtown</strong> structures and road pieces,</li>
+<li>more <strong>Ghetto</strong> roads, junctions, and building support,</li>
+<li>more <strong>TrainStation</strong> structures, interiors, stairs, fences, roads, and supporting assets,</li>
+<li>additional terrain shaping and background support,</li>
+<li>and large direct edits to the live scene and baked nav data.</li>
+</ul>
+<p>That matters because this is the kind of work that turns a promising blockout into actual navigable space. It improves route logic, district shape, sightlines, connector planning, and the amount of city shell the gameplay can lean on.</p>
+<h2>New captures</h2>
+<div class="devlog-gallery">
+<figure>
+<img src="../../../images/afterdarkrp/Devlogs/4-27-26/s17v2-01.png" alt="AfterDarkRP S17 Version 2 wide layout preview">
+<figcaption>Wide S17 Version 2 overview showing the larger district scale and the broader city shell this month pivoted toward.</figcaption>
+</figure>
+<figure>
+<img src="../../../images/afterdarkrp/Devlogs/4-27-26/s17v2-02.png" alt="AfterDarkRP S17 Version 2 second layout angle">
+<figcaption>Another V2 angle showing how the new map direction opens up more room for route shaping, district spacing, and future expansion.</figcaption>
+</figure>
+<figure>
+<img src="../../../images/afterdarkrp/Devlogs/4-27-26/s17v2-lighting-post-process-updates.png" alt="AfterDarkRP lighting and post-process updates in S17 Version 2">
+<figcaption>Lighting and post-process pass focused on atmosphere, readability, and figuring out how the engine behaves under the larger scene scale.</figcaption>
+</figure>
+<figure>
+<img src="../../../images/afterdarkrp/Devlogs/4-27-26/s17v2-train-interior-flow-rework.png" alt="AfterDarkRP Train District interior flow rework">
+<figcaption>Train District interior flow rework, which is becoming the first serious polish and playtest zone for finding what needs optimization before broader expansion.</figcaption>
+</figure>
+<figure>
+<img src="../../../images/afterdarkrp/Devlogs/4-27-26/s17v2-train-restructure.png" alt="AfterDarkRP Train District restructure work">
+<figcaption>Train District restructure work that supports both the larger Version 2 direction and the current focus on controlled testing space.</figcaption>
+</figure>
+</div>
+
+<h2>Lighting and material passes were a major part of the month</h2>
+<p>This stretch was not just new geometry.</p>
+<p>Multiple commits through <strong>April 11, 2026</strong> to <strong>April 26, 2026</strong> kept returning to:</p>
+<ul>
+<li>lighting polish,</li>
+<li>post-process tuning,</li>
+<li>exterior light setup,</li>
+<li>street-light behavior,</li>
+<li>time-of-day timing,</li>
+<li>and material cleanup.</li>
+</ul>
+<p>That is important because AfterDarkRP depends heavily on atmosphere. The city needs to read like a place with pressure and identity at night, not just a technical layout with props dropped into it. The lighting work is doing more than visual polish. It is shaping readability, mood, and how districts feel under movement.</p>
+<h2>The map also got more rules, not just more assets</h2>
+<p>One of the more useful additions late in the month was a stronger <strong>prop policy</strong> and <strong>toolgun policy</strong> layer.</p>
+<p>That work added host-side rules for things like:</p>
+<ul>
+<li>player prop caps,</li>
+<li>no-prop zones around protected areas,</li>
+<li>blocked or restricted model handling,</li>
+<li>protected DarkRP targets,</li>
+<li>and own-prop-only expectations for toolgun actions.</li>
+</ul>
+<p>That is not flashy screenshot work, but it matters for a multiplayer sandbox. If players can grief protected systems, clutter key spaces, or use tool interactions on things that should be locked, the session falls apart fast. This pass makes the world easier to trust once more of the map becomes actively usable.</p>
+<h2>Resident NPC groundwork started showing up</h2>
+<p>By the end of the month, the repo also added the first real pass on <strong>resident population and NPC navigation support</strong>.</p>
+<p>That includes:</p>
+<ul>
+<li>home-door markers,</li>
+<li>route and waypoint markers,</li>
+<li>resident profile definitions,</li>
+<li>resident outing and return behavior,</li>
+<li>scene/navmesh support for moving them through the world,</li>
+<li>and supporting NPC safety/runtime rules.</li>
+</ul>
+<p>The important part is not that the city suddenly has a full civilian simulation. It does not. The important part is that AfterDarkRP is beginning to gain the authoring layer needed for ambient life, routine movement, and a more believable city rhythm.</p>
+<p>That changes the project direction in a meaningful way. The map is no longer only being treated as geometry for player routes. It is starting to gain structure for <strong>inhabitants</strong>, not just encounters.</p>
+<h2>Gameplay support kept moving with the world</h2>
+<p>The month was also not purely environment work.</p>
+<p>The repo activity in this window includes support systems such as:</p>
+<ul>
+<li>NPC runtime safety handling,</li>
+<li>entity shop updates,</li>
+<li>road optimization work,</li>
+<li>business shell support,</li>
+<li>and continued time/light system iteration.</li>
+</ul>
+<p>That is worth calling out because the project is still converging around the same practical goal: make the map and the gameplay systems sturdier together, instead of letting world work and rules work drift apart.</p>
+<h2>Note from the dev</h2>
+<p>The honest version is that <strong>time was split this month between game development and client work</strong>, so the project did not get the same uninterrupted focus I would have liked.</p>
+<p>That split shows up in the shape of the work. There was still real progress, but a lot of it landed as broader environment, lighting, support-system, and stability passes instead of one tighter systems-heavy sprint.</p>
+<p>The upside is that the recent NPC work is stable again, the game launches <strong>tomorrow, April 28, 2026</strong>, and focus can start shifting back toward deeper <strong>systems and code work</strong> instead of staying spread across too many fronts.</p>
+<h2>What this month adds up to</h2>
+<p>If the repo is the source of truth, the month after the March 31 devlog adds up to this:</p>
+<ul>
+<li>The earlier map direction was dropped in favor of a larger <strong>Version 2</strong> build.</li>
+<li><strong>S17</strong> got larger and more connected.</li>
+<li><strong>Ghetto, Downtown, and TrainStation</strong> all kept gaining support.</li>
+<li>Lighting, materials, and time tuning kept getting real attention.</li>
+<li>The map picked up stronger anti-grief and build-control rules through prop/toolgun policy.</li>
+<li>The first resident NPC/navigation layer started taking shape.</li>
+</ul>
+<p>That is a strong month for a project that still needs both world density and systems discipline before broader testing can really mean anything.</p>
+<h2>What comes next</h2>
+<ul>
+<li>Return more direct focus to <strong>systems and code work</strong> now that the NPC layer is stable again and launch pressure is about to clear.</li>
+<li>Focus polish on the <strong>Train District</strong> first so it becomes the main area for finding engine limits and identifying what has to be optimized before the city expands further.</li>
+<li>Use the <strong>Train District</strong> as a controlled playtest zone instead of trying to validate the entire map at once.</li>
+<li>Keep tightening lights, materials, and time behavior so the city mood lands without sacrificing readability.</li>
+<li>Expand resident and NPC route authoring carefully so ambient life supports the world instead of creating noise.</li>
+<li>Keep hardening prop, toolgun, and protected-area rules so multiplayer testing does not turn into cleanup duty.</li>
+</ul>
+<p>The last month was not a quiet one. It was a broad production push that made AfterDarkRP feel more like a real world under construction and less like a collection of disconnected passes.</p>
+</div>
+        </section>
+
+        <footer class="site-footer panel">
+
+            <section class="software-marquee-section" aria-label="Software used by Nightshift">
+                <div class="software-marquee"><div class="software-marquee-track">
+                    <span>Unreal / Source 2 / Enfusion / RAGE</span><span>Blender</span><span>Adobe Suite</span><span>Adobe 3D</span><span>Affinity Suite</span><span>Gaea 2.0</span><span>CC5</span><span>iClone 8</span><span>Marvelous Designer</span><span>Ornatrix</span><span>FruityLoops</span><span>VS Code</span><span>Visual Studio</span><span>GitHub</span><span>Git LFS</span><span>Git Pages</span><span>Wix</span><span>Codex</span>
+                    <span>Unreal / Source 2 / Enfusion / RAGE</span><span>Blender</span><span>Adobe Suite</span><span>Adobe 3D</span><span>Affinity Suite</span><span>Gaea 2.0</span><span>CC5</span><span>iClone 8</span><span>Marvelous Designer</span><span>Ornatrix</span><span>FruityLoops</span><span>VS Code</span><span>Visual Studio</span><span>GitHub</span><span>Git LFS</span><span>Git Pages</span><span>Wix</span><span>Codex</span>
+                </div></div>
+            </section>
+            <div class="footer-grid">
+                <div class="footer-column"><span>Primary routes</span><a class="hover-sound" href="../../home.html">Home</a><a class="hover-sound" href="../../games.html">Games</a><a class="hover-sound" href="../../studio.html">Studio</a><a class="hover-sound" href="../../contact.html">Contact</a></div>
+                <div class="footer-column"><span>Public records</span><a class="hover-sound" href="../../DevLog/index.html">Devlog</a><a href="https://www.epicgames.com/site/en-US/privacypolicy" target="_blank" rel="noopener noreferrer">Epic Privacy Policy</a><a href="#">Nightshift Privacy Policy</a><a href="#">Applicant Privacy Policy</a></div>
+                <div class="footer-column"><span>External surfaces</span><a href="#">Press Kit</a><a href="#">Brand Assets</a><a href="#">Careers</a><a href="#">Community</a></div>
+            </div>
+            <div class="footer-bottom"><div class="social-row"><a class="action-pill hover-sound" href="https://twitter.com" target="_blank" rel="noopener noreferrer">X</a><a class="action-pill hover-sound" href="https://instagram.com" target="_blank" rel="noopener noreferrer">IG</a><a class="action-pill hover-sound" href="https://www.youtube.com/@nstx" target="_blank" rel="noopener noreferrer">YT</a></div><p class="footer-note">Copyright 2026 Nightshift. All rights reserved.</p></div>
+        </footer>
+    </main>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const audio = new Audio("../../../audio/bop.mp3");
+            audio.volume = 0.25;
+            const clock = document.getElementById("mockup-clock");
+            function updateClock() {
+                if (!clock) return;
+                clock.textContent = new Date().toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", second: "2-digit", timeZone: "America/Chicago", timeZoneName: "short" });
+            }
+            document.querySelectorAll(".hover-sound").forEach((element) => {
+                element.addEventListener("mouseenter", function() {
+                    audio.currentTime = 0;
+                    audio.play().catch(() => {});
+                });
+            });
+            updateClock();
+            window.setInterval(updateClock, 1000);
+        });
+    </script>
+</body>
+</html>
