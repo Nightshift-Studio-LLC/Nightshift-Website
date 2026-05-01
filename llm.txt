@@ -1,0 +1,5 @@
+# Nightshift LLM Index
+
+The primary LLM-readable site index is `llms.txt`.
+
+Use `AGENTS.md` for repository-specific agent roles and `AGENT_CONTEXT.md` for implementation navigation.

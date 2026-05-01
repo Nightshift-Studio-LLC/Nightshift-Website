@@ -1,0 +1,69 @@
+# Nightshift
+
+> Nightshift is a mostly static studio website for systems-first game worlds, devlogs, project pages, and related AfterDarkRP surfaces.
+
+This file helps LLMs and coding agents quickly understand the public site and where source content lives.
+
+## Site
+
+- Canonical domain: https://ns-tx.com/
+- Home: https://ns-tx.com/
+- Games: https://ns-tx.com/pages/games.html
+- Studio: https://ns-tx.com/pages/studio.html
+- Devlog: https://ns-tx.com/pages/DevLog/index.html
+- Contact: https://ns-tx.com/pages/contact.html
+
+## Important Pages
+
+- Game index: `/pages/games.html`
+- Game detail pages: `/pages/games/barn.html`, `/pages/games/elder.html`, `/pages/games/hair.html`, `/pages/games/hook.html`, `/pages/games/saint.html`, `/pages/games/spear.html`
+- Studio pages: `/pages/studio.html`, `/pages/Studio/Donations.html`, `/pages/Studio/Landsnap.html`
+- Service pages: `/pages/development.html`, `/pages/websites.html`
+- AfterDarkRP surface: `/afterdarkrp/index.html`
+- AfterDarkRP sections: `/afterdarkrp/about/index.html`, `/afterdarkrp/guide/index.html`, `/afterdarkrp/rules/index.html`, `/afterdarkrp/changelog/index.html`
+
+## Editable Source Map
+
+- Main hand-authored pages: `index.html`, `pages/*.html`, `pages/games/*.html`, `afterdarkrp/**/*.html`
+- Shared styles: `styles/*.css`
+- Devlog markdown source: `content/devlog/*.md`
+- Devlog generator: `tools/devlog/build.mjs`
+- React/Vite source: `react-app/src/`
+- Static media: `images/`, `video/`, `audio/`, `models/`
+
+## Generated Or Build Outputs
+
+Do not edit these by hand:
+
+- `pages/DevLog/index.html`
+- `pages/DevLog/posts/*.html`
+- `dist/`
+- `node_modules/`
+
+For devlog changes, edit `content/devlog/*.md` or `tools/devlog/build.mjs`, then run:
+
+```sh
+npm run build:devlog
+```
+
+For React/Vite changes, edit `react-app/src/`, then run:
+
+```sh
+npm run build:react
+```
+
+## Design Language
+
+- Dark, high-contrast, atmospheric Nightshift presentation.
+- Green phosphor accents with restrained red warning accents.
+- Display typography uses Chakra Petch.
+- Body typography uses IBM Plex Mono.
+- Preferred motifs: panels, grids, scanlines, control-room UI framing, dense readable technical layouts.
+- Copy should be direct, technical, and slightly cinematic without becoming vague marketing filler.
+
+## Agent Notes
+
+- Read `AGENTS.md` before making design or layout changes.
+- Read `AGENT_CONTEXT.md` for repo navigation, source ownership, and verification steps.
+- Preserve relative-path correctness. This site uses a mix of root-relative and nested relative links.
+- Keep shared visual tokens centralized when a pattern is reused across pages.

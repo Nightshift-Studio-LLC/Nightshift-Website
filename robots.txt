@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://ns-tx.com/sitemap.xml
+LLMs: https://ns-tx.com/llms.txt
