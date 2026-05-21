@@ -180,13 +180,13 @@ I do not want to oversell it. Reputation is not suddenly a finished morality sys
 
 That is still a big deal.
 
-## Dialogue and the "spiral" need the rest of the game to work first
+## Dialogue groundwork is pointing toward the spy role
 
 There is also new work around cinematic dialogue, progression flags, safe-mode conversations, and dialogue-driven reputation effects.
 
-This connects to something bigger I have been planning: the spiral.
+This connects to something bigger I have been planning: the **spy role**.
 
-The spiral sounds fun. It is the kind of thing that could give AfterDark a much stranger, more memorable rhythm than a normal DarkRP server. But it cannot be the first thing the game asks players to understand. Everything else has to work first.
+The spy role is one of the ideas that could make AfterDark feel more distinct than a normal DarkRP server, but it cannot be the first thing the game asks players to understand. Everything else has to work first.
 
 The police/criminal loop has to work.
 
@@ -198,7 +198,7 @@ Businesses have to work.
 
 Traversal has to work.
 
-If those foundations are weak, the spiral becomes noise. If those foundations are strong, the spiral can become a layer that makes the city feel like it is pulling players deeper into something.
+If those foundations are weak, the spy role becomes noise. If those foundations are strong, it can become a role built around infiltration, dialogue, information, reputation, and social pressure instead of just another combat loadout.
 
 So for now, the important part is the foundation: dialogue state, progression tracking, safe interaction windows, and reputation effects.
 
