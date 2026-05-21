@@ -111,7 +111,7 @@ const formatDate = (dateObj) => {
 };
 
 const archiveConfig = [
-    { year: 2026, months: [4, 3, 2] },
+    { year: 2026, months: [5, 4, 3, 2, 1] },
 ];
 
 const parseFrontmatterDate = (value, file) => {
