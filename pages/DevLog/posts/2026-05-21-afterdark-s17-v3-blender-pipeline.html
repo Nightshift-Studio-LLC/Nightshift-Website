@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nightshift | AfterDark moves into the S17 V3 pipeline with Blender sync, police rappelling, and deeper systems work</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="../../../images/icons/nightshift.ico">
+    <link rel="stylesheet" href="../../../styles/home-modus-mockup.css">
+    <script defer src="/scripts/analytics.js" data-analytics-endpoint="/api/analytics"></script>
+</head>
+<body>
+    <div class="screen-fx" aria-hidden="true"></div>
+    <header class="topbar">
+        <a class="brand hover-sound" href="../../home.html" aria-label="Nightshift home">
+            <img src="../../../images/index/nightshift-transparent.png" alt="Nightshift logo">
+        </a>
+        <nav class="utility-nav" aria-label="Primary">
+            <a href="../../home.html" class="hover-sound">Home</a>
+            <a href="../../games.html" class="hover-sound">Games</a>
+            <a href="../../studio.html" class="hover-sound">Studio</a>
+            <a href="../../DevLog/index.html" class="hover-sound active">Devlog</a>
+            <a href="../../contact.html" class="hover-sound">Contact</a>
+        </nav>
+        <div class="topbar-readout"><span>Devlog Entry</span><strong id="mockup-clock">00:00:00 CST</strong></div>
+    </header>
+    <main class="shell page-shell">
+
+        <section class="page-hero-grid">
+            <article class="page-hero-panel">
+                <p class="eyebrow">Devlog / entry</p>
+                <h1 class="page-title">AfterDark moves into the S17 V3 pipeline with Blender sync, police rappelling, and deeper systems work</h1>
+                <p class="page-lede">Since the April 27 devlog, AfterDark has moved from a larger S17 V2 map push into a bigger production pipeline shift: S17 V3 is being built around Blender sync, BlenderMCP and Blender Bridge are becoming real workflow tools, police rappelling is in, vehicles are spawning, and the codebase has picked up major foundations for reputation, NPCs, business loops, tactical cover, optimization, and future district control.</p>
+                <div class="hero-actions"><a class="cta-btn hover-sound" href="../index.html">Back To Devlog</a></div>
+                <div class="tag-row"><span class="tag">AfterDarkRP</span><span class="tag">S17</span><span class="tag">Blender</span><span class="tag">Systems</span><span class="tag">Vehicles</span><span class="tag">Police</span></div>
+                
+            </article>
+            <aside class="page-hero-panel">
+                <p class="eyebrow">Entry metadata</p>
+                <div class="stack-list">
+                    <div><span>Project</span><strong>AfterDarkRP</strong></div>
+                    <div><span>Date</span><strong>MAY 21, 2026</strong></div>
+                    <div><span>Route</span><strong>Public archive</strong></div>
+                </div>
+            </aside>
+        </section>
+        <section class="panel feature-panel">
+            <div class="panel-heading"><p class="eyebrow">Field Notes</p><h2>Entry body</h2></div>
+            <div class="devlog-post-body"><h2>Since the April 27 AfterDarkRP devlog</h2>
+<p>The last public update was mostly about <strong>S17 Version 2</strong>: bigger world scale, lighting and material passes, map rules, prop/toolgun policy, and the first real resident NPC/navigation layer.</p>
+<p>This update is wider than that.</p>
+<p>The short version is that AfterDark is not just getting more content dropped into the same workflow. The workflow itself is changing. S17 is moving toward <strong>Version 3</strong>, and the reason is practical: the new version is being built around a Blender-synced pipeline so map iteration can happen faster, with less manual friction between asset work, scene work, and in-game testing.</p>
+<p>That matters because AfterDark has a lot of ground to cover. The map has to support district-level control, police response, criminal movement, NPC presence, business loops, and tactical pressure without turning into an open-world free-for-all. The work since April 27 has been about getting the project into a shape where those pieces can start landing on a sturdier foundation.</p>
+<p>There is still a lot to polish. Some of this is rough. Some of it is early. But the direction is much clearer now.</p>
+<h2>S17 is moving to Version 3</h2>
+<p>S17 V2 proved the larger direction was worth pursuing, but it also made the production problem obvious: a map this large cannot be fun to iterate on if every meaningful change requires too much manual transfer, cleanup, and re-authoring.</p>
+<p>That is why the project is moving toward <strong>S17 V3</strong>.</p>
+<p>The goal is not &quot;new version number because new version number.&quot; The goal is to make the map easier to keep alive while it is changing. S17 V3 is being aimed at a tighter Blender-to-s&amp;box flow, where world work can be adjusted, exported, synced, tested, and revised faster.</p>
+<p>That should matter for almost every part of AfterDark:</p>
+<ul>
+<li>street and district layout,</li>
+<li>tactical wall and cover placement,</li>
+<li>police route planning,</li>
+<li>NPC spawn and schedule authoring,</li>
+<li>scene anchors for businesses, vendors, crime targets, and meetings,</li>
+<li>lighting and visibility passes,</li>
+<li>and eventually territory control.</li>
+</ul>
+<p>The older approach was getting the world larger. The next approach has to make the world faster to iterate.</p>
+<h2>BlenderMCP and Blender Bridge are now part of the production story</h2>
+<p>The biggest behind-the-scenes change is that <strong>BlenderMCP is now a real thing in the workflow</strong>.</p>
+<p>That means Blender is no longer just a separate art tool sitting outside the game pipeline. It can be directed, inspected, and used more deliberately from the tooling side. That should speed up repetitive work, review passes, asset cleanup, and the kind of map iteration that used to cost too much attention per change.</p>
+<p>Alongside that, <strong>Blender Bridge</strong> is becoming part of the AfterDark pipeline. This is the piece that makes the S17 V3 direction more practical: content can move toward the game with a more explicit sync path instead of relying on a fragile manual loop.</p>
+<p>This does not mean everything is suddenly automatic or solved. It means the pipeline is finally moving toward the kind of loop AfterDark needs:</p>
+<ol>
+<li>change the world,</li>
+<li>sync the world,</li>
+<li>test the world,</li>
+<li>fix what broke,</li>
+<li>repeat without losing the night to glue work.</li>
+</ol>
+<p>That is the boring production advantage that becomes a big deal over time.</p>
+<h2>Character work is also getting a real pipeline</h2>
+<p>Another important piece is the current character pipeline work: adapting <strong>Character Creator 5</strong> output into Sandbox/AfterDark in a way that can actually hold up in the project.</p>
+<p>This is not just &quot;new character assets.&quot; It is a pipeline problem:</p>
+<ul>
+<li>getting character exports into the right shape,</li>
+<li>handling model and animation expectations,</li>
+<li>validating the s&amp;box side,</li>
+<li>making sure characters are not just visible but usable,</li>
+<li>and building a path where future character work does not have to be rediscovered from scratch.</li>
+</ul>
+<p>That matters because AfterDark needs more than map geometry. It needs police, criminals, civilians, vendors, business NPCs, tutorial characters, and eventually district-specific life. If the character pipeline stays fragile, all of that gets slower. If the pipeline becomes reliable, the city can start gaining population and identity much faster.</p>
+<h2>Standalone Sandbox parity is still the base layer</h2>
+<p>Under all of this, AfterDark is still being driven as a <strong>standalone s&amp;box game that mounts Facepunch Sandbox</strong>.</p>
+<p>That pivot is still important. The project is not trying to rebuild every proven Sandbox system from scratch. The direction is to mount the useful base, borrow what already works, and keep AfterDark&#39;s DarkRP systems authoritative where they need to be authoritative.</p>
+<p>That work included the earlier standalone/parity push:</p>
+<ul>
+<li>a project-owned sandbox-style player pawn,</li>
+<li>spawn/menu/HUD reconciliation,</li>
+<li>duplicate and stale pawn cleanup,</li>
+<li>reconnect and ownership guardrails,</li>
+<li>native HUD suppression where it conflicts with AfterDark UI,</li>
+<li>and a continued push to keep stock Sandbox behavior available where it helps.</li>
+</ul>
+<p>That foundation is what lets the rest of the project move. Vehicles, weapons, police tools, NPCs, UI, and map-authored systems all get more painful if the base player/bootstrap layer is unreliable.</p>
+<h2>Police rappelling is the feature highlight</h2>
+<p>The most visible gameplay feature in this pass is <strong>police rappelling</strong>.</p>
+<p>This is already in code as a government-job gated rappel kit. The kit can deploy a rope, attach/detach the player, remove the rope, and keep the rappel state on the pawn so the player can swap away from the kit while still being constrained by the deployed rope.</p>
+<p>Feature highlight video: <a href="https://youtu.be/EdP7hvlbXYY">Police rappelling test</a></p>
+<p>That opens up a more interesting police role than &quot;run directly through the front door every time.&quot;</p>
+<p>The direction is tactical traversal, not superhero traversal. I want police to have better ways to enter, pressure, and reposition, but I do not want AfterDark to become a game where everyone is flying across the map or bypassing the shape of the city for free.</p>
+<p>That distinction is important:</p>
+<ul>
+<li>Police need response tools.</li>
+<li>Criminals need escape pressure.</li>
+<li>The map still needs to feel gridlocked.</li>
+<li>Districts still need to matter.</li>
+<li>Vertical movement should create moments, not erase the city.</li>
+</ul>
+<p>Rappelling fits that because it is situational. It is about a wall, an entry, a rooftop, a controlled approach, or a tactical angle. It is not meant to turn the whole map into a playground of instant movement.</p>
+<p>There may be room later for things like parachutes, but that has to be handled carefully. Traversal can ruin a map fast if it stops respecting the map.</p>
+<h2>Tactical walls, nerfed props, and the destruction direction</h2>
+<p>The next big combat direction is tactical cover.</p>
+<p>AfterDark is moving toward a setup where generic player props are not the best answer to every fight. There is now a foundation for <strong>soft-cover prop behavior</strong>, where generic props can be tuned down with lower health and bullet passthrough behavior instead of becoming perfect protection.</p>
+<p>That matters because DarkRP-style building can easily become a meta game of &quot;who knows the oldest prop trick.&quot;</p>
+<p>The classic problem is the fence situation: players build a thin prop setup that lets them see feet or abuse visibility while still blocking too much return pressure. At some point, smart players are going to build smart. There is no magic rule that stops every clever angle.</p>
+<p>The better answer is to make the intended tactical pieces more attractive than the worst prop habits.</p>
+<p>That is where <strong>tactical walls</strong> and future destruction come in. If players have stronger, more readable, more game-shaped cover options, the game can push them toward siege-like pressure instead of weird prop-fort behavior.</p>
+<p>The target is not full chaos destruction immediately. The target is a more controlled combat language:</p>
+<ul>
+<li>generic props are useful but weaker,</li>
+<li>tactical walls become the better defensive choice,</li>
+<li>police tools create pressure,</li>
+<li>criminals can still build and hold space,</li>
+<li>and destruction becomes something the game can tune instead of something that accidentally breaks the whole loop.</li>
+</ul>
+<p>Explosives are not the immediate headline here. The direction is there, but it needs to land at the right time and in the right way.</p>
+<h2>Vehicles are now real gameplay infrastructure</h2>
+<p>Vehicles also deserve more credit than the current draft gave them.</p>
+<p>AfterDark now has legitimate vehicles spawning through the project, and the system is already more than &quot;we imported a truck.&quot; There is vehicle controller work, spawner/vendor state, monowheel work, vehicle UI state, and early upgrade-system direction.</p>
+<p>The important design point is that vehicles should probably lean more police-sided than criminal-sided, at least at first.</p>
+<p>That is not because criminals should have no mobility. It is because AfterDark depends on the map having pressure and shape. If everyone can cross the city too freely, then districts stop mattering, police response becomes noise, and the continuous map loses the gridlocked feeling it needs.</p>
+<p>The better role for vehicles is as a <strong>macro response tool</strong>:</p>
+<ul>
+<li>police can get across the city fast enough to matter,</li>
+<li>criminals still care about route choice and local escape,</li>
+<li>districts remain readable,</li>
+<li>and vehicles support escalation without replacing the whole map.</li>
+</ul>
+<p>This is especially important for the long-term district-control plan. If territory and NPC behavior eventually respond to who controls what area, the map needs to keep its sections meaningful. Vehicles should help connect those sections, not flatten them.</p>
+<h2>Reputation is rough, but important</h2>
+<p>Reputation also landed as a real foundation.</p>
+<p>It is rough right now, but it matters because it gives the game a place to start remembering player behavior beyond one immediate interaction. The current version includes a good/evil style track, a catalog of reputation actions, persistence hooks, notifications, and links into crime/fine/dialogue behavior.</p>
+<p>That opens the door for a lot of future systems:</p>
+<ul>
+<li>police abuse of power,</li>
+<li>criminal behavior,</li>
+<li>helping civilians,</li>
+<li>public service,</li>
+<li>business protection,</li>
+<li>dialogue choices,</li>
+<li>and eventually district/NPC reactions.</li>
+</ul>
+<p>I do not want to oversell it. Reputation is not suddenly a finished morality system. It is the beginning of a memory layer the rest of the game can start using.</p>
+<p>That is still a big deal.</p>
+<h2>Dialogue and the &quot;spiral&quot; need the rest of the game to work first</h2>
+<p>There is also new work around cinematic dialogue, progression flags, safe-mode conversations, and dialogue-driven reputation effects.</p>
+<p>This connects to something bigger I have been planning: the spiral.</p>
+<p>The spiral sounds fun. It is the kind of thing that could give AfterDark a much stranger, more memorable rhythm than a normal DarkRP server. But it cannot be the first thing the game asks players to understand. Everything else has to work first.</p>
+<p>The police/criminal loop has to work.</p>
+<p>The map has to work.</p>
+<p>NPCs have to work.</p>
+<p>Businesses have to work.</p>
+<p>Traversal has to work.</p>
+<p>If those foundations are weak, the spiral becomes noise. If those foundations are strong, the spiral can become a layer that makes the city feel like it is pulling players deeper into something.</p>
+<p>So for now, the important part is the foundation: dialogue state, progression tracking, safe interaction windows, and reputation effects.</p>
+<h2>Business loops are getting more physical</h2>
+<p>Business gameplay also picked up more concrete support.</p>
+<p>There is work now around business telephones, meeting points, worker NPC support, operator desks, and intel turning into legal city meetings. That is a better direction than business being only a menu or payout timer.</p>
+<p>The goal is for businesses to create reasons to move, defend, coordinate, and care about territory.</p>
+<p>That matters for the long-term shape of AfterDark. Civilian/business play should not feel like a detached side job while police and criminals get all the map pressure. It should eventually feed the same city:</p>
+<ul>
+<li>where your business is,</li>
+<li>who can reach it,</li>
+<li>who protects it,</li>
+<li>who controls the district,</li>
+<li>and whether the local NPC layer makes that space feel alive or threatened.</li>
+</ul>
+<p>The current business work is still foundation, but it is pointing in the right direction: more physical, more contestable, more connected to the actual world.</p>
+<h2>NPCs are becoming part of the map plan</h2>
+<p>NPC work has continued in a few directions at once.</p>
+<p>The earlier devlog talked about resident NPC and route authoring. Since then, the code has kept expanding around NPC runtime safety, schedules, patrol-style behavior, death visuals, fear/knockout behavior, tutorial NPCs, vendor NPCs, and visual LOD.</p>
+<p>The visual LOD side is important because S17 cannot be full of expensive characters if the frame rate collapses. The city needs people, but those people have to be affordable enough to exist in numbers.</p>
+<p>Longer term, this ties into district control.</p>
+<p>The plan is for district control to eventually affect how NPCs spawn, who appears where, and how territory feels. If one group controls a district, that should eventually matter. Not just as a UI label, but as the local population, pressure, opportunities, and risks.</p>
+<p>That is not all built yet. But the pieces are starting to point at it.</p>
+<h2>Visual effects got a stronger first pass</h2>
+<p>The visual effects work also moved.</p>
+<p>Gore is now in the project in a much more concrete way: blood pools, decals, dismemberment support, neck-cap assets, blood growth behavior, bone-follow helpers, and NPC death visual support.</p>
+<p>It is not polished yet. It is not final. But the violet gore direction is starting to exist in the project instead of only in the target aesthetic.</p>
+<p>That will get extended a lot over time.</p>
+<p>There was also weapon/combat VFX work, including tazer tracer and muzzleflash support. These details matter because AfterDark depends on readable pressure. If a weapon fires, if a player gets hit, if a police tool is used, or if a scene turns violent, the feedback needs to be visible enough to read without becoming visual clutter.</p>
+<h2>Optimization is now part of the design work</h2>
+<p>The optimization work since the last devlog is not just cleanup. It directly supports the design.</p>
+<p>S17 V3 can only work if the map can carry more geometry, more light, more NPC presence, more VFX, more UI, and more gameplay anchors without falling apart.</p>
+<p>Recent work includes:</p>
+<ul>
+<li>fixing the animation error that was dragging the project down,</li>
+<li>runtime point-light budgeting,</li>
+<li>light optimizer improvements,</li>
+<li>NPC visual LOD and proxy behavior,</li>
+<li>world panel visibility and culling,</li>
+<li>native HUD suppression work,</li>
+<li>local spawn cleanup,</li>
+<li>frame-rate reclaim passes,</li>
+<li>and broader scene cleanup.</li>
+</ul>
+<p>This matters because AfterDark&#39;s city needs density. It needs dark streets, lit interiors, NPCs, props, vehicles, UI, police pressure, and criminal escape routes. Optimization is what lets those things coexist instead of forcing the map to become empty just to run.</p>
+<p>The practical result is already showing up: after the animation error fix and the latest optimization work, the project is back around <strong>130 FPS</strong> in the current test path. That number is not a final benchmark, but it is a good sign that S17 V3 can keep getting heavier without immediately collapsing under its own ambition.</p>
+<h2>The codebase changed a lot</h2>
+<p>There has also been a lot of less-visible code movement.</p>
+<p>Some of the bigger areas:</p>
+<ul>
+<li>the full NSDarkRP to AfterDark rename,</li>
+<li>standalone Sandbox parity,</li>
+<li>pickup model replication,</li>
+<li>UI theme and HUD work,</li>
+<li>vehicle spawning and upgrade direction,</li>
+<li>police rappel kit and rope state,</li>
+<li>tazer damage/VFX support,</li>
+<li>soft-cover prop ballistic profiles,</li>
+<li>reputation and persistence,</li>
+<li>cinematic dialogue and progression,</li>
+<li>business telephone and meeting loops,</li>
+<li>NPC visual/runtime systems,</li>
+<li>player outfit/status/respawn handling,</li>
+<li>crime, dispatch, weed, and mayor law iteration,</li>
+<li>Blender Bridge and MCP tooling,</li>
+<li>and character receiver tooling for the new character pipeline.</li>
+</ul>
+<p>That list is long because the project is in a broad foundation phase. It is not a clean single-feature sprint. It is the kind of messy but necessary phase where a lot of systems get their first serious shape at the same time.</p>
+<h2>What this all adds up to</h2>
+<p>The April 27 update was about getting the larger world direction moving.</p>
+<p>This update is about making that direction more buildable.</p>
+<p>AfterDark now has a clearer path toward:</p>
+<ul>
+<li><strong>S17 V3</strong> as the Blender-synced map direction,</li>
+<li>faster world iteration through BlenderMCP and Blender Bridge,</li>
+<li>a real character import/adaptation pipeline,</li>
+<li>police traversal through rappelling,</li>
+<li>vehicles as controlled response mobility,</li>
+<li>tactical cover and eventual destruction pressure,</li>
+<li>reputation/dialogue foundations,</li>
+<li>business loops that happen in the world,</li>
+<li>NPC systems that can later support district behavior,</li>
+<li>stronger VFX identity,</li>
+<li>and performance systems that make the city more plausible.</li>
+</ul>
+<p>It is a lot. It is also not all finished.</p>
+<p>But it feels like the project is moving out of &quot;can this exist?&quot; and into &quot;how do all these parts start reinforcing each other?&quot;</p>
+<h2>Note from the dev</h2>
+<p>Client work has still been a large part of the available time, so this has not been a clean full-month sprint on AfterDark. The difference is that this last week finally had more focused project time again, and that window turned into a productive one: the S17 V3 pipeline direction got clearer, the Blender sync work started mattering directly to the map, rappelling became a visible police feature, vehicles became more real, and several of the deeper systems started connecting instead of sitting as isolated experiments.</p>
+<h2>What comes next</h2>
+<p>The immediate priorities are about turning these foundations into a playable shape:</p>
+<ul>
+<li>keep S17 V3 synced cleanly with Blender,</li>
+<li>use the rappel feature as the first clear police traversal highlight,</li>
+<li>keep traversal controlled so the map stays district-bound instead of becoming too open,</li>
+<li>push tactical walls and prop nerfing toward a better siege-style combat language,</li>
+<li>keep vehicles useful without letting them erase route pressure,</li>
+<li>continue the CC5-to-Sandbox character pipeline until it is boring and repeatable,</li>
+<li>polish the violet gore/VFX direction,</li>
+<li>keep reputation rough but connected,</li>
+<li>and keep district control in view without pretending it is already finished.</li>
+</ul>
+<p>The feature highlight for this round will probably be police rappelling because it is quick to understand. You can see it in a short clip and immediately understand what it changes.</p>
+<p>The larger story is slower, but more important: AfterDark is building the pipeline and systems it needs to become a real city instead of a pile of disconnected features.</p>
+</div>
+        </section>
+
+        <footer class="site-footer panel">
+
+            <section class="software-marquee-section" aria-label="Software used by Nightshift">
+                <div class="software-marquee"><div class="software-marquee-track">
+                    <span>Unreal / Source 2 / Enfusion / RAGE</span><span>Blender</span><span>Adobe Suite</span><span>Adobe 3D</span><span>Affinity Suite</span><span>Gaea 2.0</span><span>CC5</span><span>iClone 8</span><span>Marvelous Designer</span><span>Ornatrix</span><span>FruityLoops</span><span>VS Code</span><span>Visual Studio</span><span>GitHub</span><span>Git LFS</span><span>Git Pages</span><span>Wix</span><span>Codex</span>
+                    <span>Unreal / Source 2 / Enfusion / RAGE</span><span>Blender</span><span>Adobe Suite</span><span>Adobe 3D</span><span>Affinity Suite</span><span>Gaea 2.0</span><span>CC5</span><span>iClone 8</span><span>Marvelous Designer</span><span>Ornatrix</span><span>FruityLoops</span><span>VS Code</span><span>Visual Studio</span><span>GitHub</span><span>Git LFS</span><span>Git Pages</span><span>Wix</span><span>Codex</span>
+                </div></div>
+            </section>
+            <div class="footer-grid">
+                <div class="footer-column"><span>Primary routes</span><a class="hover-sound" href="../../home.html">Home</a><a class="hover-sound" href="../../games.html">Games</a><a class="hover-sound" href="../../studio.html">Studio</a><a class="hover-sound" href="../../contact.html">Contact</a></div>
+                <div class="footer-column"><span>Public records</span><a class="hover-sound" href="../../DevLog/index.html">Devlog</a><a href="https://www.epicgames.com/site/en-US/privacypolicy" target="_blank" rel="noopener noreferrer">Epic Privacy Policy</a><a href="#">Nightshift Privacy Policy</a><a href="#">Applicant Privacy Policy</a></div>
+                <div class="footer-column"><span>External surfaces</span><a href="#">Press Kit</a><a href="#">Brand Assets</a><a href="#">Careers</a><a href="#">Community</a></div>
+            </div>
+            <div class="footer-bottom"><div class="social-row"><a class="action-pill hover-sound" href="https://twitter.com" target="_blank" rel="noopener noreferrer">X</a><a class="action-pill hover-sound" href="https://instagram.com" target="_blank" rel="noopener noreferrer">IG</a><a class="action-pill hover-sound" href="https://www.youtube.com/@nstx" target="_blank" rel="noopener noreferrer">YT</a></div><p class="footer-note">Copyright 2026 Nightshift. All rights reserved.</p></div>
+        </footer>
+    </main>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const audio = new Audio("../../../audio/bop.mp3");
+            audio.volume = 0.25;
+            const clock = document.getElementById("mockup-clock");
+            function updateClock() {
+                if (!clock) return;
+                clock.textContent = new Date().toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", second: "2-digit", timeZone: "America/Chicago", timeZoneName: "short" });
+            }
+            document.querySelectorAll(".hover-sound").forEach((element) => {
+                element.addEventListener("mouseenter", function() {
+                    audio.currentTime = 0;
+                    audio.play().catch(() => {});
+                });
+            });
+            updateClock();
+            window.setInterval(updateClock, 1000);
+        });
+    </script>
+</body>
+</html>

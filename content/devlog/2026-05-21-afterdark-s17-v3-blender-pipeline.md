@@ -10,7 +10,6 @@ tags:
   - Systems
   - Vehicles
   - Police
-draft: true
 ---
 
 ## Since the April 27 AfterDarkRP devlog
