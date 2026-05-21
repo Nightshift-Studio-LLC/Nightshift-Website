@@ -88,27 +88,12 @@ That matters because map work at this stage is not just decoration. It is about 
 
 ## New captures
 
-<div class="devlog-gallery">
-<figure>
-<img src="../../../images/afterdarkrp/Devlogs/3-31-26/01.png" alt="AfterDarkRP Ghetto 01 intersection preview with improved building materials and traffic lights">
-<figcaption>Intersection view showing stronger material definition, clearer traffic control, and a more usable sense of street scale while optimization work continues under the hood.</figcaption>
-</figure>
-<figure>
-<img src="../../../images/afterdarkrp/Devlogs/3-31-26/02.png" alt="AfterDarkRP district angle showing building massing and road layout in Ghetto 01">
-<figcaption>Another district angle where the road layout, sidewalk edge, and corner massing are starting to read like a city block instead of a temporary shell, with LOD work helping the wider view hold together better.</figcaption>
-</figure>
-<figure>
-<img src="../../../images/afterdarkrp/Devlogs/3-31-26/03.png" alt="AfterDarkRP street preview showing lit windows and a longer Ghetto 01 road read">
-<figcaption>Longer street read with better window treatment and a stronger atmosphere pass while lighting and environment optimization continue to tighten the district.</figcaption>
-</figure>
-<figure>
-<video controls autoplay muted loop preload="metadata" playsinline>
-<source src="../../../images/afterdarkrp/Devlogs/3-31-26/materials.mp4" type="video/mp4">
-Your browser does not support the video tag.
-</video>
-<figcaption>Short material-pass preview showing the district in motion while building surfaces, LOD behavior, interior cleanup, and lighting reads keep getting dialed in.</figcaption>
-</figure>
-</div>
+:::gallery
+image|../../../images/afterdarkrp/Devlogs/3-31-26/01.png|AfterDarkRP Ghetto 01 intersection preview with improved building materials and traffic lights|Intersection view showing stronger material definition, clearer traffic control, and a more usable sense of street scale while optimization work continues under the hood.
+image|../../../images/afterdarkrp/Devlogs/3-31-26/02.png|AfterDarkRP district angle showing building massing and road layout in Ghetto 01|Another district angle where the road layout, sidewalk edge, and corner massing are starting to read like a city block instead of a temporary shell, with LOD work helping the wider view hold together better.
+image|../../../images/afterdarkrp/Devlogs/3-31-26/03.png|AfterDarkRP street preview showing lit windows and a longer Ghetto 01 road read|Longer street read with better window treatment and a stronger atmosphere pass while lighting and environment optimization continue to tighten the district.
+video|../../../images/afterdarkrp/Devlogs/3-31-26/materials.mp4||Short material-pass preview showing the district in motion while building surfaces, LOD behavior, interior cleanup, and lighting reads keep getting dialed in.
+:::
 
 ## What has not changed yet
 

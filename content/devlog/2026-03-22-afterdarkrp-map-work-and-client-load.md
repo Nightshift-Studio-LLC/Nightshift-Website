@@ -22,27 +22,12 @@ That is why this entry is mostly about the city itself. The main visible movemen
 
 The latest captures are a better read on where the environment is landing than another long systems list would be. They show the district taking on a more usable shape, but they also make clear where the current blockers are: route control, road layout, and getting the space into a state where live server-side testing starts making sense.
 
-<div class="devlog-gallery">
-<figure>
-<img src="../../../images/afterdarkrp/Devlogs/3-18-26/ghetto_01_preview-ingame.png" alt="AfterDarkRP Ghetto 01 in-engine street preview">
-<figcaption>Latest in-engine Ghetto 01 street read with the district still in active blockout and material placeholder territory.</figcaption>
-</figure>
-<figure>
-<img src="../../../images/afterdarkrp/Devlogs/3-18-26/ghetto_01_preview5.png" alt="AfterDarkRP Ghetto 01 preview showing another district angle">
-<figcaption>Another new Ghetto 01 angle showing the current massing, street rhythm, and overall district silhouette.</figcaption>
-</figure>
-<figure>
-<video controls autoplay muted loop preload="metadata" playsinline>
-<source src="../../../video/building-preview.mp4" type="video/mp4">
-Your browser does not support the video tag.
-</video>
-<figcaption>Building preview used for current LOD testing while trying to hold 100+ FPS without stripping the district down too aggressively.</figcaption>
-</figure>
-<figure>
-<img src="../../../images/afterdarkrp/Devlogs/3-18-26/roadblock.png" alt="AfterDarkRP roadblock map progress preview">
-<figcaption>Roadblock pass showing one of the environmental control points being shaped while the district moves toward playable flow.</figcaption>
-</figure>
-</div>
+:::gallery
+image|../../../images/afterdarkrp/Devlogs/3-18-26/ghetto_01_preview-ingame.png|AfterDarkRP Ghetto 01 in-engine street preview|Latest in-engine Ghetto 01 street read with the district still in active blockout and material placeholder territory.
+image|../../../images/afterdarkrp/Devlogs/3-18-26/ghetto_01_preview5.png|AfterDarkRP Ghetto 01 preview showing another district angle|Another new Ghetto 01 angle showing the current massing, street rhythm, and overall district silhouette.
+video|../../../video/building-preview.mp4||Building preview used for current LOD testing while trying to hold 100+ FPS without stripping the district down too aggressively.
+image|../../../images/afterdarkrp/Devlogs/3-18-26/roadblock.png|AfterDarkRP roadblock map progress preview|Roadblock pass showing one of the environmental control points being shaped while the district moves toward playable flow.
+:::
 
 The goal at this stage is not final art polish. It is to make route shape, skyline breakup, street pressure, and district identity feel right before a deeper materials and detail pass.
 

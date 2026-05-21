@@ -7,7 +7,8 @@
     "build:react": "vite build",
     "preview:react": "vite preview",
     "build:devlog": "node tools/devlog/build.mjs",
-    "dev:devlog": "node tools/devlog/build.mjs --watch"
+    "dev:devlog": "node tools/devlog/build.mjs --watch",
+    "security:payloads": "node tools/security/check-payloads.mjs"
   },
   "dependencies": {
     "gray-matter": "^4.0.3",

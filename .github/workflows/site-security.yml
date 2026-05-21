@@ -1,0 +1,35 @@
+name: Site security
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  hardening-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check hosted payload types
+        run: npm run security:payloads
+
+      - name: Build devlog
+        run: npm run build:devlog
+
+      - name: Build React surface
+        run: npm run build:react
+
+      - name: Audit production dependencies
+        run: npm audit --omit=dev

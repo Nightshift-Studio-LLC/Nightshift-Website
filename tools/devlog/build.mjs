@@ -7,6 +7,97 @@ const root = process.cwd();
 const contentDir = path.join(root, "content", "devlog");
 const outDir = path.join(root, "pages", "DevLog");
 const postsDir = path.join(outDir, "posts");
+const galleryBlockPattern = /^:::gallery\s*\n([\s\S]*?)\n:::/gm;
+const rawHtmlPattern = /<\/?[A-Za-z][A-Za-z0-9:-]*(?:\s|>|\/>)/;
+const imageExtensions = new Set([".gif", ".jpeg", ".jpg", ".png", ".svg", ".webp"]);
+const videoExtensions = new Set([".mp4", ".webm"]);
+
+const escapeHtml = (value) =>
+    String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+
+const assertLocalMediaPath = (src, file) => {
+    if (
+        !src ||
+        src.startsWith("/") ||
+        src.startsWith("\\") ||
+        src.includes("\\") ||
+        src.includes("\0") ||
+        /^[a-z][a-z0-9+.-]*:/i.test(src) ||
+        src.startsWith("//") ||
+        /["'<>]/.test(src)
+    ) {
+        throw new Error(`Invalid gallery media path in ${file}: ${src}`);
+    }
+};
+
+const assertNoRawHtml = (content, file) => {
+    const match = rawHtmlPattern.exec(content);
+    if (!match) return;
+
+    const line = content.slice(0, match.index).split("\n").length;
+    throw new Error(`Raw HTML is not allowed in ${file}:${line}. Use Markdown or a :::gallery block.`);
+};
+
+const renderGalleryItem = (line, file) => {
+    const [type, src, alt, caption] = line.split("|").map((part) => part.trim());
+    assertLocalMediaPath(src, file);
+
+    const ext = path.extname(src).toLowerCase();
+    const safeCaption = escapeHtml(caption || "");
+
+    if (type === "image") {
+        if (!imageExtensions.has(ext)) {
+            throw new Error(`Unsupported gallery image type in ${file}: ${src}`);
+        }
+
+        return `<figure>
+<img src="${escapeHtml(src)}" alt="${escapeHtml(alt || "")}">
+<figcaption>${safeCaption}</figcaption>
+</figure>`;
+    }
+
+    if (type === "video") {
+        if (!videoExtensions.has(ext)) {
+            throw new Error(`Unsupported gallery video type in ${file}: ${src}`);
+        }
+
+        return `<figure>
+<video controls autoplay muted loop preload="metadata" playsinline>
+<source src="${escapeHtml(src)}" type="video/${ext.slice(1)}">
+Your browser does not support the video tag.
+</video>
+<figcaption>${safeCaption}</figcaption>
+</figure>`;
+    }
+
+    throw new Error(`Unsupported gallery item type in ${file}: ${type}`);
+};
+
+const renderGalleryBlocks = (content, file) =>
+    content.replace(galleryBlockPattern, (_match, body) => {
+        const items = body
+            .split("\n")
+            .map((line) => line.trim())
+            .filter(Boolean)
+            .map((line) => renderGalleryItem(line, file))
+            .join("\n");
+
+        if (!items) {
+            throw new Error(`Empty gallery block in ${file}`);
+        }
+
+        return `<div class="devlog-gallery">\n${items}\n</div>`;
+    });
+
+const validateDevlogContent = (content, file) => {
+    const withoutGalleries = content.replace(galleryBlockPattern, "");
+    assertNoRawHtml(withoutGalleries, file);
+};
 
 const monthShort = (dateObj) =>
     dateObj.toLocaleString("en-US", { month: "short" }).toUpperCase();
@@ -52,6 +143,7 @@ const readPosts = async () => {
         const { data, content } = matter(raw);
         if (data.draft === true) continue;
 
+        validateDevlogContent(content, file);
         const dateObj = parseFrontmatterDate(data.date, file);
         posts.push({
             slug: path.basename(file, ".md"),
@@ -61,7 +153,7 @@ const readPosts = async () => {
             excerpt: data.excerpt,
             tags: Array.isArray(data.tags) ? data.tags : [],
             hero: data.hero || "",
-            html: marked.parse(content),
+            html: marked.parse(renderGalleryBlocks(content, file)),
         });
     }
 
@@ -170,9 +262,9 @@ ${footerMarkup(pagePrefix)}
 const renderIndex = (posts) => {
     const renderCard = (post) => `
             <article class="devlog-card">
-                <div class="devlog-meta"><span>${post.game}</span><span>${formatDate(post.dateObj)}</span></div>
-                <h3>${post.title}</h3>
-                <p>${post.excerpt}</p>
+                <div class="devlog-meta"><span>${escapeHtml(post.game)}</span><span>${formatDate(post.dateObj)}</span></div>
+                <h3>${escapeHtml(post.title)}</h3>
+                <p>${escapeHtml(post.excerpt)}</p>
                 <a class="devlog-cta hover-sound" href="posts/${post.slug}.html">Read entry</a>
             </article>`;
     const monthGroups = groupPostsByMonth(posts);
@@ -249,11 +341,11 @@ const renderIndex = (posts) => {
 };
 
 const renderPost = (post) => {
-    const tags = post.tags.length ? `<div class="tag-row">${post.tags.map((tag) => `<span class="tag">${tag}</span>`).join("")}</div>` : "";
-    const hero = post.hero ? `<div class="media-frame devlog-hero"><img src="${post.hero}" alt="${post.title}"></div>` : "";
+    const tags = post.tags.length ? `<div class="tag-row">${post.tags.map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`).join("")}</div>` : "";
+    const hero = post.hero ? `<div class="media-frame devlog-hero"><img src="${escapeHtml(post.hero)}" alt="${escapeHtml(post.title)}"></div>` : "";
 
     return layout({
-        title: `Nightshift | ${post.title}`,
+        title: `Nightshift | ${escapeHtml(post.title)}`,
         assetPrefix: "../../..",
         pagePrefix: "../..",
         readout: "Devlog Entry",
@@ -261,8 +353,8 @@ const renderPost = (post) => {
         <section class="page-hero-grid">
             <article class="page-hero-panel">
                 <p class="eyebrow">Devlog / entry</p>
-                <h1 class="page-title">${post.title}</h1>
-                <p class="page-lede">${post.excerpt}</p>
+                <h1 class="page-title">${escapeHtml(post.title)}</h1>
+                <p class="page-lede">${escapeHtml(post.excerpt)}</p>
                 <div class="hero-actions"><a class="cta-btn hover-sound" href="../index.html">Back To Devlog</a></div>
                 ${tags}
                 ${hero}
@@ -270,7 +362,7 @@ const renderPost = (post) => {
             <aside class="page-hero-panel">
                 <p class="eyebrow">Entry metadata</p>
                 <div class="stack-list">
-                    <div><span>Project</span><strong>${post.game}</strong></div>
+                    <div><span>Project</span><strong>${escapeHtml(post.game)}</strong></div>
                     <div><span>Date</span><strong>${formatDate(post.dateObj)}</strong></div>
                     <div><span>Route</span><strong>Public archive</strong></div>
                 </div>

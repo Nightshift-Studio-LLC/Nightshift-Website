@@ -51,28 +51,13 @@ That matters because this is the kind of work that turns a promising blockout in
 
 ## New captures
 
-<div class="devlog-gallery">
-<figure>
-<img src="../../../images/afterdarkrp/Devlogs/4-27-26/s17v2-01.png" alt="AfterDarkRP S17 Version 2 wide layout preview">
-<figcaption>Wide S17 Version 2 overview showing the larger district scale and the broader city shell this month pivoted toward.</figcaption>
-</figure>
-<figure>
-<img src="../../../images/afterdarkrp/Devlogs/4-27-26/s17v2-02.png" alt="AfterDarkRP S17 Version 2 second layout angle">
-<figcaption>Another V2 angle showing how the new map direction opens up more room for route shaping, district spacing, and future expansion.</figcaption>
-</figure>
-<figure>
-<img src="../../../images/afterdarkrp/Devlogs/4-27-26/s17v2-lighting-post-process-updates.png" alt="AfterDarkRP lighting and post-process updates in S17 Version 2">
-<figcaption>Lighting and post-process pass focused on atmosphere, readability, and figuring out how the engine behaves under the larger scene scale.</figcaption>
-</figure>
-<figure>
-<img src="../../../images/afterdarkrp/Devlogs/4-27-26/s17v2-train-interior-flow-rework.png" alt="AfterDarkRP Train District interior flow rework">
-<figcaption>Train District interior flow rework, which is becoming the first serious polish and playtest zone for finding what needs optimization before broader expansion.</figcaption>
-</figure>
-<figure>
-<img src="../../../images/afterdarkrp/Devlogs/4-27-26/s17v2-train-restructure.png" alt="AfterDarkRP Train District restructure work">
-<figcaption>Train District restructure work that supports both the larger Version 2 direction and the current focus on controlled testing space.</figcaption>
-</figure>
-</div>
+:::gallery
+image|../../../images/afterdarkrp/Devlogs/4-27-26/s17v2-01.png|AfterDarkRP S17 Version 2 wide layout preview|Wide S17 Version 2 overview showing the larger district scale and the broader city shell this month pivoted toward.
+image|../../../images/afterdarkrp/Devlogs/4-27-26/s17v2-02.png|AfterDarkRP S17 Version 2 second layout angle|Another V2 angle showing how the new map direction opens up more room for route shaping, district spacing, and future expansion.
+image|../../../images/afterdarkrp/Devlogs/4-27-26/s17v2-lighting-post-process-updates.png|AfterDarkRP lighting and post-process updates in S17 Version 2|Lighting and post-process pass focused on atmosphere, readability, and figuring out how the engine behaves under the larger scene scale.
+image|../../../images/afterdarkrp/Devlogs/4-27-26/s17v2-train-interior-flow-rework.png|AfterDarkRP Train District interior flow rework|Train District interior flow rework, which is becoming the first serious polish and playtest zone for finding what needs optimization before broader expansion.
+image|../../../images/afterdarkrp/Devlogs/4-27-26/s17v2-train-restructure.png|AfterDarkRP Train District restructure work|Train District restructure work that supports both the larger Version 2 direction and the current focus on controlled testing space.
+:::
 
 ## Lighting and material passes were a major part of the month
 
