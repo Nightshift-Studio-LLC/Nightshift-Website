@@ -12,6 +12,10 @@ tags:
   - Police
 ---
 
+:::youtube
+https://www.youtube.com/watch?v=XGttfrv_8Zk|AfterDark May 21 development preview|Short development preview for the May 21 AfterDark update.
+:::
+
 ## Since the April 27 AfterDarkRP devlog
 
 The last public update was mostly about **S17 Version 2**: bigger world scale, lighting and material passes, map rules, prop/toolgun policy, and the first real resident NPC/navigation layer.

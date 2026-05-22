@@ -128,9 +128,11 @@ const renderYoutubeBlocks = (content, file) =>
         const safeTitle = escapeHtml(title || "YouTube video");
         const safeCaption = escapeHtml(caption || title || "");
 
+        const embedUrl = `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&loop=1&playlist=${id}&playsinline=1`;
+
         return `<figure class="devlog-youtube">
 <div class="video-frame">
-<iframe src="https://www.youtube.com/embed/${id}" title="${safeTitle}" allowfullscreen></iframe>
+<iframe src="${embedUrl}" title="${safeTitle}" allow="autoplay; encrypted-media; picture-in-picture; web-share" allowfullscreen></iframe>
 </div>
 <figcaption>${safeCaption}</figcaption>
 </figure>`;
