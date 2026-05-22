@@ -8,6 +8,7 @@ const contentDir = path.join(root, "content", "devlog");
 const outDir = path.join(root, "pages", "DevLog");
 const postsDir = path.join(outDir, "posts");
 const galleryBlockPattern = /^:::gallery\s*\n([\s\S]*?)\n:::/gm;
+const youtubeBlockPattern = /^:::youtube\s*\n([\s\S]*?)\n:::/gm;
 const rawHtmlPattern = /<\/?[A-Za-z][A-Za-z0-9:-]*(?:\s|>|\/>)/;
 const imageExtensions = new Set([".gif", ".jpeg", ".jpg", ".png", ".svg", ".webp"]);
 const videoExtensions = new Set([".mp4", ".webm"]);
@@ -78,6 +79,63 @@ Your browser does not support the video tag.
     throw new Error(`Unsupported gallery item type in ${file}: ${type}`);
 };
 
+const extractYoutubeId = (value, file) => {
+    const source = String(value ?? "").trim();
+    if (/^[A-Za-z0-9_-]{11}$/.test(source)) {
+        return source;
+    }
+
+    try {
+        const url = new URL(source);
+        const host = url.hostname.replace(/^www\./, "");
+
+        if (host === "youtu.be") {
+            const id = url.pathname.split("/").filter(Boolean)[0];
+            if (/^[A-Za-z0-9_-]{11}$/.test(id)) return id;
+        }
+
+        if (host === "youtube.com" || host === "m.youtube.com") {
+            const watchId = url.searchParams.get("v");
+            if (/^[A-Za-z0-9_-]{11}$/.test(watchId ?? "")) return watchId;
+
+            const parts = url.pathname.split("/").filter(Boolean);
+            const route = parts[0];
+            const routeId = parts[1];
+            if ((route === "embed" || route === "shorts") && /^[A-Za-z0-9_-]{11}$/.test(routeId ?? "")) {
+                return routeId;
+            }
+        }
+    } catch {
+        // Fall through to the consistent validation error below.
+    }
+
+    throw new Error(`Invalid YouTube media source in ${file}: ${source}`);
+};
+
+const renderYoutubeBlocks = (content, file) =>
+    content.replace(youtubeBlockPattern, (_match, body) => {
+        const lines = body
+            .split("\n")
+            .map((line) => line.trim())
+            .filter(Boolean);
+
+        if (lines.length !== 1) {
+            throw new Error(`YouTube blocks in ${file} must contain exactly one video line.`);
+        }
+
+        const [source, title = "YouTube video", caption = ""] = lines[0].split("|").map((part) => part.trim());
+        const id = extractYoutubeId(source, file);
+        const safeTitle = escapeHtml(title || "YouTube video");
+        const safeCaption = escapeHtml(caption || title || "");
+
+        return `<figure class="devlog-youtube">
+<div class="video-frame">
+<iframe src="https://www.youtube.com/embed/${id}" title="${safeTitle}" allowfullscreen></iframe>
+</div>
+<figcaption>${safeCaption}</figcaption>
+</figure>`;
+    });
+
 const renderGalleryBlocks = (content, file) =>
     content.replace(galleryBlockPattern, (_match, body) => {
         const items = body
@@ -94,9 +152,14 @@ const renderGalleryBlocks = (content, file) =>
         return `<div class="devlog-gallery">\n${items}\n</div>`;
     });
 
+const renderMediaBlocks = (content, file) =>
+    renderYoutubeBlocks(renderGalleryBlocks(content, file), file);
+
 const validateDevlogContent = (content, file) => {
-    const withoutGalleries = content.replace(galleryBlockPattern, "");
-    assertNoRawHtml(withoutGalleries, file);
+    const withoutMediaBlocks = content
+        .replace(galleryBlockPattern, "")
+        .replace(youtubeBlockPattern, "");
+    assertNoRawHtml(withoutMediaBlocks, file);
 };
 
 const monthShort = (dateObj) =>
@@ -153,7 +216,7 @@ const readPosts = async () => {
             excerpt: data.excerpt,
             tags: Array.isArray(data.tags) ? data.tags : [],
             hero: data.hero || "",
-            html: marked.parse(renderGalleryBlocks(content, file)),
+            html: marked.parse(renderMediaBlocks(content, file)),
         });
     }
 

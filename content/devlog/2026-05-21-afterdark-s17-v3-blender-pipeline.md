@@ -99,8 +99,8 @@ The most visible gameplay feature in this pass is **police rappelling**.
 
 This is already in code as a government-job gated rappel kit. The kit can deploy a rope, attach/detach the player, remove the rope, and keep the rappel state on the pawn so the player can swap away from the kit while still being constrained by the deployed rope.
 
-:::gallery
-video|../../../images/afterdarkrp/Devlogs/5-21-2026/police-rappelling-test.mp4||Police rappelling test showing the new government-job traversal kit in motion.
+:::youtube
+https://youtu.be/EdP7hvlbXYY|Police rappelling test|Police rappelling test showing the new government-job traversal kit in motion.
 :::
 
 That opens up a more interesting police role than "run directly through the front door every time."
