@@ -3,9 +3,6 @@ title: "AfterDark moves into the S17 V3 pipeline with Blender sync, police rappe
 date: 2026-05-21
 game: AfterDarkRP
 excerpt: "Since the April 27 devlog, AfterDark has moved from a larger S17 V2 map push into a bigger production pipeline shift: S17 V3 is being built around Blender sync, BlenderMCP and Blender Bridge are becoming real workflow tools, police rappelling is in, vehicles are spawning, and the codebase has picked up major foundations for reputation, NPCs, business loops, tactical cover, optimization, and future district control."
-featureVideo: "https://www.youtube.com/watch?v=XGttfrv_8Zk"
-featureVideoTitle: "AfterDark May 21 development preview"
-featureVideoCaption: "Short development preview for the May 21 AfterDark update."
 tags:
   - AfterDarkRP
   - S17
@@ -14,6 +11,10 @@ tags:
   - Vehicles
   - Police
 ---
+
+:::youtube
+https://www.youtube.com/watch?v=XGttfrv_8Zk|AfterDark May 21 development preview|Short development preview for the May 21 AfterDark update.
+:::
 
 ## Since the April 27 AfterDarkRP devlog
 

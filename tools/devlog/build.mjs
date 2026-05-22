@@ -221,9 +221,6 @@ const readPosts = async () => {
             excerpt: data.excerpt,
             tags: Array.isArray(data.tags) ? data.tags : [],
             hero: data.hero || "",
-            featureVideo: data.featureVideo || "",
-            featureVideoTitle: data.featureVideoTitle || "",
-            featureVideoCaption: data.featureVideoCaption || "",
             html: marked.parse(renderMediaBlocks(content, file)),
         });
     }
@@ -414,14 +411,6 @@ const renderIndex = (posts) => {
 const renderPost = (post) => {
     const tags = post.tags.length ? `<div class="tag-row">${post.tags.map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`).join("")}</div>` : "";
     const hero = post.hero ? `<div class="media-frame devlog-hero"><img src="${escapeHtml(post.hero)}" alt="${escapeHtml(post.title)}"></div>` : "";
-    const featureVideo = post.featureVideo ? `
-                ${renderYoutubeFigure({
-        source: post.featureVideo,
-        title: post.featureVideoTitle || post.title,
-        caption: post.featureVideoCaption || post.featureVideoTitle || "",
-        file: `${post.slug}.md`,
-        className: "devlog-feature-video",
-    })}` : "";
 
     return layout({
         title: `Nightshift | ${escapeHtml(post.title)}`,
@@ -444,7 +433,7 @@ const renderPost = (post) => {
                     <div><span>Project</span><strong>${escapeHtml(post.game)}</strong></div>
                     <div><span>Date</span><strong>${formatDate(post.dateObj)}</strong></div>
                     <div><span>Route</span><strong>Public archive</strong></div>
-                </div>${featureVideo}
+                </div>
             </aside>
         </section>
         <section class="panel feature-panel">

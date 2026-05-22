@@ -1074,19 +1074,13 @@ h3 {
     line-height: 1.5;
 }
 
-.devlog-youtube,
-.devlog-feature-video {
+.devlog-youtube {
     display: grid;
     gap: 10px;
     margin: 24px 0;
 }
 
-.devlog-feature-video {
-    margin: 18px 0 0;
-}
-
-.devlog-youtube figcaption,
-.devlog-feature-video figcaption {
+.devlog-youtube figcaption {
     color: var(--muted);
     font-size: 0.95rem;
     line-height: 1.5;
