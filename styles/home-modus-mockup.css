@@ -1074,6 +1074,24 @@ h3 {
     line-height: 1.5;
 }
 
+.devlog-youtube,
+.devlog-feature-video {
+    display: grid;
+    gap: 10px;
+    margin: 24px 0;
+}
+
+.devlog-feature-video {
+    margin: 18px 0 0;
+}
+
+.devlog-youtube figcaption,
+.devlog-feature-video figcaption {
+    color: var(--muted);
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
 .price-card {
     display: grid;
     gap: 14px;
@@ -1607,7 +1625,17 @@ h3 {
     }
 
     .utility-nav {
+        width: 100%;
+        max-width: 100%;
+        gap: 8px;
         justify-content: center;
+    }
+
+    .utility-nav a {
+        flex: 1 1 calc(50% - 8px);
+        min-width: 0;
+        padding: 9px 8px;
+        letter-spacing: 0.12em;
     }
 
     .footer-bottom {

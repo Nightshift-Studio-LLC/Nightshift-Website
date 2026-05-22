@@ -112,6 +112,20 @@ const extractYoutubeId = (value, file) => {
     throw new Error(`Invalid YouTube media source in ${file}: ${source}`);
 };
 
+const renderYoutubeFigure = ({ source, title = "YouTube video", caption = "", file, className = "devlog-youtube" }) => {
+    const id = extractYoutubeId(source, file);
+    const safeTitle = escapeHtml(title || "YouTube video");
+    const safeCaption = escapeHtml(caption || title || "");
+    const embedUrl = `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&loop=1&playlist=${id}&playsinline=1`;
+
+    return `<figure class="${escapeHtml(className)}">
+<div class="video-frame">
+<iframe src="${embedUrl}" title="${safeTitle}" allow="autoplay; encrypted-media; picture-in-picture; web-share" allowfullscreen></iframe>
+</div>
+<figcaption>${safeCaption}</figcaption>
+</figure>`;
+};
+
 const renderYoutubeBlocks = (content, file) =>
     content.replace(youtubeBlockPattern, (_match, body) => {
         const lines = body
@@ -124,18 +138,7 @@ const renderYoutubeBlocks = (content, file) =>
         }
 
         const [source, title = "YouTube video", caption = ""] = lines[0].split("|").map((part) => part.trim());
-        const id = extractYoutubeId(source, file);
-        const safeTitle = escapeHtml(title || "YouTube video");
-        const safeCaption = escapeHtml(caption || title || "");
-
-        const embedUrl = `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&loop=1&playlist=${id}&playsinline=1`;
-
-        return `<figure class="devlog-youtube">
-<div class="video-frame">
-<iframe src="${embedUrl}" title="${safeTitle}" allow="autoplay; encrypted-media; picture-in-picture; web-share" allowfullscreen></iframe>
-</div>
-<figcaption>${safeCaption}</figcaption>
-</figure>`;
+        return renderYoutubeFigure({ source, title, caption, file });
     });
 
 const renderGalleryBlocks = (content, file) =>
@@ -218,6 +221,9 @@ const readPosts = async () => {
             excerpt: data.excerpt,
             tags: Array.isArray(data.tags) ? data.tags : [],
             hero: data.hero || "",
+            featureVideo: data.featureVideo || "",
+            featureVideoTitle: data.featureVideoTitle || "",
+            featureVideoCaption: data.featureVideoCaption || "",
             html: marked.parse(renderMediaBlocks(content, file)),
         });
     }
@@ -408,6 +414,14 @@ const renderIndex = (posts) => {
 const renderPost = (post) => {
     const tags = post.tags.length ? `<div class="tag-row">${post.tags.map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`).join("")}</div>` : "";
     const hero = post.hero ? `<div class="media-frame devlog-hero"><img src="${escapeHtml(post.hero)}" alt="${escapeHtml(post.title)}"></div>` : "";
+    const featureVideo = post.featureVideo ? `
+                ${renderYoutubeFigure({
+        source: post.featureVideo,
+        title: post.featureVideoTitle || post.title,
+        caption: post.featureVideoCaption || post.featureVideoTitle || "",
+        file: `${post.slug}.md`,
+        className: "devlog-feature-video",
+    })}` : "";
 
     return layout({
         title: `Nightshift | ${escapeHtml(post.title)}`,
@@ -430,7 +444,7 @@ const renderPost = (post) => {
                     <div><span>Project</span><strong>${escapeHtml(post.game)}</strong></div>
                     <div><span>Date</span><strong>${formatDate(post.dateObj)}</strong></div>
                     <div><span>Route</span><strong>Public archive</strong></div>
-                </div>
+                </div>${featureVideo}
             </aside>
         </section>
         <section class="panel feature-panel">
