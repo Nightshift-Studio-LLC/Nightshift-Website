@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AfterDarkRP</title>
+    <meta name="description" content="AfterDarkRP is Nightshift's DarkRP server stack for s&box: a server-authoritative economy, police workflows, criminal loops, jobs, property, and readable roleplay systems.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="../styles/footer.css">
     <script defer src="/scripts/analytics.js" data-analytics-endpoint="/api/analytics"></script>
@@ -29,7 +33,7 @@
     </nav>
 
     <main>
-        <section class="video-banner" aria-label="AfterDarkRP showcase video">
+        <section class="video-banner hero-banner" aria-label="AfterDarkRP showcase video">
             <div class="video-banner-frame">
                 <iframe
                     src="https://www.youtube.com/embed/MmMQCShNscM?autoplay=1&mute=1&loop=1&playlist=MmMQCShNscM&controls=0&modestbranding=1&playsinline=1&rel=0"
@@ -39,10 +43,7 @@
                     allowfullscreen
                 ></iframe>
             </div>
-        </section>
-
-        <div class="content stack">
-            <section class="hero">
+            <div class="hero-overlay hero-overlay--classic">
                 <img class="hero-alpha" src="../images/afterdarkrp/afterdarkRP-alpha-large.png" alt="AfterDarkRP Alpha">
                 <p class="eyebrow hero-tagline">
                     <span>Nightshift's DarkRP for</span>
@@ -50,51 +51,210 @@
                         <img src="../images/ServerHosting/Sandbox/S&box_logo.png" alt="s&box">
                     </a>
                 </p>
+            </div>
+        </section>
+
+        <div class="content stack">
+            <section class="section intro-grid">
+                <div>
+                    <p class="eyebrow">Server Summary</p>
+                    <h2>DarkRP rebuilt for a stricter city loop.</h2>
+                    <p>AfterDarkRP is Nightshift's custom roleplay stack for s&box. The focus is not just jobs on a menu; it is a network of cash, doors, police authority, contraband, records, and terminals that players can understand in the moment.</p>
+                </div>
+                <div class="signal-panel" aria-label="AfterDarkRP build signals">
+                    <div>
+                        <span class="signal-value">s&box</span>
+                        <span class="signal-label">Engine Target</span>
+                    </div>
+                    <div>
+                        <span class="signal-value">Server</span>
+                        <span class="signal-label">Economy Authority</span>
+                    </div>
+                    <div>
+                        <span class="signal-value">Alpha</span>
+                        <span class="signal-label">Current Public Posture</span>
+                    </div>
+                    <div>
+                        <span class="signal-value">S17</span>
+                        <span class="signal-label">Map / Systems Track</span>
+                    </div>
+                </div>
             </section>
 
             <section class="section">
-                <h2>Server Summary</h2>
-                <p>AfterDarkRP is Nightshift's custom DarkRP stack for s&box, focused on structured roleplay loops, a server-authoritative economy, and readable in-game systems.</p>
-                <p class="meta">Build source: internal development branch.</p>
-            </section>
-
-            <section class="section">
-                <h2>Current Focus</h2>
-                <div class="grid">
-                    <article class="card">
-                        <h3>Core Systems</h3>
-                        <ul class="bullets">
-                            <li>Wallet, bank persistence, payday cadence, and payment history are active.</li>
-                            <li>Police and justice flow supports taze, detain/arrest, and prison timing.</li>
-                            <li>Crime status and fines are accessible through in-world terminal interactions.</li>
-                        </ul>
+                <div class="section-head">
+                    <div>
+                        <p class="eyebrow">Player / Operator View</p>
+                        <h2>Built for expansion, tuned for readable conflict.</h2>
+                    </div>
+                    <p class="section-kicker">The current homepage now shows the actual play pillars up front instead of burying them in a plain systems list.</p>
+                </div>
+                <div class="feature-grid">
+                    <article class="card feature-card">
+                        <span class="card-code">01</span>
+                        <h3>Character and Job Pressure</h3>
+                        <p>Civil, Government, and Criminal roles give players a legible lane, salary cadence, and reason to switch sides when the city changes.</p>
                     </article>
-                    <article class="card">
-                        <h3>Economy and Entities</h3>
-                        <ul class="bullets">
-                            <li>Door ownership/sign logic supports single, sliding, and double doors.</li>
-                            <li>Money printer and weapon shipment loops are wired and actively tuned.</li>
-                            <li>Pocket inventory and loadout routing include `ns_fists` default setup.</li>
-                        </ul>
+                    <article class="card feature-card">
+                        <span class="card-code">02</span>
+                        <h3>Dynamic Economy</h3>
+                        <p>Wallets, bank persistence, payday timing, dropped cash, money printers, shipments, and purchase routes make money matter between encounters.</p>
                     </article>
-                    <article class="card">
-                        <h3>Role Progression</h3>
-                        <ul class="bullets">
-                            <li>Civil, Government, and Criminal catalogs are populated with salary balancing.</li>
-                            <li>Mayor and SWAT paths use vote-gated progression.</li>
-                            <li>Gang roles and mugger loaded-wallet gameplay are active.</li>
-                        </ul>
+                    <article class="card feature-card">
+                        <span class="card-code">03</span>
+                        <h3>Property and Door Logic</h3>
+                        <p>Single, sliding, and double-door ownership/sign handling is being wired so bases and shops can read clearly in-world.</p>
                     </article>
-                    <article class="card">
-                        <h3>Detailed Notes</h3>
-                        <ul class="bullets">
-                            <li>Full milestone detail moved to the Devlog page.</li>
-                            <li>Patch-by-patch history remains in Changelog archive.</li>
-                            <li>Use Guide for controls and Rules for policy baseline.</li>
-                        </ul>
+                    <article class="card feature-card">
+                        <span class="card-code">04</span>
+                        <h3>Police Workflow</h3>
+                        <p>Taze, stun, detain, release, charge, arrest, fines, and prison timing are presented as visible state instead of hidden admin magic.</p>
+                    </article>
+                    <article class="card feature-card">
+                        <span class="card-code">05</span>
+                        <h3>Criminal Loops</h3>
+                        <p>Gang roles, loaded-wallet mugging, contraband entities, and high-risk cash movement give criminal jobs more to do than wait around.</p>
+                    </article>
+                    <article class="card feature-card">
+                        <span class="card-code">06</span>
+                        <h3>Readable UI Surfaces</h3>
+                        <p>HUD, pockets, ATM, player menu, crime terminal, and focused panels keep the server's rules visible without breaking the mood.</p>
                     </article>
                 </div>
-                <p class="meta">For exact implementation details, open <a href="../pages/DevLog/index.html">Devlog</a>.</p>
+            </section>
+
+            <section class="section city-strip" aria-label="AfterDarkRP visual preview">
+                <article>
+                    <img src="../images/afterdarkrp/Devlogs/4-27-26/s17v2-lighting-post-process-updates.png" alt="AfterDarkRP lighting and post-process update preview">
+                    <div>
+                        <p class="eyebrow">Lighting Pass</p>
+                        <h3>Street readability</h3>
+                    </div>
+                </article>
+                <article>
+                    <img src="../images/afterdarkrp/Devlogs/4-27-26/s17v2-train-interior-flow-rework.png" alt="AfterDarkRP train interior flow rework preview">
+                    <div>
+                        <p class="eyebrow">Map Flow</p>
+                        <h3>Transit interiors</h3>
+                    </div>
+                </article>
+                <article>
+                    <img src="../images/afterdarkrp/Devlogs/3-18-26/ghetto_01_preview-ingame.png" alt="AfterDarkRP in-game neighborhood preview">
+                    <div>
+                        <p class="eyebrow">District Work</p>
+                        <h3>Neighborhood scale</h3>
+                    </div>
+                </article>
+            </section>
+
+            <section class="section supporter-section">
+                <div class="section-head">
+                    <div>
+                        <p class="eyebrow">Community Backing</p>
+                        <h2>Frontline Early Donors</h2>
+                    </div>
+                    <a class="button compact" href="../pages/contact.html">Support the build</a>
+                </div>
+                <p>Early supporters get a visible place in the record while the server is still being shaped. No fake totals, no inflated wall of names: this board is reserved for the first real people who help keep AfterDarkRP moving.</p>
+                <div class="donor-podium" aria-label="Top frontline early donor slots">
+                    <article class="donor-card">
+                        <span class="rank">#02</span>
+                        <div class="donor-mark">RP</div>
+                        <h3>Early Supporter</h3>
+                        <p>Frontline Slot</p>
+                        <strong>Reserved</strong>
+                    </article>
+                    <article class="donor-card rank-one">
+                        <span class="rank">#01</span>
+                        <div class="donor-mark">AD</div>
+                        <h3>First Frontline Donor</h3>
+                        <p>Early Supporter</p>
+                        <strong>Reserved</strong>
+                    </article>
+                    <article class="donor-card">
+                        <span class="rank">#03</span>
+                        <div class="donor-mark">NS</div>
+                        <h3>Signal Boost</h3>
+                        <p>Frontline Slot</p>
+                        <strong>Reserved</strong>
+                    </article>
+                </div>
+                <div class="donor-rail" aria-label="Recent frontline donor placeholders">
+                    <article>
+                        <span>Queued</span>
+                        <div class="donor-mark small">01</div>
+                        <strong>Supporter Name</strong>
+                        <small>Amount hidden until confirmed</small>
+                    </article>
+                    <article>
+                        <span>Queued</span>
+                        <div class="donor-mark small">02</div>
+                        <strong>Supporter Name</strong>
+                        <small>Amount hidden until confirmed</small>
+                    </article>
+                    <article>
+                        <span>Queued</span>
+                        <div class="donor-mark small">03</div>
+                        <strong>Supporter Name</strong>
+                        <small>Amount hidden until confirmed</small>
+                    </article>
+                    <article>
+                        <span>Queued</span>
+                        <div class="donor-mark small">04</div>
+                        <strong>Supporter Name</strong>
+                        <small>Amount hidden until confirmed</small>
+                    </article>
+                </div>
+                <p class="supporter-count">...and the first confirmed frontline supporters once the roll opens.</p>
+                <p class="meta">Supporter names should be filled only from confirmed donor records.</p>
+            </section>
+
+            <section class="section roadmap-section">
+                <div class="section-head">
+                    <div>
+                        <p class="eyebrow">The Road Ahead</p>
+                        <h2>What is shipping next.</h2>
+                    </div>
+                    <a class="button compact secondary" href="about/">Project snapshot</a>
+                </div>
+                <div class="timeline">
+                    <article class="timeline-item">
+                        <span class="timeline-status shipped">Shipped</span>
+                        <h3>Core Economy Spine</h3>
+                        <p>Wallet, banking, payday, death cash, job routing, and server-visible cash movement form the baseline loop.</p>
+                    </article>
+                    <article class="timeline-item">
+                        <span class="timeline-status progress">In Progress</span>
+                        <h3>Police / Crime Tuning</h3>
+                        <p>Taze values, sentence pacing, charge flow, fines, wanted state, and detention visibility are being balanced together.</p>
+                    </article>
+                    <article class="timeline-item">
+                        <span class="timeline-status progress">In Progress</span>
+                        <h3>S17 V3 City Pass</h3>
+                        <p>Lighting, road flow, transit spaces, courthouse/prison routing, and tactical read are moving alongside the gameplay work.</p>
+                    </article>
+                    <article class="timeline-item">
+                        <span class="timeline-status planned">Planned</span>
+                        <h3>Property Defense Layer</h3>
+                        <p>Door ownership, base readability, contraband placement, and player-built defenses are the next pressure points.</p>
+                    </article>
+                </div>
+            </section>
+
+            <section class="section tech-section">
+                <div>
+                    <p class="eyebrow">Modern Stack</p>
+                    <h2>Built on systems we can keep extending.</h2>
+                    <p>AfterDarkRP is being built as a live Nightshift codebase, not a loose collection of one-off scripts. The homepage now makes that clearer for players and early supporters.</p>
+                </div>
+                <div class="tech-tags" aria-label="AfterDarkRP technology tags">
+                    <span>C#</span>
+                    <span>s&box</span>
+                    <span>Razor UI</span>
+                    <span>Scene Prefabs</span>
+                    <span>Server Authority</span>
+                    <span>Devlog Pipeline</span>
+                </div>
             </section>
         </div>
     </main>

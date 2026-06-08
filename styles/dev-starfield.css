@@ -1,0 +1,25 @@
+.starfield-sample-panel {
+    min-height: clamp(360px, 54vh, 620px);
+    display: grid;
+    align-content: end;
+    overflow: hidden;
+}
+
+.starfield-sample-panel::after {
+    content: "";
+    position: absolute;
+    inset: 1px;
+    background: linear-gradient(180deg, transparent 0%, rgba(2, 4, 10, 0.28) 54%, rgba(2, 4, 10, 0.78) 100%);
+    pointer-events: none;
+}
+
+.starfield-sample-panel > * {
+    position: relative;
+    z-index: 1;
+}
+
+@media (max-width: 760px) {
+    .starfield-sample-panel {
+        min-height: 340px;
+    }
+}

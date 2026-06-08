@@ -3,6 +3,72 @@
     const endpointBase = (script?.dataset.analyticsEndpoint || "/api/analytics").replace(/\/$/, "");
     const hostname = window.location.hostname;
 
+    function initializeStarfieldMotion() {
+        const screenFx = document.querySelector(".screen-fx");
+
+        if (!screenFx) {
+            return;
+        }
+
+        if (!document.querySelector(".star-speed-layer")) {
+            const speedLayer = document.createElement("div");
+            speedLayer.className = "star-speed-layer";
+            speedLayer.setAttribute("aria-hidden", "true");
+            screenFx.insertAdjacentElement("afterend", speedLayer);
+        }
+
+        const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+        const pointerQuery = window.matchMedia("(pointer: fine)");
+
+        if (motionQuery.matches || !pointerQuery.matches) {
+            return;
+        }
+
+        const target = { x: 0, y: 0, tilt: 0, glowX: 50, glowY: 50 };
+        const current = { x: 0, y: 0, tilt: 0, glowX: 50, glowY: 50 };
+
+        function applyStarCursor() {
+            current.x += (target.x - current.x) * 0.1;
+            current.y += (target.y - current.y) * 0.1;
+            current.tilt += (target.tilt - current.tilt) * 0.12;
+            current.glowX += (target.glowX - current.glowX) * 0.14;
+            current.glowY += (target.glowY - current.glowY) * 0.14;
+            document.body.style.setProperty("--star-cursor-x", `${current.x.toFixed(2)}px`);
+            document.body.style.setProperty("--star-cursor-y", `${current.y.toFixed(2)}px`);
+            document.body.style.setProperty("--star-cursor-tilt", `${current.tilt.toFixed(3)}deg`);
+            document.body.style.setProperty("--star-cursor-glow-x", `${current.glowX.toFixed(2)}%`);
+            document.body.style.setProperty("--star-cursor-glow-y", `${current.glowY.toFixed(2)}%`);
+            window.requestAnimationFrame(applyStarCursor);
+        }
+
+        function setStarTarget(event) {
+            const xRatio = (event.clientX / window.innerWidth - 0.5) * 2;
+            const yRatio = (event.clientY / window.innerHeight - 0.5) * 2;
+            target.x = xRatio * 18;
+            target.y = yRatio * 12;
+            target.tilt = xRatio * 0.35;
+            target.glowX = event.clientX / window.innerWidth * 100;
+            target.glowY = event.clientY / window.innerHeight * 100;
+            document.body.classList.add("starfield-pointer-active");
+        }
+
+        function resetStarTarget() {
+            target.x = 0;
+            target.y = 0;
+            target.tilt = 0;
+            target.glowX = 50;
+            target.glowY = 50;
+            document.body.classList.remove("starfield-pointer-active");
+        }
+
+        window.requestAnimationFrame(applyStarCursor);
+        window.addEventListener("pointermove", setStarTarget, { passive: true });
+        window.addEventListener("pointerleave", resetStarTarget);
+        window.addEventListener("blur", resetStarTarget);
+    }
+
+    initializeStarfieldMotion();
+
     if (
         hostname === "localhost" ||
         hostname === "127.0.0.1" ||
