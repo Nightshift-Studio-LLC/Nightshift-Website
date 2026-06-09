@@ -9,7 +9,6 @@ tags:
   - Tactical Walls
   - NPCs
   - Traffic
-draft: true
 ---
 
 ## Since the May 21 devlog

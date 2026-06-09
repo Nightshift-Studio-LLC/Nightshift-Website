@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nightshift | AfterDark ends May with S17 V3 sync, siege walls, traffic, and a denser NPC layer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="../../../images/icons/nightshift.ico">
+    <link rel="stylesheet" href="../../../styles/home-modus-mockup.css">
+    <script defer src="/scripts/analytics.js" data-analytics-endpoint="/api/analytics"></script>
+</head>
+<body>
+    <div class="screen-fx" aria-hidden="true"></div>
+    <header class="topbar">
+        <a class="brand hover-sound" href="../../home.html" aria-label="Nightshift home">
+            <img src="../../../images/index/nightshift-transparent.png" alt="Nightshift logo">
+        </a>
+        <nav class="utility-nav" aria-label="Primary">
+            <a href="../../home.html" class="hover-sound">Home</a>
+            <a href="../../games.html" class="hover-sound">Games</a>
+            <a href="../../studio.html" class="hover-sound">Studio</a>
+            <a href="../../DevLog/index.html" class="hover-sound active">Devlog</a>
+            <a href="../../contact.html" class="hover-sound">Contact</a>
+        </nav>
+        <div class="topbar-readout"><span>Devlog Entry</span><strong id="mockup-clock">00:00:00 CST</strong></div>
+    </header>
+    <main class="shell page-shell">
+
+        <section class="page-hero-grid">
+            <article class="page-hero-panel">
+                <p class="eyebrow">Devlog / entry</p>
+                <h1 class="page-title">AfterDark ends May with S17 V3 sync, siege walls, traffic, and a denser NPC layer</h1>
+                <p class="page-lede">Since the May 21 update, AfterDark has had another unusually chunky week: S17 V3 moved from pipeline direction into a heavier synced map state, tactical walls became a real Siege-style testbed, ambient traffic and NPC authoring started layering into the city, and player identity/persistence work got sturdier under the hood.</p>
+                <div class="hero-actions"><a class="cta-btn hover-sound" href="../index.html">Back To Devlog</a></div>
+                <div class="tag-row"><span class="tag">AfterDarkRP</span><span class="tag">S17 V3</span><span class="tag">Tactical Walls</span><span class="tag">NPCs</span><span class="tag">Traffic</span></div>
+                
+            </article>
+            <aside class="page-hero-panel">
+                <p class="eyebrow">Entry metadata</p>
+                <div class="stack-list">
+                    <div><span>Project</span><strong>AfterDarkRP</strong></div>
+                    <div><span>Date</span><strong>MAY 29, 2026</strong></div>
+                    <div><span>Route</span><strong>Public archive</strong></div>
+                </div>
+            </aside>
+        </section>
+        <section class="panel feature-panel">
+            <div class="panel-heading"><p class="eyebrow">Field Notes</p><h2>Entry body</h2></div>
+            <div class="devlog-post-body"><h2>Since the May 21 devlog</h2>
+<p>The May 21 update was already a large one. It covered the move into the <strong>S17 V3</strong> pipeline, Blender sync, BlenderMCP/Blender Bridge becoming practical tools, police rappelling, early vehicle infrastructure, reputation, dialogue, business loops, NPC foundations, VFX, and optimization.</p>
+<p>This end-of-month update is not a quiet follow-up.</p>
+<p>The week after that post turned into another broad production push. The difference is that the work is starting to feel less like separate systems being proven in isolation and more like AfterDark&#39;s city layer being assembled into a real test surface.</p>
+<p>Since May 21, the repo has moved through:</p>
+<ul>
+<li>S17 V3 sync and map expansion,</li>
+<li>a much more serious tactical wall branch,</li>
+<li>Siege-style bullet/C4/breach experiments,</li>
+<li>traffic routes, traffic lights, parking points, and ambient car behavior,</li>
+<li>NPC schedules, home doors, resident outings, recovery points, and police dispatch spawners,</li>
+<li>player identity/persistence cleanup,</li>
+<li>respawn-cycle stability,</li>
+<li>admin access work,</li>
+<li>and more supporting docs/tooling around the parts that are becoming real production systems.</li>
+</ul>
+<p>That is a lot for one week. It also makes the month-end story pretty clear: AfterDark is no longer just trying to prove that the pieces can exist. It is starting to wire those pieces into a city that can carry pressure.</p>
+<h2>S17 V3 became more than a pipeline label</h2>
+<p>The last devlog framed <strong>S17 V3</strong> as the next map direction: a Blender-synced version of the world that should be easier to iterate than the previous V2 path.</p>
+<p>This week, that became a lot more concrete.</p>
+<p>The S17 V3 scene picked up a large synced content pass across Blender Bridge assets, road pieces, terrain, buildings, train-station support, ghetto-west structures, prison pieces, and scene metadata. The important part is not only the number of new assets. The important part is that the map is being rebuilt around a repeatable transfer loop.</p>
+<p>That changes the feel of production.</p>
+<p>S17 V2 was the stretch where the world got larger and more ambitious. S17 V3 is becoming the stretch where the world gets easier to keep alive while it changes. That matters because AfterDark needs a city that can absorb layout work, route tuning, NPC placement, traffic authoring, lighting passes, and gameplay anchors without every adjustment becoming a manual recovery job.</p>
+<p>This is still messy because all real map pipeline work is messy while the loop is being proven. But it is a better kind of messy. It is the kind where the project is paying down future friction.</p>
+<h2>Tactical walls became a real siege testbed</h2>
+<p>The biggest visible gameplay thread this week is the tactical wall work.</p>
+<p>The earlier direction was already clear: generic props should not be the best defensive answer forever. If AfterDark wants property defense, police pressure, Builder/Fabricator support, and criminal breaching to matter, the game needs cover that is more readable than normal prop spam and more tunable than whatever players can stack together.</p>
+<p>This week pushed that idea much further.</p>
+<p>The tactical wall system now has multiple branches being tested against the same gameplay idea:</p>
+<ul>
+<li>an original breakable-cell branch,</li>
+<li>a fake-voxel tile-removal branch,</li>
+<li>a shader-mask branch for bullet and breach cutouts,</li>
+<li>and an experimental SDF mesh branch that can replay wall damage into generated mesh and collision.</li>
+</ul>
+<p>That sounds technical because it is. But the design goal is simple: make wall damage readable, controllable, and game-shaped without depending on expensive runtime mesh boolean work.</p>
+<p>Bullets should make understandable holes. C4 should create a larger breach. Collision needs to match what players can see well enough that shooting, movement, line-of-sight, and police/criminal pressure do not feel fake. The system also needs to stay host-authoritative because money, Builder work, C4, wall health, and breach state cannot be decided client-side.</p>
+<p>The funny part is that this went from &quot;tactical wall direction&quot; to &quot;this is actually starting to feel like Rainbow Six pressure&quot; very quickly.</p>
+<p>That does not mean the system is done. It means the prototype finally crossed the line from abstract feature idea into something that can be filmed, tested, criticized, and tuned.</p>
+<h2>Builder support is starting to have a real job shape</h2>
+<p>The tactical wall work also matters because it gives the <strong>Builder/Fabricator</strong> direction more purpose.</p>
+<p>The intended loop is not &quot;everyone gets a magic build menu.&quot; It is closer to a support role:</p>
+<ul>
+<li>ordinary players or property occupants can request reinforcement,</li>
+<li>Builders need to come to the wall and fulfill the work on-site,</li>
+<li>reinforcement repairs and upgrades the wall,</li>
+<li>no-Builder fallback can exist as a safety valve,</li>
+<li>and sentry installs are currently only a placeholder counter until a real turret/counterplay pass exists.</li>
+</ul>
+<p>That is a better direction than turning property defense into pure menu friction. The Builder becomes someone you want in your orbit when you are trying to hold space. That creates social pressure, money sinks, and a more readable siege rhythm.</p>
+<p>There is still an important design question around property ownership. Placement and reinforcement eligibility probably need to resolve around homes, bases, or owned property boundaries. That is not fully locked yet. The important thing for this update is that the wall system is now substantial enough to make that question worth answering.</p>
+<h2>C4, smoke, flashbangs, and breach pressure moved with it</h2>
+<p>The siege work did not stay isolated to the wall prefab.</p>
+<p>This week also touched C4, detonation behavior, breach visuals, smoke grenades, flashbangs, tazer data, and related weapon/prefab support. The pieces are pointing toward a more complete combat language:</p>
+<ul>
+<li>police and criminals need ways to pressure cover,</li>
+<li>walls need to visibly respond to that pressure,</li>
+<li>utility should create openings without becoming instant chaos,</li>
+<li>and the map still needs to preserve route value after the breach tools arrive.</li>
+</ul>
+<p>The line to watch here is restraint. AfterDark needs violent tools, but it cannot let every tool erase the map. C4 should matter because it creates a committed breach moment, not because it turns every fight into a flat room-clearing routine.</p>
+<p>That is the current shape of the work: make the breach readable first, then tune how much authority it deserves.</p>
+<h2>Traffic is becoming an ambient city layer</h2>
+<p>Another major change this week is the first serious <strong>traffic layer</strong>.</p>
+<p>This is not a full player-owned vehicle economy or carjacking system. It is a lightweight ambient vehicle layer for making the city feel less empty and giving streets more motion.</p>
+<p>The current traffic pass adds authoring concepts for:</p>
+<ul>
+<li>traffic spawn zones,</li>
+<li>one-way route splines,</li>
+<li>route handoffs,</li>
+<li>parking waypoints,</li>
+<li>traffic lights and timing groups,</li>
+<li>delete zones at road exits,</li>
+<li>simple lane-switch attempts,</li>
+<li>staggered cruise speeds,</li>
+<li>Bronco wheel presentation while spline-driven,</li>
+<li>short-range headlights,</li>
+<li>and host-owned cleanup for traffic vehicles.</li>
+</ul>
+<p>That may sound like background set dressing, but it changes how S17 reads. Roads stop being empty strips of geometry and start becoming lanes with flow, timing, danger, and visual noise.</p>
+<p>It also gives the map a stronger test surface. If traffic can run through S17 V3 without collapsing performance or route logic, the city gains a baseline pulse that future police, crime, NPC, and business systems can play against.</p>
+<h2>NPCs and residents got more city structure</h2>
+<p>NPC work also expanded heavily.</p>
+<p>The earlier resident layer had home doors, route support, resident profiles, and basic outing behavior. This week pushed that into a broader authored-city model:</p>
+<ul>
+<li>home doors can carry profile, district, activity, disposition, clothing, schedule, and knock-callout behavior,</li>
+<li>residents can leave, return, virtualize when inactive, and rehydrate when players come back,</li>
+<li>resident wardrobes are becoming slot-aware instead of only a flat clothing path list,</li>
+<li>residents now carry presentation metadata for future voice and ambience,</li>
+<li>schedules can use home, work, hobby, or patrol behavior,</li>
+<li>patrol routes can use splines or waypoint chains,</li>
+<li>authored NPCs can recover through hospital recovery waypoints,</li>
+<li>and NPC police dispatch spawners can start populating patrol pressure.</li>
+</ul>
+<p>The useful thing here is that NPCs are no longer just &quot;place a citizen somewhere and hope it feels alive.&quot; The map is gaining authoring grammar: homes, routes, work points, patrols, parking, recovery points, and district tags.</p>
+<p>That is exactly what S17 needs. A big map only feels like a city when its inhabitants have enough structure to appear, move, vanish, recover, and reappear without requiring every single NPC to be a bespoke handcrafted event.</p>
+<h2>Citizen data expanded</h2>
+<p>One quieter but important part of the NPC work is the expanded resident/citizen data.</p>
+<p>Residents now have more than a name and a route. The profile layer is starting to track presentation gender, heritage, voice set, ambient sound tags, moral disposition, activity identity, and wardrobe details. That metadata is not supposed to become gameplay authority by itself. It is there so the city can make better flavor choices later: who sounds like they belong in a district, who looks like they live there, who might be a buyer, snitch, worker, late-bar regular, night worker, or office commuter.</p>
+<p>That matters because the long-term city direction depends on population texture. If every civilian is just a generic moving obstacle, the city will look populated but feel empty. If the data model is there, the game can slowly start selecting better dialogue, ambient sound, schedules, disguise interactions, witness behavior, or district reactions.</p>
+<p>This is still a foundation pass. But it is the right kind of foundation.</p>
+<h2>NPC police are pressure, not the justice system</h2>
+<p>The NPC police direction is worth calling out separately because it can easily drift into the wrong design if it is not kept bounded.</p>
+<p>NPC police are not meant to replace player police. They are not supposed to become the source of truth for justice state. Heat and wanted state still belong to the player-facing crime/status systems. NPC contact should add pressure, last-known-position moments, chase/search behavior, and ambient police life.</p>
+<p>That distinction matters.</p>
+<p>The target loop is:</p>
+<ol>
+<li>A crime or witness event raises heat.</li>
+<li>Player police still get the readable dispatch truth.</li>
+<li>Nearby patrol NPCs can notice a wanted player.</li>
+<li>NPC responders can create short-term pressure if the authored scene supports it.</li>
+<li>Losing NPC contact reduces immediate pressure.</li>
+<li>Wanted state remains until normal justice/reset behavior clears it.</li>
+</ol>
+<p>That gives the city teeth without letting NPCs solve the whole roleplay loop by themselves.</p>
+<h2>Player identity and persistence got sturdier</h2>
+<p>Another quieter improvement is the player directory and persistence work.</p>
+<p>The new player directory direction centralizes how AfterDark thinks about live players and durable accounts. Session connection IDs are still useful for active ownership and RPC paths, but durable account identity should prefer Steam IDs when the engine exposes them. Older fallback keys can be copied forward so existing save data is not orphaned when a better identity key appears.</p>
+<p>This is not screenshot material, but it matters a lot for the kind of server AfterDark wants to be.</p>
+<p>Wallets, jobs, admin access, respawn state, arrests, dispatch targets, persistent player data, and moderation tools all get more fragile when &quot;which player is this?&quot; is answered differently in different systems. The player directory gives those systems a common place to ask.</p>
+<p>The admin whitelist work is part of the same stability story. Admin access needs to be treated as an access right, not a public roleplay identity, and it should resolve through durable account identity rather than display-name luck.</p>
+<h2>Respawn and runtime recovery kept getting attention</h2>
+<p>There was also a practical stability pass around respawn cycles, NPC recovery, local spawn cleanup, and runtime safety.</p>
+<p>This is the kind of work that matters most when systems start stacking:</p>
+<ul>
+<li>players need to come back cleanly,</li>
+<li>NPCs need to recover without leaving dead authored content permanently broken,</li>
+<li>traffic and spawned actors need cleanup rules,</li>
+<li>admin/debug surfaces need to see what is happening,</li>
+<li>and the game needs to avoid stale ownership or pawn state confusing the rest of the loop.</li>
+</ul>
+<p>AfterDark is entering the phase where a lot of failures stop being isolated. A player respawn issue can affect justice. A stale pawn can affect dispatch. A broken NPC can affect witness behavior. A traffic cleanup mistake can affect the map. So the less glamorous recovery work is increasingly part of the feature work, not separate from it.</p>
+<h2>There is still footage to record</h2>
+<p>Some of this needs video before it should be treated as a finished public-facing beat.</p>
+<p>The main footage still needed for this update is:</p>
+<ul>
+<li>siege wall bullet damage,</li>
+<li>C4 breach behavior,</li>
+<li>Builder/reinforcement flow if it is readable enough,</li>
+<li>S17 V3 route and map movement,</li>
+<li>traffic running through authored roads,</li>
+<li>NPC/resident movement on S17 V3,</li>
+<li>and NPC police presence if the current scene state is stable enough to show cleanly.</li>
+</ul>
+<p>The tactical wall footage matters especially because screenshots do not explain the system well. The point is the sequence: wall intact, first hits, holes, collision, breach, pressure, and the reason this is better than normal prop spam.</p>
+<h2>What the end of May adds up to</h2>
+<p>The month started with S17 still being framed through the larger V2 map push.</p>
+<p>By the end of May, the project is in a different place:</p>
+<ul>
+<li>S17 V3 is now the active sync direction,</li>
+<li>Blender Bridge is carrying a much larger part of the world pipeline,</li>
+<li>tactical walls have become a real siege-system prototype,</li>
+<li>C4 and utility tools are starting to connect to breach pressure,</li>
+<li>traffic exists as a first ambient city layer,</li>
+<li>NPC homes, schedules, routes, wardrobes, recovery, and police patrol pressure are expanding,</li>
+<li>player identity and persistence are less scattered,</li>
+<li>and the map is gaining enough authored structure that future gameplay can attach to real places instead of abstract systems.</li>
+</ul>
+<p>That is a big shift.</p>
+<p>The earlier question was &quot;can AfterDark build enough world and systems to justify the city?&quot; The newer question is &quot;how do we tune all of this so the city stays readable, performant, and fun under pressure?&quot;</p>
+<p>That is a better problem to have.</p>
+<h2>What comes next</h2>
+<p>The immediate next step is not to invent a new headline. It is to make this week&#39;s work more presentable and more testable.</p>
+<ul>
+<li>Capture clean footage of tactical walls, C4 breaches, traffic, and NPC movement.</li>
+<li>Keep S17 V3 sync stable while the map continues to change.</li>
+<li>Tune tactical wall visuals and collision until the holes are believable from normal play angles.</li>
+<li>Keep Builder reinforcement scoped as a support-role loop instead of a generic construction menu.</li>
+<li>Keep traffic ambient and bounded before adding heavier behavior like panic, damage, and player interaction.</li>
+<li>Keep NPC police as pressure layered on top of player police, not a replacement for the justice loop.</li>
+<li>Keep expanding resident data only where it helps the city feel authored, not where it creates unnecessary simulation debt.</li>
+</ul>
+<p>The end of May is heavier than expected, but in a good way. A lot of the work is still rough, and some of it needs footage before it should be public-facing. But the project now has a much clearer direction: S17 V3 as the synced city, tactical walls as the first serious siege surface, traffic as ambient motion, and NPCs as the beginning of a city population instead of decoration.</p>
+</div>
+        </section>
+
+        <footer class="site-footer panel">
+
+            <section class="software-marquee-section" aria-label="Software used by Nightshift">
+                <div class="software-marquee"><div class="software-marquee-track">
+                    <span>Unreal / Source 2 / Enfusion / RAGE</span><span>Blender</span><span>Adobe Suite</span><span>Adobe 3D</span><span>Affinity Suite</span><span>Gaea 2.0</span><span>CC5</span><span>iClone 8</span><span>Marvelous Designer</span><span>Ornatrix</span><span>FruityLoops</span><span>VS Code</span><span>Visual Studio</span><span>GitHub</span><span>Git LFS</span><span>Git Pages</span><span>Wix</span><span>Codex</span>
+                    <span>Unreal / Source 2 / Enfusion / RAGE</span><span>Blender</span><span>Adobe Suite</span><span>Adobe 3D</span><span>Affinity Suite</span><span>Gaea 2.0</span><span>CC5</span><span>iClone 8</span><span>Marvelous Designer</span><span>Ornatrix</span><span>FruityLoops</span><span>VS Code</span><span>Visual Studio</span><span>GitHub</span><span>Git LFS</span><span>Git Pages</span><span>Wix</span><span>Codex</span>
+                </div></div>
+            </section>
+            <div class="footer-grid">
+                <div class="footer-column"><span>Primary routes</span><a class="hover-sound" href="../../home.html">Home</a><a class="hover-sound" href="../../games.html">Games</a><a class="hover-sound" href="../../studio.html">Studio</a><a class="hover-sound" href="../../contact.html">Contact</a></div>
+                <div class="footer-column"><span>Public records</span><a class="hover-sound" href="../../DevLog/index.html">Devlog</a><a href="https://www.epicgames.com/site/en-US/privacypolicy" target="_blank" rel="noopener noreferrer">Epic Privacy Policy</a><a href="#">Nightshift Privacy Policy</a><a href="#">Applicant Privacy Policy</a></div>
+                <div class="footer-column"><span>External surfaces</span><a href="#">Press Kit</a><a href="#">Brand Assets</a><a href="#">Careers</a><a href="#">Community</a></div>
+            </div>
+            <div class="footer-bottom"><div class="social-row"><a class="action-pill hover-sound" href="https://twitter.com" target="_blank" rel="noopener noreferrer">X</a><a class="action-pill hover-sound" href="https://instagram.com" target="_blank" rel="noopener noreferrer">IG</a><a class="action-pill hover-sound" href="https://www.youtube.com/@nstx" target="_blank" rel="noopener noreferrer">YT</a></div><p class="footer-note">Copyright 2026 Nightshift. All rights reserved.</p></div>
+        </footer>
+    </main>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const audio = new Audio("../../../audio/bop.mp3");
+            audio.volume = 0.25;
+            const clock = document.getElementById("mockup-clock");
+            function updateClock() {
+                if (!clock) return;
+                clock.textContent = new Date().toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", second: "2-digit", timeZone: "America/Chicago", timeZoneName: "short" });
+            }
+            document.querySelectorAll(".hover-sound").forEach((element) => {
+                element.addEventListener("mouseenter", function() {
+                    audio.currentTime = 0;
+                    audio.play().catch(() => {});
+                });
+            });
+            updateClock();
+            window.setInterval(updateClock, 1000);
+        });
+    </script>
+</body>
+</html>

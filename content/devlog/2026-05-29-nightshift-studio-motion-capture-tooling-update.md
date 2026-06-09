@@ -9,7 +9,6 @@ tags:
   - Blender
   - Tooling
   - Characters
-draft: true
 ---
 
 ## Studio note
