@@ -21,11 +21,11 @@ Nightshift has been building toward a tool stack where a small team can make mor
 
 The game is the point, but the studio tooling is what decides how fast the game can become real.
 
-## The honest schedule note
+## The scheduling reality
 
-The practical wrinkle is that this studio/tooling work is happening while day-job operations are taking more focus than expected. We had already started moving around a new POS direction there, then that choice got dropped, which means the evaluation, migration planning, cleanup, and decision process has to happen again.
+The other piece of this update is time. Some of this studio/tooling work is now sharing space with a day-job operations reset that got more complicated than expected. A planned point-of-sale transition changed direction after work had already started around it, which means the selection, cleanup, migration planning, and decision loop has to be run again.
 
-Since this is internal operations work, not an outside client project, it is not really "client work" interrupting the game. It is work I am responsible for suddenly needing priority. Nightshift is still moving, but the time split is real now. Progress is still happening; it is just sharing space with a bigger operations reset than expected.
+That is not a separate client project pulling attention away. It is operational work I am responsible for, and it landed right in the middle of the production push. Nightshift is still moving, but the schedule has less uninterrupted room than I wanted. The progress is real; it is just happening alongside a larger reset instead of inside a clean game-development block.
 
 ## The next big piece is motion capture
 
@@ -145,7 +145,7 @@ That is the real studio update.
 
 The goal is not just to make one game by brute force. The goal is to build a production environment where each successful pipeline makes the next piece easier.
 
-S17 V3 is part of that. Tactical walls are part of that. NPCs are part of that. Character import is part of that. Motion capture is the next obvious piece because animation is where the world starts needing human texture instead of only systems.
+S17 V3 is part of that. NPCs are part of that. Character import is part of that. Even the tactical wall work fits the same pattern: it is not only a combat feature, it is a test of how quickly Nightshift can move from a design need to a usable, tunable in-game asset. Motion capture is the next obvious piece because animation is where the world starts needing human texture instead of only systems.
 
 ## What comes next
 

@@ -178,6 +178,17 @@ const formatDate = (dateObj) => {
     return `${monthShort(dateObj)} ${day}, ${dateObj.getFullYear()}`;
 };
 
+const postPath = (post) => `/pages/DevLog/posts/${post.slug}.html`;
+
+const renderViewCount = (path) => `
+                    <span class="devlog-view-count" data-view-count-path="${escapeHtml(path)}" data-view-count-state="loading" aria-label="Views loading">
+                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                            <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"></path>
+                            <circle cx="12" cy="12" r="2.5"></circle>
+                        </svg>
+                        <b data-view-count-value>--</b><em>views</em>
+                    </span>`;
+
 const archiveConfig = [
     { year: 2026, months: [5, 4, 3, 2, 1] },
 ];
@@ -330,7 +341,7 @@ ${footerMarkup(pagePrefix)}
 const renderIndex = (posts) => {
     const renderCard = (post) => `
             <article class="devlog-card">
-                <div class="devlog-meta"><span>${escapeHtml(post.game)}</span><span>${formatDate(post.dateObj)}</span></div>
+                <div class="devlog-meta"><span>${escapeHtml(post.game)}</span><span>${formatDate(post.dateObj)}</span>${renderViewCount(postPath(post))}</div>
                 <h3>${escapeHtml(post.title)}</h3>
                 <p>${escapeHtml(post.excerpt)}</p>
                 <a class="devlog-cta hover-sound" href="posts/${post.slug}.html">Read entry</a>
@@ -432,6 +443,7 @@ const renderPost = (post) => {
                 <div class="stack-list">
                     <div><span>Project</span><strong>${escapeHtml(post.game)}</strong></div>
                     <div><span>Date</span><strong>${formatDate(post.dateObj)}</strong></div>
+                    <div><span>Views</span><strong>${renderViewCount(postPath(post))}</strong></div>
                     <div><span>Route</span><strong>Public archive</strong></div>
                 </div>
             </aside>

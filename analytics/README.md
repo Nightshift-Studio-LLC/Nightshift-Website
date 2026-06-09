@@ -22,6 +22,8 @@ This folder contains a minimal first-party analytics pipeline for the public Nig
 
 The public site sends events to `/api/analytics/collect`.
 
+Devlog pages can read aggregate retained pageview counts from `/api/analytics/views`. This route only returns counts for `/pages/DevLog/` paths and does not expose raw events, visitor IDs, geography, referrers, or dashboard data.
+
 The old `/api/analytics/dashboard` route has been retired. Do not expose analytics dashboards or staff tooling from a public static page.
 
 Recommended deployment:

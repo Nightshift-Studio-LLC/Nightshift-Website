@@ -69,11 +69,86 @@
 
     initializeStarfieldMotion();
 
-    if (
+    const isLocalHostname =
         hostname === "localhost" ||
         hostname === "127.0.0.1" ||
-        hostname === "::1"
-    ) {
+        hostname === "::1";
+
+    function formatViewCount(value) {
+        const count = Number.parseInt(String(value ?? ""), 10);
+
+        if (!Number.isFinite(count) || count < 0) {
+            return "--";
+        }
+
+        return new Intl.NumberFormat("en-US", {
+            notation: count >= 10000 ? "compact" : "standard",
+            maximumFractionDigits: 1,
+        }).format(count);
+    }
+
+    function setViewCountState(node, state, value) {
+        const valueNode = node.querySelector("[data-view-count-value]");
+        node.dataset.viewCountState = state;
+
+        if (valueNode) {
+            valueNode.textContent = value;
+        }
+
+        if (state === "loaded") {
+            node.setAttribute("aria-label", `${value} views`);
+        } else if (state === "unavailable") {
+            node.setAttribute("aria-label", "View count unavailable");
+        }
+    }
+
+    function initializeViewCounts(delayMs = 0) {
+        const nodes = Array.from(document.querySelectorAll("[data-view-count-path]"));
+
+        if (!nodes.length || isLocalHostname) {
+            return;
+        }
+
+        const paths = Array.from(new Set(nodes.map((node) => node.dataset.viewCountPath).filter(Boolean)));
+
+        if (!paths.length) {
+            return;
+        }
+
+        window.setTimeout(() => {
+            const params = new URLSearchParams();
+            for (const path of paths) {
+                params.append("path", path);
+            }
+
+            fetch(`${endpointBase}/views?${params.toString()}`, {
+                method: "GET",
+                credentials: "omit",
+            })
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error("view count unavailable");
+                    }
+
+                    return response.json();
+                })
+                .then((data) => {
+                    const counts = new Map((data?.counts || []).map((entry) => [entry.path, entry.views]));
+
+                    for (const node of nodes) {
+                        const value = formatViewCount(counts.get(node.dataset.viewCountPath) || 0);
+                        setViewCountState(node, "loaded", value);
+                    }
+                })
+                .catch(() => {
+                    for (const node of nodes) {
+                        setViewCountState(node, "unavailable", "--");
+                    }
+                });
+        }, delayMs);
+    }
+
+    if (isLocalHostname) {
         return;
     }
 
@@ -277,5 +352,6 @@
     }
 
     trackPageView();
+    initializeViewCounts(700);
     document.addEventListener("click", trackClick, { passive: true });
 })();

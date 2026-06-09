@@ -1,4 +1,5 @@
 const DEFAULT_RETENTION_DAYS = 30;
+const MAX_VIEW_COUNT_PATHS = 80;
 function splitCsv(value) {
     return String(value || "")
         .split(",")
@@ -21,6 +22,15 @@ function sanitizePath(value) {
     }
 
     return next;
+}
+
+function normalizeViewCountPath(value) {
+    const path = sanitizePath(value);
+    if (!path.startsWith("/pages/DevLog/")) {
+        return "";
+    }
+
+    return path;
 }
 
 function parsePositiveInt(value, fallback) {
@@ -177,6 +187,69 @@ async function collectEvent(request, env) {
     return jsonResponse({ ok: true }, { status: 202 }, request, env);
 }
 
+async function readViewCounts(request, env) {
+    if (!assertAllowedOrigin(request, env)) {
+        return jsonResponse({ ok: false, error: "origin_not_allowed" }, { status: 403 }, request, env);
+    }
+
+    const url = new URL(request.url);
+    const rawPaths = [
+        ...url.searchParams.getAll("path"),
+        ...url.searchParams
+            .getAll("paths")
+            .flatMap((value) => String(value || "").split(",")),
+    ];
+    const paths = [];
+    const seen = new Set();
+
+    for (const rawPath of rawPaths) {
+        const path = normalizeViewCountPath(rawPath);
+        if (!path || seen.has(path)) {
+            continue;
+        }
+
+        seen.add(path);
+        paths.push(path);
+
+        if (paths.length >= MAX_VIEW_COUNT_PATHS) {
+            break;
+        }
+    }
+
+    if (!paths.length) {
+        return jsonResponse({ ok: true, counts: [] }, {}, request, env);
+    }
+
+    const placeholders = paths.map(() => "?").join(", ");
+    const result = await env.ANALYTICS_DB.prepare(
+        `SELECT path, COUNT(*) AS views
+        FROM analytics_events
+        WHERE event_type = 'pageview'
+            AND path IN (${placeholders})
+        GROUP BY path`
+    ).bind(...paths).all();
+
+    const viewsByPath = new Map(
+        (result.results || []).map((row) => [
+            row.path,
+            parsePositiveInt(row.views, 0),
+        ])
+    );
+
+    return jsonResponse(
+        {
+            ok: true,
+            counts: paths.map((path) => ({
+                path,
+                views: viewsByPath.get(path) || 0,
+            })),
+        },
+        { headers: { "cache-control": "public, max-age=60" } },
+        request,
+        env
+    );
+}
+
 async function deleteExpiredEvents(env) {
     const retentionDays = parsePositiveInt(env.RETENTION_DAYS, DEFAULT_RETENTION_DAYS);
     const cutoff = new Date(Date.now() - retentionDays * 24 * 60 * 60 * 1000).toISOString();
@@ -199,6 +272,10 @@ export default {
 
         if (request.method === "POST" && url.pathname === "/api/analytics/collect") {
             return collectEvent(request, env);
+        }
+
+        if (request.method === "GET" && url.pathname === "/api/analytics/views") {
+            return readViewCounts(request, env);
         }
 
         if (request.method === "GET" && url.pathname === "/api/analytics/dashboard") {
