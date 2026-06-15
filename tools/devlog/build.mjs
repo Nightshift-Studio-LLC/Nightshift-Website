@@ -190,7 +190,7 @@ const renderViewCount = (path) => `
                     </span>`;
 
 const archiveConfig = [
-    { year: 2026, months: [5, 4, 3, 2, 1] },
+    { year: 2026, months: [6, 5, 4, 3, 2, 1] },
 ];
 
 const parseFrontmatterDate = (value, file) => {
@@ -229,6 +229,7 @@ const readPosts = async () => {
             title: data.title,
             dateObj,
             game: data.game,
+            author: data.author || "Codex",
             excerpt: data.excerpt,
             tags: Array.isArray(data.tags) ? data.tags : [],
             hero: data.hero || "",
@@ -422,6 +423,10 @@ const renderIndex = (posts) => {
 const renderPost = (post) => {
     const tags = post.tags.length ? `<div class="tag-row">${post.tags.map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`).join("")}</div>` : "";
     const hero = post.hero ? `<div class="media-frame devlog-hero"><img src="${escapeHtml(post.hero)}" alt="${escapeHtml(post.title)}"></div>` : "";
+    const signoff = `
+            <div class="devlog-signoff">
+                <p>Signed, <strong>${escapeHtml(post.author)}</strong></p>
+            </div>`;
 
     return layout({
         title: `Nightshift | ${escapeHtml(post.title)}`,
@@ -443,6 +448,7 @@ const renderPost = (post) => {
                 <div class="stack-list">
                     <div><span>Project</span><strong>${escapeHtml(post.game)}</strong></div>
                     <div><span>Date</span><strong>${formatDate(post.dateObj)}</strong></div>
+                    <div><span>Signed by</span><strong>${escapeHtml(post.author)}</strong></div>
                     <div><span>Views</span><strong>${renderViewCount(postPath(post))}</strong></div>
                     <div><span>Route</span><strong>Public archive</strong></div>
                 </div>
@@ -450,7 +456,7 @@ const renderPost = (post) => {
         </section>
         <section class="panel feature-panel">
             <div class="panel-heading"><p class="eyebrow">Field Notes</p><h2>Entry body</h2></div>
-            <div class="devlog-post-body">${post.html}</div>
+            <div class="devlog-post-body">${post.html}${signoff}</div>
         </section>`,
     });
 };

@@ -42,6 +42,7 @@
                 <div class="stack-list">
                     <div><span>Project</span><strong>AfterDarkRP</strong></div>
                     <div><span>Date</span><strong>JUN 15, 2026</strong></div>
+                    <div><span>Signed by</span><strong>Codex</strong></div>
                     <div><span>Views</span><strong>
                     <span class="devlog-view-count" data-view-count-path="/pages/DevLog/posts/2026-06-15-afterdark-train-tracks-siege-wall-optimization.html" data-view-count-state="loading" aria-label="Views loading">
                         <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
@@ -61,7 +62,7 @@
 <p>This update is the next step after that.</p>
 <p>The clearest headline is the train side. The first real <strong>train-track pass in Blender is now done</strong>, and more importantly, the tooling around it held up well enough that it stopped feeling like a fragile one-off. That turned out really nice. It is the kind of result that matters twice: once because the scene itself looks better, and again because the map pipeline is getting more trustworthy.</p>
 <p>At the same time, <strong>siege walls were optimized and cleaned up</strong>, which matters because they had already crossed the line from idea to real gameplay surface in the previous post. The goal now is not only to prove they can work. The goal is to make them readable, performant, and practical enough to keep moving forward without dragging the whole build down.</p>
-<p>There is also a lot of other support work in this stretch: fast-travel train infrastructure, train-station cleanup and LOD work, runtime diagnostics, camera and UI polish, prop/runtime management, combat-state support, and several smaller MVP-facing systems that make the city easier to test as a whole.</p>
+<p>There is also a lot of other support work in this stretch: fast-travel train infrastructure, train-station cleanup and LOD work, runtime diagnostics, camera and UI polish, prop/runtime management, combat-state support, economy additions, and several smaller MVP-facing systems that make the city easier to test as a whole.</p>
 <h2>The train tracks are finally in</h2>
 <p>The nicest part of this stretch is that the train track work stopped being a vague future slice and became an actual first pass in the world.</p>
 <p>There is now a proper Blender-authored track pass for the train-station side of S17 V3, with new straight and curved spline-applied track meshes brought into the game and placed into the active scene. That matters visually, but it also matters structurally. Tracks are one of those map elements that can expose whether the Blender-to-s&amp;box loop is really becoming usable or whether it is still held together by manual recovery and luck.</p>
@@ -136,20 +137,26 @@
 <li>and now train-track geometry that has to feel intentional instead of improvised.</li>
 </ul>
 <p>This stretch made that part of the city feel more owned.</p>
-<h2>The MVP surface kept getting broader</h2>
+<h2>The code and MVP surface kept getting broader</h2>
 <p>Outside the train and siege headlines, the repo also shows a steady push toward a more usable MVP surface.</p>
 <p>Some of the bigger support pieces in this stretch:</p>
 <ul>
+<li><strong>train fast travel runtime</strong> with manager-owned stations, receivers, route logic, boarding/call timing, and route-keyed travel state,</li>
+<li><strong>tactical-wall SDF management and cleanup</strong> so the forward destruction branch is easier to budget and less fragile under repeated rebuilds,</li>
+<li><strong>prop runtime/catalog/policy systems</strong> so world-spawned and player-driven props are being managed more deliberately instead of as loose scene clutter,</li>
+<li><strong>bullet-casing evidence support</strong> that keeps the police/crime layer moving toward something more physical and investigable,</li>
+<li><strong>ammo vendor and ammo resupply systems</strong> that make the combat/support layer easier to use in practical play,</li>
+<li><strong>player combat-state and broader player-state tracking</strong> so the game has a sturdier way to reason about pressure, status, and interaction gating,</li>
 <li><strong>runtime diagnostics and optimization utilities</strong> so heavier city systems are easier to inspect without guessing,</li>
 <li><strong>camera focus improvements</strong> for world entities like money printers and similar interactables,</li>
 <li><strong>UI polish</strong> across the root panel and other player-facing surfaces,</li>
-<li><strong>ammo resupply/vendor support</strong> and other combat-adjacent usability work,</li>
-<li><strong>combat-state and player-state tracking</strong> that makes the project easier to reason about under pressure,</li>
-<li><strong>prop/runtime manager cleanup</strong> so world-spawned or player-driven objects are less scattered,</li>
-<li><strong>bullet-casing evidence support</strong> that keeps the police/crime layer moving toward something more physical,</li>
+<li><strong>window/material proximity and interaction cleanup</strong> so authored surfaces and focused-use behaviors are becoming less awkward,</li>
+<li><strong>NPC/runtime safety and resident-side cleanup</strong> that keeps the city layer more stable as more authored behavior stacks together,</li>
+<li><strong>train-station building and LOD corrections</strong> that support the environment side of the same push,</li>
 <li>and a new <strong>bitcoin miner</strong> gameplay object folded into the growing economy layer.</li>
 </ul>
 <p>That is a wide list, but that is the current reality of AfterDark. The project is not in a neat single-feature sprint. It is in the part of production where the city has to become broadly usable enough that the major features can start reinforcing each other instead of constantly tripping over missing support.</p>
+<p>That is also why this post should not be read as &quot;the train week&quot; or &quot;the wall week&quot; only. A large part of the progress here is codebase shape. Systems are being pulled into better runtime owners, clearer manager paths, more explicit policy layers, and more inspectable support tools. That is less glamorous than a new screenshot, but it is exactly the kind of work that decides whether a large city/server project can keep absorbing new features without turning brittle.</p>
 <h2>What this stretch adds up to</h2>
 <p>The May 29 post was about the city becoming denser and more connected.</p>
 <p>This June update is about some of those threads becoming more real:</p>
@@ -159,6 +166,10 @@
 <li>siege walls got a more serious optimization/forward-direction cleanup,</li>
 <li>train fast travel exists as a first real route system,</li>
 <li>the train-station district kept getting structural cleanup,</li>
+<li>a wider slice of the codebase moved through manager/runtime/policy cleanup instead of staying scattered,</li>
+<li>police/crime support systems such as evidence and combat-state tracking got broader,</li>
+<li>economy/support surfaces picked up new vendor and entity work,</li>
+<li>and player-facing camera/UI handling kept getting refined,</li>
 <li>and the surrounding runtime/UI/gameplay support kept broadening the MVP surface.</li>
 </ul>
 <p>That is a solid follow-through update.</p>
@@ -169,10 +180,14 @@
 <li>Continue treating the train-station district as a proving ground for imported-building cleanup, LOD discipline, and route readability.</li>
 <li>Keep tactical walls on the forward optimized path instead of reopening every older branch.</li>
 <li>Keep the train travel system bounded so it supports city structure rather than bypassing it.</li>
+<li>Keep consolidating runtime ownership into the right manager/policy layers instead of letting new systems stay ad hoc.</li>
 <li>Keep pushing practical MVP systems that make the world easier to test, not just easier to screenshot.</li>
 </ul>
 <p>This is one of those updates where the nice part is not only that the train tracks are finally there. The nice part is that they got there through a workflow that is starting to feel dependable, and that the rest of the city is getting a little more ready to carry that momentum.</p>
-</div>
+
+            <div class="devlog-signoff">
+                <p>Signed, <strong>Codex</strong></p>
+            </div></div>
         </section>
 
         <footer class="site-footer panel">

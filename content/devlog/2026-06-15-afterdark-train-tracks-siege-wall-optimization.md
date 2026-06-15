@@ -22,7 +22,7 @@ The clearest headline is the train side. The first real **train-track pass in Bl
 
 At the same time, **siege walls were optimized and cleaned up**, which matters because they had already crossed the line from idea to real gameplay surface in the previous post. The goal now is not only to prove they can work. The goal is to make them readable, performant, and practical enough to keep moving forward without dragging the whole build down.
 
-There is also a lot of other support work in this stretch: fast-travel train infrastructure, train-station cleanup and LOD work, runtime diagnostics, camera and UI polish, prop/runtime management, combat-state support, and several smaller MVP-facing systems that make the city easier to test as a whole.
+There is also a lot of other support work in this stretch: fast-travel train infrastructure, train-station cleanup and LOD work, runtime diagnostics, camera and UI polish, prop/runtime management, combat-state support, economy additions, and several smaller MVP-facing systems that make the city easier to test as a whole.
 
 ## The train tracks are finally in
 
@@ -104,22 +104,29 @@ The train-station side of S17 has been one of the places where the Blender-drive
 
 This stretch made that part of the city feel more owned.
 
-## The MVP surface kept getting broader
+## The code and MVP surface kept getting broader
 
 Outside the train and siege headlines, the repo also shows a steady push toward a more usable MVP surface.
 
 Some of the bigger support pieces in this stretch:
 
+- **train fast travel runtime** with manager-owned stations, receivers, route logic, boarding/call timing, and route-keyed travel state,
+- **tactical-wall SDF management and cleanup** so the forward destruction branch is easier to budget and less fragile under repeated rebuilds,
+- **prop runtime/catalog/policy systems** so world-spawned and player-driven props are being managed more deliberately instead of as loose scene clutter,
+- **bullet-casing evidence support** that keeps the police/crime layer moving toward something more physical and investigable,
+- **ammo vendor and ammo resupply systems** that make the combat/support layer easier to use in practical play,
+- **player combat-state and broader player-state tracking** so the game has a sturdier way to reason about pressure, status, and interaction gating,
 - **runtime diagnostics and optimization utilities** so heavier city systems are easier to inspect without guessing,
 - **camera focus improvements** for world entities like money printers and similar interactables,
 - **UI polish** across the root panel and other player-facing surfaces,
-- **ammo resupply/vendor support** and other combat-adjacent usability work,
-- **combat-state and player-state tracking** that makes the project easier to reason about under pressure,
-- **prop/runtime manager cleanup** so world-spawned or player-driven objects are less scattered,
-- **bullet-casing evidence support** that keeps the police/crime layer moving toward something more physical,
+- **window/material proximity and interaction cleanup** so authored surfaces and focused-use behaviors are becoming less awkward,
+- **NPC/runtime safety and resident-side cleanup** that keeps the city layer more stable as more authored behavior stacks together,
+- **train-station building and LOD corrections** that support the environment side of the same push,
 - and a new **bitcoin miner** gameplay object folded into the growing economy layer.
 
 That is a wide list, but that is the current reality of AfterDark. The project is not in a neat single-feature sprint. It is in the part of production where the city has to become broadly usable enough that the major features can start reinforcing each other instead of constantly tripping over missing support.
+
+That is also why this post should not be read as "the train week" or "the wall week" only. A large part of the progress here is codebase shape. Systems are being pulled into better runtime owners, clearer manager paths, more explicit policy layers, and more inspectable support tools. That is less glamorous than a new screenshot, but it is exactly the kind of work that decides whether a large city/server project can keep absorbing new features without turning brittle.
 
 ## What this stretch adds up to
 
@@ -132,6 +139,10 @@ This June update is about some of those threads becoming more real:
 - siege walls got a more serious optimization/forward-direction cleanup,
 - train fast travel exists as a first real route system,
 - the train-station district kept getting structural cleanup,
+- a wider slice of the codebase moved through manager/runtime/policy cleanup instead of staying scattered,
+- police/crime support systems such as evidence and combat-state tracking got broader,
+- economy/support surfaces picked up new vendor and entity work,
+- and player-facing camera/UI handling kept getting refined,
 - and the surrounding runtime/UI/gameplay support kept broadening the MVP surface.
 
 That is a solid follow-through update.
@@ -144,6 +155,7 @@ It is also a better kind of progress than just "more stuff was added." Train tra
 - Continue treating the train-station district as a proving ground for imported-building cleanup, LOD discipline, and route readability.
 - Keep tactical walls on the forward optimized path instead of reopening every older branch.
 - Keep the train travel system bounded so it supports city structure rather than bypassing it.
+- Keep consolidating runtime ownership into the right manager/policy layers instead of letting new systems stay ad hoc.
 - Keep pushing practical MVP systems that make the world easier to test, not just easier to screenshot.
 
 This is one of those updates where the nice part is not only that the train tracks are finally there. The nice part is that they got there through a workflow that is starting to feel dependable, and that the rest of the city is getting a little more ready to carry that momentum.

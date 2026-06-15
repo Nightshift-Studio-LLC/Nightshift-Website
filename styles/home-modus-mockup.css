@@ -1240,6 +1240,24 @@ h3 {
     line-height: 1.5;
 }
 
+.devlog-signoff {
+    margin-top: 28px;
+    padding-top: 18px;
+    border-top: 1px solid var(--line);
+}
+
+.devlog-signoff p {
+    margin: 0;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+}
+
+.devlog-signoff strong {
+    color: var(--accent);
+    font-family: var(--heading);
+}
+
 .price-card {
     display: grid;
     gap: 14px;
