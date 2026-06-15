@@ -41,6 +41,13 @@ The track work did not land as a random art drop. It landed as part of the broad
 
 That is the bigger win here. The tracks look good, but the more important part is that this kind of map work is becoming repeatable.
 
+:::gallery
+image|../../../images/afterdarkrp/Devlogs/6-10-26/elevated-train-track-01.png|Early elevated train-platform structure pass in Blender|An early structural pass on the elevated platform module, showing the support language getting locked before the broader city placement work.
+image|../../../images/afterdarkrp/Devlogs/6-10-26/elevated-train-track-05.png|Curved elevated train-track route threading through the district|The curved elevated route in context, showing that the train pass is not just a loose asset test but part of the actual city read and block flow.
+image|../../../images/afterdarkrp/Devlogs/6-10-26/elevated-train-track-06.png|Street-level view of the elevated train-track support pass|A street-facing angle on the elevated supports, which helps show how the track work is starting to change the district silhouette instead of only the overhead layout.
+image|../../../images/afterdarkrp/Devlogs/6-10-26/tunnel-train-track-04.png|Tunnel and cross-section support for the train-track set|A tunnel/cross-section pass from the same train tooling push, showing the kit becoming broad enough to handle more than one presentation mode.
+:::
+
 ## Siege walls moved from experiment to a better forward branch
 
 The previous devlog framed tactical walls as a real siege-style testbed. That is still true, but the work since then has been more practical.
