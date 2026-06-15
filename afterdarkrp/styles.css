@@ -441,6 +441,29 @@ p {
     margin-top: 10px;
 }
 
+.pill-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 14px;
+}
+
+.pill-row + p {
+    margin-top: 14px;
+}
+
+.adult-gate-warning {
+    display: flex;
+    justify-content: center;
+    margin: 22px 0 0;
+}
+
+.adult-gate-warning img {
+    display: block;
+    width: min(280px, 100%);
+    height: auto;
+}
+
 .section-head {
     display: flex;
     align-items: flex-start;
