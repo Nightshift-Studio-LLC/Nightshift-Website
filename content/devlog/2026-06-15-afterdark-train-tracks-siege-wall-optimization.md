@@ -170,4 +170,4 @@ One thing that is also becoming clearer in the recent footage is performance pre
 - Keep consolidating runtime ownership into the right manager/policy layers instead of letting new systems stay ad hoc.
 - Keep pushing practical MVP systems that make the world easier to test, not just easier to screenshot.
 
-This is one of those updates where the nice part is not only that the train tracks are finally there. The nice part is that **Nightshift got them there** through a workflow that is starting to feel dependable, and that the rest of the city is getting a little more ready to carry that momentum.
+This is one of those updates where the nice part is not only that the train tracks are finally there. The nice part is that Nightshift got them there through a workflow that is starting to feel dependable, and that the rest of the city is getting a little more ready to carry that momentum.

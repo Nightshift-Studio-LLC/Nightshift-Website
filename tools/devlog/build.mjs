@@ -450,6 +450,9 @@ const renderIndex = (posts) => {
 const renderPost = (post) => {
     const tags = post.tags.length ? `<div class="tag-row">${post.tags.map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`).join("")}</div>` : "";
     const hero = post.hero ? `<div class="media-frame devlog-hero"><img src="${escapeHtml(post.hero)}" alt="${escapeHtml(post.title)}"></div>` : "";
+    const projectLabel = post.game === "AfterDarkRP"
+        ? `<a class="inline-link hover-sound" href="/afterdark/">${escapeHtml(post.game)}</a>`
+        : escapeHtml(post.game);
     const signoff = `
             <div class="devlog-signoff">
                 <p>Signed, <strong>${escapeHtml(post.author)}</strong></p>
@@ -473,7 +476,7 @@ const renderPost = (post) => {
             <aside class="page-hero-panel">
                 <p class="eyebrow">Entry metadata</p>
                 <div class="stack-list">
-                    <div><span>Project</span><strong>${escapeHtml(post.game)}</strong></div>
+                    <div><span>Project</span><strong>${projectLabel}</strong></div>
                     <div><span>Date</span><strong>${formatDate(post.dateObj)}</strong></div>
                     <div><span>Signed by</span><strong>${escapeHtml(post.author)}</strong></div>
                     <div><span>Views</span><strong>${renderViewCount(postPath(post))}</strong></div>
