@@ -1120,6 +1120,19 @@ h3 {
     height: 100%;
 }
 
+.hosting-card .placeholder-art {
+    display: block;
+    background: #000;
+}
+
+.hosting-card .placeholder-art img {
+    display: block;
+    width: 100%;
+    height: 240px;
+    object-fit: contain;
+    object-position: center;
+}
+
 .placeholder-art-label {
     position: absolute;
     left: 12px;
@@ -2054,6 +2067,10 @@ h3 {
 
     .game-card img,
     .hosting-card img {
+        height: 200px;
+    }
+
+    .hosting-card .placeholder-art img {
         height: 200px;
     }
 }
