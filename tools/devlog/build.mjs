@@ -307,7 +307,7 @@ ${softwareMarquee()}
                 <div class="footer-column"><span>Public records</span><a class="hover-sound" href="${pagePrefix}/DevLog/index.html">Devlog</a><a href="https://www.epicgames.com/site/en-US/privacypolicy" target="_blank" rel="noopener noreferrer">Epic Privacy Policy</a><a href="#">Nightshift Privacy Policy</a><a href="#">Applicant Privacy Policy</a></div>
                 <div class="footer-column"><span>External surfaces</span><a href="#">Press Kit</a><a href="#">Brand Assets</a><a href="#">Careers</a><a href="#">Community</a></div>
             </div>
-            <div class="footer-bottom"><div class="social-row"><a class="action-pill hover-sound" href="https://twitter.com" target="_blank" rel="noopener noreferrer">X</a><a class="action-pill hover-sound" href="https://instagram.com" target="_blank" rel="noopener noreferrer">IG</a><a class="action-pill hover-sound" href="https://www.youtube.com/@nstx" target="_blank" rel="noopener noreferrer">YT</a></div><p class="footer-note">Copyright 2026 Nightshift. All rights reserved.</p></div>
+            <div class="footer-bottom"><div class="social-row"><a class="action-pill hover-sound" href="https://www.youtube.com/@nstx" target="_blank" rel="noopener noreferrer">YouTube</a></div><p class="footer-note">Copyright 2026 Nightshift. All rights reserved.</p></div>
         </footer>`;
 
 const layout = ({ title, body, assetPrefix, pagePrefix, readout }) => `<!DOCTYPE html>
@@ -420,10 +420,12 @@ const renderIndex = (posts) => {
                 <div class="hero-actions"><a class="cta-btn primary hover-sound" href="../games.html">Explore Games</a></div>
             </article>
             <aside class="page-hero-panel">
-                <p class="eyebrow">Feed status</p>
+                <p class="eyebrow">Project status</p>
                 <div class="stack-list">
-                    <div><span>Coverage</span><strong>Milestones / prototypes / operational notes</strong></div>
                     <div><span>Primary focus</span><strong>AfterDarkRP + studio build direction</strong></div>
+                    <div><span>Project Saint</span><strong><a class="inline-link hover-sound" href="/afterdark/">Rolling into AfterDark</a></strong></div>
+                    <div><span>Elder</span><strong>Postponed</strong></div>
+                    <div><span>SPEAR</span><strong>Arma Exile live service before standalone</strong></div>
                     <div><span>Format</span><strong>Short field reports and dated entries</strong></div>
                 </div>
             </aside>

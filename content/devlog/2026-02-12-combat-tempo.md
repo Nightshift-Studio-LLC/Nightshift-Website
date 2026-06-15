@@ -1,8 +1,8 @@
 ---
 title: Combat tempo tests and the first pressure loop
 date: 2026-02-12
-game: Codename SPEAR
-excerpt: We prototyped a three-phase encounter flow to find the balance between momentum and deliberate timing.
+game: SPEAR / Arma Exile Live Service
+excerpt: We prototyped a three-phase encounter flow to find the balance between momentum and deliberate timing while the project direction stayed combat-first.
 tags:
   - Combat
   - Progression
@@ -22,6 +22,6 @@ We compared three pacing models: short burst loops, slow pressure ramps, and a h
 - Slow ramps build dread but risk fatigue if the peak takes too long.
 - A spike-then-settle arc gives players a moment to breathe before the next escalation.
 
-## Next steps
+## Direction note
 
-We are tuning enemy frequency and recovery windows to keep the loop readable while the stakes climb.
+This early combat work still matters, but the project direction has shifted since this test pass. SPEAR is now expected to move toward an **Arma Exile live-service shape before any standalone game push**. That makes these pacing notes more like foundation work for the broader combat identity than a promise about the original standalone roadmap.

@@ -772,6 +772,12 @@ h3 {
     z-index: 1;
 }
 
+.devlog-card {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
 .page-title {
     margin: 8px 0 14px;
     max-width: 14ch;
@@ -1070,6 +1076,13 @@ h3 {
     margin: 10px 0;
 }
 
+.devlog-card h3 {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+    overflow: hidden;
+}
+
 .surface-card p,
 .devlog-card p,
 .game-card p,
@@ -1080,6 +1093,19 @@ h3 {
 .devlog-post-body li {
     color: var(--muted);
     line-height: 1.8;
+}
+
+.devlog-card p {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 5;
+    overflow: hidden;
+    margin: 0;
+}
+
+.devlog-card .devlog-cta {
+    margin-top: auto;
+    align-self: flex-start;
 }
 
 .hosting-card,
