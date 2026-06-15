@@ -1,6 +1,6 @@
 import fs from "fs/promises";
 import path from "path";
-import matter from "gray-matter";
+import yaml from "js-yaml";
 import { marked } from "marked";
 
 const root = process.cwd();
@@ -212,6 +212,31 @@ const ensureDir = async (dir) => {
     await fs.mkdir(dir, { recursive: true });
 };
 
+const parseFrontmatter = (raw, file) => {
+    if (!raw.startsWith("---\n")) {
+        return { data: {}, content: raw };
+    }
+
+    const endMarker = "\n---\n";
+    const endIndex = raw.indexOf(endMarker, 4);
+    if (endIndex === -1) {
+        throw new Error(`Unclosed frontmatter block in ${file}`);
+    }
+
+    const frontmatterSource = raw.slice(4, endIndex);
+    const content = raw.slice(endIndex + endMarker.length);
+    const parsed = yaml.load(frontmatterSource);
+
+    if (parsed != null && (typeof parsed !== "object" || Array.isArray(parsed))) {
+        throw new Error(`Frontmatter in ${file} must parse to an object.`);
+    }
+
+    return {
+        data: parsed ?? {},
+        content,
+    };
+};
+
 const readPosts = async () => {
     const files = await fs.readdir(contentDir);
     const posts = [];
@@ -219,7 +244,7 @@ const readPosts = async () => {
     for (const file of files) {
         if (!file.endsWith(".md")) continue;
         const raw = await fs.readFile(path.join(contentDir, file), "utf-8");
-        const { data, content } = matter(raw);
+        const { data, content } = parseFrontmatter(raw, file);
         if (data.draft === true) continue;
 
         validateDevlogContent(content, file);
