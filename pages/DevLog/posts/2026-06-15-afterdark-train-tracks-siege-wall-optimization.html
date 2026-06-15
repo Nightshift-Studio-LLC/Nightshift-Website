@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nightshift | AfterDark finishes the first train-track pass, optimizes siege walls, and keeps tightening S17 V3</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="../../../images/icons/nightshift.ico">
+    <link rel="stylesheet" href="../../../styles/home-modus-mockup.css">
+    <script defer src="/scripts/analytics.js" data-analytics-endpoint="/api/analytics"></script>
+</head>
+<body>
+    <div class="screen-fx" aria-hidden="true"></div>
+    <header class="topbar">
+        <a class="brand hover-sound" href="../../home.html" aria-label="Nightshift home">
+            <img src="../../../images/index/nightshift-transparent.png" alt="Nightshift logo">
+        </a>
+        <nav class="utility-nav" aria-label="Primary">
+            <a href="../../home.html" class="hover-sound">Home</a>
+            <a href="../../games.html" class="hover-sound">Games</a>
+            <a href="../../studio.html" class="hover-sound">Studio</a>
+            <a href="../../DevLog/index.html" class="hover-sound active">Devlog</a>
+            <a href="../../contact.html" class="hover-sound">Contact</a>
+        </nav>
+        <div class="topbar-readout"><span>Devlog Entry</span><strong id="mockup-clock">00:00:00 CST</strong></div>
+    </header>
+    <main class="shell page-shell">
+
+        <section class="page-hero-grid">
+            <article class="page-hero-panel">
+                <p class="eyebrow">Devlog / entry</p>
+                <h1 class="page-title">AfterDark finishes the first train-track pass, optimizes siege walls, and keeps tightening S17 V3</h1>
+                <p class="page-lede">Since the May 29 devlog, AfterDark has pushed through the first real train-track pass in Blender, hardened the tooling around that pipeline, moved siege walls onto a more optimized forward path, and kept layering practical MVP systems into S17 V3.</p>
+                <div class="hero-actions"><a class="cta-btn hover-sound" href="../index.html">Back To Devlog</a></div>
+                <div class="tag-row"><span class="tag">AfterDarkRP</span><span class="tag">S17 V3</span><span class="tag">Blender</span><span class="tag">Siege</span><span class="tag">Trains</span><span class="tag">Optimization</span></div>
+                
+            </article>
+            <aside class="page-hero-panel">
+                <p class="eyebrow">Entry metadata</p>
+                <div class="stack-list">
+                    <div><span>Project</span><strong>AfterDarkRP</strong></div>
+                    <div><span>Date</span><strong>JUN 15, 2026</strong></div>
+                    <div><span>Views</span><strong>
+                    <span class="devlog-view-count" data-view-count-path="/pages/DevLog/posts/2026-06-15-afterdark-train-tracks-siege-wall-optimization.html" data-view-count-state="loading" aria-label="Views loading">
+                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                            <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"></path>
+                            <circle cx="12" cy="12" r="2.5"></circle>
+                        </svg>
+                        <b data-view-count-value>--</b><em>views</em>
+                    </span></strong></div>
+                    <div><span>Route</span><strong>Public archive</strong></div>
+                </div>
+            </aside>
+        </section>
+        <section class="panel feature-panel">
+            <div class="panel-heading"><p class="eyebrow">Field Notes</p><h2>Entry body</h2></div>
+            <div class="devlog-post-body"><h2>Since the May 29 devlog</h2>
+<p>The last public AfterDark update was about the end-of-May push: S17 V3 sync, tactical walls becoming a real siege prototype, traffic, residents, police pressure, and the general feeling that the city was finally starting to assemble into something testable instead of just something ambitious.</p>
+<p>This update is the next step after that.</p>
+<p>The clearest headline is the train side. The first real <strong>train-track pass in Blender is now done</strong>, and more importantly, the tooling around it held up well enough that it stopped feeling like a fragile one-off. That turned out really nice. It is the kind of result that matters twice: once because the scene itself looks better, and again because the map pipeline is getting more trustworthy.</p>
+<p>At the same time, <strong>siege walls were optimized and cleaned up</strong>, which matters because they had already crossed the line from idea to real gameplay surface in the previous post. The goal now is not only to prove they can work. The goal is to make them readable, performant, and practical enough to keep moving forward without dragging the whole build down.</p>
+<p>There is also a lot of other support work in this stretch: fast-travel train infrastructure, train-station cleanup and LOD work, runtime diagnostics, camera and UI polish, prop/runtime management, combat-state support, and several smaller MVP-facing systems that make the city easier to test as a whole.</p>
+<h2>The train tracks are finally in</h2>
+<p>The nicest part of this stretch is that the train track work stopped being a vague future slice and became an actual first pass in the world.</p>
+<p>There is now a proper Blender-authored track pass for the train-station side of S17 V3, with new straight and curved spline-applied track meshes brought into the game and placed into the active scene. That matters visually, but it also matters structurally. Tracks are one of those map elements that can expose whether the Blender-to-s&amp;box loop is really becoming usable or whether it is still held together by manual recovery and luck.</p>
+<p>This pass is a good sign.</p>
+<p>The track work did not land as a random art drop. It landed as part of the broader <strong>Blender Bridge / scene-sync production story</strong> that has been carrying more of S17 V3 over the last few devlogs. The workflow is getting more believable:</p>
+<ul>
+<li>build or revise the environment in Blender,</li>
+<li>bring it through the bridge/tooling path,</li>
+<li>place it into the current scene state,</li>
+<li>and keep iterating without turning every update into a cleanup spiral.</li>
+</ul>
+<p>That is the bigger win here. The tracks look good, but the more important part is that this kind of map work is becoming repeatable.</p>
+<h2>Siege walls moved from experiment to a better forward branch</h2>
+<p>The previous devlog framed tactical walls as a real siege-style testbed. That is still true, but the work since then has been more practical.</p>
+<p>The wall system got a heavier cleanup and optimization pass, and the direction is getting more locked: the older prototype branches still matter as references, but the project is increasingly treating the <strong>forward SDF wall path</strong> as the real branch to keep pushing.</p>
+<p>That is a better place to be.</p>
+<p>The early question was &quot;can the wall feel readable enough to be worth doing at all?&quot; The current question is more mature:</p>
+<ul>
+<li>can bullet and C4 damage stay readable,</li>
+<li>can collision stay close enough to the visible breach,</li>
+<li>can rebuild cost stay acceptable,</li>
+<li>and can the wall remain something the game can actually afford to use as a real support/combat surface?</li>
+</ul>
+<p>This pass pushed that in the right direction. The walls are not just being made flashier. They are being made more shippable.</p>
+<p>That matters because the whole Builder/Fabricator support loop depends on it. Tactical walls only become worth designing around if they can survive contact with real gameplay: repeated hits, sightlines, collision, upgrades, and a city full of other expensive systems running nearby.</p>
+<figure class="devlog-youtube">
+<div class="video-frame">
+<iframe src="https://www.youtube.com/embed/2cjc4sKLZ_g?autoplay=1&mute=1&loop=1&playlist=2cjc4sKLZ_g&playsinline=1" title="Optimized siege-wall preview" allow="autoplay; encrypted-media; picture-in-picture; web-share" allowfullscreen></iframe>
+</div>
+<figcaption>Short preview clip of the optimized siege-wall branch in motion. The point here is not just destruction for destruction&#39;s sake. It is readable breach pressure that can stay practical inside the rest of the city.</figcaption>
+</figure>
+
+<h2>The train system is growing past scenery</h2>
+<p>The train work also moved on the gameplay side, not only the environment side.</p>
+<p>There is now a first pass on <strong>train fast travel</strong>: route-authored stations, receivers, spline routes, train call/boarding timing, and a manager-owned runtime loop that can validate riders, reserve destinations, and drive the station-to-train flow. Public subway use is also already being bounded by wanted-state rules, which is exactly the kind of constraint the system needs if it is going to support the city instead of becoming a free escape hatch.</p>
+<p>That is still an early system, but it is pointing in a good direction.</p>
+<p>The important thing is that it is not being framed as magic teleport convenience detached from the world. It is being built as part of the map: stations, routes, entry points, restrictions, and scene-authored travel logic that can later become risk, pressure, and movement choice instead of a bland shortcut menu.</p>
+<p>So the train side now has two layers moving at once:</p>
+<ul>
+<li>the visible track/world pass in Blender,</li>
+<li>and the first real travel infrastructure underneath it.</li>
+</ul>
+<p>That pairing is exactly what S17 V3 needs more of.</p>
+<h2>Train-station cleanup kept paying off</h2>
+<p>There was also a quieter but important pass around the train-station district itself: more LOD work, building cleanup, and continuing fixes to the imported building set so the area holds together better at practical play distances.</p>
+<p>That included more LOD and building adjustments earlier in June and continued height/scene cleanup work after that. It is not the loudest headline in the update, but it is the kind of maintenance that makes the bigger track and route work worth doing in the first place.</p>
+<p>The train-station side of S17 has been one of the places where the Blender-driven world workflow is easiest to judge, because it contains a little bit of everything:</p>
+<ul>
+<li>repeated imported building families,</li>
+<li>route and road context,</li>
+<li>support art that needs LOD discipline,</li>
+<li>scene placement churn,</li>
+<li>and now train-track geometry that has to feel intentional instead of improvised.</li>
+</ul>
+<p>This stretch made that part of the city feel more owned.</p>
+<h2>The MVP surface kept getting broader</h2>
+<p>Outside the train and siege headlines, the repo also shows a steady push toward a more usable MVP surface.</p>
+<p>Some of the bigger support pieces in this stretch:</p>
+<ul>
+<li><strong>runtime diagnostics and optimization utilities</strong> so heavier city systems are easier to inspect without guessing,</li>
+<li><strong>camera focus improvements</strong> for world entities like money printers and similar interactables,</li>
+<li><strong>UI polish</strong> across the root panel and other player-facing surfaces,</li>
+<li><strong>ammo resupply/vendor support</strong> and other combat-adjacent usability work,</li>
+<li><strong>combat-state and player-state tracking</strong> that makes the project easier to reason about under pressure,</li>
+<li><strong>prop/runtime manager cleanup</strong> so world-spawned or player-driven objects are less scattered,</li>
+<li><strong>bullet-casing evidence support</strong> that keeps the police/crime layer moving toward something more physical,</li>
+<li>and a new <strong>bitcoin miner</strong> gameplay object folded into the growing economy layer.</li>
+</ul>
+<p>That is a wide list, but that is the current reality of AfterDark. The project is not in a neat single-feature sprint. It is in the part of production where the city has to become broadly usable enough that the major features can start reinforcing each other instead of constantly tripping over missing support.</p>
+<h2>What this stretch adds up to</h2>
+<p>The May 29 post was about the city becoming denser and more connected.</p>
+<p>This June update is about some of those threads becoming more real:</p>
+<ul>
+<li>the first train-track pass is actually in,</li>
+<li>the Blender-side tooling around that pass proved itself well enough to feel worth leaning on,</li>
+<li>siege walls got a more serious optimization/forward-direction cleanup,</li>
+<li>train fast travel exists as a first real route system,</li>
+<li>the train-station district kept getting structural cleanup,</li>
+<li>and the surrounding runtime/UI/gameplay support kept broadening the MVP surface.</li>
+</ul>
+<p>That is a solid follow-through update.</p>
+<p>It is also a better kind of progress than just &quot;more stuff was added.&quot; Train tracks are not only set dressing. They are a proof point for the map pipeline. Siege-wall optimization is not only polish. It is the difference between a cool prototype and a system the rest of the game can actually depend on. Fast travel is not only convenience. It is part of figuring out how the city moves without flattening the city into nothing.</p>
+<h2>What comes next</h2>
+<ul>
+<li>Keep expanding the train-track and station side of S17 V3 without losing the cleaner Blender sync loop.</li>
+<li>Continue treating the train-station district as a proving ground for imported-building cleanup, LOD discipline, and route readability.</li>
+<li>Keep tactical walls on the forward optimized path instead of reopening every older branch.</li>
+<li>Keep the train travel system bounded so it supports city structure rather than bypassing it.</li>
+<li>Keep pushing practical MVP systems that make the world easier to test, not just easier to screenshot.</li>
+</ul>
+<p>This is one of those updates where the nice part is not only that the train tracks are finally there. The nice part is that they got there through a workflow that is starting to feel dependable, and that the rest of the city is getting a little more ready to carry that momentum.</p>
+</div>
+        </section>
+
+        <footer class="site-footer panel">
+
+            <section class="software-marquee-section" aria-label="Software used by Nightshift">
+                <div class="software-marquee"><div class="software-marquee-track">
+                    <span>Unreal / Source 2 / Enfusion / RAGE</span><span>Blender</span><span>Adobe Suite</span><span>Adobe 3D</span><span>Affinity Suite</span><span>Gaea 2.0</span><span>CC5</span><span>iClone 8</span><span>Marvelous Designer</span><span>Ornatrix</span><span>FruityLoops</span><span>VS Code</span><span>Visual Studio</span><span>GitHub</span><span>Git LFS</span><span>Git Pages</span><span>Wix</span><span>Codex</span>
+                    <span>Unreal / Source 2 / Enfusion / RAGE</span><span>Blender</span><span>Adobe Suite</span><span>Adobe 3D</span><span>Affinity Suite</span><span>Gaea 2.0</span><span>CC5</span><span>iClone 8</span><span>Marvelous Designer</span><span>Ornatrix</span><span>FruityLoops</span><span>VS Code</span><span>Visual Studio</span><span>GitHub</span><span>Git LFS</span><span>Git Pages</span><span>Wix</span><span>Codex</span>
+                </div></div>
+            </section>
+            <div class="footer-grid">
+                <div class="footer-column"><span>Primary routes</span><a class="hover-sound" href="../../home.html">Home</a><a class="hover-sound" href="../../games.html">Games</a><a class="hover-sound" href="../../studio.html">Studio</a><a class="hover-sound" href="../../contact.html">Contact</a></div>
+                <div class="footer-column"><span>Public records</span><a class="hover-sound" href="../../DevLog/index.html">Devlog</a><a href="https://www.epicgames.com/site/en-US/privacypolicy" target="_blank" rel="noopener noreferrer">Epic Privacy Policy</a><a href="#">Nightshift Privacy Policy</a><a href="#">Applicant Privacy Policy</a></div>
+                <div class="footer-column"><span>External surfaces</span><a href="#">Press Kit</a><a href="#">Brand Assets</a><a href="#">Careers</a><a href="#">Community</a></div>
+            </div>
+            <div class="footer-bottom"><div class="social-row"><a class="action-pill hover-sound" href="https://twitter.com" target="_blank" rel="noopener noreferrer">X</a><a class="action-pill hover-sound" href="https://instagram.com" target="_blank" rel="noopener noreferrer">IG</a><a class="action-pill hover-sound" href="https://www.youtube.com/@nstx" target="_blank" rel="noopener noreferrer">YT</a></div><p class="footer-note">Copyright 2026 Nightshift. All rights reserved.</p></div>
+        </footer>
+    </main>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const audio = new Audio("../../../audio/bop.mp3");
+            audio.volume = 0.25;
+            const clock = document.getElementById("mockup-clock");
+            function updateClock() {
+                if (!clock) return;
+                clock.textContent = new Date().toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", second: "2-digit", timeZone: "America/Chicago", timeZoneName: "short" });
+            }
+            document.querySelectorAll(".hover-sound").forEach((element) => {
+                element.addEventListener("mouseenter", function() {
+                    audio.currentTime = 0;
+                    audio.play().catch(() => {});
+                });
+            });
+            updateClock();
+            window.setInterval(updateClock, 1000);
+        });
+    </script>
+</body>
+</html>
