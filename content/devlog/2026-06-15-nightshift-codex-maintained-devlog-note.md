@@ -56,6 +56,8 @@ This does not mean the site is "done," and it does not mean every page has the s
 
 Some parts still need tighter art direction, sharper content hierarchy, better media support, and more deliberate page-by-page polish. That is still real work. It just does not all need to block honest updates from going live.
 
+It is also worth saying directly that **some of the design is being intentionally obfuscated until it is actually ready**. Not every visual direction, surface treatment, or public-facing detail should be treated like a final reveal the moment it exists in rough form. In some places the right move is to keep the record current while still holding back the cleaner presentation until it is worth showing properly.
+
 For now, the better default is:
 
 - keep publishing,

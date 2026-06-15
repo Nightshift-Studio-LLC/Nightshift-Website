@@ -94,6 +94,15 @@
 </figure>
 </div>
 
+<figure class="devlog-youtube">
+<div class="video-frame">
+<iframe src="https://www.youtube.com/embed/Dw5FigXTI9A?autoplay=1&mute=1&loop=1&playlist=Dw5FigXTI9A&playsinline=1" title="In-game train-piece loop and NPC work-in-progress" allow="autoplay; encrypted-media; picture-in-picture; web-share" allowfullscreen></iframe>
+</div>
+<figcaption>Recent in-game loop showing the new train pieces placed into the world, along with NPC-system work in motion. The track set still needs material work, proportion adjustments, underside cleanup, and surrounding prop passes like lights and adjacent detail support.</figcaption>
+</figure>
+
+<p>That new footage is useful because it shows the train work where it actually matters: in the live scene, with the rest of the district around it. It also makes the unfinished parts obvious in a healthy way. The new train pieces are in, but they still need better materials, some proportion tuning, fixes to the underside read, and cleanup around the nearby support props and lights so the district stops feeling like a raw placement pass and starts feeling authored.</p>
+<p>It also shows the NPC system continuing to come online in parallel, which is important because the city cannot just become more geometric. It has to become more inhabited at the same time.</p>
 <h2>Siege walls moved from experiment to a better forward branch</h2>
 <p>The previous devlog framed tactical walls as a real siege-style testbed. That is still true, but the work since then has been more practical.</p>
 <p>The wall system got a heavier cleanup and optimization pass, and the direction is getting more locked: the older prototype branches still matter as references, but the project is increasingly treating the <strong>forward SDF wall path</strong> as the real branch to keep pushing.</p>
@@ -174,12 +183,15 @@
 </ul>
 <p>That is a solid follow-through update.</p>
 <p>It is also a better kind of progress than just &quot;more stuff was added.&quot; Train tracks are not only set dressing. They are a proof point for the map pipeline. Siege-wall optimization is not only polish. It is the difference between a cool prototype and a system the rest of the game can actually depend on. Fast travel is not only convenience. It is part of figuring out how the city moves without flattening the city into nothing.</p>
+<p>One thing that is also becoming clearer in the recent footage is performance pressure. Engine stutter is still noticeable right now, so a big part of the current focus is simply saving more frames on a <strong>2080 Ti</strong> while the map, NPC work, and support systems keep getting denser. That matters as much as any one feature. If the city cannot hold onto smooth frame time while these systems stack together, then every other improvement becomes harder to trust.</p>
 <h2>What comes next</h2>
 <ul>
 <li>Keep expanding the train-track and station side of S17 V3 without losing the cleaner Blender sync loop.</li>
+<li>Finish the current train-piece cleanup pass: materials, proportion adjustments, underside fixes, and surrounding prop/light corrections.</li>
 <li>Continue treating the train-station district as a proving ground for imported-building cleanup, LOD discipline, and route readability.</li>
 <li>Keep tactical walls on the forward optimized path instead of reopening every older branch.</li>
 <li>Keep the train travel system bounded so it supports city structure rather than bypassing it.</li>
+<li>Keep pushing on performance so recent engine stutter comes down and the build holds onto more frames on a 2080 Ti.</li>
 <li>Keep consolidating runtime ownership into the right manager/policy layers instead of letting new systems stay ad hoc.</li>
 <li>Keep pushing practical MVP systems that make the world easier to test, not just easier to screenshot.</li>
 </ul>
