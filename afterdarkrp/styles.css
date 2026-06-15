@@ -1065,6 +1065,44 @@ p {
     color: var(--ink);
 }
 
+.hero-warning {
+    margin: 14px 0 0;
+    display: flex;
+    justify-content: center;
+}
+
+.hero-warning img {
+    display: block;
+    width: min(220px, 72vw);
+    height: auto;
+    opacity: 0.96;
+}
+
+.hero-warning-overlay {
+    position: absolute;
+    right: 32px;
+    bottom: 56px;
+    transform: none;
+    margin: 0;
+}
+
+.hero-warning-overlay img {
+    width: min(64px, 16vw);
+}
+
+.hero-warning-sticky {
+    position: sticky;
+    top: calc(100vh - 132px);
+    z-index: 3;
+    display: block;
+    width: fit-content;
+    margin: -124px 28px 0 auto;
+}
+
+.hero-warning-sticky img {
+    width: min(64px, 16vw);
+}
+
 @media (max-width: 960px) {
     h1 {
         font-size: 3.2rem;
