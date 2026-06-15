@@ -29,8 +29,6 @@ That is the trade for now.
 
 ## Why the devlog sounds like this
 
-The devlog is not being treated as a glossy marketing blog.
-
 It is closer to a **public build record**: what changed, what is real, what is still awkward, what pipeline work actually mattered, and what the project is trying to become without pretending it is already there.
 
 That tone is intentional.
