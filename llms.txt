@@ -19,7 +19,7 @@ This file helps LLMs and coding agents quickly understand the public site and wh
 - Game detail pages: `/pages/games/barn.html`, `/pages/games/elder.html`, `/pages/games/hair.html`, `/pages/games/hook.html`, `/pages/games/saint.html`, `/pages/games/spear.html`
 - Studio pages: `/pages/studio.html`, `/pages/Studio/Donations.html`, `/pages/Studio/Landsnap.html`
 - Service pages: `/pages/development.html`, `/pages/websites.html`
-- AfterDarkRP surface: `/afterdarkrp/index.html`
+- AfterDarkRP surface: `/afterdark/index.html`
 - AfterDarkRP sections: `/afterdarkrp/about/index.html`, `/afterdarkrp/guide/index.html`, `/afterdarkrp/rules/index.html`, `/afterdarkrp/changelog/index.html`
 
 ## Editable Source Map

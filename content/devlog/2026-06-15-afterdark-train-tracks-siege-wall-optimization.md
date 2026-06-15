@@ -60,10 +60,6 @@ This pass pushed that in the right direction. The walls are not just being made 
 
 That matters because the whole Builder/Fabricator support loop depends on it. Tactical walls only become worth designing around if they can survive contact with real gameplay: repeated hits, sightlines, collision, upgrades, and a city full of other expensive systems running nearby.
 
-:::youtube
-https://www.youtube.com/watch?v=2cjc4sKLZ_g|Optimized siege-wall preview|Short preview clip of the optimized siege-wall branch in motion. The point here is not just destruction for destruction's sake. It is readable breach pressure that can stay practical inside the rest of the city.
-:::
-
 ## The train system is growing past scenery
 
 The train work also moved on the gameplay side, not only the environment side.
