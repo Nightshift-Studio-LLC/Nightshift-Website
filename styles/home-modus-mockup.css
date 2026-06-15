@@ -1459,6 +1459,7 @@ h3 {
     display: flex;
     align-items: center;
     overflow: hidden;
+    padding: 0 28px;
     border-top: 1px solid rgba(144, 191, 255, 0.12);
     border-bottom: 0;
     border-left: 0;
@@ -1493,7 +1494,6 @@ h3 {
     align-items: center;
     gap: var(--marquee-gap);
     min-width: max-content;
-    padding: 0 28px;
     color: rgba(255, 255, 255, 0.92);
     white-space: nowrap;
     will-change: transform;
@@ -1976,11 +1976,11 @@ h3 {
 
     .software-marquee {
         min-height: 62px;
+        padding: 0 18px;
     }
 
     .software-marquee-track {
         --marquee-gap: 24px;
-        padding: 0 18px;
     }
 
     .site-footer {
