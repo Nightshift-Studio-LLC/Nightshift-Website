@@ -210,12 +210,9 @@
             </section>
 
             <section class="section model-preview-section">
-                <div class="section-head">
-                    <div>
-                        <p class="eyebrow">Prototype Bay</p>
-                        <h2>Money printer world prop preview.</h2>
-                    </div>
-                    <p class="section-kicker">The same asset is being used in the main Git repo while DarkRP for s&amp;box gets built out.</p>
+                <div>
+                    <p class="eyebrow">Prototype Bay</p>
+                    <h2>Money printer world prop preview.</h2>
                 </div>
                 <div class="model-preview-stage">
                     <div class="model-preview-canvas" id="afterdark-model-preview" aria-label="Interactive money printer model preview"></div>
@@ -225,20 +222,7 @@
                         <span id="afterdark-model-status">Loading asset</span>
                     </div>
                 </div>
-                <div class="model-preview-readout">
-                    <article class="model-note-card">
-                        <span>Asset</span>
-                        <strong>Live world prop preview from the active DarkRP s&amp;box repo.</strong>
-                    </article>
-                    <article class="model-note-card">
-                        <span>Interaction</span>
-                        <strong>Drag to orbit and scroll to inspect the in-game prop scale.</strong>
-                    </article>
-                    <article class="model-note-card">
-                        <span>Future Pass</span>
-                        <strong>If the asset pack gets opened up later, this is a candidate for repaint variants.</strong>
-                    </article>
-                </div>
+                <p class="model-preview-note">Community requested model creation for the classic Money Printer in the SouSou repo.</p>
             </section>
 
             <section class="section roadmap-section">
@@ -339,7 +323,7 @@
                     scene.fog = new THREE.Fog(0x020403, 9, 28);
 
                     const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 100);
-                    camera.position.set(0, 3.2, 8.5);
+                    camera.position.set(0, 3.2, 9.4);
 
                     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
                     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -448,7 +432,7 @@
                             const box = new THREE.Box3().setFromObject(object);
                             const size = box.getSize(new THREE.Vector3());
                             const center = box.getCenter(new THREE.Vector3());
-                            const scale = 3.1 / Math.max(size.x, size.y, size.z || 1);
+                            const scale = 2.55 / Math.max(size.x, size.y, size.z || 1);
 
                             object.scale.setScalar(scale);
                             object.position.sub(center.multiplyScalar(scale));
