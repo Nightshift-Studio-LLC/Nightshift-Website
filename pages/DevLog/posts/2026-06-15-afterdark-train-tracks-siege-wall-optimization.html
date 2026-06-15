@@ -106,6 +106,13 @@
 </ul>
 <p>This pass pushed that in the right direction. The walls are not just being made flashier. They are being made more shippable.</p>
 <p>That matters because the whole Builder/Fabricator support loop depends on it. Tactical walls only become worth designing around if they can survive contact with real gameplay: repeated hits, sightlines, collision, upgrades, and a city full of other expensive systems running nearby.</p>
+<figure class="devlog-youtube">
+<div class="video-frame">
+<iframe src="https://www.youtube.com/embed/2cjc4sKLZ_g?autoplay=1&mute=1&loop=1&playlist=2cjc4sKLZ_g&playsinline=1" title="Optimized siege-wall preview" allow="autoplay; encrypted-media; picture-in-picture; web-share" allowfullscreen></iframe>
+</div>
+<figcaption>Short preview clip of the optimized siege-wall branch in motion. The point here is not just destruction for destruction&#39;s sake. It is readable breach pressure that can stay practical inside the rest of the city.</figcaption>
+</figure>
+
 <h2>The train system is growing past scenery</h2>
 <p>The train work also moved on the gameplay side, not only the environment side.</p>
 <p>There is now a first pass on <strong>train fast travel</strong>: route-authored stations, receivers, spline routes, train call/boarding timing, and a manager-owned runtime loop that can validate riders, reserve destinations, and drive the station-to-train flow. Public subway use is also already being bounded by wanted-state rules, which is exactly the kind of constraint the system needs if it is going to support the city instead of becoming a free escape hatch.</p>
