@@ -32,56 +32,29 @@
             <section class="hero">
                 <p class="eyebrow">About The Project</p>
                 <h1>About</h1>
-                <p>AfterDarkRP is Nightshift's light RP sandbox stack. This site content reflects the current internal development build.</p>
+                <p>AfterDarkRP is a cops-and-robbers sandbox focused on readable game loops, property pressure, and criminal-vs-police escalation instead of loose job clutter.</p>
             </section>
 
             <section class="section">
-                <h2>Project Snapshot</h2>
-                <div class="grid">
-                    <article class="card">
-                        <h3>Engine + Stack</h3>
-                        <ul class="bullets tight">
-                            <li>s&box project setup</li>
-                            <li>C# gameplay systems</li>
-                            <li>Razor-based in-game UI panels</li>
-                            <li>Scene/prefab-driven world entities</li>
-                        </ul>
-                    </article>
-                    <article class="card">
-                        <h3>Major Gameplay Modules</h3>
-                        <ul class="bullets tight">
-                            <li>Wallet, payday, bank persistence</li>
-                            <li>Jobs catalog + role switching</li>
-                            <li>Taze/stun/detain/prison justice flow</li>
-                            <li>Crime record + fines + terminal UI</li>
-                            <li>Death cash drop + pickup bag entity</li>
-                        </ul>
-                    </article>
-                </div>
+                <h2>What It Is</h2>
+                <p>Inspired by Garry's Mod DarkRP, GTA, L.A. Noire, and APB Reloaded, AfterDarkRP is built as a gamified cops-and-robbers simulator where you choose a side, build out your property, and either defend it or raid someone else's.</p>
+                <p>The plan is to carry forward some of the classic DarkRP jobs, but refine them into game loops that complement each other instead of just throwing jobs at the wall. Some ideas will work. Others may not. The point is to shape the mode around interactions that actually produce pressure, choices, and stories.</p>
             </section>
 
             <section class="section">
-                <h2>UI Surfaces</h2>
+                <h2>Design Direction</h2>
                 <ul class="bullets">
-                    <li>HUD includes health ring, taze ring, cash, and current job.</li>
-                    <li>Player Menu tabs: Wallet, Jobs, Entities, Players, Settings.</li>
-                    <li>Entities are grouped into Civil, Government, and Criminal categories.</li>
-                    <li>Government jobs do not see Civil/Criminal economy entities in the Entities tab.</li>
-                    <li>Gun entities/shipments are restricted to the Gun Dealer job only.</li>
-                    <li>Player Pockets panel currently exposes 20 inventory slots.</li>
-                    <li>ATM and Crime Terminal run as dedicated focused panels.</li>
+                    <li>Choose a side and lean into the loop: legal play, criminal pressure, police response, or property defense.</li>
+                    <li>Buildable property matters because it creates something worth protecting, raiding, reinforcing, and fighting over.</li>
+                    <li>Jobs are meant to support each other through real loops, not exist as disconnected menu entries.</li>
+                    <li>The target tone is adult-themed, system-driven sandbox chaos with exaggerated, cartoon-level violence.</li>
                 </ul>
             </section>
 
             <section class="section">
-                <h2>Near-Term Roadmap</h2>
-                <ul class="bullets">
-                    <li>Finalize job loadout assignment with custom tools (PhysGun/ToolGun scaffolds).</li>
-                    <li>Expand police/criminal balancing around taze values and sentence pacing.</li>
-                    <li>Complete entity tab filtering so category visibility and job restrictions are enforced server-side.</li>
-                    <li>Ship additional map interactions around courthouse/prison spawn markers.</li>
-                </ul>
-                <p class="meta">Last synced to source tree state: February 13, 2026.</p>
+                <h2>Adult Gate</h2>
+                <p>The plan is to put the server behind an adult auth gate. That is not because the mode is trying to be edgy for its own sake. It is because this is a Sandbox game and we cannot fully regulate what a player spawns or uploads.</p>
+                <p>Even so, the mode itself is expected to feature adult themes and extreme cartoon violence, so the gate also matches the tone of the project more honestly.</p>
             </section>
         </div>
     </main>

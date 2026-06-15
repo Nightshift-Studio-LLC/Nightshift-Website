@@ -13,8 +13,6 @@ tags:
 
 ## Studio note
 
-This is the honest version.
-
 The Nightshift site and devlog are now being maintained largely through **Codex**. That is not a gimmick line and it is not meant to pretend the site is more finished than it is. It just happens to be the practical truth.
 
 The upside is speed. Pages can be revised faster, archive structure can be cleaned up, devlog posts can be turned into actual published entries instead of sitting as half-finished notes, and a lot of small maintenance work no longer waits for the perfect uninterrupted block of time.

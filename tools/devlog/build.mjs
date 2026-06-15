@@ -254,7 +254,8 @@ const readPosts = async () => {
             title: data.title,
             dateObj,
             game: data.game,
-            author: data.author || "Nightshift",
+            signer: data.signer || "Nightshift",
+            author: data.author || "Codex",
             excerpt: data.excerpt,
             tags: Array.isArray(data.tags) ? data.tags : [],
             hero: data.hero || "",
@@ -455,7 +456,7 @@ const renderPost = (post) => {
         : escapeHtml(post.game);
     const signoff = `
             <div class="devlog-signoff">
-                <p>Signed, <strong>${escapeHtml(post.author)}</strong></p>
+                <p>Signed, <strong>${escapeHtml(post.signer)}</strong></p>
             </div>`;
 
     return layout({
@@ -478,7 +479,8 @@ const renderPost = (post) => {
                 <div class="stack-list">
                     <div><span>Project</span><strong>${projectLabel}</strong></div>
                     <div><span>Date</span><strong>${formatDate(post.dateObj)}</strong></div>
-                    <div><span>Signed by</span><strong>${escapeHtml(post.author)}</strong></div>
+                    <div><span>Signed by</span><strong>${escapeHtml(post.signer)}</strong></div>
+                    <div><span>Authored by</span><strong>${escapeHtml(post.author)}</strong></div>
                     <div><span>Views</span><strong>${renderViewCount(postPath(post))}</strong></div>
                     <div><span>Route</span><strong>Public archive</strong></div>
                 </div>
