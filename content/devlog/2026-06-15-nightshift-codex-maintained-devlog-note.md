@@ -33,7 +33,7 @@ It is closer to a **public build record**: what changed, what is real, what is s
 
 That tone is intentional.
 
-If a post is more personal, more authored, or more tailored, it can still be written that way. But moving forward, **Codex will sign devlogs by default unless actual notes from the team are included in the entry**. That keeps the authorship honest instead of pretending every update came through the same process.
+If a post is more personal, more authored, or more tailored, it can still be written that way. But moving forward, **public devlogs should default to Nightshift attribution unless actual notes from the team are included in the entry**. That keeps the authorship honest instead of pretending every update came through the same process.
 
 ## What Codex is actually useful for
 

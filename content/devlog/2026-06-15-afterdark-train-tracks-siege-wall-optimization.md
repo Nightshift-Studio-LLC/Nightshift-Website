@@ -76,7 +76,7 @@ This pass pushed that in the right direction. The walls are not just being made 
 That matters because the whole Builder/Fabricator support loop depends on it. Tactical walls only become worth designing around if they can survive contact with real gameplay: repeated hits, sightlines, collision, upgrades, and a city full of other expensive systems running nearby.
 
 :::youtube
-https://youtu.be/BFNhBqc5f7M|Optimized siege-wall preview|Short preview clip of the optimized siege-wall branch in motion. The point here is not just destruction for destruction's sake. It is readable breach pressure that can stay practical inside the rest of the city.
+https://youtu.be/BFNhBqc5f7M|Siege-wall destruction sequence|Longer siege-wall sequence showing the destruction path stepping through multiple approaches: fracture, material-shader work, and finally the forward SDF branch. The important part is not just spectacle. It is comparing which direction reads best and stays most practical inside the rest of the city.
 :::
 
 ## The train system is growing past scenery
@@ -170,4 +170,4 @@ One thing that is also becoming clearer in the recent footage is performance pre
 - Keep consolidating runtime ownership into the right manager/policy layers instead of letting new systems stay ad hoc.
 - Keep pushing practical MVP systems that make the world easier to test, not just easier to screenshot.
 
-This is one of those updates where the nice part is not only that the train tracks are finally there. The nice part is that they got there through a workflow that is starting to feel dependable, and that the rest of the city is getting a little more ready to carry that momentum.
+This is one of those updates where the nice part is not only that the train tracks are finally there. The nice part is that **Nightshift got them there** through a workflow that is starting to feel dependable, and that the rest of the city is getting a little more ready to carry that momentum.

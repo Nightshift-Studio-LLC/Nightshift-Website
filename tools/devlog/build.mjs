@@ -254,7 +254,7 @@ const readPosts = async () => {
             title: data.title,
             dateObj,
             game: data.game,
-            author: data.author || "Codex",
+            author: data.author || "Nightshift",
             excerpt: data.excerpt,
             tags: Array.isArray(data.tags) ? data.tags : [],
             hero: data.hero || "",
