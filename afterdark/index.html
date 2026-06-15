@@ -68,16 +68,16 @@
                         <span class="signal-label">Engine Target</span>
                     </div>
                     <div>
-                        <span class="signal-value">Server</span>
-                        <span class="signal-label">Economy Authority</span>
+                        <span class="signal-value">Live Service</span>
+                        <span class="signal-label">Self Hosted Currently</span>
                     </div>
                     <div>
-                        <span class="signal-value">Alpha</span>
+                        <span class="signal-value">Closed Testing</span>
                         <span class="signal-label">Current Public Posture</span>
                     </div>
                     <div>
-                        <span class="signal-value">S17</span>
-                        <span class="signal-label">Map / Systems Track</span>
+                        <span class="signal-value">Custom Map</span>
+                        <span class="signal-label">S17</span>
                     </div>
                 </div>
             </section>
@@ -88,7 +88,6 @@
                         <p class="eyebrow">Player / Operator View</p>
                         <h2>Built for expansion, tuned for readable conflict.</h2>
                     </div>
-                    <p class="section-kicker">The current homepage now shows the actual play pillars up front instead of burying them in a plain systems list.</p>
                 </div>
                 <div class="feature-grid">
                     <article class="card feature-card">
@@ -210,6 +209,38 @@
                 <p class="meta">Supporter names should be filled only from confirmed donor records.</p>
             </section>
 
+            <section class="section model-preview-section">
+                <div class="section-head">
+                    <div>
+                        <p class="eyebrow">Prototype Bay</p>
+                        <h2>Money printer world prop preview.</h2>
+                    </div>
+                    <p class="section-kicker">The same asset is being used in the main Git repo while DarkRP for s&amp;box gets built out.</p>
+                </div>
+                <div class="model-preview-stage">
+                    <div class="model-preview-canvas" id="afterdark-model-preview" aria-label="Interactive money printer model preview"></div>
+                    <div class="model-preview-overlay">
+                        <span>moneyprinter.glb</span>
+                        <span>Orbit Enabled</span>
+                        <span id="afterdark-model-status">Loading asset</span>
+                    </div>
+                </div>
+                <div class="model-preview-readout">
+                    <article class="model-note-card">
+                        <span>Asset</span>
+                        <strong>Live world prop preview from the active DarkRP s&amp;box repo.</strong>
+                    </article>
+                    <article class="model-note-card">
+                        <span>Interaction</span>
+                        <strong>Drag to orbit and scroll to inspect the in-game prop scale.</strong>
+                    </article>
+                    <article class="model-note-card">
+                        <span>Future Pass</span>
+                        <strong>If the asset pack gets opened up later, this is a candidate for repaint variants.</strong>
+                    </article>
+                </div>
+            </section>
+
             <section class="section roadmap-section">
                 <div class="section-head">
                     <div>
@@ -220,7 +251,7 @@
                 </div>
                 <div class="timeline">
                     <article class="timeline-item">
-                        <span class="timeline-status shipped">Shipped</span>
+                        <span class="timeline-status ready">Ready</span>
                         <h3>Core Economy Spine</h3>
                         <p>Wallet, banking, payday, death cash, job routing, and server-visible cash movement form the baseline loop.</p>
                     </article>
@@ -288,5 +319,218 @@
         </div>
         <p class="footer-copyright">Copyright 2026 Nightshift. All rights reserved.</p>
     </footer>
+    <script type="module">
+        document.addEventListener("DOMContentLoaded", function() {
+            const mount = document.getElementById("afterdark-model-preview");
+            const status = document.getElementById("afterdark-model-status");
+
+            if (!mount) {
+                return;
+            }
+
+            async function initModelPreview() {
+                try {
+                    const THREE = await import("https://esm.sh/three@0.160.0");
+                    const { OrbitControls } = await import("https://esm.sh/three@0.160.0/examples/jsm/controls/OrbitControls");
+                    const { GLTFLoader } = await import("https://esm.sh/three@0.160.0/examples/jsm/loaders/GLTFLoader");
+
+                    const scene = new THREE.Scene();
+                    scene.background = new THREE.Color(0x020403);
+                    scene.fog = new THREE.Fog(0x020403, 9, 28);
+
+                    const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 100);
+                    camera.position.set(0, 3.2, 8.5);
+
+                    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+                    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+                    renderer.outputColorSpace = THREE.SRGBColorSpace;
+                    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+                    renderer.toneMappingExposure = 1.02;
+                    renderer.shadowMap.enabled = true;
+                    mount.appendChild(renderer.domElement);
+
+                    const controls = new OrbitControls(camera, renderer.domElement);
+                    controls.enableDamping = true;
+                    controls.enablePan = false;
+                    controls.minDistance = 3.5;
+                    controls.maxDistance = 13;
+                    controls.target.set(0, 1.6, 0);
+
+                    const hemi = new THREE.HemisphereLight(0xd7ffe2, 0x020403, 1.05);
+                    scene.add(hemi);
+
+                    const keyLight = new THREE.DirectionalLight(0xcfffe0, 1.65);
+                    keyLight.position.set(5.4, 7.5, 6.2);
+                    keyLight.castShadow = true;
+                    keyLight.shadow.mapSize.set(1024, 1024);
+                    scene.add(keyLight);
+
+                    const fillLight = new THREE.DirectionalLight(0x84ffb2, 0.34);
+                    fillLight.position.set(-4, 4, 3);
+                    scene.add(fillLight);
+
+                    const rimLight = new THREE.DirectionalLight(0xff8a6f, 0.42);
+                    rimLight.position.set(-5, 3, -4);
+                    scene.add(rimLight);
+
+                    const beaconLight = new THREE.PointLight(0xff8a6f, 0.58, 10, 2);
+                    beaconLight.position.set(0, 1.6, 3.2);
+                    scene.add(beaconLight);
+
+                    const grid = new THREE.GridHelper(20, 20, 0x3d7850, 0x173222);
+                    grid.material.opacity = 0.24;
+                    grid.material.transparent = true;
+                    grid.position.y = -0.18;
+                    scene.add(grid);
+
+                    const platformGroup = new THREE.Group();
+
+                    const platform = new THREE.Mesh(
+                        new THREE.CylinderGeometry(2.48, 2.82, 0.28, 64),
+                        new THREE.MeshStandardMaterial({
+                            color: 0x08110b,
+                            emissive: 0x0f2918,
+                            emissiveIntensity: 0.16,
+                            metalness: 0.5,
+                            roughness: 0.7
+                        })
+                    );
+                    platform.position.y = -0.16;
+                    platform.receiveShadow = true;
+                    platformGroup.add(platform);
+
+                    const platformCap = new THREE.Mesh(
+                        new THREE.CylinderGeometry(2.2, 2.34, 0.06, 64),
+                        new THREE.MeshStandardMaterial({
+                            color: 0x0d1a12,
+                            emissive: 0x163120,
+                            emissiveIntensity: 0.14,
+                            metalness: 0.42,
+                            roughness: 0.52
+                        })
+                    );
+                    platformCap.position.y = 0.02;
+                    platformGroup.add(platformCap);
+
+                    const guideRing = new THREE.Mesh(
+                        new THREE.TorusGeometry(2.16, 0.035, 20, 96),
+                        new THREE.MeshStandardMaterial({
+                            color: 0xa2ffc0,
+                            emissive: 0xa2ffc0,
+                            emissiveIntensity: 0.48,
+                            metalness: 0.25,
+                            roughness: 0.32
+                        })
+                    );
+                    guideRing.rotation.x = Math.PI / 2;
+                    guideRing.position.y = 0.09;
+                    platformGroup.add(guideRing);
+
+                    const halo = new THREE.Mesh(
+                        new THREE.CircleGeometry(3.1, 64),
+                        new THREE.MeshBasicMaterial({
+                            color: 0x163b24,
+                            transparent: true,
+                            opacity: 0.16
+                        })
+                    );
+                    halo.rotation.x = -Math.PI / 2;
+                    halo.position.y = -0.17;
+                    platformGroup.add(halo);
+
+                    scene.add(platformGroup);
+
+                    const loader = new GLTFLoader();
+                    loader.load(
+                        "/models/fbx/moneyprinter.glb",
+                        (gltf) => {
+                            const object = gltf.scene;
+                            const box = new THREE.Box3().setFromObject(object);
+                            const size = box.getSize(new THREE.Vector3());
+                            const center = box.getCenter(new THREE.Vector3());
+                            const scale = 3.1 / Math.max(size.x, size.y, size.z || 1);
+
+                            object.scale.setScalar(scale);
+                            object.position.sub(center.multiplyScalar(scale));
+                            object.position.y += 0.95;
+
+                            object.traverse((child) => {
+                                if (child.isMesh) {
+                                    child.castShadow = true;
+                                    child.receiveShadow = true;
+
+                                    if (Array.isArray(child.material)) {
+                                        child.material.forEach((material) => {
+                                            material.color?.multiplyScalar(0.96);
+                                            if ("roughness" in material && typeof material.roughness === "number") {
+                                                material.roughness = Math.min(material.roughness + 0.08, 1);
+                                            }
+                                            if ("metalness" in material && typeof material.metalness === "number") {
+                                                material.metalness *= 0.9;
+                                            }
+                                        });
+                                    } else if (child.material) {
+                                        child.material.color?.multiplyScalar(0.96);
+                                        if ("roughness" in child.material && typeof child.material.roughness === "number") {
+                                            child.material.roughness = Math.min(child.material.roughness + 0.08, 1);
+                                        }
+                                        if ("metalness" in child.material && typeof child.material.metalness === "number") {
+                                            child.material.metalness *= 0.9;
+                                        }
+                                    }
+                                }
+                            });
+
+                            scene.add(object);
+                            if (status) {
+                                status.textContent = "Asset Online";
+                            }
+                        },
+                        undefined,
+                        () => {
+                            if (status) {
+                                status.textContent = "Asset Unavailable";
+                            }
+                            mount.classList.add("model-preview-fallback");
+                            mount.innerHTML = "<span>GLB asset could not be loaded in this context.</span>";
+                        }
+                    );
+
+                    function resize() {
+                        const width = mount.clientWidth || 640;
+                        const height = mount.clientHeight || 420;
+                        camera.aspect = width / height;
+                        camera.updateProjectionMatrix();
+                        renderer.setSize(width, height, false);
+                    }
+
+                    const resizeObserver = new ResizeObserver(resize);
+                    resizeObserver.observe(mount);
+                    resize();
+
+                    const clock3d = new THREE.Clock();
+
+                    function animate() {
+                        const elapsed = clock3d.getElapsedTime();
+                        platformGroup.rotation.y = elapsed * 0.16;
+                        halo.material.opacity = 0.13 + Math.sin(elapsed * 1.8) * 0.03;
+                        controls.update();
+                        renderer.render(scene, camera);
+                        window.requestAnimationFrame(animate);
+                    }
+
+                    animate();
+                } catch (error) {
+                    if (status) {
+                        status.textContent = "Renderer Offline";
+                    }
+                    mount.classList.add("model-preview-fallback");
+                    mount.innerHTML = "<span>Model viewer dependencies failed to initialize.</span>";
+                }
+            }
+
+            initModelPreview();
+        });
+    </script>
 </body>
 </html>

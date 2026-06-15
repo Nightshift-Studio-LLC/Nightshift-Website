@@ -518,6 +518,8 @@ h3 {
 }
 
 .hero-focus {
+    display: inline-flex;
+    align-items: center;
     width: fit-content;
     max-width: 58ch;
     margin: 28px 0 0;
@@ -527,6 +529,23 @@ h3 {
     background: rgba(7, 12, 24, 0.48);
     color: var(--muted);
     line-height: 1.6;
+    transition:
+        border-color 180ms ease,
+        background 180ms ease,
+        box-shadow 180ms ease,
+        color 180ms ease,
+        transform 180ms ease;
+}
+
+.hero-focus:hover,
+.hero-focus:focus-visible {
+    border-color: rgba(255, 154, 86, 0.42);
+    background: rgba(7, 12, 24, 0.72);
+    box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.04),
+        0 0 22px rgba(255, 154, 86, 0.12);
+    color: var(--text);
+    transform: translateY(-1px);
 }
 
 .model-panel {
