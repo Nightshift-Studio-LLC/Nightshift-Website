@@ -778,6 +778,24 @@ h3 {
     gap: 14px;
 }
 
+.devlog-card-thumb {
+    margin: -26px -26px 18px;
+    border-bottom: 1px solid var(--line);
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    overflow: hidden;
+    background: rgba(2, 5, 12, 0.92);
+    aspect-ratio: 16 / 9;
+}
+
+.devlog-card-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+}
+
 .page-title {
     margin: 8px 0 14px;
     max-width: 14ch;
@@ -2060,6 +2078,10 @@ h3 {
     .contact-panel,
     .price-card {
         padding: 16px;
+    }
+
+    .devlog-card-thumb {
+        margin: -16px -16px 16px;
     }
 
     .game-gallery-panel,

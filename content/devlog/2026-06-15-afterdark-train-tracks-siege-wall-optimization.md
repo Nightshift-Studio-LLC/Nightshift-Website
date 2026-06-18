@@ -10,6 +10,7 @@ tags:
   - Siege
   - Trains
   - Optimization
+hero: ../../../images/afterdarkrp/Devlogs/6-10-26/elevated-train-track-01.png
 ---
 
 ## Since the May 29 devlog

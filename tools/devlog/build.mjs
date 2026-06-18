@@ -366,13 +366,23 @@ ${footerMarkup(pagePrefix)}
 </html>`;
 
 const renderIndex = (posts) => {
-    const renderCard = (post) => `
+    const renderCard = (post) => {
+        const thumb = post.hero
+            ? `
+                <div class="media-frame devlog-card-thumb">
+                    <img src="${escapeHtml(post.hero)}" alt="${escapeHtml(post.title)}">
+                </div>`
+            : "";
+
+        return `
             <article class="devlog-card">
+                ${thumb}
                 <div class="devlog-meta"><span>${escapeHtml(post.game)}</span><span>${formatDate(post.dateObj)}</span>${renderViewCount(postPath(post))}</div>
                 <h3>${escapeHtml(post.title)}</h3>
                 <p>${escapeHtml(post.excerpt)}</p>
                 <a class="devlog-cta hover-sound" href="posts/${post.slug}.html">Read entry</a>
             </article>`;
+    };
     const monthGroups = groupPostsByMonth(posts);
     const archiveNav = archiveConfig.map(({ year, months }) => {
         const links = months.map((month) => {
