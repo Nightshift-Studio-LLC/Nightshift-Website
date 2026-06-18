@@ -1,6 +1,7 @@
 ---
 title: Mission chaos sketches and character silhouettes
 date: 2026-01-10
+draft: true
 game: Codename SAINT
 excerpt: We collected visual targets for the first strike fantasy and started mapping how teams improvise.
 tags:

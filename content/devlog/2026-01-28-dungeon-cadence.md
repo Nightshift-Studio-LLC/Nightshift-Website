@@ -1,6 +1,7 @@
 ---
 title: Dungeon cadence, loot risk, and team signals
 date: 2026-01-28
+draft: true
 game: Codename ELDER
 excerpt: Early layouts focus on escalating stress while making every callout meaningful for the squad.
 tags:
