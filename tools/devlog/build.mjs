@@ -1,3 +1,4 @@
+import { existsSync } from "fs";
 import fs from "fs/promises";
 import path from "path";
 import yaml from "js-yaml";
@@ -12,6 +13,24 @@ const youtubeBlockPattern = /^:::youtube\s*\n([\s\S]*?)\n:::/gm;
 const rawHtmlPattern = /<\/?[A-Za-z][A-Za-z0-9:-]*(?:\s|>|\/>)/;
 const imageExtensions = new Set([".gif", ".jpeg", ".jpg", ".png", ".svg", ".webp"]);
 const videoExtensions = new Set([".mp4", ".webm"]);
+const htmlPath = (value) => value.split(path.sep).join("/");
+
+const isExternalOrRootPath = (src) =>
+    /^[a-z][a-z0-9+.-]*:/i.test(src) || src.startsWith("/") || src.startsWith("//");
+
+const resolveHeroSrc = (src, targetDir) => {
+    if (!src || isExternalOrRootPath(src)) return src || "";
+
+    const normalizedSrc = src.replaceAll("\\", "/");
+    const candidates = [
+        path.resolve(postsDir, normalizedSrc),
+        path.resolve(outDir, normalizedSrc),
+        path.resolve(root, normalizedSrc),
+    ];
+    const resolved = candidates.find((candidate) => existsSync(candidate)) || candidates[0];
+
+    return htmlPath(path.relative(targetDir, resolved));
+};
 
 const escapeHtml = (value) =>
     String(value ?? "")
@@ -367,10 +386,11 @@ ${footerMarkup(pagePrefix)}
 
 const renderIndex = (posts) => {
     const renderCard = (post) => {
-        const thumb = post.hero
+        const thumbSrc = resolveHeroSrc(post.hero, outDir);
+        const thumb = thumbSrc
             ? `
                 <div class="media-frame devlog-card-thumb">
-                    <img src="${escapeHtml(post.hero)}" alt="${escapeHtml(post.title)}">
+                    <img src="${escapeHtml(thumbSrc)}" alt="${escapeHtml(post.title)}">
                 </div>`
             : "";
 
@@ -460,7 +480,8 @@ const renderIndex = (posts) => {
 
 const renderPost = (post) => {
     const tags = post.tags.length ? `<div class="tag-row">${post.tags.map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`).join("")}</div>` : "";
-    const hero = post.hero ? `<div class="media-frame devlog-hero"><img src="${escapeHtml(post.hero)}" alt="${escapeHtml(post.title)}"></div>` : "";
+    const heroSrc = resolveHeroSrc(post.hero, postsDir);
+    const hero = heroSrc ? `<div class="media-frame devlog-hero"><img src="${escapeHtml(heroSrc)}" alt="${escapeHtml(post.title)}"></div>` : "";
     const projectLabel = post.game === "AfterDarkRP"
         ? `<a class="inline-link hover-sound" href="/afterdark/">${escapeHtml(post.game)}</a>`
         : escapeHtml(post.game);
