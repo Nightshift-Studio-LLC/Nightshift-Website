@@ -1308,10 +1308,12 @@ h3 {
 }
 
 .devlog-gallery figcaption {
-    color: #b8c8e6;
-    font-size: 0.95rem;
-    font-style: italic;
-    line-height: 1.5;
+    color: var(--accent);
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    line-height: 1.65;
+    text-shadow: 0 0 20px rgba(136, 215, 255, 0.24);
+    text-transform: uppercase;
 }
 
 .devlog-youtube {
@@ -1321,10 +1323,12 @@ h3 {
 }
 
 .devlog-youtube figcaption {
-    color: #b8c8e6;
-    font-size: 0.95rem;
-    font-style: italic;
-    line-height: 1.5;
+    color: var(--accent);
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    line-height: 1.65;
+    text-shadow: 0 0 20px rgba(136, 215, 255, 0.24);
+    text-transform: uppercase;
 }
 
 .devlog-signoff {
