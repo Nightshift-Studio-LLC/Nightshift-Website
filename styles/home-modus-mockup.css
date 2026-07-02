@@ -1288,6 +1288,7 @@ h3 {
 
 .devlog-gallery {
     display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
     gap: 18px;
     margin: 24px 0;
 }

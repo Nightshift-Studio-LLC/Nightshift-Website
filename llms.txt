@@ -28,7 +28,6 @@ This file helps LLMs and coding agents quickly understand the public site and wh
 - Shared styles: `styles/*.css`
 - Devlog markdown source: `content/devlog/*.md`
 - Devlog generator: `tools/devlog/build.mjs`
-- React/Vite source: `react-app/src/`
 - Static media: `images/`, `video/`, `audio/`, `models/`
 
 ## Generated Or Build Outputs
@@ -44,12 +43,6 @@ For devlog changes, edit `content/devlog/*.md` or `tools/devlog/build.mjs`, then
 
 ```sh
 npm run build:devlog
-```
-
-For React/Vite changes, edit `react-app/src/`, then run:
-
-```sh
-npm run build:react
 ```
 
 ## Design Language

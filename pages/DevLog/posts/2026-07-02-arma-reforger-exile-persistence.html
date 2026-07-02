@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nightshift | Exile Reforged reaches a clean recovery checkpoint</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="../../../images/icons/nightshift.ico">
+    <link rel="stylesheet" href="../../../styles/home-modus-mockup.css">
+    <script defer src="/scripts/analytics.js" data-analytics-endpoint="/api/analytics"></script>
+</head>
+<body>
+    <div class="screen-fx" aria-hidden="true"></div>
+    <header class="topbar">
+        <a class="brand hover-sound" href="../../home.html" aria-label="Nightshift home">
+            <img src="../../../images/index/nightshift-transparent.png" alt="Nightshift logo">
+        </a>
+        <nav class="utility-nav" aria-label="Primary">
+            <a href="../../home.html" class="hover-sound">Home</a>
+            <a href="../../games.html" class="hover-sound">Games</a>
+            <a href="../../studio.html" class="hover-sound">Studio</a>
+            <a href="../../DevLog/index.html" class="hover-sound active">Devlog</a>
+            <a href="../../contact.html" class="hover-sound">Contact</a>
+        </nav>
+        <div class="topbar-readout"><span>Devlog Entry</span><strong id="mockup-clock">00:00:00 CST</strong></div>
+    </header>
+    <main class="shell page-shell">
+
+        <section class="page-hero-grid">
+            <article class="page-hero-panel">
+                <p class="eyebrow">Devlog / entry</p>
+                <h1 class="page-title">Exile Reforged reaches a clean recovery checkpoint</h1>
+                <p class="page-lede">Exile Reforged is back at a useful checkpoint: the revived Arma Reforger workspace has persistence, deployment, loot, building, zones, missions, economy, and faction scaffolding moving again without turning the update into a system teardown.</p>
+                <div class="hero-actions"><a class="cta-btn hover-sound" href="../index.html">Back To Devlog</a></div>
+                <div class="tag-row"><span class="tag">Exile Reforged</span><span class="tag">Arma Reforger</span><span class="tag">Persistence</span><span class="tag">Recovery</span><span class="tag">Vehicles</span><span class="tag">Bases</span><span class="tag">Nightshift</span></div>
+                <div class="media-frame devlog-hero"><img src="../../../images/afterdarkrp/Devlogs/6-27-26/exile-dirtbike.png" alt="Exile Reforged reaches a clean recovery checkpoint"></div>
+            </article>
+            <aside class="page-hero-panel">
+                <p class="eyebrow">Entry metadata</p>
+                <div class="stack-list">
+                    <div><span>Project</span><strong>Exile Reforged</strong></div>
+                    <div><span>Date</span><strong>JUL 02, 2026</strong></div>
+                    <div><span>Signed by</span><strong>Nightshift</strong></div>
+                    <div><span>Authored by</span><strong>Codex</strong></div>
+                    <div><span>Views</span><strong>
+                    <span class="devlog-view-count" data-view-count-path="/pages/DevLog/posts/2026-07-02-arma-reforger-exile-persistence.html" data-view-count-state="loading" aria-label="Views loading">
+                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                            <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"></path>
+                            <circle cx="12" cy="12" r="2.5"></circle>
+                        </svg>
+                        <b data-view-count-value>--</b><em>views</em>
+                    </span></strong></div>
+                    <div><span>Route</span><strong>Public archive</strong></div>
+                </div>
+            </aside>
+        </section>
+        <section class="panel feature-panel">
+            <div class="panel-heading"><p class="eyebrow">Field Notes</p><h2>Entry body</h2></div>
+            <div class="devlog-post-body"><h2>Field note</h2>
+<p>This started as a short two-week sprint break from AfterDark to see how far we could get in Exile Reforged / Homefront.</p>
+<p>That break turned into a useful checkpoint.</p>
+<p>The first recovery pass was about proving the project could come back to life at all. The next pass has been more useful: getting Exile back into a state where the major survival-service pieces can be reasoned about again without pretending everything is final.</p>
+<p>The project is now sitting at a cleaner Arma Reforger / Enfusion checkpoint. Persistence work is active again. Deploy and respawn flow is back under review. Loot progression, building and base ownership, mission scaffolding, zones, economy, and faction structure all have Nightshift-owned direction attached to them instead of only existing as old project intent.</p>
+<p>That matters because Exile is not useful as a museum piece. It is useful if it can become a live, testable survival surface.</p>
+<p>The main focus right now is consolidation: taking the addons and mod dependencies that helped validate the idea, then replacing or reducing them with Nightshift-owned code, content, and systems wherever that makes sense.</p>
+<div class="devlog-gallery">
+<figure>
+<img src="../../../images/afterdarkrp/Devlogs/6-27-26/exile-recovered.png" alt="Recovered Exile project files from 2024">
+<figcaption>Recovered 2024 project files from the earlier Exile work, now being sorted into the current active survival-system pass.</figcaption>
+</figure>
+</div>
+
+<figure class="devlog-youtube">
+<div class="video-frame">
+<iframe src="https://www.youtube.com/embed/GEN86QlmDo4?autoplay=1&mute=1&loop=1&playlist=GEN86QlmDo4&playsinline=1" title="Arma Reforger - Persistence" allow="autoplay; encrypted-media; picture-in-picture; web-share" allowfullscreen></iframe>
+</div>
+<figcaption>Short Exile Reforged persistence preview from the current recovery checkpoint.</figcaption>
+</figure>
+
+<h2>What this checkpoint means</h2>
+<p>The important part of this stretch is not one isolated feature. It is that the project has enough shape again to separate real progress from wishful thinking.</p>
+<p>At a high level, Exile Reforged now has active work or scaffolding around:</p>
+<ul>
+<li>persistence and session-to-session player state,</li>
+<li>deployment, death, and respawn handling,</li>
+<li>tiered loot progression,</li>
+<li>building, camp, and base ownership concepts,</li>
+<li>offline base loading and unloading behavior that gives the project a real answer for offline raiding pressure,</li>
+<li>flag ransom and black-market buyback behavior for stolen base flags,</li>
+<li>owned vehicle class work starting with the dirt bike,</li>
+<li>deployable utility items like the extension cord feature,</li>
+<li>safe zones, mission exclusions, and build exclusions,</li>
+<li>capture-point and mission-marker prototypes,</li>
+<li>mission waves and spawnable mission visuals,</li>
+<li>owned shop, wallet, and vendor direction,</li>
+<li>faction structure and replacement hostile NPC direction,</li>
+<li>and a dev-world path where features can be placed and tested deliberately.</li>
+</ul>
+<p>That is a much better place to pause than the earlier recovery state. The project is no longer only &quot;we found the old work.&quot; It is now &quot;we can identify what systems matter, where they live, and what needs proof before the project earns a stronger public claim.&quot;</p>
+<h2>What is working now</h2>
+<p>The important part of this checkpoint is that the work is no longer only theoretical or source-side.</p>
+<p>The live loop has been brought back into working shape: death, deployment, respawn, loadout return, faction continuity, inventory behavior, and persistence are all moving through the test path now. That changes the update from &quot;the project has promising scaffolding&quot; to &quot;the recovered project is behaving like an actual survival loop again.&quot;</p>
+<p>That is the point of the video and the checkpoint. Exile is not just recovered archive material anymore. It is back in a state where the core systems can be played, watched, and pushed forward from a working baseline.</p>
+<p>There is still normal production cleanup ahead, but the difference matters: this is not a paper milestone. The main loop is working and tested right now.</p>
+<h2>Consolidating the project</h2>
+<p>The biggest practical direction now is reducing dependency weight.</p>
+<p>Some external addons and mods were useful for proving the survival loop. They helped validate the shape of the project. But the project cannot stay there forever if it is going to become a Nightshift-controlled server with a cleaner identity, clearer licensing, and systems that can be maintained long-term.</p>
+<p>That is why the current pass is about culling dependencies where needed and replacing key pieces with owned code and owned content.</p>
+<p>The largest stride in that direction is the motorcycle.</p>
+<p>The starting point was an Adobe motorcycle model. That source was converted away from its original road-bike shape and pushed into a dirt bike direction so it can become a Nightshift-owned model tied to the new vehicle class. The vehicle pawn is already up to the point of vehicle possession testing. The next step is movement: sorting it out, tuning it, then expanding it into a more complete vehicle path.</p>
+<p>The extension cord feature is also back in the project. It was ported forward from the older Exile work and is working now, though its final behavior may still change as the base and utility systems settle.</p>
+<div class="devlog-gallery">
+<figure>
+<img src="../../../images/afterdarkrp/Devlogs/6-27-26/exile-original-adobe-motorcycle.png" alt="Original Adobe motorcycle model in Blender">
+<figcaption>The original Adobe motorcycle model before the conversion pass.</figcaption>
+</figure>
+<figure>
+<img src="../../../images/afterdarkrp/Devlogs/6-27-26/exile-dirtbike.png" alt="Nightshift dirt bike model in Blender">
+<figcaption>The original bike is being converted into a Nightshift dirt bike that can support the new owned vehicle class.</figcaption>
+</figure>
+</div>
+
+<div class="devlog-gallery">
+<figure>
+<img src="../../../images/afterdarkrp/Devlogs/6-27-26/exile-motorcycle-workbench.png" alt="Dirt bike placed in the Enfusion dev world">
+<figcaption>The new light motorcycle is placed in the dev world and is already far enough along for vehicle possession testing.</figcaption>
+</figure>
+<figure>
+<img src="../../../images/afterdarkrp/Devlogs/6-27-26/exile-extension-cord.png" alt="Deployable extension cord in Workbench">
+<figcaption>The extension cord feature has been ported forward from Exile and is working, though behavior may still change.</figcaption>
+</figure>
+</div>
+
+<p>One of the more important solves is offline raiding.</p>
+<p>The project now has a path for loading and unloading bases around player presence, which changes how base vulnerability can be handled when a player is offline. That is a significant design piece for any persistent survival server. It means base ownership, raiding pressure, and player absence can be treated as part of the system instead of only as an admin rule or community expectation.</p>
+<p>The flag system also has a new pressure valve.</p>
+<p>Stolen flags can now be ransomed to the black market for buyback. Losing the flag disables the constructed base until the owner gets it back, which turns a base raid into a consequence that is serious without always needing to flatten the entire structure.</p>
+<p>The current ransom calculation is intentionally simple and may change:</p>
+<pre><code class="language-text">blackMarketBuyback = clamp(minRansom, maxRansom * 0.75,
+  flatBase + buildValue * 0.25 + storedGearValue * 0.05
+)
+</code></pre>
+<p>That formula keeps the price tied to the base and stored value without letting it run completely open-ended. It gives the system a starting point that can be tuned once real player behavior starts showing where the pressure is too soft or too punishing.</p>
+<div class="devlog-gallery">
+<figure>
+<img src="../../../images/afterdarkrp/Devlogs/6-27-26/exile-flag-ransom-test.png" alt="Blue and red base flags in the Enfusion dev world">
+<figcaption>The flag work now supports stolen-flag ransom and black-market buyback behavior as part of the base ownership loop.</figcaption>
+</figure>
+</div>
+
+<h2>The name may change</h2>
+<p>There is also a branding question opening up.</p>
+<p>Exile Reforged still explains the project&#39;s roots clearly. The influence is obvious: Arma survival, Exile, DayZ, long-form looting, bases, risk, faction pressure, and player-driven stories. But the project is starting to become different enough from the original Exile framing that the name may not stay forever.</p>
+<p>One possible direction is <strong>Arma Reforger: Homefront</strong>, if that space is clear and no other active server is already using it.</p>
+<p>That would let the project keep the nods to Exile and DayZ without being boxed in by them. The goal is not to erase the roots. The goal is to give this version room to become its own Nightshift take on persistent Arma survival, and maybe something that can grow past the first frame it started from.</p>
+<h2>Licensing and platform runway</h2>
+<p>Another reason the project is waking back up now is that the Arma Reforger ecosystem has become friendlier for this kind of long-form server work.</p>
+<p>That does not mean ignoring licensing. The opposite is true. The current cleanup pass is about collecting licenses, attributing dependent material correctly, getting monetization permission where needed, and replacing dependencies where ownership or permission is not clean enough for the direction of the project.</p>
+<p>The other major win is platform runway.</p>
+<p>Bohemia positions Enfusion as the engine powering its next generation of games, including Arma 4, and describes Reforger&#39;s toolset as the first step on the road to Arma 4. That makes the work happening now more valuable than a one-off server experiment. The systems, content discipline, and Enfusion workflow built here should be in a better position to move forward when the next platform arrives.</p>
+<p>Source: <a href="https://enfusionengine.com/for-developers">Bohemia Enfusion Engine</a></p>
+<h2>Why this is the right pause point</h2>
+<p>This is also a practical stopping point before shifting attention back to AfterDark.</p>
+<p>AfterDark needs the next MVP push after a two-week break, and it makes sense to leave Exile at a clean checkpoint instead of dragging it into another half-open sprint. Exile now has a working tested loop, a visible persistence proof point, and enough structure to resume later without losing the thread.</p>
+<p>That is a useful win.</p>
+<p>The next Exile pass can build from the working baseline instead of trying to rediscover it. The honest summary is simple: the revival is no longer theoretical, and the survival loop is back in motion.</p>
+
+            <div class="devlog-signoff">
+                <p>Signed, <strong>Nightshift</strong></p>
+            </div></div>
+        </section>
+
+        <footer class="site-footer panel">
+
+            <section class="software-marquee-section" aria-label="Software used by Nightshift">
+                <div class="software-marquee"><div class="software-marquee-track">
+                    <span>Unreal / Source 2 / Enfusion / RAGE</span><span>Blender</span><span>Adobe Suite</span><span>Adobe 3D</span><span>Affinity Suite</span><span>Gaea 2.0</span><span>CC5</span><span>iClone 8</span><span>Marvelous Designer</span><span>Ornatrix</span><span>FruityLoops</span><span>VS Code</span><span>Visual Studio</span><span>GitHub</span><span>Git LFS</span><span>Git Pages</span><span>Wix</span><span>Codex</span>
+                    <span>Unreal / Source 2 / Enfusion / RAGE</span><span>Blender</span><span>Adobe Suite</span><span>Adobe 3D</span><span>Affinity Suite</span><span>Gaea 2.0</span><span>CC5</span><span>iClone 8</span><span>Marvelous Designer</span><span>Ornatrix</span><span>FruityLoops</span><span>VS Code</span><span>Visual Studio</span><span>GitHub</span><span>Git LFS</span><span>Git Pages</span><span>Wix</span><span>Codex</span>
+                </div></div>
+            </section>
+            <div class="footer-grid">
+                <div class="footer-column"><span>Primary routes</span><a class="hover-sound" href="../../home.html">Home</a><a class="hover-sound" href="../../games.html">Games</a><a class="hover-sound" href="../../studio.html">Studio</a><a class="hover-sound" href="../../contact.html">Contact</a></div>
+                <div class="footer-column"><span>Public records</span><a class="hover-sound" href="../../DevLog/index.html">Devlog</a><a href="https://www.epicgames.com/site/en-US/privacypolicy" target="_blank" rel="noopener noreferrer">Epic Privacy Policy</a><a href="#">Nightshift Privacy Policy</a><a href="#">Applicant Privacy Policy</a></div>
+                <div class="footer-column"><span>External surfaces</span><a href="#">Press Kit</a><a href="#">Brand Assets</a><a href="#">Careers</a><a href="#">Community</a></div>
+            </div>
+            <div class="footer-bottom"><div class="social-row"><a class="action-pill hover-sound" href="https://www.youtube.com/@nstx" target="_blank" rel="noopener noreferrer">YouTube</a></div><p class="footer-note">Copyright 2026 Nightshift. All rights reserved.</p></div>
+        </footer>
+    </main>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const audio = new Audio("../../../audio/bop.mp3");
+            audio.volume = 0.25;
+            const clock = document.getElementById("mockup-clock");
+            function updateClock() {
+                if (!clock) return;
+                clock.textContent = new Date().toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", second: "2-digit", timeZone: "America/Chicago", timeZoneName: "short" });
+            }
+            document.querySelectorAll(".hover-sound").forEach((element) => {
+                element.addEventListener("mouseenter", function() {
+                    audio.currentTime = 0;
+                    audio.play().catch(() => {});
+                });
+            });
+            updateClock();
+            window.setInterval(updateClock, 1000);
+        });
+    </script>
+</body>
+</html>

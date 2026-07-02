@@ -9,7 +9,6 @@ This file defines the design-focused agents that should manage work in this repo
 - Shared styles live in `styles/`.
 - Media assets live in `images/`, `video/`, `audio/`, and `models/`.
 - Devlog source content lives in `content/devlog/` and is compiled into `pages/DevLog/` by `tools/devlog/build.mjs`.
-- A small React/Vite surface lives in `react-app/` and builds into `dist/react-app/`.
 - There are legacy or side-surface areas under `afterdarkrp/` and `pages/ServerHosting/Sandbox/`.
 
 ## Global design direction
@@ -31,7 +30,6 @@ All agents should preserve the current Nightshift visual language unless a task 
 - Preserve static relative-path correctness. This site depends heavily on relative asset links.
 - New assets should be placed in the nearest existing feature folder and named clearly enough to be reusable.
 - When a task changes layout or styling, verify both desktop and mobile behavior before closing it out.
-- If React work is touched, verify with `npm run build:react`.
 
 ## Agent roster
 

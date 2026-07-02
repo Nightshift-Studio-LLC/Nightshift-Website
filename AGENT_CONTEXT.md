@@ -17,7 +17,6 @@ This repository is the source for the Nightshift static site at `ns-tx.com`.
 - `tools/devlog/build.mjs` compiles devlog markdown into `pages/DevLog/`.
 - `styles/` contains shared and page-family CSS.
 - `images/`, `video/`, `audio/`, and `models/` contain static assets.
-- `react-app/` is a small React/Vite surface that builds into `dist/react-app/`.
 - `afterdarkrp/` is a separate public AfterDarkRP surface with nested clean URLs and redirect shims.
 - `pages/ServerHosting/Sandbox/` is a legacy or side surface.
 
@@ -33,19 +32,12 @@ This repository is the source for the Nightshift static site at `ns-tx.com`.
 
 ```sh
 npm run build:devlog
-npm run build:react
 ```
 
 Run `npm run build:devlog` after changes to:
 
 - `content/devlog/*.md`
 - `tools/devlog/build.mjs`
-
-Run `npm run build:react` after changes to:
-
-- `react-app/src/*`
-- `react-app/index.html`
-- `vite.config.mjs`
 
 For layout or styling changes, inspect desktop and mobile behavior before closing work.
 
