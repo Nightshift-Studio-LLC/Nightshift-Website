@@ -9,6 +9,45 @@
     <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="../../images/icons/nightshift.ico">
     <link rel="stylesheet" href="../../styles/home-modus-mockup.css">
+    <style>
+        .cta-btn.donation-cta-stripe {
+            border-color: rgba(82, 146, 255, 0.58);
+            background: linear-gradient(135deg, rgba(15, 71, 190, 0.92), rgba(64, 145, 255, 0.58));
+            box-shadow:
+                inset 0 0 0 1px rgba(255, 255, 255, 0.08),
+                0 0 26px rgba(54, 130, 255, 0.18);
+        }
+
+        .cta-btn.donation-cta-stripe:hover {
+            border-color: rgba(135, 185, 255, 0.78);
+            box-shadow:
+                inset 0 0 0 1px rgba(255, 255, 255, 0.12),
+                0 0 28px rgba(54, 130, 255, 0.28),
+                0 18px 34px rgba(0, 0, 0, 0.32);
+        }
+
+        .cta-btn.donation-cta-usdc {
+            border-color: rgba(255, 84, 84, 0.55);
+            background: linear-gradient(135deg, rgba(126, 18, 24, 0.9), rgba(229, 54, 58, 0.34));
+            color: rgba(255, 235, 235, 0.92);
+            cursor: not-allowed;
+        }
+
+        .cta-btn.donation-cta-usdc:hover {
+            transform: none;
+            border-color: rgba(255, 84, 84, 0.7);
+            box-shadow:
+                inset 0 0 0 1px rgba(255, 255, 255, 0.08),
+                0 0 22px rgba(255, 54, 54, 0.16);
+        }
+
+        .donation-cta-note {
+            margin-left: 8px;
+            color: rgba(255, 220, 220, 0.78);
+            font-size: 0.68rem;
+            letter-spacing: 0.08em;
+        }
+    </style>
     <script defer src="/scripts/analytics.js" data-analytics-endpoint="/api/analytics"></script>
 </head>
 <body>
@@ -38,17 +77,21 @@
                 <div class="stack-list">
                     <div><span>Priority</span><strong>Speed up production without outside control</strong></div>
                     <div><span>Use case</span><strong>Tooling, specialists, software, and launch prep</strong></div>
-                    <div><span>Status</span><strong>Links placeholder until payment rails go live</strong></div>
+                    <div><span>Status</span><strong>Stripe donation rail is live</strong></div>
                 </div>
             </aside>
         </section>
 
         <section class="panel notes-panel">
             <div class="hero-actions">
-                <a class="cta-btn primary hover-sound" href="#">PayPal</a>
-                <a class="cta-btn hover-sound" href="#">Patreon</a>
-                <a class="cta-btn hover-sound" href="#">USDC Crypto</a>
+                <a class="cta-btn primary hover-sound donation-cta-stripe" href="https://donate.stripe.com/cNi5kC2Xi5rc0SrbkG9R600" target="_blank" rel="noopener noreferrer">Donate with Stripe</a>
+                <span class="cta-btn donation-cta-usdc" aria-disabled="true">USDC Crypto <span class="donation-cta-note">Unsupported yet</span></span>
             </div>
+        </section>
+
+        <section class="panel notes-panel">
+            <p class="eyebrow">Funding posture</p>
+            <p class="panel-copy">At this stage, support is less about buying every piece of software from scratch and more about scaling the content library, production capacity, and release pipeline around tools the studio already knows how to use.</p>
         </section>
 
         <section class="surface-grid">
@@ -68,6 +111,45 @@
                     <li>Less context switching across many hats.</li>
                     <li>More time spent on systems, polish, documentation, and business development.</li>
                     <li>Better consistency across public releases and studio-facing tools.</li>
+                </ul>
+            </article>
+        </section>
+
+        <section class="surface-grid" aria-label="Current funding needs">
+            <article class="surface-card">
+                <p class="eyebrow">Current needs</p>
+                <h3>Motion capture buildout</h3>
+                <ul class="list">
+                    <li>Build out an in-house mocap solution for animation and prototyping.</li>
+                    <li>Add cameras, another set of IMU sensors, and related capture gear.</li>
+                    <li>Cover development costs around calibration, workflow, cleanup, and testing.</li>
+                </ul>
+            </article>
+            <article class="surface-card">
+                <p class="eyebrow">Current needs</p>
+                <h3>Software seats and upgrades</h3>
+                <ul class="list">
+                    <li>Marvelous Designer license coverage.</li>
+                    <li>Ornatrix license coverage.</li>
+                    <li>Other software license upgrades as the studio scales beyond indie-seat limits.</li>
+                </ul>
+            </article>
+            <article class="surface-card">
+                <p class="eyebrow">Current needs</p>
+                <h3>Server and infrastructure costs</h3>
+                <ul class="list">
+                    <li>Maintain the small local development box used for current server testing.</li>
+                    <li>Scale hosting to Hetzner or a similar provider when public load demands it.</li>
+                    <li>Keep development, testing, and live service infrastructure separated cleanly.</li>
+                </ul>
+            </article>
+            <article class="surface-card">
+                <p class="eyebrow">Current needs</p>
+                <h3>Contractors and team growth</h3>
+                <ul class="list">
+                    <li>Outsource art production so core time can stay focused on game design and direction.</li>
+                    <li>Delegate specialized work when it removes bottlenecks from the production pipeline.</li>
+                    <li>Eventually support part-time or full-time help for marketing, community, business operations, and family roles where they make sense.</li>
                 </ul>
             </article>
         </section>

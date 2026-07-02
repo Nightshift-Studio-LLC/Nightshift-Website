@@ -1308,8 +1308,9 @@ h3 {
 }
 
 .devlog-gallery figcaption {
-    color: var(--muted);
+    color: #b8c8e6;
     font-size: 0.95rem;
+    font-style: italic;
     line-height: 1.5;
 }
 
@@ -1320,8 +1321,9 @@ h3 {
 }
 
 .devlog-youtube figcaption {
-    color: var(--muted);
+    color: #b8c8e6;
     font-size: 0.95rem;
+    font-style: italic;
     line-height: 1.5;
 }
 
