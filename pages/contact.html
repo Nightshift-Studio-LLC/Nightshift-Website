@@ -42,23 +42,52 @@
                 </div>
             </aside>
         </section>
-        <section class="contact-grid">
-            <article class="contact-panel">
-                <p class="eyebrow">Routing Notes</p>
-                <h3>What this channel is for</h3>
-                <ul class="list">
-                    <li>Website bugs, broken links, and content issues.</li>
-                    <li>Partnership requests, contractor outreach, and press contact.</li>
-                    <li>General questions about Nightshift projects or current development.</li>
-                </ul>
-                <div class="section-wip"><h3>Additional channels coming soon</h3><p>Dedicated playtester intake and community support surfaces are planned, but the shared relay remains the public entry point for now.</p></div>
-            </article>
+        <section class="contact-grid intake-grid">
             <article class="contact-panel" id="feedback-form">
                 <p class="eyebrow">Primary Form</p>
                 <h3>Feedback and reports</h3>
-                <div class="form-frame">
-                    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSd4GVBHlfcea0tMCbXeEOZ_fKeg2no-WaAE_dK3PtITD8lQyg/viewform?embedded=true" title="Nightshift contact form">Loading...</iframe>
-                </div>
+                <p>Use this for website bugs, broken links, project questions, partnerships, contractor outreach, press contact, or general Nightshift messages.</p>
+                <form class="site-form" id="contact-relay-form">
+                    <div class="form-grid">
+                        <label class="form-field">
+                            <span>Name</span>
+                            <input type="text" name="name" autocomplete="name">
+                        </label>
+                        <label class="form-field">
+                            <span>Email</span>
+                            <input type="email" name="email" autocomplete="email">
+                        </label>
+                        <label class="form-field">
+                            <span>Request Type</span>
+                            <select name="request_type" required>
+                                <option value="">Select one</option>
+                                <option>Website bug</option>
+                                <option>Broken link</option>
+                                <option>Project question</option>
+                                <option>Partnership / contractor outreach</option>
+                                <option>Press / media</option>
+                                <option>General studio contact</option>
+                            </select>
+                        </label>
+                        <label class="form-field">
+                            <span>Page Or URL</span>
+                            <input type="text" name="page_url" placeholder="https://ns-tx.com/...">
+                        </label>
+                    </div>
+                    <label class="form-field form-field-wide">
+                        <span>Message</span>
+                        <textarea name="message" rows="6" required></textarea>
+                    </label>
+                    <label class="form-field form-field-wide">
+                        <span>Steps / Context</span>
+                        <textarea name="steps" rows="4" placeholder="For bugs, include what happened and what you expected."></textarea>
+                    </label>
+                    <div class="form-actions">
+                        <button class="cta-btn primary hover-sound" type="submit">Send Message</button>
+                    </div>
+                    <p class="intake-note" id="contact-relay-status" role="status">Submissions route through the Nightshift Google Forms contact pipeline.</p>
+                </form>
+                <iframe class="form-submit-frame" name="contact-relay-target" title="Contact form submit target"></iframe>
             </article>
         </section>
         <footer class="site-footer panel">
@@ -84,12 +113,66 @@
                 if (!clock) return;
                 clock.textContent = new Date().toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", second: "2-digit", timeZone: "America/Chicago", timeZoneName: "short" });
             }
+            function setupContactRelay() {
+                const contactForm = document.getElementById("contact-relay-form");
+                const status = document.getElementById("contact-relay-status");
+                if (!contactForm) return;
+                const googleFormUrl = "https://docs.google.com/forms/d/e/1FAIpQLSd4GVBHlfcea0tMCbXeEOZ_fKeg2no-WaAE_dK3PtITD8lQyg/formResponse";
+                const entryMap = {
+                    platform: "entry.1020741881",
+                    operatingSystem: "entry.684222502",
+                    page: "entry.532291390",
+                    description: "entry.1708193523",
+                    steps: "entry.1862425966"
+                };
+                contactForm.addEventListener("submit", function(event) {
+                    event.preventDefault();
+                    if (!contactForm.reportValidity()) return;
+
+                    const data = new FormData(contactForm);
+                    const payload = [
+                        `Name: ${String(data.get("name") || "").trim() || "Not provided"}`,
+                        `Email: ${String(data.get("email") || "").trim() || "Not provided"}`,
+                        `Request Type: ${String(data.get("request_type") || "").trim() || "Not provided"}`,
+                        `Page Or URL: ${String(data.get("page_url") || "").trim() || "Not provided"}`,
+                        "",
+                        "Message:",
+                        String(data.get("message") || "").trim()
+                    ].join("\n");
+
+                    const relay = document.createElement("form");
+                    relay.action = googleFormUrl;
+                    relay.method = "POST";
+                    relay.target = "contact-relay-target";
+                    relay.style.display = "none";
+                    const fields = {
+                        [entryMap.platform]: "Desktop",
+                        [entryMap.operatingSystem]: "Windows",
+                        [entryMap.page]: String(data.get("page_url") || "").trim() || "General contact",
+                        [entryMap.description]: payload,
+                        [entryMap.steps]: String(data.get("steps") || "").trim() || "No additional steps or context provided."
+                    };
+                    Object.entries(fields).forEach(([name, value]) => {
+                        const input = document.createElement("input");
+                        input.type = "hidden";
+                        input.name = name;
+                        input.value = value;
+                        relay.appendChild(input);
+                    });
+                    document.body.appendChild(relay);
+                    relay.submit();
+                    relay.remove();
+                    contactForm.reset();
+                    if (status) status.textContent = "Message sent. Nightshift will review it through the contact intake.";
+                });
+            }
             document.querySelectorAll(".hover-sound").forEach((element) => {
                 element.addEventListener("mouseenter", function() {
                     audio.currentTime = 0;
                     audio.play().catch(() => {});
                 });
             });
+            setupContactRelay();
             updateClock();
             window.setInterval(updateClock, 1000);
         });

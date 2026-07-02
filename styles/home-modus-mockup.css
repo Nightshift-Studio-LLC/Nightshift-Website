@@ -713,6 +713,93 @@ h3 {
     grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.22fr);
 }
 
+.contact-grid.intake-grid {
+    grid-template-columns: 1fr;
+}
+
+.intake-panel {
+    max-width: none;
+}
+
+.intake-note {
+    margin-top: 6px;
+    max-width: 78ch;
+}
+
+.site-form,
+.website-intake-form {
+    display: grid;
+    gap: 16px;
+    margin-top: 18px;
+}
+
+.form-grid {
+    display: grid;
+    gap: 14px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.form-field {
+    display: grid;
+    gap: 8px;
+}
+
+.form-field span {
+    color: var(--muted);
+    font-family: var(--heading);
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.form-field input,
+.form-field select,
+.form-field textarea {
+    width: 100%;
+    border: 1px solid rgba(136, 168, 213, 0.22);
+    border-radius: 14px;
+    background: rgba(3, 7, 14, 0.72);
+    color: var(--text);
+    font: inherit;
+    line-height: 1.5;
+    padding: 12px 14px;
+}
+
+.form-field textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus {
+    border-color: rgba(125, 226, 255, 0.7);
+    box-shadow: 0 0 0 3px rgba(125, 226, 255, 0.12);
+    outline: none;
+}
+
+.form-field-wide,
+.form-actions {
+    max-width: 100%;
+}
+
+.form-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+}
+
+.form-submit-frame {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    border: 0;
+    opacity: 0;
+    pointer-events: none;
+}
+
 .hosting-grid {
     grid-template-columns: 1fr;
 }
@@ -2169,6 +2256,10 @@ h3 {
 
     .hero-copy .action-pill {
         width: auto;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
     }
 
     .devlog-meta .devlog-view-count {

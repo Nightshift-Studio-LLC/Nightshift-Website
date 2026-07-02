@@ -84,17 +84,116 @@
             </article>
         </section>
 
-        <section class="contact-grid" id="pricing-form">
-            <article class="contact-panel">
+        <section class="contact-grid intake-grid" id="pricing-form">
+            <article class="contact-panel intake-panel">
                 <p class="eyebrow">Questionnaire</p>
                 <h3>Request a build quote</h3>
-                <p>Drop your details and Nightshift will follow up with timing, scope, and the right tier for your project.</p>
-                <div class="section-wip"><h3>Form slot reserved</h3><p>Replace the placeholder embed with the live intake form when it is ready.</p></div>
-            </article>
-            <article class="contact-panel">
-                <p class="eyebrow">Form Surface</p>
-                <h3>Pending embed</h3>
-                <div class="form-frame"><iframe src="about:blank" title="Nightshift website questionnaire"></iframe></div>
+                <p>Share the practical details Nightshift needs to review fit, scope, timing, budget, and whether ongoing support is actually needed.</p>
+                <form class="website-intake-form" id="website-intake-form">
+                    <div class="form-grid">
+                        <label class="form-field">
+                            <span>Name</span>
+                            <input type="text" name="name" autocomplete="name" required>
+                        </label>
+                        <label class="form-field">
+                            <span>Email</span>
+                            <input type="email" name="email" autocomplete="email" required>
+                        </label>
+                        <label class="form-field">
+                            <span>Business / Project</span>
+                            <input type="text" name="business" required>
+                        </label>
+                        <label class="form-field">
+                            <span>Current URL</span>
+                            <input type="url" name="current_url" placeholder="https://">
+                        </label>
+                        <label class="form-field">
+                            <span>Project Type</span>
+                            <select name="project_type" required>
+                                <option value="">Select one</option>
+                                <option>Static website</option>
+                                <option>Wix website</option>
+                                <option>Web3 website</option>
+                                <option>Redesign</option>
+                                <option>Not sure yet</option>
+                            </select>
+                        </label>
+                        <label class="form-field">
+                            <span>Package Fit</span>
+                            <select name="package_fit" required>
+                                <option value="">Select one</option>
+                                <option>Starter Static ($950)</option>
+                                <option>Standard Static ($1,650)</option>
+                                <option>Enhanced Static ($2,800+)</option>
+                                <option>Wix Basic ($1,250)</option>
+                                <option>Wix Business ($2,250)</option>
+                                <option>Wix Advanced ($3,500+)</option>
+                                <option>Web3 Launch ($1,750)</option>
+                                <option>Web3 Community ($3,200)</option>
+                                <option>Web3 Protocol ($5,500+)</option>
+                                <option>Not sure yet</option>
+                            </select>
+                        </label>
+                        <label class="form-field">
+                            <span>Page Count</span>
+                            <select name="page_count" required>
+                                <option value="">Select one</option>
+                                <option>1-3 pages</option>
+                                <option>4-6 pages</option>
+                                <option>7-10 pages</option>
+                                <option>10+ pages</option>
+                                <option>Not sure yet</option>
+                            </select>
+                        </label>
+                        <label class="form-field">
+                            <span>Budget Range</span>
+                            <select name="budget" required>
+                                <option value="">Select one</option>
+                                <option>Under $1,000</option>
+                                <option>$1,000-$2,500</option>
+                                <option>$2,500-$5,000</option>
+                                <option>$5,000+</option>
+                                <option>Not sure yet</option>
+                            </select>
+                        </label>
+                        <label class="form-field">
+                            <span>Timeline</span>
+                            <select name="timeline" required>
+                                <option value="">Select one</option>
+                                <option>Rush, under 2 weeks</option>
+                                <option>2-4 weeks</option>
+                                <option>1-2 months</option>
+                                <option>Flexible</option>
+                            </select>
+                        </label>
+                        <label class="form-field">
+                            <span>Ongoing Support</span>
+                            <select name="support" required>
+                                <option value="">Select one</option>
+                                <option>No ongoing support</option>
+                                <option>Occasional one-off edits</option>
+                                <option>Priority Slot ($300/mo)</option>
+                                <option>Ops Retainer ($750/mo)</option>
+                                <option>Growth Desk ($1,500+/mo)</option>
+                                <option>Not sure yet</option>
+                            </select>
+                        </label>
+                    </div>
+                    <label class="form-field form-field-wide">
+                        <span>Project Summary</span>
+                        <textarea name="summary" rows="5" required></textarea>
+                    </label>
+                    <label class="form-field form-field-wide">
+                        <span>Content, Assets, Or Launch Blockers</span>
+                        <textarea name="assets_blockers" rows="4"></textarea>
+                    </label>
+                    <div class="form-actions">
+                        <button class="cta-btn primary hover-sound" type="submit">Submit Intake</button>
+                        <a class="cta-btn hover-sound" href="contact.html">Ask Before Submitting</a>
+                    </div>
+                    <p class="intake-note" id="website-intake-status" role="status">Submissions route through the Nightshift Google Forms intake pipeline.</p>
+                </form>
+                <iframe class="form-submit-frame" name="website-intake-target" title="Website intake submit target"></iframe>
             </article>
         </section>
 
@@ -121,12 +220,75 @@
                 if (!clock) return;
                 clock.textContent = new Date().toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", second: "2-digit", timeZone: "America/Chicago", timeZoneName: "short" });
             }
+            function setupWebsiteIntake() {
+                const intakeForm = document.getElementById("website-intake-form");
+                const status = document.getElementById("website-intake-status");
+                if (!intakeForm) return;
+                const googleFormUrl = "https://docs.google.com/forms/d/e/1FAIpQLSd4GVBHlfcea0tMCbXeEOZ_fKeg2no-WaAE_dK3PtITD8lQyg/formResponse";
+                const entryMap = {
+                    platform: "entry.1020741881",
+                    operatingSystem: "entry.684222502",
+                    page: "entry.532291390",
+                    description: "entry.1708193523",
+                    steps: "entry.1862425966"
+                };
+                intakeForm.addEventListener("submit", function(event) {
+                    event.preventDefault();
+                    if (!intakeForm.reportValidity()) return;
+
+                    const data = new FormData(intakeForm);
+                    const labelMap = {
+                        name: "Name",
+                        email: "Email",
+                        business: "Business / Project",
+                        current_url: "Current URL",
+                        project_type: "Project Type",
+                        package_fit: "Package Fit",
+                        page_count: "Page Count",
+                        budget: "Budget Range",
+                        timeline: "Timeline",
+                        support: "Ongoing Support",
+                        summary: "Project Summary",
+                        assets_blockers: "Content, Assets, Or Launch Blockers"
+                    };
+                    const payload = Object.entries(labelMap).map(([key, label]) => {
+                        const value = String(data.get(key) || "").trim();
+                        return `${label}: ${value || "Not provided"}`;
+                    }).join("\n");
+
+                    const relay = document.createElement("form");
+                    relay.action = googleFormUrl;
+                    relay.method = "POST";
+                    relay.target = "website-intake-target";
+                    relay.style.display = "none";
+                    const fields = {
+                        [entryMap.platform]: "Desktop",
+                        [entryMap.operatingSystem]: "Windows",
+                        [entryMap.page]: "Website Services Intake",
+                        [entryMap.description]: payload,
+                        [entryMap.steps]: "Submitted from the Nightshift website services intake form."
+                    };
+                    Object.entries(fields).forEach(([name, value]) => {
+                        const input = document.createElement("input");
+                        input.type = "hidden";
+                        input.name = name;
+                        input.value = value;
+                        relay.appendChild(input);
+                    });
+                    document.body.appendChild(relay);
+                    relay.submit();
+                    relay.remove();
+                    intakeForm.reset();
+                    if (status) status.textContent = "Intake sent. Nightshift will review scope and reply if the project fits current capacity.";
+                });
+            }
             document.querySelectorAll(".hover-sound").forEach((element) => {
                 element.addEventListener("mouseenter", function() {
                     audio.currentTime = 0;
                     audio.play().catch(() => {});
                 });
             });
+            setupWebsiteIntake();
             updateClock();
             window.setInterval(updateClock, 1000);
         });
