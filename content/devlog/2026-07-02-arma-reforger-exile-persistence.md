@@ -79,17 +79,22 @@ That is why the current pass is about culling dependencies where needed and repl
 
 The largest stride in that direction is the motorcycle.
 
-The starting point was an Adobe motorcycle model. That source was converted away from its original road-bike shape and pushed into a dirt bike direction so it can become a Nightshift-owned model tied to the new vehicle class. The vehicle pawn is already up to the point of vehicle possession testing. The next step is movement: sorting it out, tuning it, then expanding it into a more complete vehicle path.
+The starting point was an Adobe motorcycle model. That source was converted away from its original road-bike shape and pushed into a dirt bike direction so it can become a Nightshift-owned model tied to the new vehicle class.
+
+The model is not final yet. Some wires still need cleanup, several new body parts need another pass, the muffler needs refinement, handguards need to be added, and there should probably be a racing-livery version after UV and paint work. Some brake parts likely need to be doubled on one wheel, and the front tire should probably become slightly larger and thinner.
+
+But it is far enough along to start developing the new two-wheeled vehicle class in game, which is the actual priority. The vehicle pawn is already up to the point of vehicle possession testing. The next step is movement: sorting it out, tuning it, then expanding it into a playable vehicle path.
 
 The extension cord feature is also back in the project. It was ported forward from the older Exile work and is working now, though its final behavior may still change as the base and utility systems settle.
 
 :::gallery
 image|../../../images/afterdarkrp/Devlogs/6-27-26/exile-original-adobe-motorcycle.png|Original Adobe motorcycle model in Blender|The original Adobe motorcycle model before the conversion pass.
-image|../../../images/afterdarkrp/Devlogs/6-27-26/exile-dirtbike.png|Nightshift dirt bike model in Blender|The original bike is being converted into a Nightshift dirt bike that can support the new owned vehicle class.
+image|../../../images/afterdarkrp/Devlogs/6-27-26/exile-dirtbike.png|Nightshift dirt bike model in Blender|Derivative converted Nightshift dirt bike model for the new owned two-wheeled vehicle class.
+image|../../../images/afterdarkrp/Devlogs/6-27-26/exile-dirtbike-new-angle.png|Alternate view of the converted dirt bike|The new dirt bike direction is far enough along to support two-wheeled vehicle class development, even though cleanup, UVs, paint, handguards, brake details, and tire adjustments are still pending.
+image|../../../images/afterdarkrp/Devlogs/6-27-26/exile-motorcycle-workbench.png|Dirt bike placed in the Enfusion dev world|Placed vehicle class with the new dirt bike model imported for in-game development, with rigging, physics, and collision in place. UVs and materials are still pending.
 :::
 
 :::gallery
-image|../../../images/afterdarkrp/Devlogs/6-27-26/exile-motorcycle-workbench.png|Dirt bike placed in the Enfusion dev world|The new light motorcycle is placed in the dev world and is already far enough along for vehicle possession testing.
 image|../../../images/afterdarkrp/Devlogs/6-27-26/exile-extension-cord.png|Deployable extension cord in Workbench|The extension cord feature has been ported forward from Exile and is working, though behavior may still change.
 :::
 
