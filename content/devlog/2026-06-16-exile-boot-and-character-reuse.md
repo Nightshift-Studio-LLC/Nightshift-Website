@@ -34,6 +34,8 @@ That matters because it turns the recovered work from "expensive archive materia
 
 For anyone who wants to see where that thread is sitting publicly right now, the current **Exile Reforged** subsite is live here: [Exile Reforged](/exile/).
 
+Related archive: the broader standalone target is documented in [Exile Reforged - Long-Term Standalone Vision](2026-02-12-combat-tempo.html).
+
 ## Exile is also the proving ground for SPEAR
 
 The other important part of this project is that Exile is not only being revived for its own sake. It is also effectively the **testing ground for SPEAR**.

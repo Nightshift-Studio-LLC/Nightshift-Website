@@ -28,6 +28,8 @@ That matters because Exile is not useful as a museum piece. It is useful if it c
 
 The main focus right now is consolidation: taking the addons and mod dependencies that helped validate the idea, then replacing or reducing them with Nightshift-owned code, content, and systems wherever that makes sense.
 
+Related archive: the broader standalone target is documented in [Exile Reforged - Long-Term Standalone Vision](2026-02-12-combat-tempo.html).
+
 :::gallery
 image|../../../images/afterdarkrp/Devlogs/6-27-26/exile-recovered.png|Recovered Exile project files from 2024|Recovered 2024 project files from the earlier Exile work, now being sorted into the current active survival-system pass.
 :::

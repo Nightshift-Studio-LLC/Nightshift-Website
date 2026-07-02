@@ -278,6 +278,8 @@ const readPosts = async () => {
             excerpt: data.excerpt,
             tags: Array.isArray(data.tags) ? data.tags : [],
             hero: data.hero || "",
+            heroLabel: data.heroLabel || "",
+            pitch: data.pitch || "",
             html: marked.parse(renderMediaBlocks(content, file)),
         });
     }
@@ -330,6 +332,8 @@ ${softwareMarquee()}
             <div class="footer-bottom"><div class="social-row"><a class="action-pill hover-sound" href="https://www.youtube.com/@nstx" target="_blank" rel="noopener noreferrer">YouTube</a></div><p class="footer-note">Copyright 2026 Nightshift. All rights reserved.</p></div>
         </footer>`;
 
+const styleVersion = "20260702-devlog-spacing";
+
 const layout = ({ title, body, assetPrefix, pagePrefix, readout }) => `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -340,7 +344,7 @@ const layout = ({ title, body, assetPrefix, pagePrefix, readout }) => `<!DOCTYPE
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="${assetPrefix}/images/icons/nightshift.ico">
-    <link rel="stylesheet" href="${assetPrefix}/styles/home-modus-mockup.css">
+    <link rel="stylesheet" href="${assetPrefix}/styles/home-modus-mockup.css?v=${styleVersion}">
     <script defer src="/scripts/analytics.js" data-analytics-endpoint="/api/analytics"></script>
 </head>
 <body>
@@ -481,7 +485,21 @@ const renderIndex = (posts) => {
 const renderPost = (post) => {
     const tags = post.tags.length ? `<div class="tag-row">${post.tags.map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`).join("")}</div>` : "";
     const heroSrc = resolveHeroSrc(post.hero, postsDir);
-    const hero = heroSrc ? `<div class="media-frame devlog-hero"><img src="${escapeHtml(heroSrc)}" alt="${escapeHtml(post.title)}"></div>` : "";
+    const heroLabel = post.heroLabel
+        ? `<span class="placeholder-art-label">${escapeHtml(post.heroLabel)}</span>`
+        : "";
+    const heroClasses = post.heroLabel
+        ? "media-frame devlog-hero placeholder-art"
+        : "media-frame devlog-hero";
+    const hero = heroSrc ? `<div class="${heroClasses}"><img src="${escapeHtml(heroSrc)}" alt="${escapeHtml(post.title)}">${heroLabel}</div>` : "";
+    const pitch = post.pitch
+        ? `
+        <section class="panel devlog-pitch-panel">
+            <p class="eyebrow">Standalone vision</p>
+            <h2>Standalone elevator pitch</h2>
+            <p>${escapeHtml(post.pitch)}</p>
+        </section>`
+        : "";
     const projectLabel = post.game === "AfterDarkRP"
         ? `<a class="inline-link hover-sound" href="/afterdark/">${escapeHtml(post.game)}</a>`
         : escapeHtml(post.game);
@@ -517,6 +535,7 @@ const renderPost = (post) => {
                 </div>
             </aside>
         </section>
+        ${pitch}
         <section class="panel feature-panel">
             <div class="panel-heading"><p class="eyebrow">Field Notes</p><h2>Entry body</h2></div>
             <div class="devlog-post-body">${post.html}${signoff}</div>

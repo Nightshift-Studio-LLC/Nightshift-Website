@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nightshift | Exile Reforged - Updated Vision</title>
+    <title>Nightshift | Exile Reforged - Long-Term Standalone Vision</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="../../../images/icons/nightshift.ico">
-    <link rel="stylesheet" href="../../../styles/home-modus-mockup.css">
+    <link rel="stylesheet" href="../../../styles/home-modus-mockup.css?v=20260702-devlog-spacing">
     <script defer src="/scripts/analytics.js" data-analytics-endpoint="/api/analytics"></script>
 </head>
 <body>
@@ -31,11 +31,11 @@
         <section class="page-hero-grid">
             <article class="page-hero-panel">
                 <p class="eyebrow">Devlog / entry</p>
-                <h1 class="page-title">Exile Reforged - Updated Vision</h1>
-                <p class="page-lede">Exile Reforged is a persistent survival sandbox where players loot, trade, raid, build camps, and accumulate wealth during a monthly survival season, then choose whether to risk those assets in recurring faction wars.</p>
+                <h1 class="page-title">Exile Reforged - Long-Term Standalone Vision</h1>
+                <p class="page-lede">This older Exile Reforged vision describes the long-term standalone survival sandbox direction, while the current project is proving the foundation through Arma Reforger and hosted server work first.</p>
                 <div class="hero-actions"><a class="cta-btn hover-sound" href="../index.html">Back To Devlog</a></div>
                 <div class="tag-row"><span class="tag">Exile Reforged</span><span class="tag">Survival</span><span class="tag">Economy</span><span class="tag">Factions</span><span class="tag">Warfare</span></div>
-                <div class="media-frame devlog-hero"><img src="../../../images/games/spear/spear-concept.png" alt="Exile Reforged - Updated Vision"></div>
+                <div class="media-frame devlog-hero placeholder-art"><img src="../../../images/games/spear/exile-reforged-spear-placeholder.png" alt="Exile Reforged - Long-Term Standalone Vision"><span class="placeholder-art-label">AI Placeholder Art</span></div>
             </article>
             <aside class="page-hero-panel">
                 <p class="eyebrow">Entry metadata</p>
@@ -56,10 +56,19 @@
                 </div>
             </aside>
         </section>
+        
+        <section class="panel devlog-pitch-panel">
+            <p class="eyebrow">Standalone vision</p>
+            <h2>Standalone elevator pitch</h2>
+            <p>In its long-term standalone form, Exile Reforged is a persistent survival sandbox where players loot, trade, raid, build camps, and accumulate wealth during a monthly survival season, then choose whether to risk those assets in recurring faction wars whose outcomes create lasting history, reputation, and strategic consequences for the world.</p>
+        </section>
         <section class="panel feature-panel">
             <div class="panel-heading"><p class="eyebrow">Field Notes</p><h2>Entry body</h2></div>
-            <div class="devlog-post-body"><h2>High concept</h2>
-<p>Exile Reforged is a persistent survival sandbox inspired by:</p>
+            <div class="devlog-post-body"><h2>Current context</h2>
+<p>This post is a long-term standalone vision document, not the current implementation plan.</p>
+<p>The active Exile Reforged work is being proven inside Arma Reforger and the Enfusion toolchain first: persistence, deployment, loot, camps, missions, economy, and faction structure. That hosted server path is the practical validation layer. If the loop earns enough traction, the broader standalone survival sandbox described here becomes an earned expansion instead of the first leap.</p>
+<h2>High concept</h2>
+<p>The long-term standalone version of Exile Reforged is a persistent survival sandbox inspired by:</p>
 <ul>
 <li>Arma Reforger</li>
 <li>Arma 3 Exile</li>
@@ -68,8 +77,8 @@
 <li>Fallout 76</li>
 <li>Foxhole</li>
 </ul>
-<p>The goal is to create a world where players spend most of their time surviving, looting, trading, building camps, and accumulating assets, but periodically choose to risk those assets in larger faction conflicts.</p>
-<h2>Core philosophy</h2>
+<p>The goal is to create a world where players spend most of their time surviving, looting, trading, building camps, and accumulating assets, but periodically choose to risk those assets in larger faction conflicts. The current Arma Reforger project is the smaller, testable path toward that larger shape.</p>
+<h2>Core philosophy and loop</h2>
 <p>The game is not Rust.</p>
 <p>The economy is not driven by:</p>
 <ul>
@@ -87,49 +96,15 @@
 <li>Invest</li>
 </ul>
 <p>The world revolves around acquisition, logistics, and risk.</p>
-<h2>The survival layer</h2>
-<p>The survival game exists at all times.</p>
-<p>Players:</p>
+<p>The survival layer should work even if a player never participates in a war. Players scavenge towns, loot military zones, trade valuables, maintain vehicles, establish camps, build relationships, form groups, and raid rivals. The larger faction layer is supposed to sit on top of that survival game, not replace it.</p>
+<h2>Progression arc</h2>
 <ul>
-<li>Scavenge towns</li>
-<li>Loot military zones</li>
-<li>Trade valuables</li>
-<li>Maintain vehicles</li>
-<li>Establish camps</li>
-<li>Build relationships</li>
-<li>Form groups</li>
-<li>Raid rivals</li>
-</ul>
-<p>The world should be enjoyable even if a player never participates in a war.</p>
-<h2>Progression</h2>
-<h3>Early game</h3>
-<p>Spawn -&gt; scavenge -&gt; find equipment -&gt; sell loot -&gt; buy gear.</p>
-<p>Focus:</p>
-<ul>
-<li>Survival</li>
-<li>Learning the map</li>
-<li>Building wealth</li>
-</ul>
-<h3>Mid game</h3>
-<p>Acquire vehicle -&gt; build camp -&gt; expand storage -&gt; develop income sources.</p>
-<p>Focus:</p>
-<ul>
-<li>Logistics</li>
-<li>Territory awareness</li>
-<li>Resource management</li>
-</ul>
-<h3>Late game</h3>
-<p>Stockpile resources -&gt; recruit members -&gt; expand infrastructure -&gt; prepare for war.</p>
-<p>Focus:</p>
-<ul>
-<li>Organization</li>
-<li>Planning</li>
-<li>Strategic preparation</li>
+<li>Early game: spawn, scavenge, find equipment, sell loot, buy gear, learn the map, and start building wealth.</li>
+<li>Mid game: acquire vehicles, build camps, expand storage, develop income sources, and start caring about territory awareness.</li>
+<li>Late game: stockpile resources, recruit members, expand infrastructure, and prepare for larger conflict.</li>
 </ul>
 <h2>Camps and fortifications</h2>
-<p>Players eventually stop rebuilding from scratch after every death.</p>
-<p>Camps become the long-term progression layer.</p>
-<p>Examples:</p>
+<p>Camps become the long-term progression layer so players are not always rebuilding from zero after every death.</p>
 <ul>
 <li>Safehouses</li>
 <li>Hidden caches</li>
@@ -139,138 +114,29 @@
 <li>Forward operating bases</li>
 </ul>
 <p>The camp represents accumulated effort and investment.</p>
-<h2>Death and loss</h2>
-<p>The game avoids both extremes.</p>
-<p>Too harsh:</p>
+<h2>Death, loss, and raiding</h2>
+<p>The game avoids both extremes: deaths should matter, but a bad night should not delete a player&#39;s entire reason to return.</p>
+<p>Losses are layered by scale:</p>
 <ul>
-<li>Die</li>
-<li>Lose everything</li>
-<li>Quit</li>
+<li>Common losses: equipment, vehicles, cargo, and supplies.</li>
+<li>Rare major losses: large camp raids, FOB destruction, and strategic asset loss.</li>
+<li>Very rare catastrophic losses: organizational collapse, territory loss, or campaign defeat.</li>
 </ul>
-<p>Too safe:</p>
+<p>Raiding exists, but the goal is not to delete another player&#39;s existence. A successful raid should damage economic and military capability by stealing fuel, ammunition, vehicles, supply reserves, or rare equipment. That creates meaningful conflict without forcing constant full resets.</p>
+<h2>Monthly cycle and war season</h2>
+<p>The long-term structure is a monthly rhythm:</p>
 <ul>
-<li>Die</li>
-<li>Lose nothing</li>
-<li>Nothing matters</li>
+<li>Weeks 1-3: loot, trade, build, recruit, raid, expand, grow the economy, and prepare.</li>
+<li>Week 4: war season unlocks faction enlistment, strategic objectives, territory control, military operations, and campaign scoring.</li>
 </ul>
-<p>Instead, losses are layered by scale.</p>
-<p>Common losses:</p>
-<ul>
-<li>Equipment</li>
-<li>Vehicles</li>
-<li>Cargo</li>
-<li>Supplies</li>
-</ul>
-<p>Rare major losses:</p>
-<ul>
-<li>Large camp raids</li>
-<li>FOB destruction</li>
-<li>Strategic asset loss</li>
-</ul>
-<p>Very rare catastrophic losses:</p>
-<ul>
-<li>Organizational collapse</li>
-<li>Territory loss</li>
-<li>Campaign defeat</li>
-</ul>
-<p>These events become memorable stories rather than routine occurrences.</p>
-<h2>Raiding</h2>
-<p>Raiding exists, but the goal is not to delete another player&#39;s existence.</p>
-<p>The goal is to damage their economic and military capability.</p>
-<p>A successful raid might steal:</p>
-<ul>
-<li>Fuel</li>
-<li>Ammunition</li>
-<li>Vehicles</li>
-<li>Supply reserves</li>
-<li>Rare equipment</li>
-</ul>
-<p>This creates meaningful conflict without forcing constant full resets.</p>
-<h2>The monthly cycle</h2>
-<h3>Weeks 1-3: preparation</h3>
-<p>Players:</p>
-<ul>
-<li>Loot</li>
-<li>Trade</li>
-<li>Build</li>
-<li>Recruit</li>
-<li>Raid</li>
-<li>Expand</li>
-</ul>
-<p>The economy grows.</p>
-<p>Resources accumulate.</p>
-<p>Groups prepare.</p>
-<h3>Week 4: war season</h3>
-<p>The survival world remains active.</p>
-<p>However, additional systems become available:</p>
-<ul>
-<li>Faction enlistment</li>
-<li>Strategic objectives</li>
-<li>Territory control</li>
-<li>Military operations</li>
-<li>Campaign scoring</li>
-</ul>
-<p>War is an opportunity, not a mandatory mode switch.</p>
-<h2>War participation</h2>
-<p>Players choose their level of involvement.</p>
-<p>Civilian roles:</p>
-<ul>
-<li>Trader</li>
-<li>Mechanic</li>
-<li>Smuggler</li>
-<li>Salvager</li>
-<li>Transport operator</li>
-</ul>
-<p>Military roles:</p>
-<ul>
-<li>Infantry</li>
-<li>Recon</li>
-<li>Logistics</li>
-<li>Armor</li>
-<li>Command</li>
-</ul>
-<p>A player can contribute resources without ever joining the front line.</p>
-<h2>The Foxhole problem</h2>
-<p>Traditional war games often suffer from:</p>
-<ul>
-<li>Win war</li>
-<li>Server resets</li>
-<li>Nothing persists</li>
-</ul>
-<p>Exile Reforged aims to solve this.</p>
-<p>Wars create lasting consequences.</p>
+<p>War is an opportunity, not a mandatory mode switch. Civilian roles like trader, mechanic, smuggler, salvager, and transport operator can matter alongside infantry, recon, logistics, armor, and command. A player should be able to contribute resources without ever joining the front line.</p>
 <h2>Persistent history</h2>
-<p>The world remembers.</p>
-<p>Examples:</p>
-<p>Platoon records:</p>
-<ul>
-<li>Task Force Raven</li>
-<li>Founded: 2028</li>
-<li>Wars won: 7</li>
-<li>Wars lost: 2</li>
-<li>Territories captured: 143</li>
-</ul>
-<p>Veteran status:</p>
-<ul>
-<li>Campaign medals</li>
-<li>Service history</li>
-<li>Unit reputation</li>
-<li>Historical achievements</li>
-</ul>
+<p>Traditional war games often suffer from a reset problem: win war, server resets, nothing persists. Exile Reforged&#39;s standalone vision is to make wars create lasting consequences.</p>
+<p>The world should remember platoon records, campaign medals, service history, unit reputation, historical achievements, wars won, wars lost, and territories captured.</p>
 <p>The goal is for players to develop identity over months or years.</p>
 <h2>Long-term vision</h2>
-<p>The project evolves naturally:</p>
-<ul>
-<li>Survival sandbox</li>
-<li>Economy</li>
-<li>Camps</li>
-<li>Faction organization</li>
-<li>Seasonal campaigns</li>
-<li>Persistent strategic warfare</li>
-</ul>
-<p>Rather than launching as a full-scale war game, it begins as a compelling survival experience and gradually expands into a larger conflict ecosystem.</p>
-<h2>The elevator pitch</h2>
-<p>Exile Reforged is a persistent survival sandbox where players loot, trade, raid, build camps, and accumulate wealth during a monthly survival season, then choose whether to risk those assets in recurring faction wars whose outcomes create lasting history, reputation, and strategic consequences for the world.</p>
+<p>The project evolves naturally from survival sandbox to economy, camps, faction organization, seasonal campaigns, and persistent strategic warfare.</p>
+<p>Rather than launching as a full-scale war game, it begins as a compelling survival experience and expands only when the foundation proves itself.</p>
 
             <div class="devlog-signoff">
                 <p>Signed, <strong>Nightshift</strong></p>
