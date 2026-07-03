@@ -313,26 +313,55 @@ const groupPostsByMonth = (posts) => {
     return groups;
 };
 
+const softwareItems = [
+    ["Unreal", "https://www.unrealengine.com/", "/images/icons/software/unreal-engine.svg"],
+    ["Source 2", "https://developer.valvesoftware.com/wiki/Source_2", "/images/icons/software/source-2.svg"],
+    ["Enfusion", "https://enfusionengine.com/", "/images/icons/software/enfusion.svg"],
+    ["RAGE", "https://www.rockstargames.com/", "/images/icons/software/rage.svg"],
+    ["Blender", "https://www.blender.org/", "/images/icons/software/blender.svg"],
+    ["Adobe 3D", "https://www.adobe.com/products/substance3d.html", "/images/icons/software/adobe-3d.svg"],
+    ["Affinity Suite", "https://affinity.serif.com/", "/images/icons/software/affinity-suite.png"],
+    ["Gaea 2.0", "https://quadspinner.com/gaea/", "/images/icons/software/gaea.png"],
+    ["CC5", "https://www.reallusion.com/character-creator/", "/images/icons/software/cc5.png"],
+    ["iClone 8", "https://www.reallusion.com/iclone/", "/images/icons/software/iclone-8.png"],
+    ["Marvelous Designer", "https://www.marvelousdesigner.com/", "/images/icons/software/marvelous-designer.png"],
+    ["Ornatrix", "https://ephere.com/plugins/ornatrix/", "/images/icons/software/ornatrix.png"],
+    ["FruityLoops", "https://www.image-line.com/fl-studio/", "/images/icons/software/fl-studio.png"],
+    ["VS Code", "https://code.visualstudio.com/", "/images/icons/software/vs-code.png"],
+    ["Visual Studio", "https://visualstudio.microsoft.com/", "/images/icons/software/visual-studio.svg"],
+    ["GitHub", "https://github.com/", "/images/icons/software/github.svg"],
+    ["Git LFS", "https://git-lfs.com/", "/images/icons/software/git-lfs.svg"],
+    ["GitHub Pages", "https://pages.github.com/", "/images/icons/software/github-pages.svg"],
+    ["Wix", "https://www.wix.com/", "/images/icons/software/wix.svg"],
+    ["Stripe", "https://stripe.com/", "/images/icons/software/stripe.svg"],
+    ["Obsidian", "https://obsidian.md/", "/images/icons/software/obsidian.svg"],
+    ["Codex", "https://openai.com/codex/", "/images/icons/software/openai.png"],
+];
+
+const softwareMarqueeItems = () => softwareItems
+    .map(([label, href, icon]) => `<a class="software-marquee-item hover-sound" href="${href}" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="${icon}" alt="" aria-hidden="true" loading="lazy"><span>${escapeHtml(label)}</span></a>`)
+    .join("");
+
 const softwareMarquee = () => `
             <section class="software-marquee-section" aria-label="Software used by Nightshift">
                 <div class="software-marquee"><div class="software-marquee-track">
-                    <span>Unreal / Source 2 / Enfusion / RAGE</span><span>Blender</span><span>Adobe Suite</span><span>Adobe 3D</span><span>Affinity Suite</span><span>Gaea 2.0</span><span>CC5</span><span>iClone 8</span><span>Marvelous Designer</span><span>Ornatrix</span><span>FruityLoops</span><span>VS Code</span><span>Visual Studio</span><span>GitHub</span><span>Git LFS</span><span>Git Pages</span><span>Wix</span><span>Codex</span>
-                    <span>Unreal / Source 2 / Enfusion / RAGE</span><span>Blender</span><span>Adobe Suite</span><span>Adobe 3D</span><span>Affinity Suite</span><span>Gaea 2.0</span><span>CC5</span><span>iClone 8</span><span>Marvelous Designer</span><span>Ornatrix</span><span>FruityLoops</span><span>VS Code</span><span>Visual Studio</span><span>GitHub</span><span>Git LFS</span><span>Git Pages</span><span>Wix</span><span>Codex</span>
+                    <div class="software-marquee-group">${softwareMarqueeItems()}</div>
+                    <div class="software-marquee-group" aria-hidden="true">${softwareMarqueeItems()}</div>
                 </div></div>
             </section>`;
 
-const footerMarkup = (pagePrefix) => `
+const footerMarkup = (_pagePrefix) => `
         <footer class="site-footer panel">
 ${softwareMarquee()}
             <div class="footer-grid">
-                <div class="footer-column"><span>Primary routes</span><a class="hover-sound" href="${pagePrefix}/home.html">Home</a><a class="hover-sound" href="${pagePrefix}/games.html">Games</a><a class="hover-sound" href="${pagePrefix}/studio.html">Studio</a><a class="hover-sound" href="${pagePrefix}/contact.html">Contact</a></div>
-                <div class="footer-column"><span>Public records</span><a class="hover-sound" href="${pagePrefix}/DevLog/index.html">Devlog</a><a href="https://www.epicgames.com/site/en-US/privacypolicy" target="_blank" rel="noopener noreferrer">Epic Privacy Policy</a><a href="#">Nightshift Privacy Policy</a><a href="#">Applicant Privacy Policy</a></div>
+                <div class="footer-column"><span>Primary routes</span><a class="hover-sound" href="/">Home</a><a class="hover-sound" href="/pages/games.html">Games</a><a class="hover-sound" href="/pages/studio.html">Studio</a><a class="hover-sound" href="/pages/contact.html">Contact</a></div>
+                <div class="footer-column"><span>Public records</span><a class="hover-sound" href="/pages/DevLog/index.html">Devlog</a><a href="https://www.epicgames.com/site/en-US/privacypolicy" target="_blank" rel="noopener noreferrer">Epic Privacy Policy</a><a href="#">Nightshift Privacy Policy</a><a href="#">Applicant Privacy Policy</a></div>
                 <div class="footer-column"><span>External surfaces</span><a href="#">Press Kit</a><a href="#">Brand Assets</a><a href="#">Careers</a><a href="#">Community</a></div>
             </div>
-            <div class="footer-bottom"><div class="social-row"><a class="action-pill hover-sound" href="https://www.youtube.com/@nstx" target="_blank" rel="noopener noreferrer">YouTube</a></div><p class="footer-note">Copyright 2026 Nightshift. All rights reserved.</p></div>
+            <div class="footer-bottom"><div class="social-row"><a class="action-pill hover-sound" href="https://www.youtube.com/@nstx" target="_blank" rel="noopener noreferrer">YouTube</a><a class="action-pill primary hover-sound" href="/pages/Studio/Donations.html">Support the studio</a></div><p class="footer-note">Copyright 2026 Nightshift. All rights reserved.</p></div>
         </footer>`;
 
-const styleVersion = "20260702-devlog-spacing";
+const styleVersion = "20260702-footer-universal";
 
 const layout = ({ title, body, assetPrefix, pagePrefix, readout }) => `<!DOCTYPE html>
 <html lang="en">

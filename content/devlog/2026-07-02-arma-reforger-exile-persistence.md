@@ -18,7 +18,7 @@ hero: ../../../images/afterdarkrp/Devlogs/6-27-26/exile-dirtbike.png
 
 This started as a short two-week sprint break from AfterDark to see how far we could get in Exile Reforged / Homefront.
 
-That break turned into a useful checkpoint.
+That break turned into a useful checkpoint, and one of the real solves from the two-week pass was persistence.
 
 The first recovery pass was about proving the project could come back to life at all. The next pass has been more useful: getting Exile back into a state where the major survival-service pieces can be reasoned about again without pretending everything is final.
 
@@ -35,7 +35,7 @@ image|../../../images/afterdarkrp/Devlogs/6-27-26/exile-recovered.png|Recovered 
 :::
 
 :::youtube
-https://youtu.be/GEN86QlmDo4?si=NmIMD6J7pwHbmHlO|Arma Reforger - Persistence|Short Exile Reforged persistence preview from the current recovery checkpoint.
+https://youtu.be/GEN86QlmDo4?si=NmIMD6J7pwHbmHlO|Arma Reforger - Persistence|Short Exile Reforged persistence proof from the two-week recovery pass, solving one of the original project's major blockers.
 :::
 
 ## What this checkpoint means
@@ -65,7 +65,7 @@ That is a much better place to pause than the earlier recovery state. The projec
 
 The important part of this checkpoint is that the work is no longer only theoretical or source-side.
 
-The live loop has been brought back into working shape: death, deployment, respawn, loadout return, faction continuity, inventory behavior, and persistence are all moving through the test path now. That changes the update from "the project has promising scaffolding" to "the recovered project is behaving like an actual survival loop again."
+The live loop has been brought back into working shape: death, deployment, respawn, loadout return, faction continuity, inventory behavior, and persistence are all moving through the test path now. Persistence was one of the original project's major blockers, so getting it working inside this two-week recovery window changes the update from "the project has promising scaffolding" to "the recovered project is behaving like an actual survival loop again."
 
 That is the point of the video and the checkpoint. Exile is not just recovered archive material anymore. It is back in a state where the core systems can be played, watched, and pushed forward from a working baseline.
 
