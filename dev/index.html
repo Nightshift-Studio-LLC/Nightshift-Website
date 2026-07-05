@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="../images/icons/nightshift.ico">
-    <link rel="stylesheet" href="../styles/home-modus-mockup.css?v=20260702-footer-universal">
+    <link rel="stylesheet" href="../styles/home-modus-mockup.css?v=20260703-pixel-trials-audio">
     <script defer src="/scripts/analytics.js" data-analytics-endpoint="/api/analytics"></script>
 </head>
 <body>
@@ -20,79 +20,64 @@
             <a href="/" class="hover-sound">Home</a>
             <a href="../pages/games.html" class="hover-sound">Games</a>
             <a href="../pages/studio.html" class="hover-sound">Studio</a>
-            <a href="../pages/DevLog/index.html" class="hover-sound active">Devlog</a>
+            <a href="../pages/DevLog/index.html" class="hover-sound">Devlog</a>
             <a href="../pages/contact.html" class="hover-sound">Contact</a>
         </nav>
-        <div class="topbar-readout"><span>Development Feed</span><strong id="mockup-clock">00:00:00 CST</strong></div>
+        <div class="topbar-readout"><span>Feature Lab</span><strong id="mockup-clock">00:00:00 CST</strong></div>
     </header>
 
     <main class="shell page-shell">
-        <section class="page-hero-grid">
-            <article class="page-hero-panel">
-                <p class="eyebrow">Development / workshop</p>
-                <h1 class="page-title">Progress updates from the Nightshift workshop.</h1>
-                <p class="page-lede">This surface tracks milestones, tooling experiments, and production learnings as Nightshift moves current projects toward stronger public-facing documentation.</p>
-            </article>
-            <aside class="page-hero-panel">
-                <p class="eyebrow">Current themes</p>
-                <div class="stack-list">
-                    <div><span>Loop tuning</span><strong>Combat cadence and encounter pressure</strong></div>
-                    <div><span>World work</span><strong>Traversal rhythm and hub lighting</strong></div>
-                    <div><span>Support systems</span><strong>Audio tension and progression gates</strong></div>
-                </div>
-            </aside>
-        </section>
         <section class="panel notes-panel donation-feed-panel" aria-labelledby="donation-feed-title">
             <div class="donation-feed-header">
                 <div class="panel-heading">
-                    <p class="eyebrow">Donation feed / Stripe rail</p>
-                    <h2 id="donation-feed-title">Open support queue</h2>
-                    <p class="panel-copy">A dev-facing funding feed for the practical needs that can move Nightshift faster right now. Stripe handles the live donation rail; this page keeps the current targets visible.</p>
+                    <p class="eyebrow">Internal component / Stripe rail</p>
+                    <h2 id="donation-feed-title">Donation feed section prototype</h2>
+                    <p class="panel-copy">This back page is only for developing and checking the donation feed UI before it moves to the public support surface. The Stripe link mirrors the current support-page button configuration.</p>
                 </div>
                 <div class="donation-feed-status">
-                    <span>Payment surface</span>
-                    <strong>Hosted Stripe donation page</strong>
+                    <span>Component state</span>
+                    <strong>Prototype rail wired to Stripe</strong>
                 </div>
             </div>
             <div class="donation-feed-grid">
-                <ul class="donation-feed-list" aria-label="Current donation targets">
+                <ul class="donation-feed-list" aria-label="Donation feed prototype rows">
                     <li class="donation-feed-item">
-                        <span>Active</span>
+                        <span>Primary</span>
                         <div>
-                            <strong>Motion capture buildout</strong>
-                            <p>Cameras, IMU expansion, calibration time, cleanup passes, and test capture work for internal animation and prototype production.</p>
+                            <strong>Featured support target</strong>
+                            <p>Primary row treatment for the highest-priority donation message on the public support page.</p>
                         </div>
-                        <b class="donation-feed-amount">Priority 01</b>
+                        <b class="donation-feed-amount">Slot 01</b>
                     </li>
                     <li class="donation-feed-item">
-                        <span>Active</span>
+                        <span>Secondary</span>
                         <div>
-                            <strong>Server and infrastructure runway</strong>
-                            <p>Local test capacity now, cleaner separation between development and live service hosting when public traffic needs it.</p>
+                            <strong>Supporting target row</strong>
+                            <p>Secondary message slot for a narrower funding need, status note, or short operational update.</p>
                         </div>
-                        <b class="donation-feed-amount">Priority 02</b>
+                        <b class="donation-feed-amount">Slot 02</b>
                     </li>
                     <li class="donation-feed-item">
                         <span>Queued</span>
                         <div>
-                            <strong>Software seats and production upgrades</strong>
-                            <p>Marvelous Designer, Ornatrix, and other license upgrades that become necessary as Nightshift grows beyond solo indie tooling.</p>
+                            <strong>Deferred support row</strong>
+                            <p>Lower-priority row state for future support targets that should stay visible without competing with the primary call to action.</p>
                         </div>
-                        <b class="donation-feed-amount">Priority 03</b>
+                        <b class="donation-feed-amount">Slot 03</b>
                     </li>
                 </ul>
-                <aside class="donation-feed-meta" aria-label="Donation feed status">
+                <aside class="donation-feed-meta" aria-label="Donation feed prototype status">
                     <div>
-                        <span>Feed mode</span>
-                        <strong>Manual public update</strong>
+                        <span>Page role</span>
+                        <strong>Internal feature development</strong>
                     </div>
                     <div>
-                        <span>Donor privacy</span>
-                        <strong>No names published here</strong>
+                        <span>Public copy</span>
+                        <strong>Draft outside this page</strong>
                     </div>
                     <div>
-                        <span>Last draft update</span>
-                        <strong>July 2, 2026</strong>
+                        <span>Stripe source</span>
+                        <strong>Support page donation URL</strong>
                     </div>
                     <div class="hero-actions">
                         <a class="cta-btn primary hover-sound donation-cta-stripe" href="https://donate.stripe.com/cNi5kC2Xi5rc0SrbkG9R600" target="_blank" rel="noopener noreferrer">Donate with Stripe</a>
@@ -101,42 +86,60 @@
                 </aside>
             </div>
         </section>
-        <section class="surface-grid">
-            <article class="surface-card">
-                <p class="eyebrow">Current Focus</p>
-                <h3>What is being worked on now</h3>
-                <ul class="list"><li>Combat loop tuning and cadence.</li><li>World traversal and encounter rhythm.</li><li>Lighting pass for key hubs.</li></ul>
-            </article>
-            <article class="surface-card">
-                <p class="eyebrow">Latest Experiments</p>
-                <h3>What is being tested</h3>
-                <ul class="list"><li>AI reaction timing and pressure curves.</li><li>Progression gates tied to world events.</li><li>Audio layers for tension and release.</li></ul>
-            </article>
-            <article class="surface-card">
-                <p class="eyebrow">Motion Test</p>
-                <h3>Starfield tracer pass</h3>
-                <p>A contained dev surface for trying slow vertical star movement, subtle tracer streaks, and an occasional pulse spin.</p>
-                <div class="hero-actions"><a class="cta-btn primary hover-sound" href="../pages/dev-starfield.html">Open Starfield Test</a></div>
-            </article>
-        </section>
-        <section class="panel notes-panel">
-            <div class="section-wip"><h2>Devlog archive absorbed into the main feed</h2><p class="muted">This page now acts as a secondary workshop brief. For the full public archive, use the main devlog index and individual post surfaces.</p></div>
-            <div class="hero-actions"><a class="cta-btn primary hover-sound" href="../pages/DevLog/index.html">Open Devlog Index</a></div>
-        </section>
-        <footer class="site-footer panel">
-            <section class="software-marquee-section" aria-label="Software used by Nightshift">
-                <div class="software-marquee"><div class="software-marquee-track">
-                    <div class="software-marquee-group"><a class="software-marquee-item hover-sound" href="https://www.unrealengine.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/unreal-engine.svg" alt="" aria-hidden="true" loading="lazy"><span>Unreal</span></a><a class="software-marquee-item hover-sound" href="https://developer.valvesoftware.com/wiki/Source_2" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/source-2.svg" alt="" aria-hidden="true" loading="lazy"><span>Source 2</span></a><a class="software-marquee-item hover-sound" href="https://enfusionengine.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/enfusion.svg" alt="" aria-hidden="true" loading="lazy"><span>Enfusion</span></a><a class="software-marquee-item hover-sound" href="https://www.rockstargames.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/rage.svg" alt="" aria-hidden="true" loading="lazy"><span>RAGE</span></a><a class="software-marquee-item hover-sound" href="https://www.blender.org/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/blender.svg" alt="" aria-hidden="true" loading="lazy"><span>Blender</span></a><a class="software-marquee-item hover-sound" href="https://www.adobe.com/products/substance3d.html" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/adobe-3d.svg" alt="" aria-hidden="true" loading="lazy"><span>Adobe 3D</span></a><a class="software-marquee-item hover-sound" href="https://affinity.serif.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/affinity-suite.png" alt="" aria-hidden="true" loading="lazy"><span>Affinity Suite</span></a><a class="software-marquee-item hover-sound" href="https://quadspinner.com/gaea/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/gaea.png" alt="" aria-hidden="true" loading="lazy"><span>Gaea 2.0</span></a><a class="software-marquee-item hover-sound" href="https://www.reallusion.com/character-creator/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/cc5.png" alt="" aria-hidden="true" loading="lazy"><span>CC5</span></a><a class="software-marquee-item hover-sound" href="https://www.reallusion.com/iclone/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/iclone-8.png" alt="" aria-hidden="true" loading="lazy"><span>iClone 8</span></a><a class="software-marquee-item hover-sound" href="https://www.marvelousdesigner.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/marvelous-designer.png" alt="" aria-hidden="true" loading="lazy"><span>Marvelous Designer</span></a><a class="software-marquee-item hover-sound" href="https://ephere.com/plugins/ornatrix/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/ornatrix.png" alt="" aria-hidden="true" loading="lazy"><span>Ornatrix</span></a><a class="software-marquee-item hover-sound" href="https://www.image-line.com/fl-studio/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/fl-studio.png" alt="" aria-hidden="true" loading="lazy"><span>FruityLoops</span></a><a class="software-marquee-item hover-sound" href="https://code.visualstudio.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/vs-code.png" alt="" aria-hidden="true" loading="lazy"><span>VS Code</span></a><a class="software-marquee-item hover-sound" href="https://visualstudio.microsoft.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/visual-studio.svg" alt="" aria-hidden="true" loading="lazy"><span>Visual Studio</span></a><a class="software-marquee-item hover-sound" href="https://github.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/github.svg" alt="" aria-hidden="true" loading="lazy"><span>GitHub</span></a><a class="software-marquee-item hover-sound" href="https://git-lfs.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/git-lfs.svg" alt="" aria-hidden="true" loading="lazy"><span>Git LFS</span></a><a class="software-marquee-item hover-sound" href="https://pages.github.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/github-pages.svg" alt="" aria-hidden="true" loading="lazy"><span>GitHub Pages</span></a><a class="software-marquee-item hover-sound" href="https://www.wix.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/wix.svg" alt="" aria-hidden="true" loading="lazy"><span>Wix</span></a><a class="software-marquee-item hover-sound" href="https://stripe.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/stripe.svg" alt="" aria-hidden="true" loading="lazy"><span>Stripe</span></a><a class="software-marquee-item hover-sound" href="https://obsidian.md/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/obsidian.svg" alt="" aria-hidden="true" loading="lazy"><span>Obsidian</span></a><a class="software-marquee-item hover-sound" href="https://openai.com/codex/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/openai.png" alt="" aria-hidden="true" loading="lazy"><span>Codex</span></a></div>
-                    <div class="software-marquee-group" aria-hidden="true"><a class="software-marquee-item hover-sound" href="https://www.unrealengine.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/unreal-engine.svg" alt="" aria-hidden="true" loading="lazy"><span>Unreal</span></a><a class="software-marquee-item hover-sound" href="https://developer.valvesoftware.com/wiki/Source_2" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/source-2.svg" alt="" aria-hidden="true" loading="lazy"><span>Source 2</span></a><a class="software-marquee-item hover-sound" href="https://enfusionengine.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/enfusion.svg" alt="" aria-hidden="true" loading="lazy"><span>Enfusion</span></a><a class="software-marquee-item hover-sound" href="https://www.rockstargames.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/rage.svg" alt="" aria-hidden="true" loading="lazy"><span>RAGE</span></a><a class="software-marquee-item hover-sound" href="https://www.blender.org/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/blender.svg" alt="" aria-hidden="true" loading="lazy"><span>Blender</span></a><a class="software-marquee-item hover-sound" href="https://www.adobe.com/products/substance3d.html" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/adobe-3d.svg" alt="" aria-hidden="true" loading="lazy"><span>Adobe 3D</span></a><a class="software-marquee-item hover-sound" href="https://affinity.serif.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/affinity-suite.png" alt="" aria-hidden="true" loading="lazy"><span>Affinity Suite</span></a><a class="software-marquee-item hover-sound" href="https://quadspinner.com/gaea/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/gaea.png" alt="" aria-hidden="true" loading="lazy"><span>Gaea 2.0</span></a><a class="software-marquee-item hover-sound" href="https://www.reallusion.com/character-creator/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/cc5.png" alt="" aria-hidden="true" loading="lazy"><span>CC5</span></a><a class="software-marquee-item hover-sound" href="https://www.reallusion.com/iclone/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/iclone-8.png" alt="" aria-hidden="true" loading="lazy"><span>iClone 8</span></a><a class="software-marquee-item hover-sound" href="https://www.marvelousdesigner.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/marvelous-designer.png" alt="" aria-hidden="true" loading="lazy"><span>Marvelous Designer</span></a><a class="software-marquee-item hover-sound" href="https://ephere.com/plugins/ornatrix/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/ornatrix.png" alt="" aria-hidden="true" loading="lazy"><span>Ornatrix</span></a><a class="software-marquee-item hover-sound" href="https://www.image-line.com/fl-studio/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/fl-studio.png" alt="" aria-hidden="true" loading="lazy"><span>FruityLoops</span></a><a class="software-marquee-item hover-sound" href="https://code.visualstudio.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/vs-code.png" alt="" aria-hidden="true" loading="lazy"><span>VS Code</span></a><a class="software-marquee-item hover-sound" href="https://visualstudio.microsoft.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/visual-studio.svg" alt="" aria-hidden="true" loading="lazy"><span>Visual Studio</span></a><a class="software-marquee-item hover-sound" href="https://github.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/github.svg" alt="" aria-hidden="true" loading="lazy"><span>GitHub</span></a><a class="software-marquee-item hover-sound" href="https://git-lfs.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/git-lfs.svg" alt="" aria-hidden="true" loading="lazy"><span>Git LFS</span></a><a class="software-marquee-item hover-sound" href="https://pages.github.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/github-pages.svg" alt="" aria-hidden="true" loading="lazy"><span>GitHub Pages</span></a><a class="software-marquee-item hover-sound" href="https://www.wix.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/wix.svg" alt="" aria-hidden="true" loading="lazy"><span>Wix</span></a><a class="software-marquee-item hover-sound" href="https://stripe.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/stripe.svg" alt="" aria-hidden="true" loading="lazy"><span>Stripe</span></a><a class="software-marquee-item hover-sound" href="https://obsidian.md/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/obsidian.svg" alt="" aria-hidden="true" loading="lazy"><span>Obsidian</span></a><a class="software-marquee-item hover-sound" href="https://openai.com/codex/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/openai.png" alt="" aria-hidden="true" loading="lazy"><span>Codex</span></a></div>
-                </div></div>
-            </section>
-            <div class="footer-grid">
-                <div class="footer-column"><span>Primary routes</span><a class="hover-sound" href="/">Home</a><a class="hover-sound" href="/pages/games.html">Games</a><a class="hover-sound" href="/pages/studio.html">Studio</a><a class="hover-sound" href="/pages/contact.html">Contact</a></div>
-                <div class="footer-column"><span>Public records</span><a class="hover-sound" href="/pages/DevLog/index.html">Devlog</a><a href="https://www.epicgames.com/site/en-US/privacypolicy" target="_blank" rel="noopener noreferrer">Epic Privacy Policy</a><a href="#">Nightshift Privacy Policy</a><a href="#">Applicant Privacy Policy</a></div>
-                <div class="footer-column"><span>External surfaces</span><a href="#">Press Kit</a><a href="#">Brand Assets</a><a href="#">Careers</a><a href="#">Community</a></div>
+        <section class="panel notes-panel pixel-trials-panel" aria-labelledby="pixel-trials-title">
+            <div class="pixel-trials-header">
+                <div class="panel-heading">
+                    <p class="eyebrow">Internal minigame / RNG terrain</p>
+                    <h2 id="pixel-trials-title">Pixel Trials</h2>
+                </div>
+                <dl class="pixel-trials-scoreboard" aria-label="Pixel Trials scoreboard">
+                    <div>
+                        <dt>Distance</dt>
+                        <dd id="pixel-trials-distance">0000</dd>
+                    </div>
+                    <div>
+                        <dt>Best</dt>
+                        <dd id="pixel-trials-best">0000</dd>
+                    </div>
+                    <div>
+                        <dt>Speed</dt>
+                        <dd id="pixel-trials-speed">00</dd>
+                    </div>
+                    <div>
+                        <dt>Bike</dt>
+                        <dd id="pixel-trials-bike">MK0</dd>
+                    </div>
+                    <div>
+                        <dt>Air</dt>
+                        <dd id="pixel-trials-air">0.0</dd>
+                    </div>
+                    <div>
+                        <dt>Status</dt>
+                        <dd id="pixel-trials-status">Ready</dd>
+                    </div>
+                </dl>
             </div>
-            <div class="footer-bottom"><div class="social-row"><a class="action-pill hover-sound" href="https://www.youtube.com/@nstx" target="_blank" rel="noopener noreferrer">YouTube</a><a class="action-pill primary hover-sound" href="/pages/Studio/Donations.html">Support the studio</a></div><p class="footer-note">Copyright 2026 Nightshift. All rights reserved.</p></div>
-        </footer>
+            <div class="pixel-trials-cabinet">
+                <canvas id="pixel-trials-canvas" width="960" height="420" tabindex="0" aria-label="Pixel Trials minigame. Click to enable sound, then hold Shift to start."></canvas>
+            </div>
+        </section>
+        <section class="panel notes-panel war-chest-panel" aria-labelledby="war-chest-title">
+            <div class="war-chest-copy">
+                <p class="eyebrow">Internal animation test</p>
+                <h2 id="war-chest-title">Fund our War Chest</h2>
+                <p class="panel-copy">Prototype art and motion treatment for a public support section. White bars loop into the chest as a decorative layer while the Stripe rail stays wired through the existing hosted donation link.</p>
+                <div class="hero-actions">
+                    <a class="cta-btn primary hover-sound donation-cta-stripe" href="https://donate.stripe.com/cNi5kC2Xi5rc0SrbkG9R600" target="_blank" rel="noopener noreferrer">Donate with Stripe</a>
+                </div>
+            </div>
+            <div class="war-chest-stage" aria-hidden="true">
+                <span class="war-chest-coin coin-a"></span>
+                <span class="war-chest-coin coin-b"></span>
+                <span class="war-chest-coin coin-c"></span>
+                <span class="war-chest-impact impact-a"></span>
+                <img src="../images/dev/war-chest.png" alt="">
+            </div>
+        </section>
     </main>
 
     <script>
@@ -156,6 +159,569 @@
             });
             updateClock();
             window.setInterval(updateClock, 1000);
+            initPixelTrials();
+
+            function initPixelTrials() {
+                const canvas = document.getElementById("pixel-trials-canvas");
+                if (!canvas) return;
+
+                const ctx = canvas.getContext("2d");
+                const readouts = {
+                    distance: document.getElementById("pixel-trials-distance"),
+                    best: document.getElementById("pixel-trials-best"),
+                    speed: document.getElementById("pixel-trials-speed"),
+                    bike: document.getElementById("pixel-trials-bike"),
+                    air: document.getElementById("pixel-trials-air"),
+                    status: document.getElementById("pixel-trials-status")
+                };
+                const keys = { shift: false, space: false, ctrl: false, spacePressed: false };
+                const state = {
+                    seed: Math.floor(Math.random() * 9000) + 1000,
+                    x: 170,
+                    y: 260,
+                    vy: 0,
+                    speed: 0,
+                    angle: 0,
+                    wheelie: 0,
+                    airTime: 0,
+                    onGround: false,
+                    started: false,
+                    crashed: false,
+                    crashTimer: 0,
+                    leanCrashTimer: 0,
+                    finished: false,
+                    finishTimer: 0,
+                    lastTime: performance.now(),
+                    obstacleCursor: 520,
+                    obstacles: [],
+                    levelLength: 1000,
+                    bikeTier: Math.min(5, Number(window.localStorage.getItem("pixelTrialsBikeTier") || 0)),
+                    best: Number(window.localStorage.getItem("pixelTrialsBest") || 0)
+                };
+
+                const width = canvas.width;
+                const height = canvas.height;
+                const wheelbase = 62;
+                const wheelRadius = 13;
+                let pointerInside = false;
+                const sound = {
+                    armed: false,
+                    context: null,
+                    engine: null,
+                    engineGain: null
+                };
+
+                function formatScore(value, size) {
+                    return String(Math.max(0, Math.floor(value))).padStart(size, "0").slice(-size);
+                }
+
+                function hash(value) {
+                    const x = Math.sin(value * 127.1 + state.seed * 311.7) * 43758.5453123;
+                    return x - Math.floor(x);
+                }
+
+                function smoothstep(value) {
+                    return value * value * (3 - 2 * value);
+                }
+
+                function noise(value) {
+                    const base = Math.floor(value);
+                    const t = smoothstep(value - base);
+                    return hash(base) * (1 - t) + hash(base + 1) * t;
+                }
+
+                function terrainY(x) {
+                    const rolling = (noise(x * 0.0054) - 0.5) * 62;
+                    const chop = (noise(x * 0.026 + 42) - 0.5) * 30;
+                    const sector = Math.floor((x + state.seed * 17) / 980);
+                    const within = ((x + state.seed * 17) % 980) / 980;
+                    const climb = hash(sector + 991) > 0.42 ? Math.sin(Math.min(1, within) * Math.PI) * 48 : 0;
+                    const ledge = hash(sector + 313) > 0.62 ? (within > 0.52 ? -22 : 0) : 0;
+                    return Math.max(184, Math.min(350, 304 + rolling + chop - climb + ledge));
+                }
+
+                function terrainSlope(x) {
+                    return Math.atan2(terrainY(x + 36) - terrainY(x - 36), 72);
+                }
+
+                function finishWorldX() {
+                    return 170 + state.levelLength * 10;
+                }
+
+                function bikeSpeedMultiplier() {
+                    return 1 + state.bikeTier * 0.06;
+                }
+
+                function resetRun() {
+                    state.seed = Math.floor(Math.random() * 9000) + 1000;
+                    state.x = 170;
+                    state.y = terrainY(state.x) - 40;
+                    state.vy = 0;
+                    state.speed = 0;
+                    state.angle = 0;
+                    state.wheelie = 0;
+                    state.airTime = 0;
+                    state.onGround = false;
+                    state.started = false;
+                    state.crashed = false;
+                    state.crashTimer = 0;
+                    state.leanCrashTimer = 0;
+                    state.finished = false;
+                    state.finishTimer = 0;
+                    state.obstacleCursor = 520;
+                    state.obstacles = [];
+                }
+
+                function makeObstacle(x) {
+                    const roll = hash(x * 0.031 + 77);
+                    const type = roll > 0.8 ? "crateStep" : roll > 0.62 ? "tireStack" : roll > 0.42 ? "fallenTree" : roll > 0.22 ? "boulder" : "log";
+                    const width = type === "crateStep" ? 78 : type === "fallenTree" ? 96 : type === "tireStack" ? 56 : type === "boulder" ? 48 : 62;
+                    const height = type === "crateStep" ? 52 : type === "tireStack" ? 48 : type === "boulder" ? 42 : type === "fallenTree" ? 34 : 24;
+                    return { x, type, width, height };
+                }
+
+                function obstacleTopY(obstacle) {
+                    return terrainY(obstacle.x) - obstacle.height;
+                }
+
+                function obstacleHalfWidth(obstacle) {
+                    return obstacle.width * 0.5;
+                }
+
+                function obstacleMountSpeed(obstacle) {
+                    return 62 + obstacle.height * 2.15;
+                }
+
+                function canWheelMountObstacle(obstacle, wheelCenterY) {
+                    const top = obstacleTopY(obstacle);
+                    const alreadyOnTop = wheelCenterY + wheelRadius <= top + 28;
+                    return alreadyOnTop || state.speed >= obstacleMountSpeed(obstacle);
+                }
+
+                function wheelGroundY(wheelX, wheelCenterY) {
+                    let ground = terrainY(wheelX);
+                    for (const obstacle of state.obstacles) {
+                        const halfWidth = obstacleHalfWidth(obstacle);
+                        const wheelOverTop = Math.abs(wheelX - obstacle.x) <= halfWidth + wheelRadius * 0.65;
+                        if (!wheelOverTop || !canWheelMountObstacle(obstacle, wheelCenterY)) continue;
+                        ground = Math.min(ground, obstacleTopY(obstacle));
+                    }
+                    return ground;
+                }
+
+                function lineYAt(x, ax, ay, bx, by) {
+                    const span = bx - ax;
+                    if (Math.abs(span) < 0.001) return Math.min(ay, by);
+                    const t = Math.max(0, Math.min(1, (x - ax) / span));
+                    return ay + (by - ay) * t;
+                }
+
+                function obstacleHitsBikeUnderside(obstacle, back, front) {
+                    const halfWidth = obstacleHalfWidth(obstacle);
+                    const left = obstacle.x - halfWidth;
+                    const right = obstacle.x + halfWidth;
+                    const top = obstacleTopY(obstacle);
+                    const bikeLeft = Math.min(back.x, front.x) + 10;
+                    const bikeRight = Math.max(back.x, front.x) - 10;
+                    const overlapLeft = Math.max(left, bikeLeft);
+                    const overlapRight = Math.min(right, bikeRight);
+                    if (overlapLeft > overlapRight) return false;
+
+                    const sampleX = Math.max(overlapLeft, Math.min(obstacle.x, overlapRight));
+                    const axleLineY = lineYAt(sampleX, back.x, back.y, front.x, front.y);
+                    const undersideY = axleLineY - 14;
+                    const sideHit = Math.abs(front.x - left) < wheelRadius * 0.75 && front.y + wheelRadius > top + 8 && state.speed < obstacleMountSpeed(obstacle);
+                    return top <= undersideY || sideHit;
+                }
+
+                function generateObstacles() {
+                    const finishX = finishWorldX();
+                    while (state.obstacleCursor < state.x + width + 640 && state.obstacleCursor < finishX - 260) {
+                        const gap = 170 + hash(state.obstacleCursor * 0.09 + 14) * 230;
+                        state.obstacleCursor += gap;
+                        if (state.obstacleCursor < finishX - 260 && hash(state.obstacleCursor * 0.013 + 91) > 0.14) {
+                            state.obstacles.push(makeObstacle(state.obstacleCursor));
+                        }
+                    }
+                    state.obstacles = state.obstacles.filter((obstacle) => obstacle.x > state.x - 420);
+                }
+
+                function crash() {
+                    if (state.crashed) return;
+                    state.crashed = true;
+                    state.crashTimer = 0;
+                    state.speed = 0;
+                    state.vy = -170;
+                    playBlip(92, 0.16, 0.18);
+                    if (readouts.status) readouts.status.textContent = "Crash";
+                }
+
+                function finishLevel() {
+                    if (state.finished || state.crashed) return;
+                    state.finished = true;
+                    state.finishTimer = 0;
+                    state.speed = Math.min(state.speed, 130);
+                    if (state.bikeTier < 5) {
+                        state.bikeTier += 1;
+                        window.localStorage.setItem("pixelTrialsBikeTier", String(state.bikeTier));
+                        playBlip(520, 0.2, 0.16);
+                        if (readouts.status) readouts.status.textContent = "Unlock";
+                    } else if (readouts.status) {
+                        playBlip(420, 0.16, 0.14);
+                        readouts.status.textContent = "Clear";
+                    }
+                }
+
+                function armSound() {
+                    if (sound.armed) return;
+                    const AudioContext = window.AudioContext || window.webkitAudioContext;
+                    if (!AudioContext) return;
+                    sound.context = new AudioContext();
+                    sound.engine = sound.context.createOscillator();
+                    sound.engineGain = sound.context.createGain();
+                    sound.engine.type = "sawtooth";
+                    sound.engine.frequency.value = 60;
+                    sound.engineGain.gain.value = 0;
+                    sound.engine.connect(sound.engineGain);
+                    sound.engineGain.connect(sound.context.destination);
+                    sound.engine.start();
+                    sound.armed = true;
+                    if (readouts.status && !state.started) readouts.status.textContent = "Armed";
+                    playBlip(220, 0.08, 0.08);
+                }
+
+                function playBlip(frequency, duration, volume) {
+                    if (!sound.armed || !sound.context) return;
+                    const oscillator = sound.context.createOscillator();
+                    const gain = sound.context.createGain();
+                    const now = sound.context.currentTime;
+                    oscillator.type = "square";
+                    oscillator.frequency.setValueAtTime(frequency, now);
+                    gain.gain.setValueAtTime(volume, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
+                    oscillator.connect(gain);
+                    gain.connect(sound.context.destination);
+                    oscillator.start(now);
+                    oscillator.stop(now + duration);
+                }
+
+                function updateSound() {
+                    if (!sound.armed || !sound.context || !sound.engine || !sound.engineGain) return;
+                    const now = sound.context.currentTime;
+                    const active = state.started && !state.crashed && !state.finished && (keys.shift || state.speed > 14);
+                    const targetGain = active ? Math.min(0.11, 0.025 + state.speed / 5200) : 0.0001;
+                    const targetPitch = 54 + state.speed * 0.34 + state.bikeTier * 4;
+                    sound.engine.frequency.setTargetAtTime(targetPitch, now, 0.045);
+                    sound.engineGain.gain.setTargetAtTime(targetGain, now, 0.06);
+                }
+
+                function update(dt) {
+                    generateObstacles();
+
+                    if (!state.started) {
+                        const backX = state.x - wheelbase * 0.5;
+                        const frontX = state.x + wheelbase * 0.5;
+                        const backGround = wheelGroundY(backX, state.y);
+                        const frontGround = wheelGroundY(frontX, state.y);
+                        state.y = (backGround + frontGround) * 0.5 - wheelRadius;
+                        state.angle = Math.atan2(frontGround - backGround, wheelbase);
+                        state.speed = 0;
+                        state.vy = 0;
+                        state.onGround = true;
+                        state.airTime = 0;
+                        updateSound();
+                        return;
+                    }
+
+                    if (state.crashed || state.finished) {
+                        state.crashTimer += dt;
+                        state.finishTimer += dt;
+                        if (state.crashed) {
+                            state.y += state.vy * dt;
+                            state.vy += 620 * dt;
+                            state.angle += 4.5 * dt;
+                        } else {
+                            state.x += state.speed * dt;
+                            state.speed = Math.max(0, state.speed - 120 * dt);
+                        }
+                        updateSound();
+                        if ((state.crashed && state.crashTimer > 1.25) || (state.finished && state.finishTimer > 1.6)) resetRun();
+                        return;
+                    }
+
+                    const bikeBoost = bikeSpeedMultiplier();
+                    if (keys.shift) state.speed += 218 * bikeBoost * dt;
+                    else state.speed -= 96 * dt;
+                    if (keys.ctrl) state.speed += 18 * bikeBoost * dt;
+                    state.speed = Math.max(0, Math.min(keys.shift ? 335 * bikeBoost : 185 * bikeBoost, state.speed));
+
+                    const backX = state.x - Math.cos(state.angle) * wheelbase * 0.5;
+                    const frontX = state.x + Math.cos(state.angle) * wheelbase * 0.5;
+                    const backGround = wheelGroundY(backX, state.y);
+                    const frontGround = wheelGroundY(frontX, state.y);
+                    const groundY = (backGround + frontGround) * 0.5 - wheelRadius;
+                    const slope = Math.atan2(frontGround - backGround, wheelbase);
+
+                    if (keys.spacePressed && state.onGround) {
+                        state.vy = -232;
+                        state.speed = Math.min(370 * bikeBoost, state.speed + 38 * bikeBoost);
+                        state.onGround = false;
+                        playBlip(280, 0.08, 0.08);
+                    }
+                    keys.spacePressed = false;
+
+                    state.x += state.speed * dt;
+
+                    if (state.onGround) {
+                        state.y += (groundY - state.y) * Math.min(1, dt * 18);
+                        state.vy = 0;
+                        state.airTime = 0;
+                    } else {
+                        state.vy += 720 * dt;
+                        state.y += state.vy * dt;
+                        state.airTime += dt;
+                        if (state.y >= groundY) {
+                            state.y = groundY;
+                            state.onGround = true;
+                            if (Math.abs(state.angle - slope) > 0.86 || Math.abs(state.vy) > 650) crash();
+                        }
+                    }
+
+                    const wheelieTarget = keys.space ? -0.58 : keys.ctrl ? 0.42 : 0;
+                    state.wheelie += (wheelieTarget - state.wheelie) * Math.min(1, dt * 6.2);
+                    state.angle += (slope + state.wheelie - state.angle) * Math.min(1, dt * (state.onGround ? 4.8 : 2.15));
+
+                    const lean = Math.abs(state.angle - slope);
+                    const forcedLean = keys.space || keys.ctrl;
+                    if (state.onGround && (lean > 0.78 || (forcedLean && lean > 0.54 && state.speed > 26))) {
+                        state.leanCrashTimer += dt;
+                    } else {
+                        state.leanCrashTimer = Math.max(0, state.leanCrashTimer - dt * 2.8);
+                    }
+                    if (lean > 1.02 || state.leanCrashTimer > 0.18 || (state.onGround && Math.abs(slope) > 0.72 && state.speed > 220)) crash();
+
+                    const currentBack = { x: backX, y: state.y - Math.sin(state.angle) * wheelbase * 0.5 };
+                    const currentFront = { x: frontX, y: state.y + Math.sin(state.angle) * wheelbase * 0.5 };
+                    for (const obstacle of state.obstacles) {
+                        if (obstacleHitsBikeUnderside(obstacle, currentBack, currentFront)) {
+                            crash();
+                            break;
+                        }
+                    }
+
+                    const score = Math.max(0, (state.x - 170) / 10);
+                    if (score > state.best) {
+                        state.best = score;
+                        window.localStorage.setItem("pixelTrialsBest", String(Math.floor(state.best)));
+                    }
+                    if (score >= state.levelLength) finishLevel();
+                    updateSound();
+                }
+
+                function drawPixelRect(x, y, w, h, color) {
+                    ctx.fillStyle = color;
+                    ctx.fillRect(Math.round(x), Math.round(y), Math.round(w), Math.round(h));
+                }
+
+                function drawObstacle(obstacle, cameraX) {
+                    const x = obstacle.x - cameraX;
+                    const y = terrainY(obstacle.x);
+                    if (obstacle.type === "boulder") {
+                        drawPixelRect(x - 18, y - 22, 36, 22, "#27364a");
+                        drawPixelRect(x - 12, y - 32, 24, 12, "#405a72");
+                        drawPixelRect(x - 4, y - 36, 14, 8, "#718da5");
+                        drawPixelRect(x - 24, y - 12, 16, 12, "#1a2635");
+                    } else if (obstacle.type === "log") {
+                        drawPixelRect(x - 33, y - 18, 66, 18, "#4e321e");
+                        drawPixelRect(x - 29, y - 24, 52, 8, "#865833");
+                        drawPixelRect(x - 40, y - 12, 12, 10, "#2a1a12");
+                        drawPixelRect(x + 27, y - 13, 14, 10, "#2a1a12");
+                    } else if (obstacle.type === "fallenTree") {
+                        drawPixelRect(x - 34, y - 24, 68, 14, "#4e321e");
+                        drawPixelRect(x - 22, y - 34, 54, 10, "#7a4b2a");
+                        drawPixelRect(x + 14, y - 42, 14, 18, "#253314");
+                        drawPixelRect(x + 24, y - 52, 18, 16, "#39501f");
+                    } else if (obstacle.type === "tireStack") {
+                        ctx.save();
+                        ctx.lineWidth = 5;
+                        ctx.strokeStyle = "#1b2432";
+                        ctx.beginPath();
+                        ctx.arc(x - 14, y - 16, 14, 0, Math.PI * 2);
+                        ctx.arc(x + 12, y - 18, 14, 0, Math.PI * 2);
+                        ctx.arc(x, y - 38, 13, 0, Math.PI * 2);
+                        ctx.stroke();
+                        ctx.lineWidth = 3;
+                        ctx.strokeStyle = "#718da5";
+                        ctx.beginPath();
+                        ctx.arc(x - 14, y - 16, 7, 0, Math.PI * 2);
+                        ctx.arc(x + 12, y - 18, 7, 0, Math.PI * 2);
+                        ctx.arc(x, y - 38, 6, 0, Math.PI * 2);
+                        ctx.stroke();
+                        ctx.restore();
+                    } else {
+                        drawPixelRect(x - 36, y - 16, 72, 16, "#5a3a22");
+                        drawPixelRect(x - 28, y - 34, 52, 18, "#765033");
+                        drawPixelRect(x - 14, y - 52, 40, 18, "#956a42");
+                        drawPixelRect(x - 32, y - 31, 8, 12, "#2a1a12");
+                        drawPixelRect(x + 16, y - 48, 8, 12, "#2a1a12");
+                    }
+                }
+
+                function drawBike(cameraX) {
+                    const x = state.x - cameraX;
+                    const y = state.y;
+                    const cos = Math.cos(state.angle);
+                    const sin = Math.sin(state.angle);
+                    const back = { x: x - cos * wheelbase * 0.5, y: y - sin * wheelbase * 0.5 };
+                    const front = { x: x + cos * wheelbase * 0.5, y: y + sin * wheelbase * 0.5 };
+                    ctx.save();
+                    ctx.lineWidth = 4;
+                    ctx.strokeStyle = state.crashed ? "#ff5a4e" : "#d7f5ff";
+                    ctx.beginPath();
+                    ctx.arc(back.x, back.y, wheelRadius, 0, Math.PI * 2);
+                    ctx.arc(front.x, front.y, wheelRadius, 0, Math.PI * 2);
+                    ctx.stroke();
+                    ctx.lineWidth = 5;
+                    ctx.strokeStyle = state.crashed ? "#ff9a56" : "#6ef7b4";
+                    ctx.beginPath();
+                    ctx.moveTo(back.x, back.y);
+                    ctx.lineTo(x - sin * 9, y - 27);
+                    ctx.lineTo(front.x, front.y);
+                    ctx.moveTo(x - sin * 9, y - 27);
+                    ctx.lineTo(x + cos * 14 - sin * 21, y + sin * 14 + cos * -21);
+                    ctx.stroke();
+                    drawPixelRect(x - 7, y - 52, 14, 18, "#f4f7ff");
+                    drawPixelRect(x - 5 + Math.cos(state.angle) * 8, y - 33 + Math.sin(state.angle) * 8, 22, 8, "#ff9a56");
+                    ctx.restore();
+                }
+
+                function drawFinishGate(cameraX) {
+                    const x = finishWorldX() - cameraX;
+                    if (x < -80 || x > width + 80) return;
+                    const y = terrainY(finishWorldX());
+                    drawPixelRect(x - 4, y - 112, 8, 112, "#d7f5ff");
+                    drawPixelRect(x - 4, y - 112, 56, 10, "#75f0b2");
+                    drawPixelRect(x + 8, y - 96, 10, 10, "#f4f7ff");
+                    drawPixelRect(x + 18, y - 106, 10, 10, "#0b121f");
+                    drawPixelRect(x + 28, y - 96, 10, 10, "#f4f7ff");
+                    drawPixelRect(x + 38, y - 106, 10, 10, "#0b121f");
+                }
+
+                function draw() {
+                    const cameraX = Math.max(0, state.x - 250);
+                    ctx.imageSmoothingEnabled = false;
+                    ctx.clearRect(0, 0, width, height);
+                    const sky = ctx.createLinearGradient(0, 0, 0, height);
+                    sky.addColorStop(0, "#030712");
+                    sky.addColorStop(1, "#101827");
+                    ctx.fillStyle = sky;
+                    ctx.fillRect(0, 0, width, height);
+
+                    ctx.globalAlpha = 0.38;
+                    ctx.strokeStyle = "#14304a";
+                    ctx.lineWidth = 1;
+                    for (let x = -((cameraX * 0.25) % 48); x < width; x += 48) {
+                        ctx.beginPath();
+                        ctx.moveTo(x, 0);
+                        ctx.lineTo(x, height);
+                        ctx.stroke();
+                    }
+                    for (let y = 44; y < height; y += 48) {
+                        ctx.beginPath();
+                        ctx.moveTo(0, y);
+                        ctx.lineTo(width, y);
+                        ctx.stroke();
+                    }
+                    ctx.globalAlpha = 1;
+
+                    ctx.fillStyle = "#17253a";
+                    ctx.beginPath();
+                    ctx.moveTo(0, 310);
+                    for (let sx = 0; sx <= width; sx += 48) {
+                        const wx = cameraX * 0.35 + sx;
+                        ctx.lineTo(sx, 238 + Math.sin(wx * 0.009) * 28 + Math.sin(wx * 0.003) * 40);
+                    }
+                    ctx.lineTo(width, height);
+                    ctx.lineTo(0, height);
+                    ctx.fill();
+
+                    ctx.fillStyle = "#0d211d";
+                    ctx.beginPath();
+                    ctx.moveTo(0, height);
+                    for (let sx = 0; sx <= width + 18; sx += 18) {
+                        ctx.lineTo(sx, terrainY(cameraX + sx));
+                    }
+                    ctx.lineTo(width, height);
+                    ctx.closePath();
+                    ctx.fill();
+
+                    ctx.strokeStyle = "#75f0b2";
+                    ctx.lineWidth = 4;
+                    ctx.beginPath();
+                    for (let sx = 0; sx <= width + 18; sx += 18) {
+                        const y = terrainY(cameraX + sx);
+                        if (sx === 0) ctx.moveTo(sx, y);
+                        else ctx.lineTo(sx, y);
+                    }
+                    ctx.stroke();
+
+                    drawFinishGate(cameraX);
+                    for (const obstacle of state.obstacles) drawObstacle(obstacle, cameraX);
+                    drawBike(cameraX);
+                }
+
+                function syncScoreboard() {
+                    const score = Math.min(state.levelLength, Math.max(0, (state.x - 170) / 10));
+                    if (readouts.distance) readouts.distance.textContent = formatScore(score, 4);
+                    if (readouts.best) readouts.best.textContent = formatScore(state.best, 4);
+                    if (readouts.speed) readouts.speed.textContent = formatScore(state.speed / 8, 2);
+                    if (readouts.bike) readouts.bike.textContent = `MK${state.bikeTier}`;
+                    if (readouts.air) readouts.air.textContent = state.airTime.toFixed(1);
+                    if (readouts.status && !state.started && !state.crashed && !state.finished) readouts.status.textContent = sound.armed ? "Armed" : "Ready";
+                    if (readouts.status && state.started && !state.crashed && !state.finished) readouts.status.textContent = state.onGround ? "Run" : "Air";
+                }
+
+                function frame(now) {
+                    const dt = Math.min(0.033, (now - state.lastTime) / 1000);
+                    state.lastTime = now;
+                    update(dt);
+                    draw();
+                    syncScoreboard();
+                    window.requestAnimationFrame(frame);
+                }
+
+                canvas.addEventListener("pointerenter", () => { pointerInside = true; });
+                canvas.addEventListener("pointerleave", () => { pointerInside = false; });
+                canvas.addEventListener("pointerdown", () => {
+                    canvas.focus();
+                    armSound();
+                });
+                canvas.addEventListener("focus", () => { pointerInside = true; });
+
+                window.addEventListener("keydown", (event) => {
+                    const active = document.activeElement === canvas || pointerInside;
+                    if (!active) return;
+                    if (event.code === "ShiftLeft" || event.code === "ShiftRight") {
+                        keys.shift = true;
+                        state.started = true;
+                    }
+                    if (event.code === "ControlLeft" || event.code === "ControlRight") keys.ctrl = true;
+                    if (event.code === "Space") {
+                        if (!keys.space && !event.repeat) keys.spacePressed = true;
+                        keys.space = true;
+                    }
+                    if (event.code === "Space" || event.code.includes("Shift") || event.code.includes("Control")) event.preventDefault();
+                });
+
+                window.addEventListener("keyup", (event) => {
+                    if (event.code === "ShiftLeft" || event.code === "ShiftRight") keys.shift = false;
+                    if (event.code === "ControlLeft" || event.code === "ControlRight") keys.ctrl = false;
+                    if (event.code === "Space") keys.space = false;
+                });
+
+                resetRun();
+                window.requestAnimationFrame(frame);
+            }
         });
     </script>
 </body>

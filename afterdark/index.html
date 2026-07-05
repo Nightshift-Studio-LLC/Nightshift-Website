@@ -340,8 +340,8 @@
                     const { GLTFLoader } = await import("https://esm.sh/three@0.160.0/examples/jsm/loaders/GLTFLoader");
 
                     const scene = new THREE.Scene();
-                    scene.background = new THREE.Color(0x020403);
-                    scene.fog = new THREE.Fog(0x020403, 9, 28);
+                    scene.background = new THREE.Color(0x000000);
+                    scene.fog = new THREE.Fog(0x000000, 9, 28);
 
                     const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 100);
                     camera.position.set(0, 3.2, 9.4);
@@ -361,29 +361,29 @@
                     controls.maxDistance = 13;
                     controls.target.set(0, 1.6, 0);
 
-                    const hemi = new THREE.HemisphereLight(0xd7ffe2, 0x020403, 1.05);
+                    const hemi = new THREE.HemisphereLight(0xffffff, 0x000000, 1.05);
                     scene.add(hemi);
 
-                    const keyLight = new THREE.DirectionalLight(0xcfffe0, 1.65);
+                    const keyLight = new THREE.DirectionalLight(0xffffff, 1.65);
                     keyLight.position.set(5.4, 7.5, 6.2);
                     keyLight.castShadow = true;
                     keyLight.shadow.mapSize.set(1024, 1024);
                     scene.add(keyLight);
 
-                    const fillLight = new THREE.DirectionalLight(0x84ffb2, 0.34);
+                    const fillLight = new THREE.DirectionalLight(0x2878ff, 0.24);
                     fillLight.position.set(-4, 4, 3);
                     scene.add(fillLight);
 
-                    const rimLight = new THREE.DirectionalLight(0xff8a6f, 0.42);
+                    const rimLight = new THREE.DirectionalLight(0xff3b30, 0.34);
                     rimLight.position.set(-5, 3, -4);
                     scene.add(rimLight);
 
-                    const beaconLight = new THREE.PointLight(0xff8a6f, 0.58, 10, 2);
+                    const beaconLight = new THREE.PointLight(0xff3b30, 0.42, 10, 2);
                     beaconLight.position.set(0, 1.6, 3.2);
                     scene.add(beaconLight);
 
-                    const grid = new THREE.GridHelper(20, 20, 0x3d7850, 0x173222);
-                    grid.material.opacity = 0.24;
+                    const grid = new THREE.GridHelper(20, 20, 0xffffff, 0x333333);
+                    grid.material.opacity = 0.14;
                     grid.material.transparent = true;
                     grid.position.y = -0.18;
                     scene.add(grid);
@@ -393,9 +393,9 @@
                     const platform = new THREE.Mesh(
                         new THREE.CylinderGeometry(2.48, 2.82, 0.28, 64),
                         new THREE.MeshStandardMaterial({
-                            color: 0x08110b,
-                            emissive: 0x0f2918,
-                            emissiveIntensity: 0.16,
+                            color: 0x050505,
+                            emissive: 0x000000,
+                            emissiveIntensity: 0.04,
                             metalness: 0.5,
                             roughness: 0.7
                         })
@@ -407,9 +407,9 @@
                     const platformCap = new THREE.Mesh(
                         new THREE.CylinderGeometry(2.2, 2.34, 0.06, 64),
                         new THREE.MeshStandardMaterial({
-                            color: 0x0d1a12,
-                            emissive: 0x163120,
-                            emissiveIntensity: 0.14,
+                            color: 0x090909,
+                            emissive: 0x000000,
+                            emissiveIntensity: 0.04,
                             metalness: 0.42,
                             roughness: 0.52
                         })
@@ -420,9 +420,9 @@
                     const guideRing = new THREE.Mesh(
                         new THREE.TorusGeometry(2.16, 0.035, 20, 96),
                         new THREE.MeshStandardMaterial({
-                            color: 0xa2ffc0,
-                            emissive: 0xa2ffc0,
-                            emissiveIntensity: 0.48,
+                            color: 0xffffff,
+                            emissive: 0xffffff,
+                            emissiveIntensity: 0.16,
                             metalness: 0.25,
                             roughness: 0.32
                         })
@@ -434,9 +434,9 @@
                     const halo = new THREE.Mesh(
                         new THREE.CircleGeometry(3.1, 64),
                         new THREE.MeshBasicMaterial({
-                            color: 0x163b24,
+                            color: 0x111111,
                             transparent: true,
-                            opacity: 0.16
+                            opacity: 0.12
                         })
                     );
                     halo.rotation.x = -Math.PI / 2;

@@ -2179,6 +2179,342 @@ h3 {
     white-space: nowrap;
 }
 
+.pixel-trials-panel {
+    display: grid;
+    gap: 16px;
+    transform-origin: top center;
+    animation: pixelTrialsTopExpand 720ms cubic-bezier(0.18, 0.9, 0.22, 1) 140ms both;
+}
+
+.pixel-trials-header {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: minmax(0, 0.56fr) minmax(520px, 1fr);
+    gap: 18px;
+    align-items: start;
+}
+
+.pixel-trials-header .panel-heading {
+    margin-bottom: 0;
+}
+
+.pixel-trials-header h2 {
+    margin-top: 8px;
+    color: var(--text);
+    font-size: clamp(2rem, 4vw, 4rem);
+    line-height: 0.94;
+    letter-spacing: 0.04em;
+}
+
+.pixel-trials-scoreboard {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 8px;
+    margin: 0;
+}
+
+.pixel-trials-scoreboard div {
+    min-width: 0;
+    padding: 12px;
+    border: 1px solid rgba(117, 240, 178, 0.22);
+    border-radius: 14px;
+    background:
+        linear-gradient(180deg, rgba(9, 25, 23, 0.78), rgba(4, 9, 16, 0.88)),
+        rgba(7, 12, 24, 0.64);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.035);
+}
+
+.pixel-trials-scoreboard dt {
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-size: 0.68rem;
+}
+
+.pixel-trials-scoreboard dd {
+    margin: 6px 0 0;
+    overflow: hidden;
+    color: #75f0b2;
+    font-family: var(--heading);
+    font-size: clamp(1.05rem, 2vw, 1.52rem);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+    text-shadow: 0 0 18px rgba(117, 240, 178, 0.22);
+    white-space: nowrap;
+}
+
+.pixel-trials-cabinet {
+    position: relative;
+    z-index: 2;
+    overflow: hidden;
+    border: 1px solid rgba(117, 240, 178, 0.24);
+    border-radius: 18px;
+    background:
+        radial-gradient(circle at 50% 12%, rgba(117, 240, 178, 0.1), transparent 24%),
+        linear-gradient(180deg, rgba(2, 5, 12, 0.92), rgba(0, 0, 0, 0.96));
+    box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.03),
+        inset 0 -80px 130px rgba(0, 0, 0, 0.34);
+}
+
+.pixel-trials-cabinet::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background:
+        repeating-linear-gradient(
+            180deg,
+            rgba(117, 240, 178, 0.05) 0 1px,
+            transparent 1px 4px
+        ),
+        linear-gradient(90deg, rgba(117, 240, 178, 0.04) 1px, transparent 1px);
+    background-size: auto, 64px 100%;
+    mix-blend-mode: screen;
+}
+
+.pixel-trials-cabinet canvas {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 7;
+    height: auto;
+    outline: none;
+    cursor: crosshair;
+    image-rendering: pixelated;
+}
+
+.pixel-trials-cabinet canvas:focus-visible {
+    box-shadow: inset 0 0 0 3px rgba(117, 240, 178, 0.46);
+}
+
+@keyframes pixelTrialsTopExpand {
+    0% {
+        clip-path: inset(0 0 100% 0);
+        opacity: 0;
+        transform: translateY(-18px) scaleY(0.86);
+    }
+
+    58% {
+        opacity: 1;
+    }
+
+    100% {
+        clip-path: inset(0 0 0 0);
+        opacity: 1;
+        transform: translateY(0) scaleY(1);
+    }
+}
+
+.war-chest-panel {
+    display: grid;
+    grid-template-columns: minmax(280px, 0.72fr) minmax(360px, 1fr);
+    gap: 24px;
+    align-items: center;
+    min-height: 520px;
+}
+
+.war-chest-copy {
+    position: relative;
+    z-index: 2;
+}
+
+.war-chest-copy h2 {
+    max-width: 11ch;
+    margin: 8px 0 14px;
+    color: var(--text);
+    font-size: clamp(2.4rem, 5vw, 4.8rem);
+    line-height: 0.94;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.war-chest-stage {
+    position: relative;
+    height: clamp(360px, 38vw, 540px);
+    min-height: 0;
+    overflow: hidden;
+    border: 1px solid rgba(144, 191, 255, 0.16);
+    border-radius: 24px;
+    background:
+        radial-gradient(circle at 50% 18%, rgba(255, 201, 101, 0.13), transparent 24%),
+        radial-gradient(circle at 50% 78%, rgba(136, 215, 255, 0.12), transparent 32%),
+        linear-gradient(180deg, rgba(2, 5, 12, 0.42), rgba(0, 0, 0, 0.86));
+    box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.035),
+        inset 0 -70px 120px rgba(0, 0, 0, 0.34);
+}
+
+.war-chest-stage::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        repeating-linear-gradient(
+            180deg,
+            rgba(136, 215, 255, 0.04) 0 1px,
+            transparent 1px 4px
+        ),
+        linear-gradient(90deg, rgba(255, 201, 101, 0.04) 1px, transparent 1px);
+    background-size: auto, 74px 100%;
+    pointer-events: none;
+    z-index: 4;
+}
+
+.war-chest-stage::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 12%;
+    width: 42%;
+    height: 16%;
+    border-radius: 999px;
+    background: radial-gradient(ellipse, rgba(255, 201, 101, 0.22), transparent 68%);
+    filter: blur(12px);
+    transform: translateX(-50%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.war-chest-stage img {
+    position: absolute;
+    left: 50%;
+    bottom: 3%;
+    z-index: 3;
+    width: auto;
+    max-width: 96%;
+    height: min(90%, 520px);
+    object-fit: contain;
+    transform: translateX(-50%);
+    filter:
+        drop-shadow(0 0 18px rgba(136, 215, 255, 0.14))
+        drop-shadow(0 28px 28px rgba(0, 0, 0, 0.34));
+}
+
+.war-chest-coin {
+    --coin-size: 46px;
+    --coin-left: 50%;
+    --coin-delay: 0s;
+    --coin-duration: 2.35s;
+    --coin-drift: 0px;
+    --coin-drop: clamp(150px, 19vw, 218px);
+    --coin-end: clamp(172px, 21vw, 244px);
+    position: absolute;
+    left: var(--coin-left);
+    top: 9%;
+    z-index: 4;
+    width: var(--coin-size);
+    height: calc(var(--coin-size) * 0.46);
+    border: 3px solid rgba(255, 255, 255, 0.96);
+    border-radius: 7px 7px 5px 5px;
+    background:
+        linear-gradient(154deg, transparent 0 13%, rgba(0, 0, 0, 0.86) 13% 18%, transparent 18% 100%),
+        linear-gradient(206deg, transparent 0 12%, rgba(0, 0, 0, 0.82) 12% 17%, transparent 17% 100%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(230, 235, 244, 0.94)),
+        #f5f7fb;
+    clip-path: polygon(12% 0, 88% 0, 100% 30%, 90% 100%, 10% 100%, 0 30%);
+    box-shadow:
+        inset 0 -5px 0 rgba(0, 0, 0, 0.88),
+        inset 0 4px 0 rgba(255, 255, 255, 0.98),
+        0 2px 0 rgba(0, 0, 0, 0.9),
+        0 0 14px rgba(255, 255, 255, 0.2);
+    animation: warChestCoinFall var(--coin-duration) cubic-bezier(0.44, 0.04, 0.72, 0.98) infinite;
+    animation-delay: var(--coin-delay);
+}
+
+.war-chest-coin::after {
+    content: "";
+    position: absolute;
+    inset: 5px 8px 6px;
+    border-top: 2px solid rgba(0, 0, 0, 0.82);
+    border-bottom: 2px solid rgba(0, 0, 0, 0.72);
+    border-radius: 3px;
+}
+
+.coin-a {
+    --coin-left: 49%;
+    --coin-size: 44px;
+    --coin-delay: 0s;
+    --coin-duration: 2.25s;
+    --coin-drift: -14px;
+}
+
+.coin-b {
+    --coin-left: 54%;
+    --coin-size: 50px;
+    --coin-delay: -0.82s;
+    --coin-duration: 2.45s;
+    --coin-drift: 12px;
+}
+
+.coin-c {
+    --coin-left: 51%;
+    --coin-size: 38px;
+    --coin-delay: -1.58s;
+    --coin-duration: 2.15s;
+    --coin-drift: 20px;
+}
+
+.war-chest-impact {
+    position: absolute;
+    left: 52%;
+    top: 54%;
+    z-index: 2;
+    width: 16px;
+    height: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.72);
+    border-radius: 50%;
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.35);
+    animation: warChestImpact 2.35s ease-out infinite;
+}
+
+.impact-a {
+    animation-delay: 0.18s;
+}
+
+@keyframes warChestCoinFall {
+    0% {
+        opacity: 0;
+        transform: translate3d(0, -36px, 0) rotateZ(-16deg) scale(0.86);
+    }
+
+    12% {
+        opacity: 1;
+    }
+
+    60% {
+        opacity: 1;
+        transform: translate3d(var(--coin-drift), var(--coin-drop), 0) rotateZ(12deg) scale(1);
+    }
+
+    68%,
+    100% {
+        opacity: 0;
+        transform: translate3d(var(--coin-drift), var(--coin-end), 0) rotateZ(18deg) scale(0.72);
+    }
+}
+
+@keyframes warChestImpact {
+    0%,
+    64% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.25);
+    }
+
+    72% {
+        opacity: 0.72;
+    }
+
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(2.6);
+    }
+}
+
 .media-feed {
     display: grid;
     gap: 12px;
@@ -2389,6 +2725,8 @@ h3 {
     .model-grid,
     .lower-grid,
     .feed-grid,
+    .pixel-trials-header,
+    .war-chest-panel,
     .summary-grid,
     .model-readout,
     .footer-grid,
@@ -2410,6 +2748,10 @@ h3 {
     .game-stat-grid,
     .game-pillar-grid {
         grid-template-columns: 1fr;
+    }
+
+    .pixel-trials-scoreboard {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 }
 
@@ -2582,12 +2924,34 @@ h3 {
         grid-template-columns: 1fr;
     }
 
+    .pixel-trials-scoreboard {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .pixel-trials-cabinet canvas {
+        min-height: 260px;
+        object-fit: cover;
+    }
+
     .donation-feed-status {
         min-width: 0;
     }
 
     .donation-feed-amount {
         white-space: normal;
+    }
+
+    .war-chest-panel {
+        min-height: auto;
+    }
+
+    .war-chest-copy h2 {
+        font-size: clamp(2.2rem, 11vw, 3.4rem);
+    }
+
+    .war-chest-stage {
+        height: 340px;
+        min-height: 0;
     }
 
     .cta-btn,
@@ -2631,7 +2995,10 @@ h3 {
     .hero-copy h1,
     .hero-copy .lede,
     .hero-copy .action-row,
-    .hero-copy .hero-focus {
+    .hero-copy .hero-focus,
+    .war-chest-coin,
+    .war-chest-impact,
+    .pixel-trials-panel {
         animation: none;
     }
 
@@ -2640,8 +3007,15 @@ h3 {
     .hero-copy h1,
     .hero-copy .lede,
     .hero-copy .action-row,
-    .hero-copy .hero-focus {
+    .hero-copy .hero-focus,
+    .pixel-trials-panel {
+        clip-path: none;
         opacity: 1;
         transform: none;
+    }
+
+    .war-chest-coin,
+    .war-chest-impact {
+        display: none;
     }
 }
