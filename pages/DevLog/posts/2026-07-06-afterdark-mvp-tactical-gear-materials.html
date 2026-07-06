@@ -66,12 +66,12 @@
 <p>That is the good news: the full city system is working at this point. Now the work becomes scaling it up.</p>
 <div class="devlog-gallery">
 <figure>
-<img src="../../../images/afterdarkrp/Devlogs/7-6-26/tactical-gear-grey-front.png" alt="Unpainted tactical vest and helmet front view in the DCC viewport">
-<figcaption>The grey material pass makes the shape language easy to inspect before the gear is pushed harder through s&amp;box material tuning.</figcaption>
+<img src="../../../images/afterdarkrp/Devlogs/7-6-26/tactical-gear-grey-front.png" alt="Basic modular tactical vest and helmet kit preview">
+<figcaption>The first grey pass shows the basic vest and helmet version before the kit is pushed into heavier paint, attachments, and in-game material tuning.</figcaption>
 </figure>
 <figure>
-<img src="../../../images/afterdarkrp/Devlogs/7-6-26/tactical-gear-grey-rear.png" alt="Rear view of the tactical helmet, vest, pouches, straps, and radio detail">
-<figcaption>The rear silhouette is important because the gear has to hold up from player-follow and third-person camera angles, not just front-facing preview shots.</figcaption>
+<img src="../../../images/afterdarkrp/Devlogs/7-6-26/tactical-gear-grey-rear.png" alt="Rear modular kit breakdown with backpack, radio, night vision, strobe, and helmet counterweight">
+<figcaption>The rear view exposes the modular breakdown: backpack and radio on the vest, a side peek at the night-vision setup, and helmet modules like the strobe and counterweight.</figcaption>
 </figure>
 <figure>
 <img src="../../../images/afterdarkrp/Devlogs/7-6-26/tactical-gear-ingame-fit.png" alt="Tactical vest fitted on an in-game character in the s&amp;box scene">
@@ -104,6 +104,7 @@
 <li>and the messy overlap of UI markers, weapons, pouches, radios, helmets, and clothing.</li>
 </ul>
 <p>The current vest material is not final, but it is pointing in a better direction. The washed-out pass gives the surface more air. The velcro panels read more clearly. The straps and pouch structure hold together better. The darker green pass is useful, but it starts collapsing the gear into one dark shape in the current lighting.</p>
+<p>This pass is also intentionally rushed. The point right now is to get enough gear playable that testing can keep moving instead of waiting on a perfect equipment library. I needed, at minimum, control over police gear, so I went ahead with a few modular pieces. I will probably do the same thing with a weapon pass to get a proper Taser model in, then move to at least one vehicle. Ideally that becomes two vehicles: one cop-side and one criminal-side, so both ends of the conflict have authored equipment to test with.</p>
 <p>That is exactly why material tests need to happen in s&amp;box, not only in a clean DCC preview.</p>
 <h2>UI polish and the player-facing surface</h2>
 <p>The MVP push also put more attention into the player-facing UI.</p>
@@ -153,6 +154,9 @@
 <li>UI needs to keep getting quieter and more direct,</li>
 <li>and the city needs to grow without giving back the frame rate that was just recovered.</li>
 </ul>
+<h2>Plan from here</h2>
+<p>The plan from here is direct: polish arrest and prison more, keep tightening the weed crime loop, and add new features like camera effects so crime feedback has more texture than simple state changes.</p>
+<p>After that, the project needs more replication passes and exploit passes before pushing into the MVP playtest as soon as possible. The point of the current gear, vehicle, police, crime, and optimization work is to get the build into a state where that playtest can expose real balance and flow problems instead of getting blocked by missing equipment or obvious authority gaps.</p>
 <p>But this is a good place to be. The full city system is alive. Now the work is making it bigger, cleaner, faster, and more readable.</p>
 
             <div class="devlog-signoff">
