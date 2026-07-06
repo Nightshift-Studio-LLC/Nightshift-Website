@@ -209,7 +209,7 @@ const renderViewCount = (path) => `
                     </span>`;
 
 const archiveConfig = [
-    { year: 2026, months: [6, 5, 4, 3, 2, 1] },
+    { year: 2026, months: [7, 6, 5, 4, 3, 2, 1] },
 ];
 
 const parseFrontmatterDate = (value, file) => {

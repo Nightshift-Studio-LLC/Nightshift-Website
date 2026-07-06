@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nightshift | AfterDark pushes toward MVP with tactical gear materials, UI polish, and city performance work</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="../../../images/icons/nightshift.ico">
+    <link rel="stylesheet" href="../../../styles/home-modus-mockup.css?v=20260702-footer-universal">
+    <script defer src="/scripts/analytics.js" data-analytics-endpoint="/api/analytics"></script>
+</head>
+<body>
+    <div class="screen-fx" aria-hidden="true"></div>
+    <header class="topbar">
+        <a class="brand hover-sound" href="../../home.html" aria-label="Nightshift home">
+            <img src="../../../images/index/nightshift-transparent.png" alt="Nightshift logo">
+        </a>
+        <nav class="utility-nav" aria-label="Primary">
+            <a href="../../home.html" class="hover-sound">Home</a>
+            <a href="../../games.html" class="hover-sound">Games</a>
+            <a href="../../studio.html" class="hover-sound">Studio</a>
+            <a href="../../DevLog/index.html" class="hover-sound active">Devlog</a>
+            <a href="../../contact.html" class="hover-sound">Contact</a>
+        </nav>
+        <div class="topbar-readout"><span>Devlog Entry</span><strong id="mockup-clock">00:00:00 CST</strong></div>
+    </header>
+    <main class="shell page-shell">
+
+        <section class="page-hero-grid">
+            <article class="page-hero-panel">
+                <p class="eyebrow">Devlog / entry</p>
+                <h1 class="page-title">AfterDark pushes toward MVP with tactical gear materials, UI polish, and city performance work</h1>
+                <p class="page-lede">This stretch was a broad MVP push: tactical gear material tests in s&amp;box, UI polish, extending the existing police and crime loop deeper into NPC arrest/release handling, better VFX, and a heavy performance pass that reclaimed roughly 100-120 FPS while the full city system keeps coming online.</p>
+                <div class="hero-actions"><a class="cta-btn hover-sound" href="../index.html">Back To Devlog</a></div>
+                <div class="tag-row"><span class="tag">AfterDarkRP</span><span class="tag">S17 V3</span><span class="tag">MVP</span><span class="tag">Tactical Gear</span><span class="tag">Materials</span><span class="tag">Police</span><span class="tag">Optimization</span></div>
+                <div class="media-frame devlog-hero"><img src="../../../images/afterdarkrp/Devlogs/7-6-26/tactical-gear-material-comparison.png" alt="AfterDark pushes toward MVP with tactical gear materials, UI polish, and city performance work"></div>
+            </article>
+            <aside class="page-hero-panel">
+                <p class="eyebrow">Entry metadata</p>
+                <div class="stack-list">
+                    <div><span>Project</span><strong><a class="inline-link hover-sound" href="/afterdark/">AfterDarkRP</a></strong></div>
+                    <div><span>Date</span><strong>JUL 06, 2026</strong></div>
+                    <div><span>Signed by</span><strong>Nightshift</strong></div>
+                    <div><span>Authored by</span><strong>Codex</strong></div>
+                    <div><span>Views</span><strong>
+                    <span class="devlog-view-count" data-view-count-path="/pages/DevLog/posts/2026-07-06-afterdark-mvp-tactical-gear-materials.html" data-view-count-state="loading" aria-label="Views loading">
+                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                            <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"></path>
+                            <circle cx="12" cy="12" r="2.5"></circle>
+                        </svg>
+                        <b data-view-count-value>--</b><em>views</em>
+                    </span></strong></div>
+                    <div><span>Route</span><strong>Public archive</strong></div>
+                </div>
+            </aside>
+        </section>
+        
+        <section class="panel feature-panel">
+            <div class="panel-heading"><p class="eyebrow">Field Notes</p><h2>Entry body</h2></div>
+            <div class="devlog-post-body"><h2>Pushing toward the MVP</h2>
+<p>This was one of those weeks where AfterDark moved on several fronts at once.</p>
+<p>The visible part is the new tactical gear material work. I have been playing with the vest and helmet materials directly in s&amp;box, trying to get the gear to feel less like a raw import and more like something that belongs on a character in the city. The first paint pass on the vest is still the one I like best right now: more washed out, less plastic, and with better velcro read than the darker green pass.</p>
+<p>The bigger production story is the MVP push underneath it. Recent work has been going into UI polish, extending the already-working police and crime loop into more NPC-side arrest and release handling, tactical wall cleanup, stronger VFX, and a major performance recovery pass. None of those are isolated features anymore. They are all part of getting the city to behave like one connected system.</p>
+<p>That is the good news: the full city system is working at this point. Now the work becomes scaling it up.</p>
+<div class="devlog-gallery">
+<figure>
+<img src="../../../images/afterdarkrp/Devlogs/7-6-26/tactical-gear-grey-front.png" alt="Unpainted tactical vest and helmet front view in the DCC viewport">
+<figcaption>The grey material pass makes the shape language easy to inspect before the gear is pushed harder through s&amp;box material tuning.</figcaption>
+</figure>
+<figure>
+<img src="../../../images/afterdarkrp/Devlogs/7-6-26/tactical-gear-grey-rear.png" alt="Rear view of the tactical helmet, vest, pouches, straps, and radio detail">
+<figcaption>The rear silhouette is important because the gear has to hold up from player-follow and third-person camera angles, not just front-facing preview shots.</figcaption>
+</figure>
+<figure>
+<img src="../../../images/afterdarkrp/Devlogs/7-6-26/tactical-gear-ingame-fit.png" alt="Tactical vest fitted on an in-game character in the s&amp;box scene">
+<figcaption>The in-game test is where the asset starts answering the real questions: scale, shoulder fit, material response, and whether the vest reads under actual scene lighting.</figcaption>
+</figure>
+<figure>
+<img src="../../../images/afterdarkrp/Devlogs/7-6-26/tactical-gear-material-comparison.png" alt="Two tactical vest material variants side by side in s&amp;box">
+<figcaption>The left vest is the stronger direction right now. It is more washed out, the velcro panels read better, and it feels less like a single dark green block.</figcaption>
+</figure>
+<figure>
+<img src="../../../images/afterdarkrp/Devlogs/7-6-26/tactical-gear-velcro-closeup.png" alt="Close view of the preferred vest material showing velcro and fabric panels">
+<figcaption>The close view shows why the washed-out paint pass is useful: the velcro, fabric breakup, and straps separate more clearly from the base vest.</figcaption>
+</figure>
+<figure>
+<img src="../../../images/afterdarkrp/Devlogs/7-6-26/tactical-gear-green-material.png" alt="Darker green tactical vest material pass inside the s&amp;box editor scene">
+<figcaption>The darker green pass still helps as a comparison point, but it loses some of the panel separation that the first vest material is starting to find.</figcaption>
+</figure>
+</div>
+
+<h2>Tactical gear is becoming usable in-game</h2>
+<p>The gear pass is not just a screenshot exercise.</p>
+<p>The latest commit stack brought in the first real tactical gear pass: helmet work, two vest variants, rigged vest assets, clothing definitions, and the material textures needed to start testing the pieces on characters instead of treating them as standalone props. The work is still early, but it already shows the difference between having an asset imported and having an asset that can be judged in the game.</p>
+<p>That distinction matters for AfterDark. Character gear has to survive:</p>
+<ul>
+<li>scene lighting,</li>
+<li>third-person distance,</li>
+<li>close inspection,</li>
+<li>character movement,</li>
+<li>job identity,</li>
+<li>and the messy overlap of UI markers, weapons, pouches, radios, helmets, and clothing.</li>
+</ul>
+<p>The current vest material is not final, but it is pointing in a better direction. The washed-out pass gives the surface more air. The velcro panels read more clearly. The straps and pouch structure hold together better. The darker green pass is useful, but it starts collapsing the gear into one dark shape in the current lighting.</p>
+<p>That is exactly why material tests need to happen in s&amp;box, not only in a clean DCC preview.</p>
+<h2>UI polish and the player-facing surface</h2>
+<p>The MVP push also put more attention into the player-facing UI.</p>
+<p>Recent work touched the root panel, job portrait panel, spawn menu cursor handling, player menu mode, prop pages, health tracker behavior, and other smaller pieces of the interface layer. The goal is not just to make the UI nicer. The goal is to make the city easier to operate while more systems are running at the same time.</p>
+<p>That matters because AfterDark is getting dense enough that rough UI starts costing real testing time. Police status, job identity, prop access, health feedback, world panels, focused interaction, and admin/dev surfaces all need to stop fighting for attention.</p>
+<p>The UI does not need to become loud. It needs to become clearer.</p>
+<h2>Police, crime, NPC arrest, and release</h2>
+<p>The police and crime loop was already in place. This pass pushed that foundation further into NPC behavior.</p>
+<p>The recent MVP work extended the existing law/crime setup through detain and escort utilities, handcuffs, criminal NPC behavior, NPC detain transport, tazer handling, player status, respawn, release-adjacent flow, and better visual feedback. That is important because the police layer is one of the systems that turns the city from a static map into a pressure system.</p>
+<p>The target is not just &quot;police can chase someone.&quot; The target is a balanced conflict between cops and criminals where both sides have room to play. Cops should not have a one-shot tazer that turns every encounter into a rush to see who fires first. The stun needs to be earned through buildup, pressure, positioning, and repeated contact so the arrest side feels closer to combat than a single-button shutdown.</p>
+<p>That means the loop needs enough structure to support:</p>
+<ul>
+<li>crimes that are noticed,</li>
+<li>NPC and police response,</li>
+<li>detain and escort behavior,</li>
+<li>tazer pressure that builds toward a stun instead of instantly deciding the fight,</li>
+<li>custody and release handling,</li>
+<li>wanted-state pressure,</li>
+<li>and enough player feedback that the whole thing feels readable instead of arbitrary.</li>
+</ul>
+<p>This is still not finished, but the shape is getting much more complete. The city can now carry more of the law/crime layer into NPC behavior without needing every test to be staged manually.</p>
+<h2>Performance got a real recovery pass</h2>
+<p>The less glamorous headline is performance, but it is probably the most important one.</p>
+<p>A recent optimization pass reclaimed roughly <strong>100-120 FPS</strong> in the current dev environment. That is good progress, but it came with cutbacks, and it is not the final answer. The build still needs a more durable optimization path as the city grows.</p>
+<p>The current recovery work touched performance diagnostics, model culling, local first-person body culling, NPC visual LOD, NPC scene query caching, overhead text budgeting, world panel culling, pickup visuals, point light budgeting, prop/toolgun policies, traffic spawn behavior, time updates, and several HUD/debug surfaces.</p>
+<p>That sounds broad because it had to be broad. The city is no longer a small feature slice. It is a full system stack: NPCs, traffic, props, walls, UI, interactables, materials, lights, jobs, police, economy, and debug tooling all running together.</p>
+<p>The next performance step needs to be cleaner. Props and scripts still need deeper optimization so the reclaimed frame rate comes from better scaling, not only from cutting things back.</p>
+<h2>The city system is online</h2>
+<p>The encouraging part is that the city now works as a city.</p>
+<p>That does not mean every system is finished. It means the major layers are finally overlapping in one playable space: city simulation, UI, jobs, gear, police pressure, NPC handling, tactical walls, props, and performance tooling. That is the stage where AfterDark can stop proving each idea in isolation and start scaling the parts that already work.</p>
+<p>That city layer also includes more of the traversal and authoring work now. The vent side is part of the current city read, and the spline tools got another pass so repeated city pieces are easier to place and reason about. One important cleanup: the train tool no longer duplicates supports incorrectly, which makes the rail pass less noisy and much safer to keep building on.</p>
+<div class="devlog-gallery">
+<figure>
+<img src="../../../images/afterdarkrp/Devlogs/7-6-26/spline-tool-vent.png" alt="Vent spline tool preview showing repeated vent segments in the editor">
+<figcaption>The vent spline tool pass makes covert traversal pieces easier to lay out as repeatable city infrastructure instead of hand-placing every segment.</figcaption>
+</figure>
+</div>
+
+<p>There is still a lot to polish:</p>
+<ul>
+<li>tactical gear materials need another pass,</li>
+<li>props need better budgets and cleanup,</li>
+<li>scripts need continued profiling,</li>
+<li>vent and spline-authored traversal pieces need more playtest cleanup,</li>
+<li>police/crime needs more real playtesting,</li>
+<li>NPC arrest and release flow needs more tuning,</li>
+<li>UI needs to keep getting quieter and more direct,</li>
+<li>and the city needs to grow without giving back the frame rate that was just recovered.</li>
+</ul>
+<p>But this is a good place to be. The full city system is alive. Now the work is making it bigger, cleaner, faster, and more readable.</p>
+
+            <div class="devlog-signoff">
+                <p>Signed, <strong>Nightshift</strong></p>
+            </div></div>
+        </section>
+
+        <footer class="site-footer panel">
+
+            <section class="software-marquee-section" aria-label="Software used by Nightshift">
+                <div class="software-marquee"><div class="software-marquee-track">
+                    <div class="software-marquee-group"><a class="software-marquee-item hover-sound" href="https://www.unrealengine.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/unreal-engine.svg" alt="" aria-hidden="true" loading="lazy"><span>Unreal</span></a><a class="software-marquee-item hover-sound" href="https://developer.valvesoftware.com/wiki/Source_2" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/source-2.svg" alt="" aria-hidden="true" loading="lazy"><span>Source 2</span></a><a class="software-marquee-item hover-sound" href="https://enfusionengine.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/enfusion.svg" alt="" aria-hidden="true" loading="lazy"><span>Enfusion</span></a><a class="software-marquee-item hover-sound" href="https://www.rockstargames.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/rage.svg" alt="" aria-hidden="true" loading="lazy"><span>RAGE</span></a><a class="software-marquee-item hover-sound" href="https://www.blender.org/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/blender.svg" alt="" aria-hidden="true" loading="lazy"><span>Blender</span></a><a class="software-marquee-item hover-sound" href="https://www.adobe.com/products/substance3d.html" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/adobe-3d.svg" alt="" aria-hidden="true" loading="lazy"><span>Adobe 3D</span></a><a class="software-marquee-item hover-sound" href="https://affinity.serif.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/affinity-suite.png" alt="" aria-hidden="true" loading="lazy"><span>Affinity Suite</span></a><a class="software-marquee-item hover-sound" href="https://quadspinner.com/gaea/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/gaea.png" alt="" aria-hidden="true" loading="lazy"><span>Gaea 2.0</span></a><a class="software-marquee-item hover-sound" href="https://www.reallusion.com/character-creator/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/cc5.png" alt="" aria-hidden="true" loading="lazy"><span>CC5</span></a><a class="software-marquee-item hover-sound" href="https://www.reallusion.com/iclone/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/iclone-8.png" alt="" aria-hidden="true" loading="lazy"><span>iClone 8</span></a><a class="software-marquee-item hover-sound" href="https://www.marvelousdesigner.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/marvelous-designer.png" alt="" aria-hidden="true" loading="lazy"><span>Marvelous Designer</span></a><a class="software-marquee-item hover-sound" href="https://ephere.com/plugins/ornatrix/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/ornatrix.png" alt="" aria-hidden="true" loading="lazy"><span>Ornatrix</span></a><a class="software-marquee-item hover-sound" href="https://www.image-line.com/fl-studio/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/fl-studio.png" alt="" aria-hidden="true" loading="lazy"><span>FruityLoops</span></a><a class="software-marquee-item hover-sound" href="https://code.visualstudio.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/vs-code.png" alt="" aria-hidden="true" loading="lazy"><span>VS Code</span></a><a class="software-marquee-item hover-sound" href="https://visualstudio.microsoft.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/visual-studio.svg" alt="" aria-hidden="true" loading="lazy"><span>Visual Studio</span></a><a class="software-marquee-item hover-sound" href="https://github.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/github.svg" alt="" aria-hidden="true" loading="lazy"><span>GitHub</span></a><a class="software-marquee-item hover-sound" href="https://git-lfs.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/git-lfs.svg" alt="" aria-hidden="true" loading="lazy"><span>Git LFS</span></a><a class="software-marquee-item hover-sound" href="https://pages.github.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/github-pages.svg" alt="" aria-hidden="true" loading="lazy"><span>GitHub Pages</span></a><a class="software-marquee-item hover-sound" href="https://www.wix.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/wix.svg" alt="" aria-hidden="true" loading="lazy"><span>Wix</span></a><a class="software-marquee-item hover-sound" href="https://stripe.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/stripe.svg" alt="" aria-hidden="true" loading="lazy"><span>Stripe</span></a><a class="software-marquee-item hover-sound" href="https://obsidian.md/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/obsidian.svg" alt="" aria-hidden="true" loading="lazy"><span>Obsidian</span></a><a class="software-marquee-item hover-sound" href="https://openai.com/codex/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/openai.png" alt="" aria-hidden="true" loading="lazy"><span>Codex</span></a></div>
+                    <div class="software-marquee-group" aria-hidden="true"><a class="software-marquee-item hover-sound" href="https://www.unrealengine.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/unreal-engine.svg" alt="" aria-hidden="true" loading="lazy"><span>Unreal</span></a><a class="software-marquee-item hover-sound" href="https://developer.valvesoftware.com/wiki/Source_2" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/source-2.svg" alt="" aria-hidden="true" loading="lazy"><span>Source 2</span></a><a class="software-marquee-item hover-sound" href="https://enfusionengine.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/enfusion.svg" alt="" aria-hidden="true" loading="lazy"><span>Enfusion</span></a><a class="software-marquee-item hover-sound" href="https://www.rockstargames.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/rage.svg" alt="" aria-hidden="true" loading="lazy"><span>RAGE</span></a><a class="software-marquee-item hover-sound" href="https://www.blender.org/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/blender.svg" alt="" aria-hidden="true" loading="lazy"><span>Blender</span></a><a class="software-marquee-item hover-sound" href="https://www.adobe.com/products/substance3d.html" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/adobe-3d.svg" alt="" aria-hidden="true" loading="lazy"><span>Adobe 3D</span></a><a class="software-marquee-item hover-sound" href="https://affinity.serif.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/affinity-suite.png" alt="" aria-hidden="true" loading="lazy"><span>Affinity Suite</span></a><a class="software-marquee-item hover-sound" href="https://quadspinner.com/gaea/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/gaea.png" alt="" aria-hidden="true" loading="lazy"><span>Gaea 2.0</span></a><a class="software-marquee-item hover-sound" href="https://www.reallusion.com/character-creator/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/cc5.png" alt="" aria-hidden="true" loading="lazy"><span>CC5</span></a><a class="software-marquee-item hover-sound" href="https://www.reallusion.com/iclone/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/iclone-8.png" alt="" aria-hidden="true" loading="lazy"><span>iClone 8</span></a><a class="software-marquee-item hover-sound" href="https://www.marvelousdesigner.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/marvelous-designer.png" alt="" aria-hidden="true" loading="lazy"><span>Marvelous Designer</span></a><a class="software-marquee-item hover-sound" href="https://ephere.com/plugins/ornatrix/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/ornatrix.png" alt="" aria-hidden="true" loading="lazy"><span>Ornatrix</span></a><a class="software-marquee-item hover-sound" href="https://www.image-line.com/fl-studio/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/fl-studio.png" alt="" aria-hidden="true" loading="lazy"><span>FruityLoops</span></a><a class="software-marquee-item hover-sound" href="https://code.visualstudio.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/vs-code.png" alt="" aria-hidden="true" loading="lazy"><span>VS Code</span></a><a class="software-marquee-item hover-sound" href="https://visualstudio.microsoft.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/visual-studio.svg" alt="" aria-hidden="true" loading="lazy"><span>Visual Studio</span></a><a class="software-marquee-item hover-sound" href="https://github.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/github.svg" alt="" aria-hidden="true" loading="lazy"><span>GitHub</span></a><a class="software-marquee-item hover-sound" href="https://git-lfs.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/git-lfs.svg" alt="" aria-hidden="true" loading="lazy"><span>Git LFS</span></a><a class="software-marquee-item hover-sound" href="https://pages.github.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/github-pages.svg" alt="" aria-hidden="true" loading="lazy"><span>GitHub Pages</span></a><a class="software-marquee-item hover-sound" href="https://www.wix.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/wix.svg" alt="" aria-hidden="true" loading="lazy"><span>Wix</span></a><a class="software-marquee-item hover-sound" href="https://stripe.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/stripe.svg" alt="" aria-hidden="true" loading="lazy"><span>Stripe</span></a><a class="software-marquee-item hover-sound" href="https://obsidian.md/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/obsidian.svg" alt="" aria-hidden="true" loading="lazy"><span>Obsidian</span></a><a class="software-marquee-item hover-sound" href="https://openai.com/codex/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/openai.png" alt="" aria-hidden="true" loading="lazy"><span>Codex</span></a></div>
+                </div></div>
+            </section>
+            <div class="footer-grid">
+                <div class="footer-column"><span>Primary routes</span><a class="hover-sound" href="/">Home</a><a class="hover-sound" href="/pages/games.html">Games</a><a class="hover-sound" href="/pages/studio.html">Studio</a><a class="hover-sound" href="/pages/contact.html">Contact</a></div>
+                <div class="footer-column"><span>Public records</span><a class="hover-sound" href="/pages/DevLog/index.html">Devlog</a><a href="https://www.epicgames.com/site/en-US/privacypolicy" target="_blank" rel="noopener noreferrer">Epic Privacy Policy</a><a href="#">Nightshift Privacy Policy</a><a href="#">Applicant Privacy Policy</a></div>
+                <div class="footer-column"><span>External surfaces</span><a href="#">Press Kit</a><a href="#">Brand Assets</a><a href="#">Careers</a><a href="#">Community</a></div>
+            </div>
+            <div class="footer-bottom"><div class="social-row"><a class="action-pill hover-sound" href="https://www.youtube.com/@nstx" target="_blank" rel="noopener noreferrer">YouTube</a><a class="action-pill primary hover-sound" href="/pages/Studio/Donations.html">Support the studio</a></div><p class="footer-note">Copyright 2026 Nightshift. All rights reserved.</p></div>
+        </footer>
+    </main>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const audio = new Audio("../../../audio/bop.mp3");
+            audio.volume = 0.25;
+            const clock = document.getElementById("mockup-clock");
+            function updateClock() {
+                if (!clock) return;
+                clock.textContent = new Date().toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", second: "2-digit", timeZone: "America/Chicago", timeZoneName: "short" });
+            }
+            document.querySelectorAll(".hover-sound").forEach((element) => {
+                element.addEventListener("mouseenter", function() {
+                    audio.currentTime = 0;
+                    audio.play().catch(() => {});
+                });
+            });
+            updateClock();
+            window.setInterval(updateClock, 1000);
+        });
+    </script>
+</body>
+</html>
