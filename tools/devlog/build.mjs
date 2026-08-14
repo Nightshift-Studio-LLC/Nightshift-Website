@@ -10,6 +10,7 @@ const outDir = path.join(root, "pages", "DevLog");
 const postsDir = path.join(outDir, "posts");
 const galleryBlockPattern = /^:::gallery\s*\n([\s\S]*?)\n:::/gm;
 const youtubeBlockPattern = /^:::youtube\s*\n([\s\S]*?)\n:::/gm;
+const highlightBlueBlockPattern = /^:::highlight-blue\s*\n([\s\S]*?)\n:::/gm;
 const rawHtmlPattern = /<\/?[A-Za-z][A-Za-z0-9:-]*(?:\s|>|\/>)/;
 const imageExtensions = new Set([".gif", ".jpeg", ".jpg", ".png", ".svg", ".webp"]);
 const videoExtensions = new Set([".mp4", ".webm"]);
@@ -179,10 +180,16 @@ const renderGalleryBlocks = (content, file) =>
 const renderMediaBlocks = (content, file) =>
     renderYoutubeBlocks(renderGalleryBlocks(content, file), file);
 
+const renderHighlightBlocks = (content) =>
+    content.replace(highlightBlueBlockPattern, (_match, body) =>
+        `<section class="devlog-highlight devlog-highlight-blue">${marked.parse(body)}</section>`
+    );
+
 const validateDevlogContent = (content, file) => {
     const withoutMediaBlocks = content
         .replace(galleryBlockPattern, "")
-        .replace(youtubeBlockPattern, "");
+        .replace(youtubeBlockPattern, "")
+        .replace(highlightBlueBlockPattern, "");
     assertNoRawHtml(withoutMediaBlocks, file);
 };
 
@@ -209,7 +216,7 @@ const renderViewCount = (path) => `
                     </span>`;
 
 const archiveConfig = [
-    { year: 2026, months: [7, 6, 5, 4, 3, 2, 1] },
+    { year: 2026, months: [8, 7, 6, 5, 4, 3, 2, 1] },
 ];
 
 const parseFrontmatterDate = (value, file) => {
@@ -280,7 +287,7 @@ const readPosts = async () => {
             hero: data.hero || "",
             heroLabel: data.heroLabel || "",
             pitch: data.pitch || "",
-            html: marked.parse(renderMediaBlocks(content, file)),
+            html: marked.parse(renderHighlightBlocks(renderMediaBlocks(content, file))),
         });
     }
 
@@ -361,7 +368,7 @@ ${softwareMarquee()}
             <div class="footer-bottom"><div class="social-row"><a class="action-pill hover-sound" href="https://www.youtube.com/@nstx" target="_blank" rel="noopener noreferrer">YouTube</a><a class="action-pill primary hover-sound" href="/pages/Studio/Donations.html">Support the studio</a></div><p class="footer-note">Copyright 2026 Nightshift. All rights reserved.</p></div>
         </footer>`;
 
-const styleVersion = "20260702-footer-universal";
+const styleVersion = "20260814-agekey-highlight";
 
 const layout = ({ title, body, assetPrefix, pagePrefix, readout }) => `<!DOCTYPE html>
 <html lang="en">
