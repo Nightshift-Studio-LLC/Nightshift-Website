@@ -233,6 +233,14 @@ const renderViewCount = (path) => `
                         <b data-view-count-value>--</b><em>views</em>
                     </span>`;
 
+const renderDraftBanner = (isDraft) => isDraft
+    ? `
+                <div class="devlog-draft-banner" role="status">
+                    <span class="devlog-draft-banner-label">Draft</span>
+                    <span class="devlog-draft-banner-copy"><strong>Work in progress</strong><small>Not a finalized public record</small></span>
+                </div>`
+    : "";
+
 const archiveConfig = [
     { year: 2026, months: [8, 7, 6, 5, 4, 3, 2, 1] },
 ];
@@ -292,7 +300,6 @@ const readPosts = async () => {
         const raw = await fs.readFile(path.join(contentDir, file), "utf-8");
         const { data, content } = parseFrontmatter(raw, file);
         if (data.unlisted === true) continue;
-        if (data.draft === true) continue;
 
         validateDevlogContent(content, file);
         const dateObj = parseFrontmatterDate(data.date, file);
@@ -300,6 +307,7 @@ const readPosts = async () => {
             slug: path.basename(file, ".md"),
             title: data.title,
             dateObj,
+            draft: data.draft === true,
             game: data.game,
             signer: data.signer || "Nightshift",
             author: data.author || "Codex",
@@ -389,7 +397,7 @@ ${softwareMarquee()}
             <div class="footer-bottom"><div class="social-row"><a class="action-pill hover-sound" href="https://www.youtube.com/@nstx" target="_blank" rel="noopener noreferrer">YouTube</a><a class="action-pill primary hover-sound" href="/pages/Studio/Donations.html">Support the studio</a></div><p class="footer-note">Copyright 2026 Nightshift. All rights reserved.</p></div>
         </footer>`;
 
-const styleVersion = "20260711-devlog-highlight";
+const styleVersion = "20260816-devlog-style";
 
 const layout = ({ title, body, assetPrefix, pagePrefix, readout }) => `<!DOCTYPE html>
 <html lang="en">
@@ -456,8 +464,8 @@ const renderIndex = (posts) => {
             : "";
 
         return `
-            <article class="devlog-card">
-                ${thumb}
+            <article class="devlog-card${post.draft ? " devlog-card-draft" : ""}">${renderDraftBanner(post.draft)}
+${thumb}
                 <div class="devlog-meta"><span>${escapeHtml(post.game)}</span><span>${formatDate(post.dateObj)}</span>${renderViewCount(postPath(post))}</div>
                 <h3>${escapeHtml(post.title)}</h3>
                 <p>${escapeHtml(post.excerpt)}</p>
@@ -560,6 +568,7 @@ const renderPost = (post) => {
     const projectLabel = post.game === "AfterDarkRP"
         ? `<a class="inline-link hover-sound" href="/afterdark/">${escapeHtml(post.game)}</a>`
         : escapeHtml(post.game);
+    const draftBanner = renderDraftBanner(post.draft);
     const signoff = `
             <div class="devlog-signoff">
                 <p>Signed, <strong>${escapeHtml(post.signer)}</strong></p>
@@ -572,7 +581,7 @@ const renderPost = (post) => {
         readout: "Devlog Entry",
         body: `
         <section class="page-hero-grid">
-            <article class="page-hero-panel">
+            <article class="page-hero-panel${post.draft ? " devlog-entry-panel-draft" : ""}">${draftBanner}
                 <p class="eyebrow">Devlog / entry</p>
                 <h1 class="page-title">${escapeHtml(post.title)}</h1>
                 <p class="page-lede">${escapeHtml(post.excerpt)}</p>
@@ -585,7 +594,7 @@ const renderPost = (post) => {
                 <div class="stack-list">
                     <div><span>Project</span><strong>${projectLabel}</strong></div>
                     <div><span>Date</span><strong>${formatDate(post.dateObj)}</strong></div>
-                    <div><span>Signed by</span><strong>${escapeHtml(post.signer)}</strong></div>
+${post.draft ? "                    <div><span>Status</span><strong>Draft / work in progress</strong></div>\n" : ""}                    <div><span>Signed by</span><strong>${escapeHtml(post.signer)}</strong></div>
                     <div><span>Authored by</span><strong>${escapeHtml(post.author)}</strong></div>
                     <div><span>Views</span><strong>${renderViewCount(postPath(post))}</strong></div>
                     <div><span>Route</span><strong>Public archive</strong></div>

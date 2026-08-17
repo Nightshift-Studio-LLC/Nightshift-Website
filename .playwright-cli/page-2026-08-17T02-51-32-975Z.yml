@@ -1,0 +1,620 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - link "Nightshift home" [ref=e3] [cursor=pointer]:
+      - /url: ../home.html
+      - img "Nightshift logo" [ref=e4]
+    - navigation "Primary" [ref=e5]:
+      - link "Home" [ref=e6] [cursor=pointer]:
+        - /url: ../home.html
+      - link "Games" [ref=e7] [cursor=pointer]:
+        - /url: ../games.html
+      - link "Studio" [ref=e8] [cursor=pointer]:
+        - /url: ../studio.html
+      - link "Devlog" [ref=e9] [cursor=pointer]:
+        - /url: ../DevLog/index.html
+      - link "Contact" [ref=e10] [cursor=pointer]:
+        - /url: ../contact.html
+    - generic [ref=e11]:
+      - generic [ref=e12]: Devlog Feed
+      - strong [ref=e13]: 09:51:32 PM CDT
+  - main [ref=e14]:
+    - generic [ref=e15]:
+      - article [ref=e16]:
+        - paragraph [ref=e17]: Devlog / public record
+        - heading "Milestones, experiments, and creative notes from the pipeline." [level=1] [ref=e18]
+        - paragraph [ref=e19]: Nightshift documents progress as systems lock in, worlds take shape, and new public-facing surfaces come online.
+        - link "Explore Games" [ref=e21] [cursor=pointer]:
+          - /url: ../games.html
+      - complementary [ref=e22]:
+        - paragraph [ref=e23]: Project status
+        - generic [ref=e24]:
+          - generic [ref=e25]:
+            - generic [ref=e26]: Primary focus
+            - strong [ref=e27]: AfterDarkRP + studio build direction
+          - generic [ref=e28]:
+            - generic [ref=e29]: Project Saint
+            - strong [ref=e30]:
+              - link "Rolling into AfterDark" [ref=e31] [cursor=pointer]:
+                - /url: /afterdark/
+          - generic [ref=e32]:
+            - generic [ref=e33]: Elder
+            - strong [ref=e34]: Postponed
+          - generic [ref=e35]:
+            - generic [ref=e36]: SPEAR
+            - strong [ref=e37]: Arma Exile live service before standalone
+          - generic [ref=e38]:
+            - generic [ref=e39]: Format
+            - strong [ref=e40]: Short field reports and dated entries
+    - generic [ref=e41]:
+      - generic [ref=e42]:
+        - paragraph [ref=e43]: Latest Entries
+        - heading "Recent Logs" [level=2] [ref=e44]
+      - generic [ref=e45]:
+        - complementary "Devlog archives" [ref=e46]:
+          - generic [ref=e47]:
+            - paragraph [ref=e48]: Actual Archives
+            - heading "Browse by date" [level=3] [ref=e49]
+          - generic [ref=e50]:
+            - generic [ref=e51]: "2026"
+            - generic [ref=e52]:
+              - link "August 03" [ref=e53] [cursor=pointer]:
+                - /url: "#archive-2026-08"
+                - generic [ref=e54]: August
+                - strong [ref=e55]: "03"
+              - link "July 06" [ref=e56] [cursor=pointer]:
+                - /url: "#archive-2026-07"
+                - generic [ref=e57]: July
+                - strong [ref=e58]: "06"
+              - link "June 05" [ref=e59] [cursor=pointer]:
+                - /url: "#archive-2026-06"
+                - generic [ref=e60]: June
+                - strong [ref=e61]: "05"
+              - link "May 03" [ref=e62] [cursor=pointer]:
+                - /url: "#archive-2026-05"
+                - generic [ref=e63]: May
+                - strong [ref=e64]: "03"
+              - link "April 01" [ref=e65] [cursor=pointer]:
+                - /url: "#archive-2026-04"
+                - generic [ref=e66]: April
+                - strong [ref=e67]: "01"
+              - link "March 04" [ref=e68] [cursor=pointer]:
+                - /url: "#archive-2026-03"
+                - generic [ref=e69]: March
+                - strong [ref=e70]: "04"
+              - link "February 03" [ref=e71] [cursor=pointer]:
+                - /url: "#archive-2026-02"
+                - generic [ref=e72]: February
+                - strong [ref=e73]: "03"
+              - link "January 02" [ref=e74] [cursor=pointer]:
+                - /url: "#archive-2026-01"
+                - generic [ref=e75]: January
+                - strong [ref=e76]: "02"
+        - generic [ref=e77]:
+          - generic [ref=e78]:
+            - generic [ref=e79]:
+              - paragraph [ref=e80]: 2026 Archive
+              - heading "August" [level=3] [ref=e81]
+            - generic [ref=e82]:
+              - article [ref=e83]:
+                - generic [ref=e84]:
+                  - generic [ref=e85]: AfterDarkRP
+                  - generic [ref=e86]: AUG 14, 2026
+                  - generic "Views loading" [ref=e87]:
+                    - generic [ref=e91]: "--"
+                    - emphasis [ref=e92]: views
+                - heading "AfterDark tests a privacy-first age gate with AgeKey and YubiKey" [level=3] [ref=e93]
+                - paragraph [ref=e94]: AfterDark is evaluating whether AgeKey and YubiKey can support an adult gate with less identity exposure—and what metadata, correlation, and acquisition risks remain.
+                - link "Read entry" [ref=e95] [cursor=pointer]:
+                  - /url: posts/2026-08-14-afterdark-agekey-yubikey-age-gate.html
+              - article [ref=e96]:
+                - generic [ref=e97]:
+                  - generic [ref=e98]: AfterDarkRP
+                  - generic [ref=e99]: AUG 14, 2026
+                  - generic "Views loading" [ref=e100]:
+                    - generic [ref=e104]: "--"
+                    - emphasis [ref=e105]: views
+                - heading "AfterDark refocuses its MVP while Enfusion work moves forward" [level=3] [ref=e106]
+                - paragraph [ref=e107]: AfterDark is taking a deliberate development pause while major engine changes settle, with a tighter MVP, a stronger arrest loop, and fewer public design notes until the next playtest milestone.
+                - link "Read entry" [ref=e108] [cursor=pointer]:
+                  - /url: posts/2026-08-14-afterdark-mvp-refocus-engine-pause.html
+              - article [ref=e109]:
+                - status [ref=e110]:
+                  - generic [ref=e111]: Draft
+                  - generic [ref=e112]:
+                    - strong [ref=e113]: Work in progress
+                    - generic [ref=e114]: Not a finalized public record
+                - 'img "LandSnap Version 2: rigid hinge fitting for uneven terrain" [ref=e116]'
+                - generic [ref=e117]:
+                  - generic [ref=e118]: LandSnap
+                  - generic [ref=e119]: AUG 03, 2026
+                  - generic "Views loading" [ref=e120]:
+                    - generic [ref=e124]: "--"
+                    - emphasis [ref=e125]: views
+                - 'heading "LandSnap Version 2: rigid hinge fitting for uneven terrain" [level=3] [ref=e126]'
+                - paragraph [ref=e127]: A brief look at a LandSnap Version 2 fitting method that keeps an object's footprint rigid while finding its best orientation against uneven terrain.
+                - link "Read entry" [ref=e128] [cursor=pointer]:
+                  - /url: posts/2026-08-03-landsnap-v2-rigid-hinge-terrain-fit.html
+          - generic [ref=e129]:
+            - generic [ref=e130]:
+              - paragraph [ref=e131]: 2026 Archive
+              - heading "July" [level=3] [ref=e132]
+            - generic [ref=e133]:
+              - article [ref=e134]:
+                - img "LandSnap 1.1.0 moves to Unreal Engine 5.8 with agent-ready workflows" [ref=e136]
+                - generic [ref=e137]:
+                  - generic [ref=e138]: LandSnap
+                  - generic [ref=e139]: JUL 21, 2026
+                  - generic "Views loading" [ref=e140]:
+                    - generic [ref=e144]: "--"
+                    - emphasis [ref=e145]: views
+                - heading "LandSnap 1.1.0 moves to Unreal Engine 5.8 with agent-ready workflows" [level=3] [ref=e146]
+                - paragraph [ref=e147]: LandSnap 1.1.0 updates the editor tool for Unreal Engine 5.8, adds Mesh Terrain and particle-system snapping, introduces a dockable control panel, and exposes an opt-in command layer for MCP-connected agents.
+                - link "Read entry" [ref=e148] [cursor=pointer]:
+                  - /url: posts/2026-07-21-landsnap-ue-5-8-agent-workflows.html
+              - article [ref=e149]:
+                - img "AfterDark MVP polish pass" [ref=e151]
+                - generic [ref=e152]:
+                  - generic [ref=e153]: AfterDarkRP
+                  - generic [ref=e154]: JUL 11, 2026
+                  - generic "Views loading" [ref=e155]:
+                    - generic [ref=e159]: "--"
+                    - emphasis [ref=e160]: views
+                - heading "AfterDark MVP polish pass" [level=3] [ref=e161]
+                - paragraph [ref=e162]: A dense MVP polish pass covering arrests, a new downed state, SWAT orders, stun recovery, taser VFX, the police CV, capped-job queues, interaction cleanup, performance tooling, and train-platform art.
+                - link "Read entry" [ref=e163] [cursor=pointer]:
+                  - /url: posts/2026-07-11-afterdark-mvp-arrest-detain-polish.html
+              - article [ref=e164]:
+                - generic [ref=e165]:
+                  - generic [ref=e166]: OpenBox
+                  - generic [ref=e167]: JUL 11, 2026
+                  - generic "Views loading" [ref=e168]:
+                    - generic [ref=e172]: "--"
+                    - emphasis [ref=e173]: views
+                - 'heading "OpenBox: A Decentralized s&box Server Ecosystem" [level=3] [ref=e174]'
+                - paragraph [ref=e175]: A blockchain-backed ecosystem for independently operated s&box worlds, wallet-based users, explicit content rights, and verifiable preservation records.
+                - link "Read entry" [ref=e176] [cursor=pointer]:
+                  - /url: posts/2026-07-11-openbox-sbox-server-ecosystem.html
+              - article [ref=e177]:
+                - img "AfterDark pushes toward MVP with tactical gear materials, UI polish, and city performance work" [ref=e179]
+                - generic [ref=e180]:
+                  - generic [ref=e181]: AfterDarkRP
+                  - generic [ref=e182]: JUL 06, 2026
+                  - generic "Views loading" [ref=e183]:
+                    - generic [ref=e187]: "--"
+                    - emphasis [ref=e188]: views
+                - heading "AfterDark pushes toward MVP with tactical gear materials, UI polish, and city performance work" [level=3] [ref=e189]
+                - paragraph [ref=e190]: "This stretch was a broad MVP push: tactical gear material tests in s&box, UI polish, extending the existing police and crime loop deeper into NPC arrest/release handling, better VFX, and a heavy performance pass that reclaimed roughly 100-120 FPS while the full city system keeps coming online."
+                - link "Read entry" [ref=e191] [cursor=pointer]:
+                  - /url: posts/2026-07-06-afterdark-mvp-tactical-gear-materials.html
+              - article [ref=e192]:
+                - img "Exile Reforged reaches a clean recovery checkpoint" [ref=e194]
+                - generic [ref=e195]:
+                  - generic [ref=e196]: Exile Reforged
+                  - generic [ref=e197]: JUL 02, 2026
+                  - generic "Views loading" [ref=e198]:
+                    - generic [ref=e202]: "--"
+                    - emphasis [ref=e203]: views
+                - heading "Exile Reforged reaches a clean recovery checkpoint" [level=3] [ref=e204]
+                - paragraph [ref=e205]: "Exile Reforged is back at a useful checkpoint: the revived Arma Reforger workspace has persistence, deployment, loot, building, zones, missions, economy, and faction scaffolding moving again without turning the update into a system teardown."
+                - link "Read entry" [ref=e206] [cursor=pointer]:
+                  - /url: posts/2026-07-02-arma-reforger-exile-persistence.html
+              - article [ref=e207]:
+                - status [ref=e208]:
+                  - generic [ref=e209]: Draft
+                  - generic [ref=e210]:
+                    - strong [ref=e211]: Work in progress
+                    - generic [ref=e212]: Not a finalized public record
+                - generic [ref=e213]:
+                  - generic [ref=e214]: Nightshift
+                  - generic [ref=e215]: JUL 02, 2026
+                  - generic "Views loading" [ref=e216]:
+                    - generic [ref=e220]: "--"
+                    - emphasis [ref=e221]: views
+                - 'heading "Nightshift studio update: server hosting as a game design incubator" [level=3] [ref=e222]'
+                - paragraph [ref=e223]: "Nightshift is tightening the studio strategy around server hosting as a faster validation layer: build on active platforms, test across multiple engines, and let traction decide which ideas earn standalone investment."
+                - link "Read entry" [ref=e224] [cursor=pointer]:
+                  - /url: posts/2026-07-02-server-hosting-incubator-strategy.html
+          - generic [ref=e225]:
+            - generic [ref=e226]:
+              - paragraph [ref=e227]: 2026 Archive
+              - heading "June" [level=3] [ref=e228]
+            - generic [ref=e229]:
+              - article [ref=e230]:
+                - img "AfterDark club POI blockout starts testing stealth routes, vents, and pipe access" [ref=e232]
+                - generic [ref=e233]:
+                  - generic [ref=e234]: AfterDarkRP
+                  - generic [ref=e235]: JUN 18, 2026
+                  - generic "Views loading" [ref=e236]:
+                    - generic [ref=e240]: "--"
+                    - emphasis [ref=e241]: views
+                - heading "AfterDark club POI blockout starts testing stealth routes, vents, and pipe access" [level=3] [ref=e242]
+                - paragraph [ref=e243]: A first club POI blockout is in testing for AfterDark. The pass is rough by design, focused on circulation, sightlines, lighting pockets, and early vent and pipe routes for Spy and Hitman loop testing.
+                - link "Read entry" [ref=e244] [cursor=pointer]:
+                  - /url: posts/2026-06-18-afterdark-club-poi-blockout-testing.html
+              - article [ref=e245]:
+                - img "AfterDark tactical walls get a cleaner material pass and a needed insulation layer" [ref=e247]
+                - generic [ref=e248]:
+                  - generic [ref=e249]: AfterDarkRP
+                  - generic [ref=e250]: JUN 18, 2026
+                  - generic "Views loading" [ref=e251]:
+                    - generic [ref=e255]: "--"
+                    - emphasis [ref=e256]: views
+                - heading "AfterDark tactical walls get a cleaner material pass and a needed insulation layer" [level=3] [ref=e257]
+                - paragraph [ref=e258]: The tactical wall prototype is still not fully dialed in, but the latest material pass makes the wall read better in-game. Insulation now adds a much-needed middle layer, while the wood and frame treatment still need another pass.
+                - link "Read entry" [ref=e259] [cursor=pointer]:
+                  - /url: posts/2026-06-18-afterdark-tactical-wall-material-pass.html
+              - article [ref=e260]:
+                - img "Old project revived, lost work recovered, and old content restored for AfterDark and Exile" [ref=e262]
+                - generic [ref=e263]:
+                  - generic [ref=e264]: Nightshift
+                  - generic [ref=e265]: JUN 16, 2026
+                  - generic "Views loading" [ref=e266]:
+                    - generic [ref=e270]: "--"
+                    - emphasis [ref=e271]: views
+                - heading "Old project revived, lost work recovered, and old content restored for AfterDark and Exile" [level=3] [ref=e272]
+                - paragraph [ref=e273]: "A quick Nightshift studio update: Exile recovered roughly a thousand hours of previously lost work after the original persistence and pawn-lifecycle dead end, and the core boot and possession path was restored inside a day."
+                - link "Read entry" [ref=e274] [cursor=pointer]:
+                  - /url: posts/2026-06-16-exile-boot-and-character-reuse.html
+              - article [ref=e275]:
+                - img "AfterDark finishes the first train-track pass, optimizes siege walls, and keeps tightening S17 V3" [ref=e277]
+                - generic [ref=e278]:
+                  - generic [ref=e279]: AfterDarkRP
+                  - generic [ref=e280]: JUN 15, 2026
+                  - generic "Views loading" [ref=e281]:
+                    - generic [ref=e285]: "--"
+                    - emphasis [ref=e286]: views
+                - heading "AfterDark finishes the first train-track pass, optimizes siege walls, and keeps tightening S17 V3" [level=3] [ref=e287]
+                - paragraph [ref=e288]: Since the May 29 devlog, AfterDark has pushed through the first real train-track pass in Blender, hardened the tooling around that pipeline, moved siege walls onto a more optimized forward path, and kept layering practical MVP systems into S17 V3.
+                - link "Read entry" [ref=e289] [cursor=pointer]:
+                  - /url: posts/2026-06-15-afterdark-train-tracks-siege-wall-optimization.html
+              - article [ref=e290]:
+                - generic [ref=e291]:
+                  - generic [ref=e292]: Nightshift
+                  - generic [ref=e293]: JUN 15, 2026
+                  - generic "Views loading" [ref=e294]:
+                    - generic [ref=e298]: "--"
+                    - emphasis [ref=e299]: views
+                - 'heading "Nightshift studio note: this site and devlog are Codex-maintained, and yes, they are still rough" [level=3] [ref=e300]'
+                - paragraph [ref=e301]: "A direct note about the public site: the devlog and much of the site are now being maintained through Codex, which keeps things moving but also means some parts are still plainly workmanlike instead of polished."
+                - link "Read entry" [ref=e302] [cursor=pointer]:
+                  - /url: posts/2026-06-15-nightshift-codex-maintained-devlog-note.html
+          - generic [ref=e303]:
+            - generic [ref=e304]:
+              - paragraph [ref=e305]: 2026 Archive
+              - heading "May" [level=3] [ref=e306]
+            - generic [ref=e307]:
+              - article [ref=e308]:
+                - generic [ref=e309]:
+                  - generic [ref=e310]: AfterDarkRP
+                  - generic [ref=e311]: MAY 29, 2026
+                  - generic "Views loading" [ref=e312]:
+                    - generic [ref=e316]: "--"
+                    - emphasis [ref=e317]: views
+                - heading "AfterDark ends May with S17 V3 sync, siege walls, traffic, and a denser NPC layer" [level=3] [ref=e318]
+                - paragraph [ref=e319]: "Since the May 21 update, AfterDark has had another unusually chunky week: S17 V3 moved from pipeline direction into a heavier synced map state, tactical walls became a real Siege-style testbed, ambient traffic and NPC authoring started layering into the city, and player identity/persistence work got sturdier under the hood."
+                - link "Read entry" [ref=e320] [cursor=pointer]:
+                  - /url: posts/2026-05-29-afterdark-end-of-may-s17-v3-siege-traffic.html
+              - article [ref=e321]:
+                - generic [ref=e322]:
+                  - generic [ref=e323]: Nightshift
+                  - generic [ref=e324]: MAY 29, 2026
+                  - generic "Views loading" [ref=e325]:
+                    - generic [ref=e329]: "--"
+                    - emphasis [ref=e330]: views
+                - 'heading "Nightshift studio update: motion capture, character tooling, and the next production layer" [level=3] [ref=e331]'
+                - paragraph [ref=e332]: "A more personal studio update on the production side: Nightshift is starting work on a motion capture rig, continuing to build the character and Blender tooling stack, and looking at the remaining gaps around clothing, hair, and faster content creation."
+                - link "Read entry" [ref=e333] [cursor=pointer]:
+                  - /url: posts/2026-05-29-nightshift-studio-motion-capture-tooling-update.html
+              - article [ref=e334]:
+                - generic [ref=e335]:
+                  - generic [ref=e336]: AfterDarkRP
+                  - generic [ref=e337]: MAY 21, 2026
+                  - generic "Views loading" [ref=e338]:
+                    - generic [ref=e342]: "--"
+                    - emphasis [ref=e343]: views
+                - heading "AfterDark moves into the S17 V3 pipeline with Blender sync, police rappelling, and deeper systems work" [level=3] [ref=e344]
+                - paragraph [ref=e345]: "Since the April 27 devlog, AfterDark has moved from a larger S17 V2 map push into a bigger production pipeline shift: S17 V3 is being built around Blender sync, BlenderMCP and Blender Bridge are becoming real workflow tools, police rappelling is in, vehicles are spawning, and the codebase has picked up major foundations for reputation, NPCs, business loops, tactical cover, optimization, and future district control."
+                - link "Read entry" [ref=e346] [cursor=pointer]:
+                  - /url: posts/2026-05-21-afterdark-s17-v3-blender-pipeline.html
+          - generic [ref=e347]:
+            - generic [ref=e348]:
+              - paragraph [ref=e349]: 2026 Archive
+              - heading "April" [level=3] [ref=e350]
+            - article [ref=e352]:
+              - img "AfterDarkRP pushes S17 forward with map buildout, lighting passes, and new world rules" [ref=e354]
+              - generic [ref=e355]:
+                - generic [ref=e356]: AfterDarkRP
+                - generic [ref=e357]: APR 27, 2026
+                - generic "Views loading" [ref=e358]:
+                  - generic [ref=e362]: "--"
+                  - emphasis [ref=e363]: views
+              - heading "AfterDarkRP pushes S17 forward with map buildout, lighting passes, and new world rules" [level=3] [ref=e364]
+              - paragraph [ref=e365]: The last month in AfterDarkRP was not one isolated feature drop. It was a sustained push across S17 map buildout, materials and lighting polish, prop and toolgun protections, gameplay support systems, and the first resident NPC/navigation layer aimed at making the city feel denser and more controllable.
+              - link "Read entry" [ref=e366] [cursor=pointer]:
+                - /url: posts/2026-04-27-afterdarkrp-s17-v2-buildout.html
+          - generic [ref=e367]:
+            - generic [ref=e368]:
+              - paragraph [ref=e369]: 2026 Archive
+              - heading "March" [level=3] [ref=e370]
+            - generic [ref=e371]:
+              - article [ref=e372]:
+                - img "AfterDarkRP pushes S17 and Ghetto 01 toward a testable state with major asset work, LODs, and systems support" [ref=e374]
+                - generic [ref=e375]:
+                  - generic [ref=e376]: AfterDarkRP
+                  - generic [ref=e377]: MAR 31, 2026
+                  - generic "Views loading" [ref=e378]:
+                    - generic [ref=e382]: "--"
+                    - emphasis [ref=e383]: views
+                - heading "AfterDarkRP pushes S17 and Ghetto 01 toward a testable state with major asset work, LODs, and systems support" [level=3] [ref=e384]
+                - paragraph [ref=e385]: "This week was heavier than a simple visual pass: S17 picked up a major asset and scene push across Ghetto_01, Downtown, and TrainStation alongside baseline LOD coverage, light/time optimization, Blender cleanup, connector planning, atmosphere work, and supporting gameplay/UI changes aimed at making Ghetto_01 testable instead of fragile."
+                - link "Read entry" [ref=e386] [cursor=pointer]:
+                  - /url: posts/2026-03-31-afterdarkrp-material-pass-and-street-read.html
+              - article [ref=e387]:
+                - img "AfterDarkRP map work continues while code progress narrows around Ghetto 01" [ref=e389]
+                - generic [ref=e390]:
+                  - generic [ref=e391]: Nightshift
+                  - generic [ref=e392]: MAR 22, 2026
+                  - generic "Views loading" [ref=e393]:
+                    - generic [ref=e397]: "--"
+                    - emphasis [ref=e398]: views
+                - heading "AfterDarkRP map work continues while code progress narrows around Ghetto 01" [level=3] [ref=e399]
+                - paragraph [ref=e400]: "Map work is still moving, and code is still progressing, but AfterDarkRP has slowed around a narrower target: getting Ghetto 01 playable and reaching the point where server-sided code can actually be tested. Weed growing is close, with the sell loop still left to lock."
+                - link "Read entry" [ref=e401] [cursor=pointer]:
+                  - /url: posts/2026-03-22-afterdarkrp-map-work-and-client-load.html
+              - article [ref=e402]:
+                - img "AfterDarkRP roles, economy loops, and docs split since the last milestone" [ref=e404]
+                - generic [ref=e405]:
+                  - generic [ref=e406]: AfterDarkRP
+                  - generic [ref=e407]: MAR 13, 2026
+                  - generic "Views loading" [ref=e408]:
+                    - generic [ref=e412]: "--"
+                    - emphasis [ref=e413]: views
+                - heading "AfterDarkRP roles, economy loops, and docs split since the last milestone" [level=3] [ref=e414]
+                - paragraph [ref=e415]: Since the February 13, 2026 launch-push post, AfterDarkRP has expanded its live role roster, tightened economy interactions, and split the public site into clearer guide, changelog, and devlog surfaces.
+                - link "Read entry" [ref=e416] [cursor=pointer]:
+                  - /url: posts/2026-03-13-afterdarkrp-roles-loops-and-site-docs.html
+              - article [ref=e417]:
+                - img "AfterDarkRP systems expansion and the first map-focus districts" [ref=e419]
+                - generic [ref=e420]:
+                  - generic [ref=e421]: AfterDarkRP
+                  - generic [ref=e422]: MAR 13, 2026
+                  - generic "Views loading" [ref=e423]:
+                    - generic [ref=e427]: "--"
+                    - emphasis [ref=e428]: views
+                - heading "AfterDarkRP systems expansion and the first map-focus districts" [level=3] [ref=e429]
+                - paragraph [ref=e430]: Since the last devlog, AfterDarkRP has expanded across law, economy, shipments, printers, world interactions, and the first full Weed Grower pipeline, while map focus narrows around Ghetto 01 and Downtown.
+                - link "Read entry" [ref=e431] [cursor=pointer]:
+                  - /url: posts/2026-03-13-afterdarkrp-systems-world-and-map-focus.html
+          - generic [ref=e432]:
+            - generic [ref=e433]:
+              - paragraph [ref=e434]: 2026 Archive
+              - heading "February" [level=3] [ref=e435]
+            - generic [ref=e436]:
+              - article [ref=e437]:
+                - img "AfterDarkRP sandbox progress and the pre-April launch push" [ref=e439]
+                - generic [ref=e440]:
+                  - generic [ref=e441]: AfterDarkRP
+                  - generic [ref=e442]: FEB 13, 2026
+                  - generic "Views loading" [ref=e443]:
+                    - generic [ref=e447]: "--"
+                    - emphasis [ref=e448]: views
+                - heading "AfterDarkRP sandbox progress and the pre-April launch push" [level=3] [ref=e449]
+                - paragraph [ref=e450]: We are locking the core DarkRP systems and moving fast to launch before the April s&box release window.
+                - link "Read entry" [ref=e451] [cursor=pointer]:
+                  - /url: posts/2026-02-13-afterdarkrp-sandbox-launch-push.html
+              - article [ref=e452]:
+                - img "Exile Reforged - Long-Term Standalone Vision" [ref=e454]
+                - generic [ref=e455]:
+                  - generic [ref=e456]: Exile Reforged
+                  - generic [ref=e457]: FEB 12, 2026
+                  - generic "Views loading" [ref=e458]:
+                    - generic [ref=e462]: "--"
+                    - emphasis [ref=e463]: views
+                - heading "Exile Reforged - Long-Term Standalone Vision" [level=3] [ref=e464]
+                - paragraph [ref=e465]: This older Exile Reforged vision describes the long-term standalone survival sandbox direction, while the current project is proving the foundation through Arma Reforger and hosted server work first.
+                - link "Read entry" [ref=e466] [cursor=pointer]:
+                  - /url: posts/2026-02-12-combat-tempo.html
+              - article [ref=e467]:
+                - img "LandSnap version 1.0.0 released" [ref=e469]
+                - generic [ref=e470]:
+                  - generic [ref=e471]: LandSnap
+                  - generic [ref=e472]: FEB 05, 2026
+                  - generic "Views loading" [ref=e473]:
+                    - generic [ref=e477]: "--"
+                    - emphasis [ref=e478]: views
+                - heading "LandSnap version 1.0.0 released" [level=3] [ref=e479]
+                - paragraph [ref=e480]: LandSnap 1.0.0 is officially released with the core placement workflow locked and ready for production use.
+                - link "Read entry" [ref=e481] [cursor=pointer]:
+                  - /url: posts/2026-02-05-landsnap-1-0-0.html
+          - generic [ref=e482]:
+            - generic [ref=e483]:
+              - paragraph [ref=e484]: 2026 Archive
+              - heading "January" [level=3] [ref=e485]
+            - generic [ref=e486]:
+              - article [ref=e487]:
+                - status [ref=e488]:
+                  - generic [ref=e489]: Draft
+                  - generic [ref=e490]:
+                    - strong [ref=e491]: Work in progress
+                    - generic [ref=e492]: Not a finalized public record
+                - img "Dungeon cadence, loot risk, and team signals" [ref=e494]
+                - generic [ref=e495]:
+                  - generic [ref=e496]: Codename ELDER
+                  - generic [ref=e497]: JAN 28, 2026
+                  - generic "Views loading" [ref=e498]:
+                    - generic [ref=e502]: "--"
+                    - emphasis [ref=e503]: views
+                - heading "Dungeon cadence, loot risk, and team signals" [level=3] [ref=e504]
+                - paragraph [ref=e505]: Early layouts focus on escalating stress while making every callout meaningful for the squad.
+                - link "Read entry" [ref=e506] [cursor=pointer]:
+                  - /url: posts/2026-01-28-dungeon-cadence.html
+              - article [ref=e507]:
+                - status [ref=e508]:
+                  - generic [ref=e509]: Draft
+                  - generic [ref=e510]:
+                    - strong [ref=e511]: Work in progress
+                    - generic [ref=e512]: Not a finalized public record
+                - img "Mission chaos sketches and character silhouettes" [ref=e514]
+                - generic [ref=e515]:
+                  - generic [ref=e516]: Codename SAINT
+                  - generic [ref=e517]: JAN 10, 2026
+                  - generic "Views loading" [ref=e518]:
+                    - generic [ref=e522]: "--"
+                    - emphasis [ref=e523]: views
+                - heading "Mission chaos sketches and character silhouettes" [level=3] [ref=e524]
+                - paragraph [ref=e525]: We collected visual targets for the first strike fantasy and started mapping how teams improvise.
+                - link "Read entry" [ref=e526] [cursor=pointer]:
+                  - /url: posts/2026-01-10-mission-chaos.html
+    - generic [ref=e527]:
+      - region "Software used by Nightshift" [ref=e528]:
+        - generic [ref=e530]:
+          - generic [ref=e531]:
+            - link "Unreal" [ref=e532] [cursor=pointer]:
+              - /url: https://www.unrealengine.com/
+            - link "Source 2" [ref=e535] [cursor=pointer]:
+              - /url: https://developer.valvesoftware.com/wiki/Source_2
+            - link "Enfusion" [ref=e538] [cursor=pointer]:
+              - /url: https://enfusionengine.com/
+            - link "RAGE" [ref=e541] [cursor=pointer]:
+              - /url: https://docs.fivem.net/docs/
+            - link "Blender" [ref=e544] [cursor=pointer]:
+              - /url: https://www.blender.org/
+            - link "Adobe 3D" [ref=e547] [cursor=pointer]:
+              - /url: https://www.adobe.com/products/substance3d.html
+            - link "Affinity Suite" [ref=e550] [cursor=pointer]:
+              - /url: https://affinity.serif.com/
+            - link "Gaea 2.0" [ref=e553] [cursor=pointer]:
+              - /url: https://quadspinner.com/gaea/
+            - link "CC5" [ref=e556] [cursor=pointer]:
+              - /url: https://www.reallusion.com/character-creator/
+            - link "iClone 8" [ref=e559] [cursor=pointer]:
+              - /url: https://www.reallusion.com/iclone/
+            - link "Marvelous Designer" [ref=e562] [cursor=pointer]:
+              - /url: https://www.marvelousdesigner.com/
+            - link "Ornatrix" [ref=e565] [cursor=pointer]:
+              - /url: https://ephere.com/plugins/ornatrix/
+            - link "FruityLoops" [ref=e568] [cursor=pointer]:
+              - /url: https://www.image-line.com/fl-studio/
+            - link "VS Code" [ref=e571] [cursor=pointer]:
+              - /url: https://code.visualstudio.com/
+            - link "Visual Studio" [ref=e574] [cursor=pointer]:
+              - /url: https://visualstudio.microsoft.com/
+            - link "GitHub" [ref=e577] [cursor=pointer]:
+              - /url: https://github.com/
+            - link "Git LFS" [ref=e580] [cursor=pointer]:
+              - /url: https://git-lfs.com/
+            - link "GitHub Pages" [ref=e583] [cursor=pointer]:
+              - /url: https://pages.github.com/
+            - link "Wix" [ref=e586] [cursor=pointer]:
+              - /url: https://www.wix.com/
+            - link "Stripe" [ref=e589] [cursor=pointer]:
+              - /url: https://stripe.com/
+            - link "Obsidian" [ref=e592] [cursor=pointer]:
+              - /url: https://obsidian.md/
+            - link "Codex" [ref=e595] [cursor=pointer]:
+              - /url: https://openai.com/codex/
+          - generic [ref=e598]:
+            - link [ref=e599] [cursor=pointer]:
+              - /url: https://www.unrealengine.com/
+              - generic [ref=e601]: Unreal
+            - link [ref=e602] [cursor=pointer]:
+              - /url: https://developer.valvesoftware.com/wiki/Source_2
+              - generic [ref=e604]: Source 2
+            - link [ref=e605] [cursor=pointer]:
+              - /url: https://enfusionengine.com/
+              - generic [ref=e607]: Enfusion
+            - link [ref=e608] [cursor=pointer]:
+              - /url: https://docs.fivem.net/docs/
+              - generic [ref=e610]: RAGE
+            - link [ref=e611] [cursor=pointer]:
+              - /url: https://www.blender.org/
+              - generic [ref=e613]: Blender
+            - link [ref=e614] [cursor=pointer]:
+              - /url: https://www.adobe.com/products/substance3d.html
+              - generic [ref=e616]: Adobe 3D
+            - link [ref=e617] [cursor=pointer]:
+              - /url: https://affinity.serif.com/
+              - generic [ref=e619]: Affinity Suite
+            - link [ref=e620] [cursor=pointer]:
+              - /url: https://quadspinner.com/gaea/
+              - generic [ref=e622]: Gaea 2.0
+            - link [ref=e623] [cursor=pointer]:
+              - /url: https://www.reallusion.com/character-creator/
+              - generic [ref=e625]: CC5
+            - link [ref=e626] [cursor=pointer]:
+              - /url: https://www.reallusion.com/iclone/
+              - generic [ref=e628]: iClone 8
+            - link [ref=e629] [cursor=pointer]:
+              - /url: https://www.marvelousdesigner.com/
+              - generic [ref=e631]: Marvelous Designer
+            - link [ref=e632] [cursor=pointer]:
+              - /url: https://ephere.com/plugins/ornatrix/
+              - generic [ref=e634]: Ornatrix
+            - link [ref=e635] [cursor=pointer]:
+              - /url: https://www.image-line.com/fl-studio/
+              - generic [ref=e637]: FruityLoops
+            - link [ref=e638] [cursor=pointer]:
+              - /url: https://code.visualstudio.com/
+              - generic [ref=e640]: VS Code
+            - link [ref=e641] [cursor=pointer]:
+              - /url: https://visualstudio.microsoft.com/
+              - generic [ref=e643]: Visual Studio
+            - link [ref=e644] [cursor=pointer]:
+              - /url: https://github.com/
+              - generic [ref=e646]: GitHub
+            - link [ref=e647] [cursor=pointer]:
+              - /url: https://git-lfs.com/
+              - generic [ref=e649]: Git LFS
+            - link [ref=e650] [cursor=pointer]:
+              - /url: https://pages.github.com/
+              - generic [ref=e652]: GitHub Pages
+            - link [ref=e653] [cursor=pointer]:
+              - /url: https://www.wix.com/
+              - generic [ref=e655]: Wix
+            - link [ref=e656] [cursor=pointer]:
+              - /url: https://stripe.com/
+              - generic [ref=e658]: Stripe
+            - link [ref=e659] [cursor=pointer]:
+              - /url: https://obsidian.md/
+              - generic [ref=e661]: Obsidian
+            - link [ref=e662] [cursor=pointer]:
+              - /url: https://openai.com/codex/
+              - generic [ref=e664]: Codex
+      - generic [ref=e665]:
+        - generic [ref=e666]:
+          - generic [ref=e667]: Primary routes
+          - link "Home" [ref=e668] [cursor=pointer]:
+            - /url: /
+          - link "Games" [ref=e669] [cursor=pointer]:
+            - /url: /pages/games.html
+          - link "Studio" [ref=e670] [cursor=pointer]:
+            - /url: /pages/studio.html
+          - link "Contact" [ref=e671] [cursor=pointer]:
+            - /url: /pages/contact.html
+        - generic [ref=e672]:
+          - generic [ref=e673]: Public records
+          - link "Devlog" [ref=e674] [cursor=pointer]:
+            - /url: /pages/DevLog/index.html
+          - link "Epic Privacy Policy" [ref=e675] [cursor=pointer]:
+            - /url: https://www.epicgames.com/site/en-US/privacypolicy
+          - link "Nightshift Privacy Policy" [ref=e676] [cursor=pointer]:
+            - /url: "#"
+          - link "Applicant Privacy Policy" [ref=e677] [cursor=pointer]:
+            - /url: "#"
+        - generic [ref=e678]:
+          - generic [ref=e679]: External surfaces
+          - link "Press Kit" [ref=e680] [cursor=pointer]:
+            - /url: "#"
+          - link "Brand Assets" [ref=e681] [cursor=pointer]:
+            - /url: "#"
+          - link "Careers" [ref=e682] [cursor=pointer]:
+            - /url: "#"
+          - link "Community" [ref=e683] [cursor=pointer]:
+            - /url: "#"
+      - generic [ref=e684]:
+        - generic [ref=e685]:
+          - link "YouTube" [ref=e686] [cursor=pointer]:
+            - /url: https://www.youtube.com/@nstx
+          - link "Support the studio" [ref=e687] [cursor=pointer]:
+            - /url: /pages/Studio/Donations.html
+        - paragraph [ref=e688]: Copyright 2026 Nightshift. All rights reserved.

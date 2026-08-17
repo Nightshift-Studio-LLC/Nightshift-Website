@@ -1,0 +1,277 @@
+- generic [active] [ref=f1e1]:
+  - banner [ref=f1e2]:
+    - link "Nightshift home" [ref=f1e3] [cursor=pointer]:
+      - /url: ../../home.html
+      - img "Nightshift logo" [ref=f1e4]
+    - navigation "Primary" [ref=f1e5]:
+      - link "Home" [ref=f1e6] [cursor=pointer]:
+        - /url: ../../home.html
+      - link "Games" [ref=f1e7] [cursor=pointer]:
+        - /url: ../../games.html
+      - link "Studio" [ref=f1e8] [cursor=pointer]:
+        - /url: ../../studio.html
+      - link "Devlog" [ref=f1e9] [cursor=pointer]:
+        - /url: ../../DevLog/index.html
+      - link "Contact" [ref=f1e10] [cursor=pointer]:
+        - /url: ../../contact.html
+    - generic [ref=f1e11]:
+      - generic [ref=f1e12]: Devlog Entry
+      - strong [ref=f1e13]: 09:52:16 PM CDT
+  - main [ref=f1e14]:
+    - generic [ref=f1e15]:
+      - article [ref=f1e16]:
+        - status [ref=f1e17]:
+          - generic [ref=f1e18]: Draft
+          - generic [ref=f1e19]:
+            - strong [ref=f1e20]: Work in progress
+            - generic [ref=f1e21]: Not a finalized public record
+        - paragraph [ref=f1e22]: Devlog / draft entry
+        - 'heading "LandSnap Version 2: rigid hinge fitting for uneven terrain" [level=1] [ref=f1e23]'
+        - paragraph [ref=f1e24]: A brief look at a LandSnap Version 2 fitting method that keeps an object's footprint rigid while finding its best orientation against uneven terrain.
+        - link "Back To Devlog" [ref=f1e26] [cursor=pointer]:
+          - /url: ../index.html
+        - generic [ref=f1e27]:
+          - generic [ref=f1e28]: LandSnap
+          - generic [ref=f1e29]: Unreal Engine
+          - generic [ref=f1e30]: Terrain Fitting
+          - generic [ref=f1e31]: Editor Tooling
+        - 'img "LandSnap Version 2: rigid hinge fitting for uneven terrain" [ref=f1e33]'
+      - complementary [ref=f1e34]:
+        - paragraph [ref=f1e35]: Entry metadata
+        - generic [ref=f1e36]:
+          - generic [ref=f1e37]:
+            - generic [ref=f1e38]: Project
+            - strong [ref=f1e39]: LandSnap
+          - generic [ref=f1e40]:
+            - generic [ref=f1e41]: Date
+            - strong [ref=f1e42]: AUG 03, 2026
+          - generic [ref=f1e43]:
+            - generic [ref=f1e44]: Status
+            - strong [ref=f1e45]: Draft / work in progress
+          - generic [ref=f1e46]:
+            - generic [ref=f1e47]: Signed by
+            - strong [ref=f1e48]: Nightshift
+          - generic [ref=f1e49]:
+            - generic [ref=f1e50]: Authored by
+            - strong [ref=f1e51]: Codex
+          - generic [ref=f1e52]:
+            - generic [ref=f1e53]: Views
+            - strong [ref=f1e54]:
+              - generic "Views loading" [ref=f1e55]:
+                - generic [ref=f1e59]: "--"
+                - emphasis [ref=f1e60]: views
+          - generic [ref=f1e61]:
+            - generic [ref=f1e62]: Route
+            - strong [ref=f1e63]: Public archive
+    - generic [ref=f1e64]:
+      - generic [ref=f1e65]:
+        - paragraph [ref=f1e66]: Field Notes
+        - heading "Entry body" [level=2] [ref=f1e67]
+      - generic [ref=f1e68]:
+        - generic [ref=f1e69]:
+          - heading "Version 2 research note" [level=2] [ref=f1e70]
+          - list [ref=f1e71]:
+            - listitem [ref=f1e72]: Keep the object footprint rigid instead of moving its corners independently.
+            - listitem [ref=f1e73]: Hold one edge as a hinge and rotate the opposite edge toward the terrain.
+            - listitem [ref=f1e74]: Search a single angle for the smallest combined placement error.
+            - listitem [ref=f1e75]: Accept the best rigid compromise when uneven terrain prevents a perfect fit.
+        - heading "Conform without deforming" [level=2] [ref=f1e76]
+        - paragraph [ref=f1e77]: One of the fitting problems under consideration for LandSnap Version 2 is how to settle a wide object against uneven terrain without bending its footprint.
+        - paragraph [ref=f1e78]: Snapping every corner to a separate terrain hit can force contact, but it also deforms the shape. That is not a valid result for a rigid prop, platform, foundation, or modular building piece.
+        - paragraph [ref=f1e79]:
+          - text: The cleaner model gives the object only one degree of freedom. Two footprint vertices,
+          - code [ref=f1e80]: A
+          - text: and
+          - code [ref=f1e81]: B
+          - text: ", define a fixed hinge axis. The remaining vertices,"
+          - code [ref=f1e82]: C
+          - text: and
+          - code [ref=f1e83]: D
+          - text: ", rotate around that axis together, so every edge length and angle in the footprint is preserved."
+        - code [ref=f1e85]: u = (B - A) / ||B - A||
+        - paragraph [ref=f1e86]: "At each candidate hinge angle, LandSnap rotates the two free vertices and raycasts down to the terrain beneath them. Their height errors are combined into one score:"
+        - code [ref=f1e88]: E(theta) = e_C(theta)^2 + e_D(theta)^2
+        - paragraph [ref=f1e89]: The desired rotation is simply the angle that produces the smallest score. Squaring the two errors prevents a corner above the terrain from canceling out one below it, and it makes a large miss more expensive than two small ones.
+        - heading "A small, practical search" [level=2] [ref=f1e90]
+        - paragraph [ref=f1e91]: Terrain is triangulated, so the surface beneath a rotating corner can change during the fit. That makes the error piecewise-defined and rules out relying on one globally valid closed-form angle.
+        - paragraph [ref=f1e92]: "The practical solver is still tiny:"
+        - list [ref=f1e93]:
+          - listitem [ref=f1e94]: Limit the hinge to a safe rotation range.
+          - listitem [ref=f1e95]: Sample that range coarsely to find the best local bracket.
+          - listitem [ref=f1e96]: Refine the bracket with a short one-dimensional search.
+          - listitem [ref=f1e97]: Apply the winning angle as one rigid rotation.
+        - paragraph [ref=f1e98]: A ternary or golden-section refinement can converge in only a handful of iterations when the selected bracket is locally smooth. The initial coarse pass matters because triangle changes, holes, and competing surface features can create more than one local minimum.
+        - paragraph [ref=f1e99]: "For steep terrain, the same fit can measure each corner against the triangle plane instead of comparing only world height:"
+        - code [ref=f1e101]: e(P, theta) = n . (P(theta) - T)
+        - paragraph [ref=f1e102]:
+          - text: Here,
+          - code [ref=f1e103]: "n"
+          - text: is the normalized triangle normal and
+          - code [ref=f1e104]: T
+          - text: is the terrain hit point. This measures separation along the surface normal and should produce a more natural result on strong slopes.
+        - heading "The useful limitation" [level=2] [ref=f1e105]
+        - paragraph [ref=f1e106]: One hinge angle normally cannot make both free corners touch arbitrary terrain exactly. That is not a failure of the solver; it is the unavoidable constraint that keeps the object rigid.
+        - paragraph [ref=f1e107]: "LandSnap is finding the best compromise:"
+        - code [ref=f1e109]: e_C^2 + e_D^2 -> minimum
+        - paragraph [ref=f1e110]: If the placement contract allows the hinge itself to move, a small final suspension offset can remove the average remaining vertical error. If the hinge points are hard anchors, that translation stays disabled.
+        - paragraph [ref=f1e111]: "That is the Version 2 idea in one sentence: let the terrain choose the best rigid orientation, but never let it deform the asset to get there."
+        - paragraph [ref=f1e112]:
+          - text: "Read the current product overview:"
+          - link "LandSnap" [ref=f1e113] [cursor=pointer]:
+            - /url: ../../Studio/Landsnap.html
+        - paragraph [ref=f1e115]:
+          - text: Signed,
+          - strong [ref=f1e116]: Nightshift
+    - generic [ref=f1e117]:
+      - region "Software used by Nightshift" [ref=f1e118]:
+        - generic [ref=f1e120]:
+          - generic [ref=f1e121]:
+            - link "Unreal" [ref=f1e122] [cursor=pointer]:
+              - /url: https://www.unrealengine.com/
+            - link "Source 2" [ref=f1e125] [cursor=pointer]:
+              - /url: https://developer.valvesoftware.com/wiki/Source_2
+            - link "Enfusion" [ref=f1e128] [cursor=pointer]:
+              - /url: https://enfusionengine.com/
+            - link "RAGE" [ref=f1e131] [cursor=pointer]:
+              - /url: https://docs.fivem.net/docs/
+            - link "Blender" [ref=f1e134] [cursor=pointer]:
+              - /url: https://www.blender.org/
+            - link "Adobe 3D" [ref=f1e137] [cursor=pointer]:
+              - /url: https://www.adobe.com/products/substance3d.html
+            - link "Affinity Suite" [ref=f1e140] [cursor=pointer]:
+              - /url: https://affinity.serif.com/
+            - link "Gaea 2.0" [ref=f1e143] [cursor=pointer]:
+              - /url: https://quadspinner.com/gaea/
+            - link "CC5" [ref=f1e146] [cursor=pointer]:
+              - /url: https://www.reallusion.com/character-creator/
+            - link "iClone 8" [ref=f1e149] [cursor=pointer]:
+              - /url: https://www.reallusion.com/iclone/
+            - link "Marvelous Designer" [ref=f1e152] [cursor=pointer]:
+              - /url: https://www.marvelousdesigner.com/
+            - link "Ornatrix" [ref=f1e155] [cursor=pointer]:
+              - /url: https://ephere.com/plugins/ornatrix/
+            - link "FruityLoops" [ref=f1e158] [cursor=pointer]:
+              - /url: https://www.image-line.com/fl-studio/
+            - link "VS Code" [ref=f1e161] [cursor=pointer]:
+              - /url: https://code.visualstudio.com/
+            - link "Visual Studio" [ref=f1e164] [cursor=pointer]:
+              - /url: https://visualstudio.microsoft.com/
+            - link "GitHub" [ref=f1e167] [cursor=pointer]:
+              - /url: https://github.com/
+            - link "Git LFS" [ref=f1e170] [cursor=pointer]:
+              - /url: https://git-lfs.com/
+            - link "GitHub Pages" [ref=f1e173] [cursor=pointer]:
+              - /url: https://pages.github.com/
+            - link "Wix" [ref=f1e176] [cursor=pointer]:
+              - /url: https://www.wix.com/
+            - link "Stripe" [ref=f1e179] [cursor=pointer]:
+              - /url: https://stripe.com/
+            - link "Obsidian" [ref=f1e182] [cursor=pointer]:
+              - /url: https://obsidian.md/
+            - link "Codex" [ref=f1e185] [cursor=pointer]:
+              - /url: https://openai.com/codex/
+          - generic [ref=f1e188]:
+            - link [ref=f1e189] [cursor=pointer]:
+              - /url: https://www.unrealengine.com/
+              - generic [ref=f1e191]: Unreal
+            - link [ref=f1e192] [cursor=pointer]:
+              - /url: https://developer.valvesoftware.com/wiki/Source_2
+              - generic [ref=f1e194]: Source 2
+            - link [ref=f1e195] [cursor=pointer]:
+              - /url: https://enfusionengine.com/
+              - generic [ref=f1e197]: Enfusion
+            - link [ref=f1e198] [cursor=pointer]:
+              - /url: https://docs.fivem.net/docs/
+              - generic [ref=f1e200]: RAGE
+            - link [ref=f1e201] [cursor=pointer]:
+              - /url: https://www.blender.org/
+              - generic [ref=f1e203]: Blender
+            - link [ref=f1e204] [cursor=pointer]:
+              - /url: https://www.adobe.com/products/substance3d.html
+              - generic [ref=f1e206]: Adobe 3D
+            - link [ref=f1e207] [cursor=pointer]:
+              - /url: https://affinity.serif.com/
+              - generic [ref=f1e209]: Affinity Suite
+            - link [ref=f1e210] [cursor=pointer]:
+              - /url: https://quadspinner.com/gaea/
+              - generic [ref=f1e212]: Gaea 2.0
+            - link [ref=f1e213] [cursor=pointer]:
+              - /url: https://www.reallusion.com/character-creator/
+              - generic [ref=f1e215]: CC5
+            - link [ref=f1e216] [cursor=pointer]:
+              - /url: https://www.reallusion.com/iclone/
+              - generic [ref=f1e218]: iClone 8
+            - link [ref=f1e219] [cursor=pointer]:
+              - /url: https://www.marvelousdesigner.com/
+              - generic [ref=f1e221]: Marvelous Designer
+            - link [ref=f1e222] [cursor=pointer]:
+              - /url: https://ephere.com/plugins/ornatrix/
+              - generic [ref=f1e224]: Ornatrix
+            - link [ref=f1e225] [cursor=pointer]:
+              - /url: https://www.image-line.com/fl-studio/
+              - generic [ref=f1e227]: FruityLoops
+            - link [ref=f1e228] [cursor=pointer]:
+              - /url: https://code.visualstudio.com/
+              - generic [ref=f1e230]: VS Code
+            - link [ref=f1e231] [cursor=pointer]:
+              - /url: https://visualstudio.microsoft.com/
+              - generic [ref=f1e233]: Visual Studio
+            - link [ref=f1e234] [cursor=pointer]:
+              - /url: https://github.com/
+              - generic [ref=f1e236]: GitHub
+            - link [ref=f1e237] [cursor=pointer]:
+              - /url: https://git-lfs.com/
+              - generic [ref=f1e239]: Git LFS
+            - link [ref=f1e240] [cursor=pointer]:
+              - /url: https://pages.github.com/
+              - generic [ref=f1e242]: GitHub Pages
+            - link [ref=f1e243] [cursor=pointer]:
+              - /url: https://www.wix.com/
+              - generic [ref=f1e245]: Wix
+            - link [ref=f1e246] [cursor=pointer]:
+              - /url: https://stripe.com/
+              - generic [ref=f1e248]: Stripe
+            - link [ref=f1e249] [cursor=pointer]:
+              - /url: https://obsidian.md/
+              - generic [ref=f1e251]: Obsidian
+            - link [ref=f1e252] [cursor=pointer]:
+              - /url: https://openai.com/codex/
+              - generic [ref=f1e254]: Codex
+      - generic [ref=f1e255]:
+        - generic [ref=f1e256]:
+          - generic [ref=f1e257]: Primary routes
+          - link "Home" [ref=f1e258] [cursor=pointer]:
+            - /url: /
+          - link "Games" [ref=f1e259] [cursor=pointer]:
+            - /url: /pages/games.html
+          - link "Studio" [ref=f1e260] [cursor=pointer]:
+            - /url: /pages/studio.html
+          - link "Contact" [ref=f1e261] [cursor=pointer]:
+            - /url: /pages/contact.html
+        - generic [ref=f1e262]:
+          - generic [ref=f1e263]: Public records
+          - link "Devlog" [ref=f1e264] [cursor=pointer]:
+            - /url: /pages/DevLog/index.html
+          - link "Epic Privacy Policy" [ref=f1e265] [cursor=pointer]:
+            - /url: https://www.epicgames.com/site/en-US/privacypolicy
+          - link "Nightshift Privacy Policy" [ref=f1e266] [cursor=pointer]:
+            - /url: "#"
+          - link "Applicant Privacy Policy" [ref=f1e267] [cursor=pointer]:
+            - /url: "#"
+        - generic [ref=f1e268]:
+          - generic [ref=f1e269]: External surfaces
+          - link "Press Kit" [ref=f1e270] [cursor=pointer]:
+            - /url: "#"
+          - link "Brand Assets" [ref=f1e271] [cursor=pointer]:
+            - /url: "#"
+          - link "Careers" [ref=f1e272] [cursor=pointer]:
+            - /url: "#"
+          - link "Community" [ref=f1e273] [cursor=pointer]:
+            - /url: "#"
+      - generic [ref=f1e274]:
+        - generic [ref=f1e275]:
+          - link "YouTube" [ref=f1e276] [cursor=pointer]:
+            - /url: https://www.youtube.com/@nstx
+          - link "Support the studio" [ref=f1e277] [cursor=pointer]:
+            - /url: /pages/Studio/Donations.html
+        - paragraph [ref=f1e278]: Copyright 2026 Nightshift. All rights reserved.

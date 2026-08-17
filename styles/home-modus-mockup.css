@@ -962,6 +962,68 @@ h3 {
     gap: 14px;
 }
 
+.devlog-card-draft,
+.devlog-entry-panel-draft {
+    border-color: rgba(255, 90, 78, 0.54);
+    box-shadow:
+        0 0 0 1px rgba(255, 90, 78, 0.08),
+        0 24px 72px rgba(64, 5, 12, 0.28),
+        var(--shadow);
+}
+
+.devlog-draft-banner {
+    display: flex;
+    align-items: stretch;
+    gap: 14px;
+    margin: -24px -24px 0;
+    border-bottom: 1px solid rgba(255, 90, 78, 0.62);
+    background: linear-gradient(90deg, rgba(108, 15, 24, 0.96), rgba(63, 13, 24, 0.82) 58%, rgba(30, 10, 20, 0.68));
+    color: #ffe7e7;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+}
+
+.devlog-draft-banner-label {
+    display: inline-flex;
+    align-items: center;
+    padding: 12px 16px;
+    background: var(--accent-red);
+    color: #21050a;
+    font-family: var(--heading);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+}
+
+.devlog-draft-banner-copy {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 3px;
+    padding: 10px 14px 10px 0;
+    line-height: 1.2;
+}
+
+.devlog-draft-banner-copy strong,
+.devlog-draft-banner-copy small {
+    font: inherit;
+}
+
+.devlog-draft-banner-copy strong {
+    color: #fff4f4;
+    font-size: 0.72rem;
+}
+
+.devlog-draft-banner-copy small {
+    color: rgba(255, 224, 224, 0.76);
+    font-size: 0.64rem;
+    letter-spacing: 0.08em;
+}
+
+.devlog-card-draft .devlog-card-thumb {
+    margin-top: 18px;
+}
+
 .devlog-card-thumb {
     margin: -26px -26px 18px;
     border-bottom: 1px solid var(--line);
@@ -2944,6 +3006,17 @@ h3 {
 
     .devlog-card-thumb {
         margin: -16px -16px 16px;
+    }
+
+    .devlog-draft-banner {
+        margin-left: -16px;
+        margin-right: -16px;
+    }
+
+    .devlog-card-draft .devlog-card-thumb {
+        margin-top: 18px;
+        margin-left: -16px;
+        margin-right: -16px;
     }
 
     .game-gallery-panel,
