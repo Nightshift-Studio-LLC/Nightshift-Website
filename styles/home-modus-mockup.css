@@ -1488,6 +1488,32 @@ h3 {
     max-width: 84ch;
 }
 
+.devlog-highlight {
+    max-width: 76ch;
+    margin: 0 0 24px;
+    padding: 18px 20px 16px;
+    border: 1px solid var(--line-strong);
+    background: rgba(8, 22, 38, 0.72);
+    box-shadow: 0 0 0 1px rgba(136, 215, 255, 0.08), 0 0 28px rgba(64, 170, 255, 0.12);
+}
+
+.devlog-highlight-blue {
+    border-color: rgba(136, 215, 255, 0.68);
+}
+
+.devlog-highlight-blue h2 {
+    color: #88d7ff;
+    text-shadow: 0 0 18px rgba(136, 215, 255, 0.38);
+}
+
+.devlog-highlight-blue ul {
+    margin-bottom: 0;
+}
+
+.devlog-post-body .devlog-highlight-blue li {
+    color: var(--accent);
+}
+
 .devlog-post-body h2,
 .devlog-post-body h3 {
     max-width: 68ch;

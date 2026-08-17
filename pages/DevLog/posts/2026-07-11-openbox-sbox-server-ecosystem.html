@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nightshift | OpenBox: A Decentralized s&amp;box Server Ecosystem</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="../../../images/icons/nightshift.ico">
+    <link rel="stylesheet" href="../../../styles/home-modus-mockup.css?v=20260711-devlog-highlight">
+    <script defer src="/scripts/analytics.js" data-analytics-endpoint="/api/analytics"></script>
+</head>
+<body>
+    <div class="screen-fx" aria-hidden="true"></div>
+    <header class="topbar">
+        <a class="brand hover-sound" href="../../home.html" aria-label="Nightshift home">
+            <img src="../../../images/index/nightshift-transparent.png" alt="Nightshift logo">
+        </a>
+        <nav class="utility-nav" aria-label="Primary">
+            <a href="../../home.html" class="hover-sound">Home</a>
+            <a href="../../games.html" class="hover-sound">Games</a>
+            <a href="../../studio.html" class="hover-sound">Studio</a>
+            <a href="../../DevLog/index.html" class="hover-sound active">Devlog</a>
+            <a href="../../contact.html" class="hover-sound">Contact</a>
+        </nav>
+        <div class="topbar-readout"><span>Devlog Entry</span><strong id="mockup-clock">00:00:00 CST</strong></div>
+    </header>
+    <main class="shell page-shell">
+
+        <section class="page-hero-grid">
+            <article class="page-hero-panel">
+                <p class="eyebrow">Devlog / entry</p>
+                <h1 class="page-title">OpenBox: A Decentralized s&amp;box Server Ecosystem</h1>
+                <p class="page-lede">A blockchain-backed ecosystem for independently operated s&amp;box worlds, wallet-based users, explicit content rights, and verifiable preservation records.</p>
+                <div class="hero-actions"><a class="cta-btn hover-sound" href="../index.html">Back To Devlog</a></div>
+                <div class="tag-row"><span class="tag">OpenBox</span><span class="tag">S&amp;box</span><span class="tag">Server Hosting</span><span class="tag">Decentralization</span><span class="tag">Preservation</span><span class="tag">Networking</span></div>
+                
+            </article>
+            <aside class="page-hero-panel">
+                <p class="eyebrow">Entry metadata</p>
+                <div class="stack-list">
+                    <div><span>Project</span><strong>OpenBox</strong></div>
+                    <div><span>Date</span><strong>JUL 11, 2026</strong></div>
+                    <div><span>Signed by</span><strong>Nightshift</strong></div>
+                    <div><span>Authored by</span><strong>Codex</strong></div>
+                    <div><span>Views</span><strong>
+                    <span class="devlog-view-count" data-view-count-path="/pages/DevLog/posts/2026-07-11-openbox-sbox-server-ecosystem.html" data-view-count-state="loading" aria-label="Views loading">
+                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                            <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"></path>
+                            <circle cx="12" cy="12" r="2.5"></circle>
+                        </svg>
+                        <b data-view-count-value>--</b><em>views</em>
+                    </span></strong></div>
+                    <div><span>Route</span><strong>Public archive</strong></div>
+                </div>
+            </aside>
+        </section>
+        
+        <section class="panel feature-panel">
+            <div class="panel-heading"><p class="eyebrow">Field Notes</p><h2>Entry body</h2></div>
+            <div class="devlog-post-body"><section class="devlog-highlight devlog-highlight-blue"><h2>The idea</h2>
+<ul>
+<li>OpenBox is designed specifically for s&amp;box</li>
+<li>Blockchain is the shared foundation of the ecosystem</li>
+<li>Anyone should be able to operate an OpenBox-compatible server</li>
+<li>Every user has a portable, crypto-wallet-based identity</li>
+<li>Hosts control their worlds without becoming branches of one central game</li>
+<li>Compatibility comes from versioned interfaces, not identical gameplay</li>
+<li>Shared content carries signed rights and provenance claims</li>
+<li>Public preservation records disclose their real coverage and evidence</li>
+<li>The goal is a network of compatible, independently operated worlds</li>
+</ul>
+</section>
+
+<h2>OpenBox</h2>
+<p>OpenBox is a blockchain-backed, s&amp;box-native framework and ecosystem for independently operated game servers. The name is intentional. This is not an attempt to make every engine look the same, and it is not a generic cross-engine SDK.</p>
+<p>The question behind it is:</p>
+<blockquote>
+<p>What would it look like if anyone could host an OpenBox server, control the world they operate, and still participate in a shared framework and ecosystem?</p>
+</blockquote>
+<p>A host could run a private community, a public roleplay city, a test environment, a faction world, or a different interpretation of the framework. The host controls that server&#39;s operation, configuration, moderation, and original server-specific work, subject to s&amp;box platform terms and the licenses attached to every dependency and contributed asset.</p>
+<p>That distinction matters. Operating a world does not grant ownership of s&amp;box, Steam infrastructure, third-party packages, player contributions, or another creator&#39;s work.</p>
+<h2>What decentralization means here</h2>
+<p>OpenBox does not make the underlying s&amp;box runtime or every network dependency decentralized. It uses blockchain as the durable shared protocol between independently operated servers, users, creators, and preservation providers.</p>
+<pre><code class="language-text">                         OpenBox ecosystem
+                                  |
+              +-------------------+-------------------+
+              |                   |                   |
+       Community server     Public city server    Private world
+              |                   |                   |
+              +-------- versioned OpenBox contracts --------+
+                                  |
+                   packages, rights, and preservation
+</code></pre>
+<p>The initial model separates several responsibilities:</p>
+<ul>
+<li>s&amp;box supplies the runtime and engine-facing networking layer</li>
+<li>a user&#39;s crypto wallet supplies their portable identity and signing authority</li>
+<li>each host controls its own server operation and local policy</li>
+<li>OpenBox defines compatibility contracts and package formats</li>
+<li>registries help discover packages and signed status records</li>
+<li>preservation providers maintain declared archival replicas</li>
+<li>the blockchain anchors signed declarations, rights records, attestations, and status history</li>
+</ul>
+<p>The wallet identity is shared across the ecosystem. Balances, inventory, progression, roles, and reputation remain server-local unless a separate federation protocol explicitly defines how a server associates or transfers that state through the wallet identity.</p>
+<h2>Wallet-rooted identity</h2>
+<p>The foundation of OpenBox is a crypto-wallet-based user operating inside a blockchain ecosystem. A player does not need a central OpenBox account to establish the same identity across compatible servers. The selected wallet system supplies the user&#39;s portable identity and the method used to prove control of it.</p>
+<p>That identity can support:</p>
+<ul>
+<li>signing into independently operated OpenBox servers</li>
+<li>signing content and rights declarations</li>
+<li>proving authorship claims were made by the same wallet identity</li>
+<li>receiving server-issued roles, assets, permissions, or reputation records</li>
+<li>linking signed activity across compatible services when the player chooses to disclose it</li>
+<li>verifying historical declarations without depending on one account provider</li>
+</ul>
+<p>The exact behavior depends on the wallet OpenBox chooses. Address formats, signature methods, supported chains, account recovery, key rotation, delegation, privacy, transaction costs, and selective disclosure should come from that wallet&#39;s capabilities rather than being invented independently by the framework.</p>
+<p>OpenBox therefore needs a small wallet identity adapter rather than a hard-coded wallet implementation. The adapter should expose the operations the framework requires:</p>
+<ul>
+<li>connect a supported wallet</li>
+<li>obtain the ecosystem identity exposed by that wallet</li>
+<li>request and verify an authentication proof</li>
+<li>request and verify signed declarations</li>
+<li>report the wallet and protocol version used</li>
+<li>expose recovery, rotation, delegation, and privacy capabilities when supported</li>
+</ul>
+<p>The chosen wallet must never require a player to expose a seed phrase. Whether authentication uses a readable challenge, transaction signature, session key, delegated credential, or another proof is a wallet-selection decision.</p>
+<p>The wallet proves control according to its protocol. It does not automatically prove a person&#39;s legal name, copyright ownership, age, reputation, or entitlement to third-party content. Those claims require separate credentials or evidence.</p>
+<h2>The framework and the server</h2>
+<p>The shared OpenBox layer defines versioned interfaces for systems that need to interoperate. Each contract should specify more than a shared name. It should define:</p>
+<ul>
+<li>protocol and schema versions</li>
+<li>dependency ranges and deterministic resolution</li>
+<li>RPC inputs, outputs, authority, and validation rules</li>
+<li>persistence schemas and migrations</li>
+<li>extension capabilities and permission boundaries</li>
+<li>compatibility tests and failure behavior</li>
+<li>offline behavior when registries are unavailable</li>
+</ul>
+<p>An individual server implements or extends those contracts inside s&amp;box. It can choose its map, roles, economy tuning, progression, content, moderation policy, and community rules. Compatibility does not require every OpenBox world to play the same way.</p>
+<p>This is the central boundary: a server can be compatible without being subordinate.</p>
+<h2>Security is part of compatibility</h2>
+<p>Independent hosting only works when the trust model is explicit. A client may request a trade, purchase, inventory action, or world interaction, but it should not decide that the action succeeded.</p>
+<p>OpenBox contracts should include shared security expectations:</p>
+<ul>
+<li>server-authoritative state changes</li>
+<li>validated RPC and command boundaries</li>
+<li>ownership and permission checks</li>
+<li>explicit replication rules</li>
+<li>persistence validation and migration rules</li>
+<li>capability declarations for extensions</li>
+<li>audit-friendly event records</li>
+</ul>
+<p>Hosts can choose their own policies while still exposing enough technical structure for packages, tools, and reviewers to understand the boundary.</p>
+<h2>Module contracts</h2>
+<p>A module contract is a preserved description of an OpenBox system. It records the interface that compatible implementations agree to support without forcing every server to use identical presentation or balance.</p>
+<pre><code class="language-yaml">name: Trading
+framework: OpenBox
+runtime: sbox
+protocol_version: 1
+
+requires:
+  Inventory: &quot;&gt;=1 &lt;2&quot;
+  Currency: &quot;&gt;=1 &lt;2&quot;
+
+authority:
+  state_changes: Server
+
+security:
+  - ValidateOwnership
+  - ValidateFunds
+  - ValidateTradeState
+
+replication:
+  result: Reliable
+
+persistence:
+  schema: TradingV1
+  migrations: Required
+
+hosting:
+  scope: ServerLocal
+</code></pre>
+<p>The manifest is an index into the real contract, test suite, and implementation documentation. Labels such as <code>Reliable</code> or <code>ValidateOwnership</code> are not sufficient by themselves; the associated specification must define their exact behavior.</p>
+<h2>Why preservation matters</h2>
+<p>Online game projects are fragile. A server can disappear because a host stops paying for infrastructure, a platform changes direction, a developer loses interest, or a toolchain becomes unavailable. Design decisions disappear too when they only exist in private chats, scattered source files, or one person&#39;s memory.</p>
+<p>OpenBox should preserve enough material for another authorized operator to understand, host, repair, or continue a project:</p>
+<ul>
+<li>system definitions and compatibility contracts</li>
+<li>authority and security rules</li>
+<li>networking and persistence schemas</li>
+<li>package dependencies and implementation history</li>
+<li>world and faction structures</li>
+<li>rights, attribution, and license records</li>
+<li>server-specific extensions selected for release</li>
+</ul>
+<p>Preservation does not mean freezing a game. It means making continuation possible and making the limits of every preservation claim visible.</p>
+<h2>IPFS preservation records</h2>
+<p>IPFS can be one part of the preservation layer. It provides content-addressed distribution, but IPFS alone does not guarantee that content remains available. Availability still depends on functioning storage providers, funded pinning, redundant replicas, monitoring, and retrieval tests.</p>
+<p>The phrase &quot;Game Preservation Trust&quot; is an analogy for the trust created by a pinned IPFS hash, its signed declaration, and its auditable on-chain history. It is not the name of a proposed organization or legal entity.</p>
+<p>A published preservation record could display sample copy such as:</p>
+<blockquote>
+<p>Example: IPFS coverage - Pinned until 2142. View declaration anchor and retrieval audits.</p>
+</blockquote>
+<p><strong>Pinned until 2142</strong> is an example of how a real coverage horizon could be disclosed. It is not a current OpenBox commitment. Any live date is valid only when the record identifies the evidence supporting it:</p>
+<ul>
+<li>the exact covered CID set</li>
+<li>the package and manifest digests</li>
+<li>active, independently controlled replicas</li>
+<li>the last successful retrieval audit</li>
+<li>the audit schedule</li>
+<li>the funded storage horizon</li>
+<li>responsible preservation providers</li>
+<li>the signed declaration and its on-chain anchor</li>
+</ul>
+<p>The anchor transaction proves that a specific signed declaration existed in that form by the recorded chain event. It does not independently prove that the content remained pinned, that a claimant owns the rights, that a package is lawful, or that a provider will remain capable of fulfilling the commitment. Those claims require separate evidence and recurring verification.</p>
+<p>The original declaration remains part of the historical record when coverage is renewed, reduced, disputed, or superseded. The current status must be published separately so the historical anchor cannot be mistaken for live availability.</p>
+<h2>Preservation intake and privacy</h2>
+<p>Only artifacts explicitly approved for public, durable distribution should enter the IPFS preservation layer. OpenBox preservation must exclude player data, credentials, private logs, moderation evidence, private server backups, personal information, and proprietary material that has not been authorized for release.</p>
+<p>OpenBox preservation providers need intake review, quarantine, dispute, takedown, and unpin procedures. Unpinning from provider-controlled nodes does not erase replicas retained by independent parties. That limitation must be disclosed before content enters public distribution.</p>
+<h2>Explicit content rights</h2>
+<p>OpenBox needs visible content permissions inspired by the clarity of Second Life&#39;s copy, modify, and transfer model, but adapted to independently operated servers. Second Life can enforce permissions inside one platform-controlled inventory system. OpenBox can require compliant servers to evaluate signed manifests, but it cannot force an uncooperative host to comply or reveal an undisclosed deployment.</p>
+<p>Every shared package should declare:</p>
+<ul>
+<li>claimed authors and contributors</li>
+<li>claimed copyright and trademark rightsholders</li>
+<li>the basis for those claims</li>
+<li>the exact license text and version</li>
+<li>distribution and monetization authority</li>
+<li>modification and derivative-work rules</li>
+<li>third-party components and their licenses</li>
+<li>the package maintainer</li>
+<li>the signer&#39;s identity and relevant authorizations</li>
+<li>the preservation and status-record locations</li>
+</ul>
+<p>The manifest records signed claims and permissions. It is not itself a legal determination of ownership. Compatible servers can reject packages that do not satisfy local policy, and a registry can show where deployment is authorized or voluntarily attested.</p>
+<h2>Deterministic identity and hashing</h2>
+<p>Hashes verify byte identity. They do not prove authorship, legality, safety, quality, or permission.</p>
+<p>OpenBox needs a canonical package and hashing profile so two compliant tools produce the same identifiers. The specification should define:</p>
+<ul>
+<li>archive format and path normalization</li>
+<li>included and excluded files</li>
+<li>canonical manifest serialization and field ordering</li>
+<li>Unicode and number normalization</li>
+<li>digest algorithms</li>
+<li>IPFS codec, chunking strategy, and CID version</li>
+<li>dependency-lock format</li>
+</ul>
+<p>The public record should distinguish the package digest, rights-manifest digest, dependency-lock digest, and IPFS root CID. An IPFS CID is content-addressed, but it is not always identical to a raw file hash because import settings and DAG construction affect the result.</p>
+<h2>The on-chain record</h2>
+<p>Blockchain is foundational to OpenBox, but large game assets remain off-chain in server storage, preservation stores, and IPFS. The chain stores the durable shared record: compact signed declarations containing hashes, identities, rights, attestations, status changes, and preservation references.</p>
+<p>A declaration anchor may include:</p>
+<ul>
+<li>package and rights-manifest digests</li>
+<li>the IPFS root CID</li>
+<li>signer and preservation-provider identity references</li>
+<li>the declared coverage horizon</li>
+<li>the anchor time and chain transaction reference</li>
+<li>the policy version used to evaluate the record</li>
+<li>supersession, dispute, and revocation references</li>
+</ul>
+<p>Valid signed declarations are anchored through the OpenBox blockchain protocol. Ecosystem adoption is a separate status and must not be confused with proof of ownership or legitimacy.</p>
+<p>If OpenBox recognizes a server-sharing threshold, each count should come from a signed deployment or retrieval attestation containing the server identity, operator identity, package CID, manifest version, observation type, and time. Threshold policy must address one operator creating many servers, duplicate identities, withdrawals, privacy, and compromised keys.</p>
+<h2>Revocation, supersession, and disputes</h2>
+<p>An immutable anchor cannot be edited or erased. Revocation therefore creates a new signed status record; it does not remove the historical anchor, recall downloaded files, or erase independently retained IPFS replicas.</p>
+<p>Compliant servers should consult a current-status resolver before installing, updating, or redistributing a package. A status record should include:</p>
+<ul>
+<li>scope and effective time</li>
+<li>signer and authority basis</li>
+<li>reason category and dispute state</li>
+<li>affected package and manifest versions</li>
+<li>successor records where applicable</li>
+<li>provider-controlled takedown status</li>
+</ul>
+<p>This creates an auditable sequence of claims and changes while staying honest about what independent hosts can ignore.</p>
+<h2>Questions still to resolve</h2>
+<p>The core OpenBox direction is clear, but several decisions are intentionally unresolved. These need specifications, prototypes, governance rules, or legal review before the preservation and rights layers can move from theory to a public commitment.</p>
+<h3>Framework scope</h3>
+<ul>
+<li>Which systems belong to the required OpenBox core, and which remain optional modules?</li>
+<li>What is the minimum contract a server must implement to call itself OpenBox-compatible?</li>
+<li>How will protocol versions, compatibility tests, and breaking changes be governed?</li>
+<li>Which s&amp;box and Steam dependencies prevent a server from operating or being recovered independently?</li>
+</ul>
+<h3>Identity and trust</h3>
+<ul>
+<li>Which wallet best satisfies OpenBox&#39;s identity, recovery, privacy, signing, portability, cost, and longevity requirements?</li>
+<li>Will OpenBox initially support one wallet or a versioned family of wallet adapters?</li>
+<li>Which identity, authentication, declaration-signing, recovery, rotation, delegation, and privacy capabilities does the selected wallet expose?</li>
+<li>How are server operators, preservation providers, registries, and non-user services identified alongside wallet-based users?</li>
+<li>How are package-signing and institutional keys rotated, recovered, or revoked after compromise?</li>
+<li>Does OpenBox use a curated trust root, community trust lists, web-of-trust relationships, or another model?</li>
+<li>How can threshold policies distinguish independent operators from one operator running many servers?</li>
+</ul>
+<h3>Package and registry architecture</h3>
+<ul>
+<li>What exact canonical archive, manifest, hashing, and IPFS import profile will OpenBox use?</li>
+<li>Will package discovery use one registry, federated registries, or direct signed indexes?</li>
+<li>How will deterministic dependency resolution and dependency locking work?</li>
+<li>What happens when a registry is offline, disputed, abandoned, or split by incompatible governance?</li>
+</ul>
+<h3>Content rights</h3>
+<ul>
+<li>Which permission vocabulary replaces or extends copy, modify, transfer, redistribute, and monetize?</li>
+<li>How are multiple authors, employers, commissioned work, trademarks, and third-party assets represented?</li>
+<li>Which jurisdictions and dispute procedures will the rights system support first?</li>
+<li>What evidence must accompany a claimed rightsholder or distribution authorization?</li>
+<li>Which permissions are technically enforced by compliant servers, and which are declarations that depend on voluntary compliance?</li>
+</ul>
+<h3>IPFS preservation policy</h3>
+<ul>
+<li>How are real retention dates funded, priced, audited, and renewed?</li>
+<li>How many independently controlled replicas are required for each coverage level?</li>
+<li>What happens if the original host or storage provider disappears?</li>
+<li>Which retrieval failures reduce or invalidate the displayed coverage status?</li>
+<li>How are takedowns, quarantine, disputes, and material that cannot be erased from independent replicas handled?</li>
+</ul>
+<h3>Blockchain protocol</h3>
+<ul>
+<li>Which blockchain architecture best supports OpenBox identity, rights, attestations, preservation history, cost, and long-term continuity?</li>
+<li>Will OpenBox use an existing chain, its own chain, a rollup, an appchain, or another blockchain architecture?</li>
+<li>Who pays transaction fees and how are routine game-related records kept affordable?</li>
+<li>Can records migrate to another chain or protocol version without losing continuity?</li>
+<li>How does the current-status resolver connect immutable historical anchors to later corrections, disputes, revocations, and superseding records?</li>
+<li>Should server-sharing thresholds affect ecosystem recognition or only a separate adoption badge?</li>
+</ul>
+<h3>Cross-server boundaries</h3>
+<ul>
+<li>Which credentials and records may be associated with the shared wallet identity across servers?</li>
+<li>Which inventory, currency, reputation, role, and ban records remain server-local?</li>
+<li>What wallet-signed consent and authority model is required before any state can be transferred or recognized by another server?</li>
+<li>How can players selectively disclose credentials without exposing their complete cross-server history?</li>
+<li>How can a player see which host controls each record linked to their wallet identity?</li>
+</ul>
+<p>These questions do not block a small framework prototype. They define the work required before OpenBox can make durable claims about federation, ownership, preservation coverage, or ecosystem-wide rights enforcement.</p>
+<h2>What OpenBox could become</h2>
+<p>The long-term vision is a living collection of s&amp;box servers, packages, contracts, tools, and documentation that no single host needs to control completely.</p>
+<p>Someone could start an OpenBox server, select compatible modules, add original content, and publish the parts they are authorized to share. Another host could adopt those systems, improve them, or preserve them for a different community under the declared license.</p>
+<p>Codex and other tools can help maintain contracts, explain architecture, run compatibility tests, and review security. The AI can navigate the knowledge layer; it is not the owner or legal authority behind that knowledge.</p>
+<h2>The first practical slice</h2>
+<p>The first implementation should be small and s&amp;box-native: one framework package, one canonical manifest format, one independently operated server, and one shared module such as Trading or Inventory.</p>
+<p>That slice should prove five things:</p>
+<ol>
+<li>A host can configure and operate the framework independently within s&amp;box.</li>
+<li>A module defines versioned authority, replication, persistence, security, and failure contracts.</li>
+<li>A server can add local extensions without breaking compatibility tests.</li>
+<li>Another host can understand and continue the documented implementation.</li>
+<li>One versioned package can be deterministically built, signed, replicated to at least two independently controlled stores, retrieved and verified by another host, recorded on-chain, and superseded through a later on-chain status record without placing the package itself on-chain.</li>
+</ol>
+<p>OpenBox is a proposal for making s&amp;box server operation more durable, independently operated, and connected. The next step is to prove that model with one small package and evidence that another host can actually recover, verify, and run it.</p>
+
+            <div class="devlog-signoff">
+                <p>Signed, <strong>Nightshift</strong></p>
+            </div></div>
+        </section>
+
+        <footer class="site-footer panel">
+
+            <section class="software-marquee-section" aria-label="Software used by Nightshift">
+                <div class="software-marquee"><div class="software-marquee-track">
+                    <div class="software-marquee-group"><a class="software-marquee-item hover-sound" href="https://www.unrealengine.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/unreal-engine.svg" alt="" aria-hidden="true" loading="lazy"><span>Unreal</span></a><a class="software-marquee-item hover-sound" href="https://developer.valvesoftware.com/wiki/Source_2" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/source-2.svg" alt="" aria-hidden="true" loading="lazy"><span>Source 2</span></a><a class="software-marquee-item hover-sound" href="https://enfusionengine.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/enfusion.svg" alt="" aria-hidden="true" loading="lazy"><span>Enfusion</span></a><a class="software-marquee-item hover-sound" href="https://docs.fivem.net/docs/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/rage.svg" alt="" aria-hidden="true" loading="lazy"><span>RAGE</span></a><a class="software-marquee-item hover-sound" href="https://www.blender.org/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/blender.svg" alt="" aria-hidden="true" loading="lazy"><span>Blender</span></a><a class="software-marquee-item hover-sound" href="https://www.adobe.com/products/substance3d.html" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/adobe-3d.svg" alt="" aria-hidden="true" loading="lazy"><span>Adobe 3D</span></a><a class="software-marquee-item hover-sound" href="https://affinity.serif.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/affinity-suite.png" alt="" aria-hidden="true" loading="lazy"><span>Affinity Suite</span></a><a class="software-marquee-item hover-sound" href="https://quadspinner.com/gaea/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/gaea.png" alt="" aria-hidden="true" loading="lazy"><span>Gaea 2.0</span></a><a class="software-marquee-item hover-sound" href="https://www.reallusion.com/character-creator/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/cc5.png" alt="" aria-hidden="true" loading="lazy"><span>CC5</span></a><a class="software-marquee-item hover-sound" href="https://www.reallusion.com/iclone/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/iclone-8.png" alt="" aria-hidden="true" loading="lazy"><span>iClone 8</span></a><a class="software-marquee-item hover-sound" href="https://www.marvelousdesigner.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/marvelous-designer.png" alt="" aria-hidden="true" loading="lazy"><span>Marvelous Designer</span></a><a class="software-marquee-item hover-sound" href="https://ephere.com/plugins/ornatrix/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/ornatrix.png" alt="" aria-hidden="true" loading="lazy"><span>Ornatrix</span></a><a class="software-marquee-item hover-sound" href="https://www.image-line.com/fl-studio/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/fl-studio.png" alt="" aria-hidden="true" loading="lazy"><span>FruityLoops</span></a><a class="software-marquee-item hover-sound" href="https://code.visualstudio.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/vs-code.png" alt="" aria-hidden="true" loading="lazy"><span>VS Code</span></a><a class="software-marquee-item hover-sound" href="https://visualstudio.microsoft.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/visual-studio.svg" alt="" aria-hidden="true" loading="lazy"><span>Visual Studio</span></a><a class="software-marquee-item hover-sound" href="https://github.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/github.svg" alt="" aria-hidden="true" loading="lazy"><span>GitHub</span></a><a class="software-marquee-item hover-sound" href="https://git-lfs.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/git-lfs.svg" alt="" aria-hidden="true" loading="lazy"><span>Git LFS</span></a><a class="software-marquee-item hover-sound" href="https://pages.github.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/github-pages.svg" alt="" aria-hidden="true" loading="lazy"><span>GitHub Pages</span></a><a class="software-marquee-item hover-sound" href="https://www.wix.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/wix.svg" alt="" aria-hidden="true" loading="lazy"><span>Wix</span></a><a class="software-marquee-item hover-sound" href="https://stripe.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/stripe.svg" alt="" aria-hidden="true" loading="lazy"><span>Stripe</span></a><a class="software-marquee-item hover-sound" href="https://obsidian.md/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/obsidian.svg" alt="" aria-hidden="true" loading="lazy"><span>Obsidian</span></a><a class="software-marquee-item hover-sound" href="https://openai.com/codex/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/openai.png" alt="" aria-hidden="true" loading="lazy"><span>Codex</span></a></div>
+                    <div class="software-marquee-group" aria-hidden="true"><a class="software-marquee-item hover-sound" href="https://www.unrealengine.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/unreal-engine.svg" alt="" aria-hidden="true" loading="lazy"><span>Unreal</span></a><a class="software-marquee-item hover-sound" href="https://developer.valvesoftware.com/wiki/Source_2" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/source-2.svg" alt="" aria-hidden="true" loading="lazy"><span>Source 2</span></a><a class="software-marquee-item hover-sound" href="https://enfusionengine.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/enfusion.svg" alt="" aria-hidden="true" loading="lazy"><span>Enfusion</span></a><a class="software-marquee-item hover-sound" href="https://docs.fivem.net/docs/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/rage.svg" alt="" aria-hidden="true" loading="lazy"><span>RAGE</span></a><a class="software-marquee-item hover-sound" href="https://www.blender.org/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/blender.svg" alt="" aria-hidden="true" loading="lazy"><span>Blender</span></a><a class="software-marquee-item hover-sound" href="https://www.adobe.com/products/substance3d.html" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/adobe-3d.svg" alt="" aria-hidden="true" loading="lazy"><span>Adobe 3D</span></a><a class="software-marquee-item hover-sound" href="https://affinity.serif.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/affinity-suite.png" alt="" aria-hidden="true" loading="lazy"><span>Affinity Suite</span></a><a class="software-marquee-item hover-sound" href="https://quadspinner.com/gaea/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/gaea.png" alt="" aria-hidden="true" loading="lazy"><span>Gaea 2.0</span></a><a class="software-marquee-item hover-sound" href="https://www.reallusion.com/character-creator/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/cc5.png" alt="" aria-hidden="true" loading="lazy"><span>CC5</span></a><a class="software-marquee-item hover-sound" href="https://www.reallusion.com/iclone/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/iclone-8.png" alt="" aria-hidden="true" loading="lazy"><span>iClone 8</span></a><a class="software-marquee-item hover-sound" href="https://www.marvelousdesigner.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/marvelous-designer.png" alt="" aria-hidden="true" loading="lazy"><span>Marvelous Designer</span></a><a class="software-marquee-item hover-sound" href="https://ephere.com/plugins/ornatrix/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/ornatrix.png" alt="" aria-hidden="true" loading="lazy"><span>Ornatrix</span></a><a class="software-marquee-item hover-sound" href="https://www.image-line.com/fl-studio/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/fl-studio.png" alt="" aria-hidden="true" loading="lazy"><span>FruityLoops</span></a><a class="software-marquee-item hover-sound" href="https://code.visualstudio.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/vs-code.png" alt="" aria-hidden="true" loading="lazy"><span>VS Code</span></a><a class="software-marquee-item hover-sound" href="https://visualstudio.microsoft.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/visual-studio.svg" alt="" aria-hidden="true" loading="lazy"><span>Visual Studio</span></a><a class="software-marquee-item hover-sound" href="https://github.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/github.svg" alt="" aria-hidden="true" loading="lazy"><span>GitHub</span></a><a class="software-marquee-item hover-sound" href="https://git-lfs.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/git-lfs.svg" alt="" aria-hidden="true" loading="lazy"><span>Git LFS</span></a><a class="software-marquee-item hover-sound" href="https://pages.github.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/github-pages.svg" alt="" aria-hidden="true" loading="lazy"><span>GitHub Pages</span></a><a class="software-marquee-item hover-sound" href="https://www.wix.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/wix.svg" alt="" aria-hidden="true" loading="lazy"><span>Wix</span></a><a class="software-marquee-item hover-sound" href="https://stripe.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/stripe.svg" alt="" aria-hidden="true" loading="lazy"><span>Stripe</span></a><a class="software-marquee-item hover-sound" href="https://obsidian.md/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/obsidian.svg" alt="" aria-hidden="true" loading="lazy"><span>Obsidian</span></a><a class="software-marquee-item hover-sound" href="https://openai.com/codex/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/openai.png" alt="" aria-hidden="true" loading="lazy"><span>Codex</span></a></div>
+                </div></div>
+            </section>
+            <div class="footer-grid">
+                <div class="footer-column"><span>Primary routes</span><a class="hover-sound" href="/">Home</a><a class="hover-sound" href="/pages/games.html">Games</a><a class="hover-sound" href="/pages/studio.html">Studio</a><a class="hover-sound" href="/pages/contact.html">Contact</a></div>
+                <div class="footer-column"><span>Public records</span><a class="hover-sound" href="/pages/DevLog/index.html">Devlog</a><a href="https://www.epicgames.com/site/en-US/privacypolicy" target="_blank" rel="noopener noreferrer">Epic Privacy Policy</a><a href="#">Nightshift Privacy Policy</a><a href="#">Applicant Privacy Policy</a></div>
+                <div class="footer-column"><span>External surfaces</span><a href="#">Press Kit</a><a href="#">Brand Assets</a><a href="#">Careers</a><a href="#">Community</a></div>
+            </div>
+            <div class="footer-bottom"><div class="social-row"><a class="action-pill hover-sound" href="https://www.youtube.com/@nstx" target="_blank" rel="noopener noreferrer">YouTube</a><a class="action-pill primary hover-sound" href="/pages/Studio/Donations.html">Support the studio</a></div><p class="footer-note">Copyright 2026 Nightshift. All rights reserved.</p></div>
+        </footer>
+    </main>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const audio = new Audio("../../../audio/bop.mp3");
+            audio.volume = 0.25;
+            const clock = document.getElementById("mockup-clock");
+            function updateClock() {
+                if (!clock) return;
+                clock.textContent = new Date().toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", second: "2-digit", timeZone: "America/Chicago", timeZoneName: "short" });
+            }
+            document.querySelectorAll(".hover-sound").forEach((element) => {
+                element.addEventListener("mouseenter", function() {
+                    audio.currentTime = 0;
+                    audio.play().catch(() => {});
+                });
+            });
+            updateClock();
+            window.setInterval(updateClock, 1000);
+        });
+    </script>
+</body>
+</html>

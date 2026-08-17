@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nightshift | AfterDark tests a privacy-first age gate with AgeKey and YubiKey</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="../../../images/icons/nightshift.ico">
+    <link rel="stylesheet" href="../../../styles/home-modus-mockup.css?v=20260711-devlog-highlight">
+    <script defer src="/scripts/analytics.js" data-analytics-endpoint="/api/analytics"></script>
+</head>
+<body>
+    <div class="screen-fx" aria-hidden="true"></div>
+    <header class="topbar">
+        <a class="brand hover-sound" href="../../home.html" aria-label="Nightshift home">
+            <img src="../../../images/index/nightshift-transparent.png" alt="Nightshift logo">
+        </a>
+        <nav class="utility-nav" aria-label="Primary">
+            <a href="../../home.html" class="hover-sound">Home</a>
+            <a href="../../games.html" class="hover-sound">Games</a>
+            <a href="../../studio.html" class="hover-sound">Studio</a>
+            <a href="../../DevLog/index.html" class="hover-sound active">Devlog</a>
+            <a href="../../contact.html" class="hover-sound">Contact</a>
+        </nav>
+        <div class="topbar-readout"><span>Devlog Entry</span><strong id="mockup-clock">00:00:00 CST</strong></div>
+    </header>
+    <main class="shell page-shell">
+
+        <section class="page-hero-grid">
+            <article class="page-hero-panel">
+                <p class="eyebrow">Devlog / entry</p>
+                <h1 class="page-title">AfterDark tests a privacy-first age gate with AgeKey and YubiKey</h1>
+                <p class="page-lede">AfterDark is evaluating whether AgeKey and YubiKey can support an adult gate with less identity exposure—and what metadata, correlation, and acquisition risks remain.</p>
+                <div class="hero-actions"><a class="cta-btn hover-sound" href="../index.html">Back To Devlog</a></div>
+                <div class="tag-row"><span class="tag">AfterDarkRP</span><span class="tag">Age Assurance</span><span class="tag">Privacy</span><span class="tag">AgeKey</span><span class="tag">YubiKey</span><span class="tag">FIDO2</span><span class="tag">Passkeys</span></div>
+                
+            </article>
+            <aside class="page-hero-panel">
+                <p class="eyebrow">Entry metadata</p>
+                <div class="stack-list">
+                    <div><span>Project</span><strong><a class="inline-link hover-sound" href="/afterdark/">AfterDarkRP</a></strong></div>
+                    <div><span>Date</span><strong>AUG 14, 2026</strong></div>
+                    <div><span>Signed by</span><strong>Nightshift</strong></div>
+                    <div><span>Authored by</span><strong>Codex</strong></div>
+                    <div><span>Views</span><strong>
+                    <span class="devlog-view-count" data-view-count-path="/pages/DevLog/posts/2026-08-14-afterdark-agekey-yubikey-age-gate.html" data-view-count-state="loading" aria-label="Views loading">
+                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                            <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"></path>
+                            <circle cx="12" cy="12" r="2.5"></circle>
+                        </svg>
+                        <b data-view-count-value>--</b><em>views</em>
+                    </span></strong></div>
+                    <div><span>Route</span><strong>Public archive</strong></div>
+                </div>
+            </aside>
+        </section>
+        
+        <section class="panel feature-panel">
+            <div class="panel-heading"><p class="eyebrow">Field Notes</p><h2>Entry body</h2></div>
+            <div class="devlog-post-body"><section class="devlog-highlight devlog-highlight-blue"><h2>Evaluation status</h2>
+<ul>
+<li>AgeKey plus YubiKey is a test candidate, not a live or shipped AfterDark gate.</li>
+<li>The target is a signed adult-threshold result without Nightshift collecting the player&#39;s source identity evidence.</li>
+<li>That is data minimization, not <code>perfect privacy</code>: the detailed notice describes server metadata, session logs, cookies, and possible site telemetry.</li>
+<li>A FIDO2 security key could make the credential device-bound, but the actual AgeKey, browser, and YubiKey path still has to pass hands-on testing.</li>
+<li>The deciding product test is Windows PC and VR: the authentication handoff, WebAuthn prompt, YubiKey PIN and touch, and recovery path all have to work in that context. Linux is only a possible future target if s&amp;box supports it down the line, not a current claim or MVP gate.</li>
+<li>The concept is promising enough to prototype, but not ready to depend on without protocol, threat-model, retention, audit, provider, and change-control answers.</li>
+</ul>
+</section>
+
+<h2>Why AfterDark needs an age gate</h2>
+<p>AfterDark is an adult-themed, user-generated sandbox. Its systems and player-created situations can involve mature material, so access cannot rest on a decorative birthday prompt or a checkbox that anyone can click through.</p>
+<p>At the same time, a useful age gate should not become an excuse to collect more personal information than the game needs. Nightshift needs an answer to a narrow question: does this player meet the required age threshold? A full date of birth, government ID image, face scan, card record, or legal identity would create a much larger privacy and security burden without improving the in-game decision.</p>
+<p>That is why <a href="https://agekey.org/">AgeKey</a> is worth evaluating. Its stated model is a reusable age credential built on passkey technology. After an initial age-assurance provider establishes an age signal, the user can save that result as an AgeKey and later prove requested thresholds such as 18+ without repeatedly disclosing an exact birth date or identity.</p>
+<p>According to the <a href="https://docs.agekey.org/intro/">AgeKey introduction</a>, the returning-user flow produces a signed OpenID Connect result with yes-or-no answers for the requested thresholds. The relying service can also constrain which verification methods it accepts and how recent the underlying verification must be.</p>
+<h2>PC and VR first</h2>
+<p>AfterDark&#39;s current product target is PC first, with Windows as the primary platform and VR also relevant. This is not a mobile game. The age gate therefore has to work from a Windows PC game session and from a player wearing a headset, where authentication may need to move safely to a trusted desktop browser, headset browser, or dedicated authentication surface and then return control to the correct game session.</p>
+<p>If s&amp;box supports Linux down the line, Linux could become a future AfterDark target. Any such pass would need its own browser, WebAuthn, YubiKey, and game-to-browser handoff testing across the Linux environments the platform actually supports. This is not a claim of current Linux support, an independent AfterDark commitment, or an MVP release gate.</p>
+<p>Mobile can still be useful as an optional authenticator companion for credential enrollment, recovery, or NFC use. It is not a required AfterDark game platform. Console compatibility is a deferred possibility, not MVP scope, and would depend on each platform&#39;s WebAuthn and security-key policies plus its account-linking rules.</p>
+<h2>Marketing claim versus privacy notice</h2>
+<p>The <a href="https://agekey.org/about">AgeKey About page</a> says, &quot;Nothing is kept online, not your face, not your ID, not even your exact age.&quot; It also presents the product as having no cookies, tracking, or data retention. That is a strong and appealing summary of the privacy goal.</p>
+<p>The <a href="https://openageinitiative.org/privacy-policy">OpenAge Privacy Notice</a> describes a more detailed operating picture. It says the underlying identity or age evidence is collected by third-party age-assurance providers, is not stored in the AgeKey, and is never shared with OpenAge. It also says OpenAge stores the AgeKey public key with the confirmed age range, verification method and provider, and verification timestamp. Public-key and session-log data is collected automatically. AgeKey.org may collect IP address, cookie identifiers, browser type, domain or ISP, device information, and usage data; the cookie policy lists essential <code>session</code> and <code>publicKey</code> cookies as well as Google Analytics. Retention is based on the purpose for which the information was collected.</p>
+<p>Those statements are not enough to accuse the provider of deception or conclude that the architecture is broken. The marketing shorthand and the detailed notice appear to describe different layers and scopes: one focuses on source evidence such as a face, ID, or exact age, while the other covers the metadata and telemetry needed to operate the credential and website. For AfterDark, that distinction has to be explicit in the protocol and threat model rather than inferred from a slogan.</p>
+<h2>Acquisition threat model</h2>
+<p>The OpenAge notice says stored information may transfer as part of a merger, acquisition, or similar transaction. If OpenAge truly never collected the underlying ID image, face data, or exact date of birth, a future buyer cannot retroactively acquire that nonexistent OpenAge dataset. The third-party verifier may still hold source evidence under its own separate privacy and retention policy, which needs its own review.</p>
+<p>A buyer could receive the public keys, confirmed age ranges, method and provider records, timestamps, session logs, and other information OpenAge does store. It could also change future product behavior, policies, APIs, subprocessors, or retention periods. The acquisition question is therefore not only &quot;Can someone buy the ID database?&quot; It is also &quot;What metadata exists today, what can it reveal when joined, and what prevents a future owner from collecting more tomorrow?&quot;</p>
+<p>OpenAge&#39;s <a href="https://www.businesswire.com/news/home/20251110709762/en/Newly-Launched-OpenAge-Initiative-Introduces-AgeKey">launch release</a> says site-specific passkey identifiers and a double-blind architecture prevent correlation between issuer and verifier or between different verifiers. That is an important claim, not something Nightshift should dismiss. It is also a claim worth protocol documentation or independent audit, especially because the privacy notice describes public keys and session logs.</p>
+<p>Before relying on it, the prototype review should answer:</p>
+<ul>
+<li>Can creation IP, public key, verification requests, and the relying site be correlated anywhere in the service or its logs?</li>
+<li>Does the OIDC <code>client_id</code> or registered redirect reveal the relying party to AgeKey, and if so, how is that separated from credential creation and use history?</li>
+<li>Are site-specific identifiers derived or issued in a way that prevents cross-site joining by the provider, an acquirer, a subprocessor, or a compromised logging system?</li>
+<li>What deletion, rotation, breach, takeover, and policy-change controls apply to public keys, metadata, analytics, and session logs?</li>
+</ul>
+<h2>Design as if the provider is untrusted</h2>
+<p>AfterDark should get the privacy benefit even if AgeKey is treated as an external party that may fail, log too much, change ownership, or change policy. The minimum-trust integration should:</p>
+<ul>
+<li>request only a signed adult-threshold boolean, with the narrowest acceptable method and recency constraints;</li>
+<li>never send a stable AfterDark account ID to the provider;</li>
+<li>keep <code>state</code> and <code>nonce</code> opaque, random, short-lived, single-use, and bound to server-side session state;</li>
+<li>validate signature and JWKS, issuer, audience, state, nonce, request integrity, issue time, expiry, threshold, and replay status on the server;</li>
+<li>prevent the token and complete callback URL from reaching application, proxy, analytics, crash, or support logs;</li>
+<li>store only a short-lived AfterDark gate result, plus any narrowly justified audit reference for a defined retention period;</li>
+<li>review proxy, analytics, support, and incident tooling as part of the data flow, not as an afterthought; and</li>
+<li>fail closed on invalid responses, replay, provider outage, or uncertain state.</li>
+</ul>
+<p>That does not make the provider literally untrusted—the signed result still comes from it. It limits how much AfterDark discloses and how much damage a provider-side failure or policy change can cause.</p>
+<h2>Where the YubiKey fits</h2>
+<p>A FIDO2-capable YubiKey can store device-bound passkeys. Instead of leaving the AgeKey credential synchronized through a general platform account, a player could potentially keep it on a physical security key and authorize use with the key&#39;s FIDO2 PIN and required touch.</p>
+<p>Yubico documents passkey storage on supported FIDO2-certified keys in its <a href="https://docs.yubico.com/software/yubikey/tools/authenticator/auth-guide/fido2.html">FIDO2 and passkey guide</a>. That establishes the hardware capability, but it does not prove that AgeKey&#39;s current registration prompt will offer <code>Security key</code>, that each target Windows browser will route the prompt correctly, or that the PC and VR handoff will work cleanly. Exact AgeKey, browser, operating-system, VR, and hardware-key compatibility is an empirical pass-or-fail test. Linux browser and handoff compatibility would belong to a later pass only if s&amp;box makes Linux a supported target; mobile USB or NFC is a secondary enrollment, recovery, or authenticator-companion test.</p>
+<h2>Proposed test flow</h2>
+<ol>
+<li>Create or obtain an AgeKey through an external age-assurance provider. The initial verifier handles whatever source proof its method requires; Nightshift does not receive the ID image, face data, card details, exact date of birth, or equivalent evidence.</li>
+<li>At the passkey creation prompt, choose <code>Security key</code>, select the YubiKey, then complete the ceremony with its FIDO2 PIN and physical touch. Record whether the credential is actually stored on the key rather than silently falling back to a platform passkey.</li>
+<li>From the Windows PC game or VR runtime, begin a fresh gate request and hand off to a trusted browser or authentication surface. Redirect to AgeKey with the required age threshold and unique <code>state</code> and <code>nonce</code> values, following the documented <a href="https://docs.agekey.org/guides/use-agekey/">Use AgeKey flow</a>.</li>
+<li>On the returning-user prompt, choose and use the YubiKey again. Enter the FIDO2 PIN and touch the key, then allow AgeKey to redirect the browser back to the registered AfterDark callback and resume the correct server-bound game session.</li>
+<li>Validate the signed result on the server before granting access: verify the signature against the provider&#39;s JWKS, expected issuer, audience, matching <code>state</code> and <code>nonce</code>, issue and expiry times, the requested threshold result, request integrity, and one-time use or other replay controls.</li>
+<li>Convert a successful result into a short-lived AfterDark gate or session decision. Retain only the minimum result and narrowly justified audit reference for the minimum necessary period; do not retain the original verification evidence.</li>
+</ol>
+<h2>Test matrix before any integration decision</h2>
+<p>The prototype needs more than a happy-path screenshot. It should explicitly cover:</p>
+<ol>
+<li><strong>Enrollment:</strong> new AgeKey creation through the external verifier, with <code>Security key</code> visibly selected and the credential confirmed on the YubiKey.</li>
+<li><strong>Repeat use:</strong> a returning player completes the threshold check using the same YubiKey without repeating identity proof.</li>
+<li><strong>Cancel and deny:</strong> backing out, declining consent, removing the key mid-prompt, or denying the passkey request leaves access closed and produces a clear recovery path.</li>
+<li><strong>False threshold:</strong> a valid signed result with the required threshold set to false never opens the gate.</li>
+<li><strong>Expired and replayed result:</strong> expired tokens, reused callbacks, mismatched state, mismatched nonce, wrong audience, and stale sessions all fail closed.</li>
+<li><strong>Key removal, loss, and recovery:</strong> unplugging a key during use, losing the only key, replacing it, and using a documented backup or re-verification path do not create either a bypass or permanent lockout.</li>
+<li><strong>Current Windows PC browsers:</strong> test each supported Windows desktop browser and authentication surface, including the handoff from the running PC game, trusted-origin visibility, focus changes, timeout behavior, and return to the correct game session.</li>
+<li><strong>VR authentication:</strong> test headset-to-browser handoff; whether the WebAuthn prompt is visible, readable, and controllable in VR; whether entering a YubiKey PIN and finding and touching the key is practical while wearing the headset; and whether cancellation, timeout, or a removed key returns the player safely instead of trapping them outside both the browser and game. Where appropriate, provide a clearly paired desktop companion fallback.</li>
+<li><strong>Possible future Linux compatibility:</strong> if s&amp;box supports Linux down the line and AfterDark adopts that target, test the supported Linux distributions, desktop browsers, WebAuthn security-key prompt, PIN and touch behavior, trusted-origin presentation, game-to-browser handoff, and return to the correct session. This is a conditional compatibility question, not a current support claim or MVP gate.</li>
+<li><strong>Optional mobile and NFC companion:</strong> test Android or iOS USB and NFC only where useful for credential enrollment, recovery, or an authenticator-companion path. This is not a mobile-game requirement or a condition for the PC release.</li>
+<li><strong>Deferred consoles:</strong> document console compatibility as a future question governed by platform WebAuthn and external-security-key policies, browser availability, deep-link restrictions, and account-linking rules. Do not make it MVP scope.</li>
+<li><strong>Provider outage:</strong> timeouts, unreachable discovery or JWKS endpoints, and an unavailable verification service fail closed with a useful message instead of trapping the player in a loop.</li>
+<li><strong>Accessibility and fallback:</strong> the flow is keyboard-readable, screen-reader understandable, usable across the relevant PC and VR surfaces, and offers a legitimate alternate verification route for players who cannot use a hardware key.</li>
+<li><strong>Retention and logs:</strong> inspect application, proxy, analytics, and support logs to confirm that signed tokens, query fragments, exact birth data, identity evidence, and unnecessary device details are not being retained.</li>
+</ol>
+<h2>What this does not solve by itself</h2>
+<p>AgeKey can reduce how often sensitive proof is shared with relying services, but the first credential still depends on an underlying verification method and provider. An ID scan, payment-card check, face-based estimate, or another source has its own accuracy, accessibility, jurisdiction, retention, and bias questions. A reusable credential does not make weak initial proof stronger.</p>
+<p>One product boundary also needs an answer before code starts. AgeKey&#39;s <a href="https://docs.agekey.org/intro/">developer introduction</a> positions direct AgeKey integration primarily for age-assurance providers and platforms that orchestrate multiple methods, while pointing ordinary game and app implementers toward OpenAge. The prototype needs provider confirmation on whether AfterDark should use the AgeKey OpenID Connect endpoints directly or integrate through that broader layer.</p>
+<p>It also does not guarantee legal compliance. Required thresholds, acceptable methods, parental-consent rules, audit obligations, data-processing terms, incident handling, and regional availability all need qualified review before AfterDark relies on the result.</p>
+<h2>Current verdict</h2>
+<p>AgeKey with a YubiKey is promising enough for a contained prototype. The core direction is still good: ask for a threshold, validate a signed result, and keep Nightshift away from the player&#39;s source identity evidence. It is not <code>perfect privacy</code>, and the public marketing page is not a substitute for reading the detailed notice.</p>
+<p>The deciding hardware test is Windows PC and VR, not generic mobile coverage. AgeKey&#39;s passkey ceremony must consistently expose the FIDO2 YubiKey path in supported Windows browsers and authentication surfaces, survive the handoff from both desktop and headset play, keep the WebAuthn prompt usable in VR, and provide a workable cancellation, loss, and recovery story. Linux compatibility is only a possible future testing track if s&amp;box supports that platform; it is not an MVP promise. Mobile enrollment or NFC can help as a companion path; console support stays deferred. Before AfterDark depends on any of it, Nightshift also needs clear protocol and threat-model documentation, retention and subprocessor terms, credible audit evidence for non-correlation, and answers for takeover, policy changes, API changes, and shutdown.</p>
+<p>If those questions have good answers, this could become a materially more private adult gate than collecting identity proof ourselves. If they do not, it does not ship. For now, this remains an evaluation path—not an integration announcement or a compliance guarantee.</p>
+
+            <div class="devlog-signoff">
+                <p>Signed, <strong>Nightshift</strong></p>
+            </div></div>
+        </section>
+
+        <footer class="site-footer panel">
+
+            <section class="software-marquee-section" aria-label="Software used by Nightshift">
+                <div class="software-marquee"><div class="software-marquee-track">
+                    <div class="software-marquee-group"><a class="software-marquee-item hover-sound" href="https://www.unrealengine.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/unreal-engine.svg" alt="" aria-hidden="true" loading="lazy"><span>Unreal</span></a><a class="software-marquee-item hover-sound" href="https://developer.valvesoftware.com/wiki/Source_2" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/source-2.svg" alt="" aria-hidden="true" loading="lazy"><span>Source 2</span></a><a class="software-marquee-item hover-sound" href="https://enfusionengine.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/enfusion.svg" alt="" aria-hidden="true" loading="lazy"><span>Enfusion</span></a><a class="software-marquee-item hover-sound" href="https://docs.fivem.net/docs/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/rage.svg" alt="" aria-hidden="true" loading="lazy"><span>RAGE</span></a><a class="software-marquee-item hover-sound" href="https://www.blender.org/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/blender.svg" alt="" aria-hidden="true" loading="lazy"><span>Blender</span></a><a class="software-marquee-item hover-sound" href="https://www.adobe.com/products/substance3d.html" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/adobe-3d.svg" alt="" aria-hidden="true" loading="lazy"><span>Adobe 3D</span></a><a class="software-marquee-item hover-sound" href="https://affinity.serif.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/affinity-suite.png" alt="" aria-hidden="true" loading="lazy"><span>Affinity Suite</span></a><a class="software-marquee-item hover-sound" href="https://quadspinner.com/gaea/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/gaea.png" alt="" aria-hidden="true" loading="lazy"><span>Gaea 2.0</span></a><a class="software-marquee-item hover-sound" href="https://www.reallusion.com/character-creator/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/cc5.png" alt="" aria-hidden="true" loading="lazy"><span>CC5</span></a><a class="software-marquee-item hover-sound" href="https://www.reallusion.com/iclone/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/iclone-8.png" alt="" aria-hidden="true" loading="lazy"><span>iClone 8</span></a><a class="software-marquee-item hover-sound" href="https://www.marvelousdesigner.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/marvelous-designer.png" alt="" aria-hidden="true" loading="lazy"><span>Marvelous Designer</span></a><a class="software-marquee-item hover-sound" href="https://ephere.com/plugins/ornatrix/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/ornatrix.png" alt="" aria-hidden="true" loading="lazy"><span>Ornatrix</span></a><a class="software-marquee-item hover-sound" href="https://www.image-line.com/fl-studio/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/fl-studio.png" alt="" aria-hidden="true" loading="lazy"><span>FruityLoops</span></a><a class="software-marquee-item hover-sound" href="https://code.visualstudio.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/vs-code.png" alt="" aria-hidden="true" loading="lazy"><span>VS Code</span></a><a class="software-marquee-item hover-sound" href="https://visualstudio.microsoft.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/visual-studio.svg" alt="" aria-hidden="true" loading="lazy"><span>Visual Studio</span></a><a class="software-marquee-item hover-sound" href="https://github.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/github.svg" alt="" aria-hidden="true" loading="lazy"><span>GitHub</span></a><a class="software-marquee-item hover-sound" href="https://git-lfs.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/git-lfs.svg" alt="" aria-hidden="true" loading="lazy"><span>Git LFS</span></a><a class="software-marquee-item hover-sound" href="https://pages.github.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/github-pages.svg" alt="" aria-hidden="true" loading="lazy"><span>GitHub Pages</span></a><a class="software-marquee-item hover-sound" href="https://www.wix.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/wix.svg" alt="" aria-hidden="true" loading="lazy"><span>Wix</span></a><a class="software-marquee-item hover-sound" href="https://stripe.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/stripe.svg" alt="" aria-hidden="true" loading="lazy"><span>Stripe</span></a><a class="software-marquee-item hover-sound" href="https://obsidian.md/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/obsidian.svg" alt="" aria-hidden="true" loading="lazy"><span>Obsidian</span></a><a class="software-marquee-item hover-sound" href="https://openai.com/codex/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/openai.png" alt="" aria-hidden="true" loading="lazy"><span>Codex</span></a></div>
+                    <div class="software-marquee-group" aria-hidden="true"><a class="software-marquee-item hover-sound" href="https://www.unrealengine.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/unreal-engine.svg" alt="" aria-hidden="true" loading="lazy"><span>Unreal</span></a><a class="software-marquee-item hover-sound" href="https://developer.valvesoftware.com/wiki/Source_2" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/source-2.svg" alt="" aria-hidden="true" loading="lazy"><span>Source 2</span></a><a class="software-marquee-item hover-sound" href="https://enfusionengine.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/enfusion.svg" alt="" aria-hidden="true" loading="lazy"><span>Enfusion</span></a><a class="software-marquee-item hover-sound" href="https://docs.fivem.net/docs/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/rage.svg" alt="" aria-hidden="true" loading="lazy"><span>RAGE</span></a><a class="software-marquee-item hover-sound" href="https://www.blender.org/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/blender.svg" alt="" aria-hidden="true" loading="lazy"><span>Blender</span></a><a class="software-marquee-item hover-sound" href="https://www.adobe.com/products/substance3d.html" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/adobe-3d.svg" alt="" aria-hidden="true" loading="lazy"><span>Adobe 3D</span></a><a class="software-marquee-item hover-sound" href="https://affinity.serif.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/affinity-suite.png" alt="" aria-hidden="true" loading="lazy"><span>Affinity Suite</span></a><a class="software-marquee-item hover-sound" href="https://quadspinner.com/gaea/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/gaea.png" alt="" aria-hidden="true" loading="lazy"><span>Gaea 2.0</span></a><a class="software-marquee-item hover-sound" href="https://www.reallusion.com/character-creator/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/cc5.png" alt="" aria-hidden="true" loading="lazy"><span>CC5</span></a><a class="software-marquee-item hover-sound" href="https://www.reallusion.com/iclone/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/iclone-8.png" alt="" aria-hidden="true" loading="lazy"><span>iClone 8</span></a><a class="software-marquee-item hover-sound" href="https://www.marvelousdesigner.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/marvelous-designer.png" alt="" aria-hidden="true" loading="lazy"><span>Marvelous Designer</span></a><a class="software-marquee-item hover-sound" href="https://ephere.com/plugins/ornatrix/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/ornatrix.png" alt="" aria-hidden="true" loading="lazy"><span>Ornatrix</span></a><a class="software-marquee-item hover-sound" href="https://www.image-line.com/fl-studio/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/fl-studio.png" alt="" aria-hidden="true" loading="lazy"><span>FruityLoops</span></a><a class="software-marquee-item hover-sound" href="https://code.visualstudio.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/vs-code.png" alt="" aria-hidden="true" loading="lazy"><span>VS Code</span></a><a class="software-marquee-item hover-sound" href="https://visualstudio.microsoft.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/visual-studio.svg" alt="" aria-hidden="true" loading="lazy"><span>Visual Studio</span></a><a class="software-marquee-item hover-sound" href="https://github.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/github.svg" alt="" aria-hidden="true" loading="lazy"><span>GitHub</span></a><a class="software-marquee-item hover-sound" href="https://git-lfs.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/git-lfs.svg" alt="" aria-hidden="true" loading="lazy"><span>Git LFS</span></a><a class="software-marquee-item hover-sound" href="https://pages.github.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/github-pages.svg" alt="" aria-hidden="true" loading="lazy"><span>GitHub Pages</span></a><a class="software-marquee-item hover-sound" href="https://www.wix.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/wix.svg" alt="" aria-hidden="true" loading="lazy"><span>Wix</span></a><a class="software-marquee-item hover-sound" href="https://stripe.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/stripe.svg" alt="" aria-hidden="true" loading="lazy"><span>Stripe</span></a><a class="software-marquee-item hover-sound" href="https://obsidian.md/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/obsidian.svg" alt="" aria-hidden="true" loading="lazy"><span>Obsidian</span></a><a class="software-marquee-item hover-sound" href="https://openai.com/codex/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/openai.png" alt="" aria-hidden="true" loading="lazy"><span>Codex</span></a></div>
+                </div></div>
+            </section>
+            <div class="footer-grid">
+                <div class="footer-column"><span>Primary routes</span><a class="hover-sound" href="/">Home</a><a class="hover-sound" href="/pages/games.html">Games</a><a class="hover-sound" href="/pages/studio.html">Studio</a><a class="hover-sound" href="/pages/contact.html">Contact</a></div>
+                <div class="footer-column"><span>Public records</span><a class="hover-sound" href="/pages/DevLog/index.html">Devlog</a><a href="https://www.epicgames.com/site/en-US/privacypolicy" target="_blank" rel="noopener noreferrer">Epic Privacy Policy</a><a href="#">Nightshift Privacy Policy</a><a href="#">Applicant Privacy Policy</a></div>
+                <div class="footer-column"><span>External surfaces</span><a href="#">Press Kit</a><a href="#">Brand Assets</a><a href="#">Careers</a><a href="#">Community</a></div>
+            </div>
+            <div class="footer-bottom"><div class="social-row"><a class="action-pill hover-sound" href="https://www.youtube.com/@nstx" target="_blank" rel="noopener noreferrer">YouTube</a><a class="action-pill primary hover-sound" href="/pages/Studio/Donations.html">Support the studio</a></div><p class="footer-note">Copyright 2026 Nightshift. All rights reserved.</p></div>
+        </footer>
+    </main>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const audio = new Audio("../../../audio/bop.mp3");
+            audio.volume = 0.25;
+            const clock = document.getElementById("mockup-clock");
+            function updateClock() {
+                if (!clock) return;
+                clock.textContent = new Date().toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", second: "2-digit", timeZone: "America/Chicago", timeZoneName: "short" });
+            }
+            document.querySelectorAll(".hover-sound").forEach((element) => {
+                element.addEventListener("mouseenter", function() {
+                    audio.currentTime = 0;
+                    audio.play().catch(() => {});
+                });
+            });
+            updateClock();
+            window.setInterval(updateClock, 1000);
+        });
+    </script>
+</body>
+</html>

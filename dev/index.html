@@ -10,6 +10,190 @@
     <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="../images/icons/nightshift.ico">
     <link rel="stylesheet" href="../styles/home-modus-mockup.css?v=20260703-pixel-trials-audio">
+    <style>
+        .outpost-panel {
+            display: grid;
+            gap: 18px;
+        }
+
+        .outpost-header {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            gap: 18px;
+            align-items: end;
+        }
+
+        .outpost-header .panel-copy {
+            max-width: 76ch;
+            margin: 8px 0 0;
+        }
+
+        .outpost-status-grid {
+            display: grid;
+            grid-template-columns: repeat(6, minmax(82px, 1fr));
+            gap: 8px;
+        }
+
+        .outpost-status-grid > div {
+            padding: 10px 12px;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            background: rgba(2, 7, 12, 0.9);
+        }
+
+        .outpost-status-grid span,
+        .outpost-status-grid strong {
+            display: block;
+        }
+
+        .outpost-status-grid span {
+            color: var(--muted);
+            font-size: 0.64rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+        }
+
+        .outpost-status-grid strong {
+            margin-top: 5px;
+            color: #b8ffca;
+            font-family: var(--heading);
+            letter-spacing: 0.08em;
+        }
+
+        .outpost-cabinet {
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(120, 255, 154, 0.32);
+            border-radius: 18px;
+            background: #020706;
+            box-shadow: inset 0 0 34px rgba(0, 0, 0, 0.78), 0 0 28px rgba(69, 255, 122, 0.06);
+        }
+
+        .outpost-cabinet canvas {
+            display: block;
+            width: 100%;
+            height: auto;
+            min-height: 320px;
+            cursor: crosshair;
+            outline: none;
+            touch-action: none;
+        }
+
+        .outpost-overlay {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            font-family: var(--body);
+            text-transform: uppercase;
+        }
+
+        .outpost-tactical-readout,
+        .outpost-field-message {
+            position: absolute;
+            border: 1px solid rgba(153, 190, 151, 0.28);
+            background: rgba(5, 7, 7, 0.82);
+            color: #a7c7a8;
+            box-shadow: inset 0 0 18px rgba(0, 0, 0, 0.48);
+            letter-spacing: 0.09em;
+        }
+
+        .outpost-tactical-readout {
+            top: 14px;
+            left: 14px;
+            padding: 8px 12px;
+            font-size: 0.66rem;
+        }
+
+        .outpost-field-message {
+            left: 50%;
+            bottom: 18px;
+            width: min(620px, calc(100% - 32px));
+            padding: 10px 14px;
+            transform: translateX(-50%);
+            color: #b8ffca;
+            font: 600 0.82rem var(--heading);
+            text-align: center;
+        }
+
+        .outpost-field-message.is-danger {
+            border-color: rgba(178, 64, 53, 0.62);
+            color: #ff8b7b;
+        }
+
+        .outpost-cabinet canvas:focus-visible {
+            box-shadow: inset 0 0 0 2px rgba(184, 255, 202, 0.72);
+        }
+
+        .outpost-controls {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+            color: var(--muted);
+            font-size: 0.72rem;
+            line-height: 1.6;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .outpost-controls strong {
+            color: var(--text);
+        }
+
+        .outpost-touch-controls {
+            display: none;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 8px;
+        }
+
+        .outpost-touch-controls button {
+            min-height: 48px;
+            border: 1px solid var(--line-strong);
+            border-radius: 12px;
+            background: rgba(5, 13, 16, 0.94);
+            color: var(--text);
+            font: 600 0.72rem var(--heading);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .outpost-touch-controls button[data-key="w"],
+        .outpost-touch-controls button[data-action="fire"],
+        .outpost-touch-controls button[data-action="scavenge"],
+        .outpost-touch-controls button[data-action="reload"],
+        .outpost-touch-controls button[data-action="use"] {
+            grid-column: span 2;
+        }
+
+        .outpost-touch-controls button.is-held {
+            border-color: rgba(120, 255, 154, 0.72);
+            background: rgba(42, 108, 61, 0.54);
+        }
+
+        @media (max-width: 900px) {
+            .outpost-header {
+                grid-template-columns: 1fr;
+            }
+
+            .outpost-status-grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 760px) {
+            .outpost-status-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .outpost-touch-controls {
+                display: grid;
+            }
+
+            .outpost-cabinet canvas {
+                min-height: 0;
+            }
+        }
+    </style>
     <script defer src="/scripts/analytics.js" data-analytics-endpoint="/api/analytics"></script>
 </head>
 <body>
@@ -27,6 +211,45 @@
     </header>
 
     <main class="shell page-shell">
+        <section class="panel notes-panel outpost-panel" aria-labelledby="outpost-title">
+            <div class="outpost-header">
+                <div class="panel-heading">
+                    <p class="eyebrow">Playable field test / working title</p>
+                    <h2 id="outpost-title">Outpost Zero</h2>
+                    <p class="panel-copy">Move carefully through a collapsing military sector where noise carries, infected watch their approaches, and every solid structure can become cover or a private refuge. Scavenge, fortify, breach interiors, and survive without waking the whole grid.</p>
+                </div>
+                <div class="outpost-status-grid" aria-label="Outpost Zero field status">
+                    <div><span>Health</span><strong id="outpost-health">100</strong></div>
+                    <div><span>Rations</span><strong id="outpost-hunger">100</strong></div>
+                    <div><span>Magazine</span><strong id="outpost-ammo">18 / 36</strong></div>
+                    <div><span>Salvage</span><strong id="outpost-scrap">06</strong></div>
+                    <div><span>Wave</span><strong id="outpost-wave">01</strong></div>
+                    <div><span>Confirmed</span><strong id="outpost-kills">00</strong></div>
+                </div>
+            </div>
+            <div class="outpost-cabinet">
+                <canvas id="outpost-canvas" width="960" height="540" tabindex="0" aria-label="Outpost Zero three-dimensional isometric stealth survival game. Use WASD to move, mouse or Space to fire, F to use doors, E to scavenge, B to build, and R to reload. Infected vision cones show where they can detect you."></canvas>
+                <div class="outpost-overlay" aria-hidden="true">
+                    <div class="outpost-tactical-readout" id="outpost-tactical-readout">GRID 17C // INITIALIZING</div>
+                    <div class="outpost-field-message" id="outpost-field-message">CLICK FIELD TO DEPLOY</div>
+                </div>
+            </div>
+            <div class="outpost-controls">
+                <span><strong>WASD</strong> Move &nbsp; <strong>Shift</strong> Sprint/noise &nbsp; <strong>Mouse / Space</strong> Fire &nbsp; <strong>R</strong> Reload</span>
+                <span><strong>F</strong> Use door &nbsp; <strong>E</strong> Scavenge &nbsp; <strong>B</strong> Build barricade (3 salvage)</span>
+            </div>
+            <div class="outpost-touch-controls" aria-label="Outpost Zero touch controls">
+                <button type="button" data-key="w">Forward</button>
+                <button type="button" data-action="fire">Fire</button>
+                <button type="button" data-key="a">Left</button>
+                <button type="button" data-key="s">Back</button>
+                <button type="button" data-key="d">Right</button>
+                <button type="button" data-action="build">Build</button>
+                <button type="button" data-action="scavenge">Scavenge</button>
+                <button type="button" data-action="reload">Reload</button>
+                <button type="button" data-action="use">Use Door</button>
+            </div>
+        </section>
         <section class="panel notes-panel donation-feed-panel" aria-labelledby="donation-feed-title">
             <div class="donation-feed-header">
                 <div class="panel-heading">
@@ -141,6 +364,695 @@
             </div>
         </section>
     </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const canvas = document.getElementById("outpost-canvas");
+            if (!canvas) return;
+            const tacticalReadout = document.getElementById("outpost-tactical-readout");
+            const fieldMessage = document.getElementById("outpost-field-message");
+
+            if (!window.THREE) {
+                tacticalReadout.textContent = "GRID 17C // 3D LINK OFFLINE";
+                fieldMessage.textContent = "THREE.JS COULD NOT BE LOADED";
+                const fallback = canvas.getContext("2d");
+                fallback.fillStyle = "#080b0a";
+                fallback.fillRect(0, 0, canvas.width, canvas.height);
+                fallback.fillStyle = "#d6d0bd";
+                fallback.font = "600 18px Chakra Petch, sans-serif";
+                fallback.textAlign = "center";
+                fallback.fillText("OUTPOST ZERO // 3D LINK OFFLINE", canvas.width / 2, canvas.height / 2 - 10);
+                fallback.fillStyle = "#91a391";
+                fallback.font = "500 12px IBM Plex Mono, monospace";
+                fallback.fillText("THREE.JS COULD NOT BE LOADED", canvas.width / 2, canvas.height / 2 + 18);
+                return;
+            }
+            let renderer;
+            try {
+                renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: "high-performance" });
+            } catch (error) {
+                tacticalReadout.textContent = "GRID 17C // WEBGL OFFLINE";
+                fieldMessage.textContent = "WEBGL IS UNAVAILABLE ON THIS DEVICE";
+                const fallback = canvas.getContext("2d");
+                if (fallback) {
+                    fallback.fillStyle = "#080b0a";
+                    fallback.fillRect(0, 0, canvas.width, canvas.height);
+                    fallback.fillStyle = "#d6d0bd";
+                    fallback.font = "600 18px Chakra Petch, sans-serif";
+                    fallback.textAlign = "center";
+                    fallback.fillText("OUTPOST ZERO // WEBGL UNAVAILABLE", canvas.width / 2, canvas.height / 2);
+                }
+                return;
+            }
+            const scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x111413);
+            scene.fog = new THREE.FogExp2(0x141817, 0.028);
+            const camera = new THREE.OrthographicCamera(-18, 18, 10.125, -10.125, 0.1, 80);
+            camera.position.set(18, 24, 19);
+            camera.lookAt(0, 0, 0);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.6));
+            renderer.setSize(canvas.width, canvas.height, false);
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            renderer.outputColorSpace = THREE.SRGBColorSpace;
+            renderer.toneMapping = THREE.ACESFilmicToneMapping;
+            renderer.toneMappingExposure = 0.9;
+            const dynamicGroup = new THREE.Group();
+            scene.add(dynamicGroup);
+            const raycaster = new THREE.Raycaster();
+            const groundPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
+            const aimPoint = new THREE.Vector3();
+            const worldX = (value) => (value - 480) / 30;
+            const worldZ = (value) => (value - 270) / 30;
+            const mats = {
+                ground: new THREE.MeshStandardMaterial({ color: 0x242825, roughness: 0.98 }),
+                road: new THREE.MeshStandardMaterial({ color: 0x353735, roughness: 0.94 }),
+                concrete: new THREE.MeshStandardMaterial({ color: 0x555950, roughness: 0.92 }),
+                dark: new THREE.MeshStandardMaterial({ color: 0x151a18, roughness: 0.9 }),
+                olive: new THREE.MeshStandardMaterial({ color: 0x536051, roughness: 0.88 }),
+                infected: new THREE.MeshStandardMaterial({ color: 0x6a755f, roughness: 0.98 }),
+                bone: new THREE.MeshStandardMaterial({ color: 0xc8c0aa, roughness: 0.78 }),
+                rust: new THREE.MeshStandardMaterial({ color: 0x813d31, roughness: 0.88 }),
+                salvage: new THREE.MeshStandardMaterial({ color: 0x836b43, roughness: 0.88 }),
+                glow: new THREE.MeshStandardMaterial({ color: 0xa7d0a4, emissive: 0x315d39, emissiveIntensity: 1 }),
+                flash: new THREE.MeshBasicMaterial({ color: 0xffdc82 })
+            };
+            function meshBox(w, h, d, material) {
+                const mesh = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), material);
+                mesh.castShadow = true;
+                mesh.receiveShadow = true;
+                return mesh;
+            }
+            function place(mesh, x, y, z, parent = scene) {
+                mesh.position.set(x, y, z);
+                parent.add(mesh);
+                return mesh;
+            }
+            function buildCompound() {
+                const ground = new THREE.Mesh(new THREE.PlaneGeometry(42, 27), mats.ground);
+                ground.rotation.x = -Math.PI / 2;
+                ground.receiveShadow = true;
+                scene.add(ground);
+                place(meshBox(38, 0.04, 3.5, mats.road), 0, 0.02, 0);
+                place(meshBox(4, 0.05, 22, mats.road), 0, 0.03, 0);
+                for (let x = -17; x <= 17; x += 2) place(meshBox(0.9, 0.06, 0.06, mats.bone), x, 0.06, 0);
+                const buildings = [[-12.4,-6,5.8,2.8,3.6],[12,-6,6.6,3,3.7],[-12.2,5.8,6.2,2.7,4],[12.4,5.9,6,2.9,3.8]];
+                buildings.forEach((b, i) => {
+                    place(meshBox(b[2], b[3], b[4], i % 2 ? mats.concrete : mats.dark), b[0], b[3] / 2, b[1]);
+                    place(meshBox(b[2] * 0.92, 0.14, b[4] * 0.92, mats.dark), b[0], b[3] + 0.07, b[1]);
+                    place(meshBox(0.9, 1.5, 0.12, mats.rust), b[0] + 1, 0.75, b[1] + (b[1] < 0 ? b[4] / 2 + 0.07 : -b[4] / 2 - 0.07));
+                });
+                [[-7,-5.7,0x4e5b54],[7,5.8,0x743f31],[9.1,5.8,0x35413c],[-8.8,5.7,0x684a39]].forEach((c) => {
+                    const material = new THREE.MeshStandardMaterial({ color: c[2], roughness: 0.92 });
+                    place(meshBox(3.4, 1.45, 1.45, material), c[0], 0.73, c[1]);
+                });
+                [[-7,-3.5],[7,-3.5],[-7,3.5],[7,3.5]].forEach((p) => {
+                    const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.07,0.1,3.8,6), mats.dark);
+                    place(pole,p[0],1.9,p[1]);
+                    place(meshBox(0.6,0.18,0.3,mats.bone),p[0],3.75,p[1]);
+                    const light = new THREE.PointLight(0xffd8a0, 7, 10, 1.5);
+                    light.position.set(p[0],3.55,p[1]);
+                    scene.add(light);
+                });
+                scene.add(new THREE.HemisphereLight(0x748294,0x171913,1.5));
+                const moon = new THREE.DirectionalLight(0xaab7bf,2);
+                moon.position.set(-10,18,12);
+                moon.castShadow = true;
+                moon.shadow.mapSize.set(1024,1024);
+                moon.shadow.camera.left = -20; moon.shadow.camera.right = 20;
+                moon.shadow.camera.top = 14; moon.shadow.camera.bottom = -14;
+                scene.add(moon);
+            }
+            function makePerson(infected) {
+                const group = new THREE.Group();
+                const legs = new THREE.Mesh(new THREE.CylinderGeometry(0.2,0.27,0.55,6), mats.dark);
+                legs.position.y = 0.3; group.add(legs);
+                const torso = new THREE.Mesh(new THREE.CylinderGeometry(0.31,0.26,0.72,6), infected ? mats.infected : mats.olive);
+                torso.position.y = 0.9; group.add(torso);
+                const head = new THREE.Mesh(new THREE.DodecahedronGeometry(0.24,0), mats.bone);
+                head.position.y = 1.42; group.add(head);
+                if (!infected) {
+                    const gun = meshBox(0.12,0.13,1.05,mats.dark);
+                    gun.position.set(0.24,0.96,0.52); group.add(gun);
+                } else {
+                    const mark = meshBox(0.1,0.09,0.1,mats.rust);
+                    mark.position.set(0,1.43,0.23); group.add(mark);
+                }
+                return group;
+            }
+            buildCompound();
+            const pools = { caches: [], barricades: [], zombies: [], bullets: [], particles: [] };
+            const playerMesh = makePerson(false);
+            dynamicGroup.add(playerMesh);
+            function syncPool(pool, count, factory, updateItem) {
+                while (pool.length < count) {
+                    const item = factory();
+                    item.visible = false;
+                    dynamicGroup.add(item);
+                    pool.push(item);
+                }
+                pool.forEach((item, index) => {
+                    item.visible = index < count;
+                    if (item.visible) updateItem(item, index);
+                });
+            }
+            const readouts = {
+                health: document.getElementById("outpost-health"),
+                hunger: document.getElementById("outpost-hunger"),
+                ammo: document.getElementById("outpost-ammo"),
+                scrap: document.getElementById("outpost-scrap"),
+                wave: document.getElementById("outpost-wave"),
+                kills: document.getElementById("outpost-kills")
+            };
+            const keys = Object.create(null);
+            const mouse = { x: canvas.width * 0.64, y: canvas.height * 0.5 };
+            const state = {
+                active: false,
+                gameOver: false,
+                lastTime: performance.now(),
+                elapsed: 0,
+                wave: 1,
+                kills: 0,
+                nextWaveTimer: 0,
+                shotCooldown: 0,
+                message: "CLICK FIELD MAP TO DEPLOY",
+                messageTimer: 999,
+                player: { x: 480, y: 300, radius: 12, angle: 0, health: 100, hunger: 100, mag: 18, reserve: 36, scrap: 6 },
+                bullets: [],
+                zombies: [],
+                barricades: [],
+                caches: [],
+                particles: []
+            };
+
+            const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+            const distance = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
+
+            function setMessage(message, seconds = 1.8) {
+                state.message = message;
+                state.messageTimer = seconds;
+            }
+
+            function makeCache(x, y) {
+                return { x, y, radius: 15, ready: true, respawn: 0 };
+            }
+
+            function resetGame() {
+                Object.assign(state.player, { x: 480, y: 300, health: 100, hunger: 100, mag: 18, reserve: 36, scrap: 6 });
+                state.active = true;
+                state.gameOver = false;
+                state.elapsed = 0;
+                state.wave = 1;
+                state.kills = 0;
+                state.nextWaveTimer = 0;
+                state.shotCooldown = 0;
+                state.bullets = [];
+                state.zombies = [];
+                state.barricades = [];
+                state.particles = [];
+                state.caches = [makeCache(125, 118), makeCache(820, 105), makeCache(150, 430), makeCache(790, 420)];
+                spawnWave();
+                setMessage("SECTOR LIVE // HOLD THE LINE", 2.4);
+            }
+
+            function spawnZombie() {
+                const side = Math.floor(Math.random() * 4);
+                let x;
+                let y;
+                if (side === 0) { x = -24; y = 30 + Math.random() * 480; }
+                if (side === 1) { x = 984; y = 30 + Math.random() * 480; }
+                if (side === 2) { x = 30 + Math.random() * 900; y = -24; }
+                if (side === 3) { x = 30 + Math.random() * 900; y = 564; }
+                state.zombies.push({
+                    x,
+                    y,
+                    radius: 12,
+                    health: 42 + state.wave * 5,
+                    speed: 30 + Math.random() * 17 + state.wave * 1.5,
+                    attackTimer: Math.random() * 0.5,
+                    phase: Math.random() * Math.PI * 2
+                });
+            }
+
+            function spawnWave() {
+                const count = Math.min(4 + state.wave * 2, 24);
+                for (let i = 0; i < count; i += 1) spawnZombie();
+                setMessage(`WAVE ${String(state.wave).padStart(2, "0")} INBOUND`, 2.2);
+            }
+
+            function reload() {
+                const needed = 18 - state.player.mag;
+                const moved = Math.min(needed, state.player.reserve);
+                if (moved <= 0) {
+                    setMessage(state.player.mag === 18 ? "MAGAZINE FULL" : "NO RESERVE AMMO");
+                    return;
+                }
+                state.player.mag += moved;
+                state.player.reserve -= moved;
+                setMessage("MAGAZINE CHANGED", 0.9);
+            }
+
+            function shoot(aimX = mouse.x, aimY = mouse.y) {
+                if (!state.active || state.gameOver || state.shotCooldown > 0) return;
+                if (state.player.mag <= 0) {
+                    state.shotCooldown = 0.22;
+                    setMessage("MAGAZINE EMPTY // PRESS R", 0.8);
+                    return;
+                }
+                let angle = Math.atan2(aimY - state.player.y, aimX - state.player.x);
+                const moving = keys.w || keys.a || keys.s || keys.d;
+                angle += (Math.random() - 0.5) * (moving ? 0.09 : 0.035);
+                state.player.angle = angle;
+                state.player.mag -= 1;
+                state.shotCooldown = 0.14;
+                state.bullets.push({
+                    x: state.player.x + Math.cos(angle) * 19,
+                    y: state.player.y + Math.sin(angle) * 19,
+                    vx: Math.cos(angle) * 680,
+                    vy: Math.sin(angle) * 680,
+                    life: 0.8
+                });
+                for (let i = 0; i < 4; i += 1) {
+                    state.particles.push({ x: state.player.x + Math.cos(angle) * 20, y: state.player.y + Math.sin(angle) * 20, vx: (Math.random() - 0.5) * 45, vy: (Math.random() - 0.5) * 45, life: 0.18, color: "#f3df8a" });
+                }
+            }
+
+            function fireAtNearest() {
+                let target = null;
+                let nearest = Infinity;
+                state.zombies.forEach((zombie) => {
+                    const range = distance(state.player, zombie);
+                    if (range < nearest) { nearest = range; target = zombie; }
+                });
+                if (target) shoot(target.x, target.y);
+                else shoot(state.player.x + Math.cos(state.player.angle) * 100, state.player.y + Math.sin(state.player.angle) * 100);
+            }
+
+            function scavenge() {
+                const cache = state.caches.find((item) => item.ready && distance(state.player, item) < 56);
+                if (!cache) {
+                    setMessage("NO SUPPLY CACHE IN RANGE", 1.1);
+                    return;
+                }
+                cache.ready = false;
+                cache.respawn = 24;
+                state.player.reserve = Math.min(90, state.player.reserve + 14);
+                state.player.scrap += 2 + Math.floor(Math.random() * 2);
+                state.player.hunger = Math.min(100, state.player.hunger + 24);
+                setMessage("SUPPLIES SECURED // +AMMO +RATION +SALVAGE", 2);
+            }
+
+            function buildBarricade() {
+                if (state.player.scrap < 3) {
+                    setMessage("INSUFFICIENT SALVAGE // NEED 3", 1.2);
+                    return;
+                }
+                if (state.barricades.length >= 8) {
+                    setMessage("FORTIFICATION LIMIT REACHED", 1.2);
+                    return;
+                }
+                const angle = state.player.angle;
+                const barricade = {
+                    x: clamp(state.player.x + Math.cos(angle) * 54, 34, 926),
+                    y: clamp(state.player.y + Math.sin(angle) * 54, 34, 506),
+                    angle: angle + Math.PI * 0.5,
+                    radius: 23,
+                    health: 100
+                };
+                if (state.barricades.some((item) => distance(item, barricade) < 44)) {
+                    setMessage("PLACEMENT BLOCKED", 1);
+                    return;
+                }
+                state.player.scrap -= 3;
+                state.barricades.push(barricade);
+                setMessage("BARRICADE DEPLOYED", 1.1);
+            }
+
+            function update(dt) {
+                state.messageTimer -= dt;
+                state.shotCooldown = Math.max(0, state.shotCooldown - dt);
+                if (!state.active || state.gameOver) return;
+                if (keys.fire) fireAtNearest();
+                state.elapsed += dt;
+
+                let dx = (keys.d ? 1 : 0) - (keys.a ? 1 : 0);
+                let dy = (keys.s ? 1 : 0) - (keys.w ? 1 : 0);
+                const length = Math.hypot(dx, dy) || 1;
+                const speed = keys.shift ? 175 : 132;
+                state.player.x = clamp(state.player.x + (dx / length) * speed * dt, 18, 942);
+                state.player.y = clamp(state.player.y + (dy / length) * speed * dt, 18, 522);
+                state.player.angle = Math.atan2(mouse.y - state.player.y, mouse.x - state.player.x);
+                state.player.hunger = Math.max(0, state.player.hunger - dt * 0.34);
+                if (state.player.hunger <= 0) state.player.health -= dt * 5;
+
+                state.bullets.forEach((bullet) => {
+                    bullet.x += bullet.vx * dt;
+                    bullet.y += bullet.vy * dt;
+                    bullet.life -= dt;
+                    state.zombies.forEach((zombie) => {
+                        if (bullet.life > 0 && distance(bullet, zombie) < zombie.radius + 4) {
+                            bullet.life = 0;
+                            zombie.health -= 34;
+                            state.particles.push({ x: bullet.x, y: bullet.y, vx: 0, vy: 0, life: 0.28, color: "#8fe09e" });
+                        }
+                    });
+                });
+                state.bullets = state.bullets.filter((bullet) => bullet.life > 0 && bullet.x > -20 && bullet.x < 980 && bullet.y > -20 && bullet.y < 560);
+
+                state.zombies.forEach((zombie) => {
+                    zombie.attackTimer -= dt;
+                    let target = state.player;
+                    let targetType = "player";
+                    let nearest = distance(zombie, state.player);
+                    state.barricades.forEach((barricade) => {
+                        const range = distance(zombie, barricade);
+                        if (range < nearest && range < 105) { target = barricade; targetType = "barricade"; nearest = range; }
+                    });
+                    const angle = Math.atan2(target.y - zombie.y, target.x - zombie.x);
+                    const contact = targetType === "player" ? zombie.radius + state.player.radius + 2 : zombie.radius + target.radius;
+                    if (nearest > contact) {
+                        zombie.x += Math.cos(angle) * zombie.speed * dt;
+                        zombie.y += Math.sin(angle) * zombie.speed * dt;
+                    } else if (zombie.attackTimer <= 0) {
+                        zombie.attackTimer = 0.55;
+                        if (targetType === "player") state.player.health -= 7;
+                        else target.health -= 16;
+                    }
+                });
+
+                const dead = state.zombies.filter((zombie) => zombie.health <= 0);
+                if (dead.length) {
+                    dead.forEach((zombie) => {
+                        state.kills += 1;
+                        if (Math.random() < 0.22) state.player.scrap += 1;
+                        for (let i = 0; i < 5; i += 1) state.particles.push({ x: zombie.x, y: zombie.y, vx: (Math.random() - 0.5) * 36, vy: (Math.random() - 0.5) * 36, life: 0.7, color: "#447d4f" });
+                    });
+                }
+                state.zombies = state.zombies.filter((zombie) => zombie.health > 0);
+                state.barricades = state.barricades.filter((barricade) => barricade.health > 0);
+
+                state.caches.forEach((cache) => {
+                    if (!cache.ready) {
+                        cache.respawn -= dt;
+                        if (cache.respawn <= 0) cache.ready = true;
+                    }
+                });
+                state.particles.forEach((particle) => {
+                    particle.x += particle.vx * dt;
+                    particle.y += particle.vy * dt;
+                    particle.life -= dt;
+                });
+                state.particles = state.particles.filter((particle) => particle.life > 0);
+
+                if (state.zombies.length === 0) {
+                    state.nextWaveTimer += dt;
+                    if (state.nextWaveTimer > 4) {
+                        state.nextWaveTimer = 0;
+                        state.wave += 1;
+                        spawnWave();
+                    } else if (state.nextWaveTimer < dt * 2) {
+                        setMessage("SECTOR CLEAR // REARM AND FORTIFY", 3.2);
+                    }
+                }
+
+                if (state.player.health <= 0) {
+                    state.player.health = 0;
+                    state.gameOver = true;
+                    state.active = false;
+                    setMessage("OPERATOR LOST", 999);
+                }
+            }
+
+            function drawGrid() {
+                ctx.fillStyle = "#06100c";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.strokeStyle = "rgba(114, 181, 126, 0.08)";
+                ctx.lineWidth = 1;
+                for (let x = 0; x <= canvas.width; x += 32) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke(); }
+                for (let y = 0; y <= canvas.height; y += 32) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke(); }
+
+                ctx.fillStyle = "rgba(86, 99, 88, 0.11)";
+                ctx.fillRect(0, 236, canvas.width, 74);
+                ctx.fillRect(430, 0, 96, canvas.height);
+                ctx.strokeStyle = "rgba(180, 190, 163, 0.16)";
+                ctx.setLineDash([18, 18]);
+                ctx.beginPath(); ctx.moveTo(0, 273); ctx.lineTo(canvas.width, 273); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(478, 0); ctx.lineTo(478, canvas.height); ctx.stroke();
+                ctx.setLineDash([]);
+
+                const buildings = [[42, 42, 166, 104], [718, 40, 196, 112], [42, 370, 182, 126], [736, 372, 178, 122]];
+                buildings.forEach(([x, y, width, height]) => {
+                    ctx.fillStyle = "rgba(18, 28, 23, 0.88)";
+                    ctx.fillRect(x, y, width, height);
+                    ctx.strokeStyle = "rgba(127, 169, 135, 0.22)";
+                    ctx.strokeRect(x + 0.5, y + 0.5, width - 1, height - 1);
+                    ctx.fillStyle = "rgba(105, 128, 108, 0.14)";
+                    ctx.fillRect(x + 12, y + 12, width - 24, 12);
+                });
+            }
+
+            function draw() {
+                drawGrid();
+
+                state.caches.forEach((cache) => {
+                    ctx.save();
+                    ctx.translate(cache.x, cache.y);
+                    ctx.globalAlpha = cache.ready ? 1 : 0.24;
+                    ctx.fillStyle = "#314934";
+                    ctx.fillRect(-14, -11, 28, 22);
+                    ctx.strokeStyle = "#9bd889";
+                    ctx.strokeRect(-14.5, -11.5, 29, 23);
+                    ctx.fillStyle = "#9bd889";
+                    ctx.fillRect(-2, -7, 4, 14);
+                    ctx.fillRect(-7, -2, 14, 4);
+                    if (cache.ready && distance(state.player, cache) < 56) {
+                        ctx.fillStyle = "#d8ffe0";
+                        ctx.font = "600 11px IBM Plex Mono";
+                        ctx.textAlign = "center";
+                        ctx.fillText("[E] SCAVENGE", 0, -21);
+                    }
+                    ctx.restore();
+                });
+
+                state.barricades.forEach((barricade) => {
+                    ctx.save();
+                    ctx.translate(barricade.x, barricade.y);
+                    ctx.rotate(barricade.angle);
+                    ctx.fillStyle = "#5b4d32";
+                    ctx.fillRect(-25, -8, 50, 16);
+                    ctx.strokeStyle = "#c9a661";
+                    ctx.strokeRect(-25, -8, 50, 16);
+                    ctx.fillStyle = "rgba(185, 255, 198, 0.7)";
+                    ctx.fillRect(-24, 12, 48 * clamp(barricade.health / 100, 0, 1), 3);
+                    ctx.restore();
+                });
+
+                state.bullets.forEach((bullet) => {
+                    ctx.fillStyle = "#fff3a3";
+                    ctx.beginPath(); ctx.arc(bullet.x, bullet.y, 2.4, 0, Math.PI * 2); ctx.fill();
+                });
+
+                state.zombies.forEach((zombie) => {
+                    ctx.save();
+                    ctx.translate(zombie.x, zombie.y);
+                    ctx.rotate(Math.atan2(state.player.y - zombie.y, state.player.x - zombie.x));
+                    ctx.fillStyle = "#4f8056";
+                    ctx.beginPath(); ctx.arc(0, 0, zombie.radius, 0, Math.PI * 2); ctx.fill();
+                    ctx.fillStyle = "#9ac085";
+                    ctx.fillRect(5, -8, 9, 4);
+                    ctx.fillRect(5, 4, 9, 4);
+                    ctx.fillStyle = "rgba(205, 72, 61, 0.82)";
+                    ctx.fillRect(-12, -19, 24 * clamp(zombie.health / (42 + state.wave * 5), 0, 1), 3);
+                    ctx.restore();
+                });
+
+                state.particles.forEach((particle) => {
+                    ctx.globalAlpha = clamp(particle.life * 3, 0, 1);
+                    ctx.fillStyle = particle.color;
+                    ctx.fillRect(particle.x - 2, particle.y - 2, 4, 4);
+                });
+                ctx.globalAlpha = 1;
+
+                ctx.save();
+                ctx.translate(state.player.x, state.player.y);
+                ctx.rotate(state.player.angle);
+                ctx.fillStyle = "#b8ffca";
+                ctx.beginPath(); ctx.arc(0, 0, state.player.radius, 0, Math.PI * 2); ctx.fill();
+                ctx.fillStyle = "#15281c";
+                ctx.beginPath(); ctx.arc(-3, 0, 5, 0, Math.PI * 2); ctx.fill();
+                ctx.strokeStyle = "#d9e5c5";
+                ctx.lineWidth = 4;
+                ctx.beginPath(); ctx.moveTo(5, 0); ctx.lineTo(24, 0); ctx.stroke();
+                ctx.restore();
+
+                ctx.strokeStyle = "rgba(184, 255, 202, 0.72)";
+                ctx.lineWidth = 1;
+                ctx.beginPath(); ctx.arc(mouse.x, mouse.y, 10, 0, Math.PI * 2); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(mouse.x - 15, mouse.y); ctx.lineTo(mouse.x - 5, mouse.y); ctx.moveTo(mouse.x + 5, mouse.y); ctx.lineTo(mouse.x + 15, mouse.y); ctx.moveTo(mouse.x, mouse.y - 15); ctx.lineTo(mouse.x, mouse.y - 5); ctx.moveTo(mouse.x, mouse.y + 5); ctx.lineTo(mouse.x, mouse.y + 15); ctx.stroke();
+
+                ctx.fillStyle = "rgba(1, 5, 4, 0.78)";
+                ctx.fillRect(14, 14, 276, 34);
+                ctx.strokeStyle = "rgba(120, 255, 154, 0.28)";
+                ctx.strokeRect(14.5, 14.5, 275, 33);
+                ctx.fillStyle = "#a9cdb1";
+                ctx.font = "600 12px IBM Plex Mono";
+                ctx.textAlign = "left";
+                ctx.fillText(`GRID 17C // CONTACTS ${String(state.zombies.length).padStart(2, "0")} // BARRICADES ${state.barricades.length}/8`, 26, 35);
+
+                if (!state.active || state.messageTimer > 0) {
+                    const text = state.gameOver ? "OPERATOR LOST // CLICK OR ENTER TO REDEPLOY" : state.message;
+                    ctx.font = "600 15px Chakra Petch";
+                    const width = Math.min(620, ctx.measureText(text).width + 44);
+                    ctx.fillStyle = "rgba(1, 5, 4, 0.9)";
+                    ctx.fillRect((canvas.width - width) / 2, canvas.height - 58, width, 36);
+                    ctx.strokeStyle = "rgba(120, 255, 154, 0.4)";
+                    ctx.strokeRect((canvas.width - width) / 2 + 0.5, canvas.height - 57.5, width - 1, 35);
+                    ctx.fillStyle = state.gameOver ? "#ff8b7b" : "#b8ffca";
+                    ctx.textAlign = "center";
+                    ctx.fillText(text, canvas.width / 2, canvas.height - 35);
+                }
+            }
+
+            function draw3d() {
+                syncPool(pools.caches, state.caches.length, () => {
+                    const group = new THREE.Group();
+                    const crate = meshBox(0.92,0.48,0.7,mats.dark);
+                    crate.position.y = 0.25; group.add(crate);
+                    const stripe = meshBox(0.95,0.1,0.72,mats.glow);
+                    stripe.position.y = 0.5; group.add(stripe);
+                    return group;
+                }, (group, index) => {
+                    const cache = state.caches[index];
+                    group.position.set(worldX(cache.x),0,worldZ(cache.y));
+                    group.scale.y = cache.ready ? 1 : 0.35;
+                });
+                syncPool(pools.barricades, state.barricades.length, () => {
+                    const group = new THREE.Group();
+                    [-0.2,0.2].forEach((z) => {
+                        const beam = meshBox(1.65,0.25,0.22,mats.salvage);
+                        beam.position.set(0,0.5 + z * 0.5,z); group.add(beam);
+                    });
+                    return group;
+                }, (group, index) => {
+                    const barricade = state.barricades[index];
+                    group.position.set(worldX(barricade.x),0,worldZ(barricade.y));
+                    group.rotation.y = -barricade.angle;
+                    group.scale.y = 0.6 + 0.4 * clamp(barricade.health / 100,0,1);
+                });
+                syncPool(pools.zombies, state.zombies.length, () => makePerson(true), (group, index) => {
+                    const zombie = state.zombies[index];
+                    const angle = Math.atan2(state.player.y - zombie.y,state.player.x - zombie.x);
+                    group.position.set(worldX(zombie.x),0,worldZ(zombie.y));
+                    group.rotation.y = Math.PI * 0.5 - angle;
+                });
+                syncPool(pools.bullets, state.bullets.length, () => new THREE.Mesh(new THREE.SphereGeometry(0.075,5,4),mats.flash), (bulletMesh, index) => {
+                    const bullet = state.bullets[index];
+                    bulletMesh.position.set(worldX(bullet.x),0.75,worldZ(bullet.y));
+                });
+                syncPool(pools.particles, state.particles.length, () => new THREE.Mesh(new THREE.TetrahedronGeometry(0.1,0),mats.rust), (particleMesh, index) => {
+                    const particle = state.particles[index];
+                    particleMesh.material = particle.color === "#f3df8a" ? mats.flash : mats.rust;
+                    particleMesh.position.set(worldX(particle.x),0.55 + particle.life * 0.3,worldZ(particle.y));
+                });
+                playerMesh.position.set(worldX(state.player.x),0,worldZ(state.player.y));
+                playerMesh.rotation.y = Math.PI * 0.5 - state.player.angle;
+                renderer.render(scene,camera);
+                tacticalReadout.textContent = "GRID 17C // CONTACTS " + String(state.zombies.length).padStart(2,"0") + " // BARRICADES " + state.barricades.length + "/8";
+                const showMessage = !state.active || state.messageTimer > 0;
+                fieldMessage.hidden = !showMessage;
+                fieldMessage.textContent = state.gameOver ? "OPERATOR LOST // CLICK OR ENTER TO REDEPLOY" : state.message;
+                fieldMessage.classList.toggle("is-danger",state.gameOver);
+            }
+
+            function updateReadouts() {
+                readouts.health.textContent = String(Math.ceil(state.player.health)).padStart(3, "0");
+                readouts.hunger.textContent = String(Math.ceil(state.player.hunger)).padStart(3, "0");
+                readouts.ammo.textContent = `${String(state.player.mag).padStart(2, "0")} / ${String(state.player.reserve).padStart(2, "0")}`;
+                readouts.scrap.textContent = String(state.player.scrap).padStart(2, "0");
+                readouts.wave.textContent = String(state.wave).padStart(2, "0");
+                readouts.kills.textContent = String(state.kills).padStart(2, "0");
+                readouts.health.style.color = state.player.health < 35 ? "#ff8b7b" : "#b8ffca";
+                readouts.hunger.style.color = state.player.hunger < 25 ? "#f2c36f" : "#b8ffca";
+            }
+
+            function frame(now) {
+                const dt = Math.min(0.033, (now - state.lastTime) / 1000);
+                state.lastTime = now;
+                update(dt);
+                draw3d();
+                updateReadouts();
+                window.requestAnimationFrame(frame);
+            }
+
+            function pointerPosition(event) {
+                const rect = canvas.getBoundingClientRect();
+                const ndc = new THREE.Vector2(
+                    ((event.clientX - rect.left) / rect.width) * 2 - 1,
+                    -((event.clientY - rect.top) / rect.height) * 2 + 1
+                );
+                raycaster.setFromCamera(ndc,camera);
+                if (raycaster.ray.intersectPlane(groundPlane,aimPoint)) {
+                    mouse.x = aimPoint.x * 30 + 480;
+                    mouse.y = aimPoint.z * 30 + 270;
+                }
+            }
+
+            canvas.addEventListener("pointermove", pointerPosition);
+            canvas.addEventListener("pointerdown", (event) => {
+                pointerPosition(event);
+                canvas.focus();
+                if (!state.active) resetGame();
+                else shoot();
+            });
+
+            window.addEventListener("keydown", (event) => {
+                const key = event.code === "Space" ? "space" : event.key.toLowerCase();
+                if (document.activeElement !== canvas) return;
+                if (["w", "a", "s", "d", "shift", "space", "e", "b", "r", "enter"].includes(key)) event.preventDefault();
+                keys[key] = true;
+                if (key === "space") keys.fire = true;
+                if (event.repeat) return;
+                if (key === "e") scavenge();
+                if (key === "b") buildBarricade();
+                if (key === "r") reload();
+                if (key === "enter" && !state.active) resetGame();
+            });
+
+            window.addEventListener("keyup", (event) => {
+                const key = event.code === "Space" ? "space" : event.key.toLowerCase();
+                keys[key] = false;
+                if (key === "space") keys.fire = false;
+            });
+
+            document.querySelectorAll(".outpost-touch-controls button").forEach((button) => {
+                const key = button.dataset.key;
+                const release = () => {
+                    if (key) keys[key] = false;
+                    if (button.dataset.action === "fire") keys.fire = false;
+                    button.classList.remove("is-held");
+                };
+                button.addEventListener("pointerdown", (event) => {
+                    event.preventDefault();
+                    if (!state.active) resetGame();
+                    button.classList.add("is-held");
+                    if (key) keys[key] = true;
+                    if (button.dataset.action === "fire") { keys.fire = true; fireAtNearest(); }
+                    if (button.dataset.action === "build") buildBarricade();
+                    if (button.dataset.action === "scavenge") scavenge();
+                    if (button.dataset.action === "reload") reload();
+                });
+                button.addEventListener("pointerup", release);
+                button.addEventListener("pointercancel", release);
+                button.addEventListener("pointerleave", release);
+            });
+
+            state.caches = [makeCache(125, 118), makeCache(820, 105), makeCache(150, 430), makeCache(790, 420)];
+            draw3d();
+            updateReadouts();
+            window.requestAnimationFrame(frame);
+        });
+    </script>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {

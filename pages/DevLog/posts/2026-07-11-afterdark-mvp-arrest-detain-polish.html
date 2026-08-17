@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nightshift | AfterDark MVP polish pass</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="../../../images/icons/nightshift.ico">
+    <link rel="stylesheet" href="../../../styles/home-modus-mockup.css?v=20260711-devlog-highlight">
+    <script defer src="/scripts/analytics.js" data-analytics-endpoint="/api/analytics"></script>
+</head>
+<body>
+    <div class="screen-fx" aria-hidden="true"></div>
+    <header class="topbar">
+        <a class="brand hover-sound" href="../../home.html" aria-label="Nightshift home">
+            <img src="../../../images/index/nightshift-transparent.png" alt="Nightshift logo">
+        </a>
+        <nav class="utility-nav" aria-label="Primary">
+            <a href="../../home.html" class="hover-sound">Home</a>
+            <a href="../../games.html" class="hover-sound">Games</a>
+            <a href="../../studio.html" class="hover-sound">Studio</a>
+            <a href="../../DevLog/index.html" class="hover-sound active">Devlog</a>
+            <a href="../../contact.html" class="hover-sound">Contact</a>
+        </nav>
+        <div class="topbar-readout"><span>Devlog Entry</span><strong id="mockup-clock">00:00:00 CST</strong></div>
+    </header>
+    <main class="shell page-shell">
+
+        <section class="page-hero-grid">
+            <article class="page-hero-panel">
+                <p class="eyebrow">Devlog / entry</p>
+                <h1 class="page-title">AfterDark MVP polish pass</h1>
+                <p class="page-lede">A dense MVP polish pass covering arrests, a new downed state, SWAT orders, stun recovery, taser VFX, the police CV, capped-job queues, interaction cleanup, performance tooling, and train-platform art.</p>
+                <div class="hero-actions"><a class="cta-btn hover-sound" href="../index.html">Back To Devlog</a></div>
+                <div class="tag-row"><span class="tag">AfterDarkRP</span><span class="tag">MVP</span><span class="tag">Police</span><span class="tag">Arrest Loop</span><span class="tag">Taser</span><span class="tag">VFX</span><span class="tag">Optimization</span></div>
+                <div class="media-frame devlog-hero"><img src="../../../images/afterdarkrp/Devlogs/7-7-26/taze-particles.png" alt="AfterDark MVP polish pass"></div>
+            </article>
+            <aside class="page-hero-panel">
+                <p class="eyebrow">Entry metadata</p>
+                <div class="stack-list">
+                    <div><span>Project</span><strong><a class="inline-link hover-sound" href="/afterdark/">AfterDarkRP</a></strong></div>
+                    <div><span>Date</span><strong>JUL 11, 2026</strong></div>
+                    <div><span>Signed by</span><strong>Nightshift</strong></div>
+                    <div><span>Authored by</span><strong>Codex</strong></div>
+                    <div><span>Views</span><strong>
+                    <span class="devlog-view-count" data-view-count-path="/pages/DevLog/posts/2026-07-11-afterdark-mvp-arrest-detain-polish.html" data-view-count-state="loading" aria-label="Views loading">
+                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                            <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"></path>
+                            <circle cx="12" cy="12" r="2.5"></circle>
+                        </svg>
+                        <b data-view-count-value>--</b><em>views</em>
+                    </span></strong></div>
+                    <div><span>Route</span><strong>Public archive</strong></div>
+                </div>
+            </aside>
+        </section>
+        
+        <section class="panel feature-panel">
+            <div class="panel-heading"><p class="eyebrow">Field Notes</p><h2>Entry body</h2></div>
+            <div class="devlog-post-body"><section class="devlog-highlight devlog-highlight-blue"><h2>Recent changes</h2>
+<ul>
+<li>Detain escort timers, retry, custody handoff, and auto-release</li>
+<li>Uniformed NPC police escorts with schedule-driven movement</li>
+<li>WANTED, DETAINED, and ARRESTED overhead and HUD feedback</li>
+<li>Ragdoll cleanup around stuns, falls, and recovery</li>
+<li>New downed, bleedout, and self-recovery state</li>
+<li>Stun and downed third-person camera tracking</li>
+<li>SMG taser variant balance pass</li>
+<li>Slightly slower tase recovery time</li>
+<li>Further electrical taser VFX polish</li>
+<li>NPC taser impact, tracer, and muzzle-flash arcs</li>
+<li>Custom Terry-fit taser shock skeleton and rig</li>
+<li>Bone-force ragdoll jitter for stunned movement</li>
+<li>SWAT dispersal orders with Failure to Disperse escalation</li>
+<li>General MVP bug fixes and optimization</li>
+<li>New police CV vehicle prefab and imported vehicle parts</li>
+<li>Host-owned queues and timed offers for capped jobs</li>
+<li>Unified world-use targeting for police, doors, NPCs, and vehicles</li>
+<li>Street weed-buyer sale safeguards</li>
+<li>New performance diagnostics and MCP tooling</li>
+<li>AfterDark splash/logo and tactical vest material refresh</li>
+<li>Train-track spline and support cleanup</li>
+<li>Quick engine paint sample for the train platform</li>
+</ul>
+</section>
+
+<h2>Arrest and taser polish</h2>
+<p>The arrest loop is easier to read and more reliable when several systems overlap. Detained players now move through clearer escort-call, retry, custody, and failure-release timing. NPC police escorts received police clothing and schedule-driven movement, while HUD and overhead labels distinguish WANTED, DETAINED, and ARRESTED states.</p>
+<p>A new downed state can turn lethal damage into a temporary ragdoll with bleedout or self-recovery instead of immediately jumping to respawn. Stun and downed cameras now track the body presentation, and NPC police can follow the moving stun body instead of aiming at the old pawn position. Release flow and edge cases still need real playtesting.</p>
+<p>The SMG taser is moving toward a pressure tool instead of a one-button arrest. Recovery was slowed slightly and probably still needs another balance pass. NPC taser fire also received separate impact, tracer, and muzzle-flash arc effects.</p>
+<p>The shock skeleton became a full feature pass of its own. I custom-deformed it to fit the Terry character, rigged it, wired the trigger, and layered several pieces together to get a more cartoon-like visual. Force is applied directly to the ragdoll bones to create the jittering stunned movement instead of leaving the body completely static.</p>
+<p>Sound effects are still needed. The plan is to support separate male and female reaction audio selected through character customization. The screenshot below shows an earlier electrical VFX test; the current effect has already received a more polished pass.</p>
+<div class="devlog-gallery">
+<figure>
+<img src="../../../images/afterdarkrp/Devlogs/7-7-26/taze-particles.png" alt="Earlier SMG taser electrical VFX test across the development scene">
+<figcaption>This image shows an earlier electrical VFX test. The current effect has since received a more polished pass, but this still documents the direction of the visual feedback work.</figcaption>
+</figure>
+</div>
+
+<h2>City systems and tooling</h2>
+<p>The MVP work also moved beyond the arrest loop. A new police CV vehicle was imported with a driveable prefab and separated body/wheel parts.</p>
+<p>Capped jobs now have host-owned FIFO queues with timed offers when a slot opens. SWAT can issue a dispersal order with a grace period before Failure to Disperse adds a charge, wanted level, and heat. A unified world-use pass now arbitrates police, door, NPC, hold-use, vehicle, and normal interactable targets so one use press is less likely to leak into the wrong system.</p>
+<p>Street weed buyers gained extra seller and buyer-state safeguards, and the broader presentation pass added an AfterDark splash/logo plus another material update for the Type 18 tactical vest. New performance diagnostics and MCP tools expose frame timing, render counts, GPU scopes, allocations, garbage collection, and memory data for the next optimization passes.</p>
+<h2>Train-platform art pass</h2>
+<p>The train-track spline received another cleanup pass so repeated infrastructure is easier to author without duplicated supports or unnecessary manual correction.</p>
+<p>I also pushed a quick paint sample far enough to judge how the platform might feel in-engine. It is not where I want it yet, especially the wood planks, and some side heights are wrong. Trim sheets are probably the better long-term solution, but paint gets the asset testable quickly. I am letting the smaller issues go for now and moving on.</p>
+<div class="devlog-gallery">
+<figure>
+<img src="../../../images/afterdarkrp/Devlogs/7-7-26/train-track-polish.png" alt="Train-track spline tool showing a long elevated track section and supports">
+<figcaption>The closer view shows the repeated track structure and support cleanup inside the Blender authoring pass.</figcaption>
+</figure>
+<figure>
+<img src="../../../images/afterdarkrp/Devlogs/7-7-26/train-track-polish2.png" alt="Wider train-track spline tool view with multiple elevated sections">
+<figcaption>The wider view shows how the spline pass scales across repeated elevated sections instead of only fixing one local piece.</figcaption>
+</figure>
+<figure>
+<img src="../../../images/afterdarkrp/Devlogs/7-7-26/train-platform-paint-sample-under.png" alt="Painted train platform sample viewed from below">
+<figcaption>A quick engine-facing paint sample to judge the underside structure and overall material read before another dedicated polish pass.</figcaption>
+</figure>
+<figure>
+<img src="../../../images/afterdarkrp/Devlogs/7-7-26/train-platform-paint-sample-top.png" alt="Painted train platform sample viewed from above">
+<figcaption>The top view shows the current track, metal, and wood-plank relationship. The wood and side-height cleanup are still deferred while the broader read is evaluated.</figcaption>
+</figure>
+</div>
+
+<h2>Short-term direction</h2>
+<ul>
+<li>Continue arrest, escort, custody, and release playtesting</li>
+<li>Tune tase recovery again</li>
+<li>Push ragdoll edge-case cleanup</li>
+<li>Validate taser VFX at different distances and lighting levels</li>
+<li>Add customization-driven male and female taser reaction audio</li>
+<li>Keep profiling the growing city simulation</li>
+</ul>
+<h2>A short return to Exile</h2>
+<p>For the next few days, development is switching back to Exile while the current AfterDark branch gets cleaned up.</p>
+<p>The latest AfterDark work exposed some project-side stability problems, so pushing harder on new features is not the best use of time until that branch is easier to test again.</p>
+<p>Exile gives us a productive place to keep moving for a few days while the AfterDark cleanup work catches up. Once that is stable, the next pass will be more footage, more runtime validation, and another look at the arrest and taser tuning in context.</p>
+
+            <div class="devlog-signoff">
+                <p>Signed, <strong>Nightshift</strong></p>
+            </div></div>
+        </section>
+
+        <footer class="site-footer panel">
+
+            <section class="software-marquee-section" aria-label="Software used by Nightshift">
+                <div class="software-marquee"><div class="software-marquee-track">
+                    <div class="software-marquee-group"><a class="software-marquee-item hover-sound" href="https://www.unrealengine.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/unreal-engine.svg" alt="" aria-hidden="true" loading="lazy"><span>Unreal</span></a><a class="software-marquee-item hover-sound" href="https://developer.valvesoftware.com/wiki/Source_2" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/source-2.svg" alt="" aria-hidden="true" loading="lazy"><span>Source 2</span></a><a class="software-marquee-item hover-sound" href="https://enfusionengine.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/enfusion.svg" alt="" aria-hidden="true" loading="lazy"><span>Enfusion</span></a><a class="software-marquee-item hover-sound" href="https://docs.fivem.net/docs/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/rage.svg" alt="" aria-hidden="true" loading="lazy"><span>RAGE</span></a><a class="software-marquee-item hover-sound" href="https://www.blender.org/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/blender.svg" alt="" aria-hidden="true" loading="lazy"><span>Blender</span></a><a class="software-marquee-item hover-sound" href="https://www.adobe.com/products/substance3d.html" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/adobe-3d.svg" alt="" aria-hidden="true" loading="lazy"><span>Adobe 3D</span></a><a class="software-marquee-item hover-sound" href="https://affinity.serif.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/affinity-suite.png" alt="" aria-hidden="true" loading="lazy"><span>Affinity Suite</span></a><a class="software-marquee-item hover-sound" href="https://quadspinner.com/gaea/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/gaea.png" alt="" aria-hidden="true" loading="lazy"><span>Gaea 2.0</span></a><a class="software-marquee-item hover-sound" href="https://www.reallusion.com/character-creator/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/cc5.png" alt="" aria-hidden="true" loading="lazy"><span>CC5</span></a><a class="software-marquee-item hover-sound" href="https://www.reallusion.com/iclone/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/iclone-8.png" alt="" aria-hidden="true" loading="lazy"><span>iClone 8</span></a><a class="software-marquee-item hover-sound" href="https://www.marvelousdesigner.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/marvelous-designer.png" alt="" aria-hidden="true" loading="lazy"><span>Marvelous Designer</span></a><a class="software-marquee-item hover-sound" href="https://ephere.com/plugins/ornatrix/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/ornatrix.png" alt="" aria-hidden="true" loading="lazy"><span>Ornatrix</span></a><a class="software-marquee-item hover-sound" href="https://www.image-line.com/fl-studio/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/fl-studio.png" alt="" aria-hidden="true" loading="lazy"><span>FruityLoops</span></a><a class="software-marquee-item hover-sound" href="https://code.visualstudio.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/vs-code.png" alt="" aria-hidden="true" loading="lazy"><span>VS Code</span></a><a class="software-marquee-item hover-sound" href="https://visualstudio.microsoft.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/visual-studio.svg" alt="" aria-hidden="true" loading="lazy"><span>Visual Studio</span></a><a class="software-marquee-item hover-sound" href="https://github.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/github.svg" alt="" aria-hidden="true" loading="lazy"><span>GitHub</span></a><a class="software-marquee-item hover-sound" href="https://git-lfs.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/git-lfs.svg" alt="" aria-hidden="true" loading="lazy"><span>Git LFS</span></a><a class="software-marquee-item hover-sound" href="https://pages.github.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/github-pages.svg" alt="" aria-hidden="true" loading="lazy"><span>GitHub Pages</span></a><a class="software-marquee-item hover-sound" href="https://www.wix.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/wix.svg" alt="" aria-hidden="true" loading="lazy"><span>Wix</span></a><a class="software-marquee-item hover-sound" href="https://stripe.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/stripe.svg" alt="" aria-hidden="true" loading="lazy"><span>Stripe</span></a><a class="software-marquee-item hover-sound" href="https://obsidian.md/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/obsidian.svg" alt="" aria-hidden="true" loading="lazy"><span>Obsidian</span></a><a class="software-marquee-item hover-sound" href="https://openai.com/codex/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/openai.png" alt="" aria-hidden="true" loading="lazy"><span>Codex</span></a></div>
+                    <div class="software-marquee-group" aria-hidden="true"><a class="software-marquee-item hover-sound" href="https://www.unrealengine.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/unreal-engine.svg" alt="" aria-hidden="true" loading="lazy"><span>Unreal</span></a><a class="software-marquee-item hover-sound" href="https://developer.valvesoftware.com/wiki/Source_2" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/source-2.svg" alt="" aria-hidden="true" loading="lazy"><span>Source 2</span></a><a class="software-marquee-item hover-sound" href="https://enfusionengine.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/enfusion.svg" alt="" aria-hidden="true" loading="lazy"><span>Enfusion</span></a><a class="software-marquee-item hover-sound" href="https://docs.fivem.net/docs/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/rage.svg" alt="" aria-hidden="true" loading="lazy"><span>RAGE</span></a><a class="software-marquee-item hover-sound" href="https://www.blender.org/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/blender.svg" alt="" aria-hidden="true" loading="lazy"><span>Blender</span></a><a class="software-marquee-item hover-sound" href="https://www.adobe.com/products/substance3d.html" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/adobe-3d.svg" alt="" aria-hidden="true" loading="lazy"><span>Adobe 3D</span></a><a class="software-marquee-item hover-sound" href="https://affinity.serif.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/affinity-suite.png" alt="" aria-hidden="true" loading="lazy"><span>Affinity Suite</span></a><a class="software-marquee-item hover-sound" href="https://quadspinner.com/gaea/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/gaea.png" alt="" aria-hidden="true" loading="lazy"><span>Gaea 2.0</span></a><a class="software-marquee-item hover-sound" href="https://www.reallusion.com/character-creator/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/cc5.png" alt="" aria-hidden="true" loading="lazy"><span>CC5</span></a><a class="software-marquee-item hover-sound" href="https://www.reallusion.com/iclone/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/iclone-8.png" alt="" aria-hidden="true" loading="lazy"><span>iClone 8</span></a><a class="software-marquee-item hover-sound" href="https://www.marvelousdesigner.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/marvelous-designer.png" alt="" aria-hidden="true" loading="lazy"><span>Marvelous Designer</span></a><a class="software-marquee-item hover-sound" href="https://ephere.com/plugins/ornatrix/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/ornatrix.png" alt="" aria-hidden="true" loading="lazy"><span>Ornatrix</span></a><a class="software-marquee-item hover-sound" href="https://www.image-line.com/fl-studio/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/fl-studio.png" alt="" aria-hidden="true" loading="lazy"><span>FruityLoops</span></a><a class="software-marquee-item hover-sound" href="https://code.visualstudio.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/vs-code.png" alt="" aria-hidden="true" loading="lazy"><span>VS Code</span></a><a class="software-marquee-item hover-sound" href="https://visualstudio.microsoft.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/visual-studio.svg" alt="" aria-hidden="true" loading="lazy"><span>Visual Studio</span></a><a class="software-marquee-item hover-sound" href="https://github.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/github.svg" alt="" aria-hidden="true" loading="lazy"><span>GitHub</span></a><a class="software-marquee-item hover-sound" href="https://git-lfs.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/git-lfs.svg" alt="" aria-hidden="true" loading="lazy"><span>Git LFS</span></a><a class="software-marquee-item hover-sound" href="https://pages.github.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/github-pages.svg" alt="" aria-hidden="true" loading="lazy"><span>GitHub Pages</span></a><a class="software-marquee-item hover-sound" href="https://www.wix.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/wix.svg" alt="" aria-hidden="true" loading="lazy"><span>Wix</span></a><a class="software-marquee-item hover-sound" href="https://stripe.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/stripe.svg" alt="" aria-hidden="true" loading="lazy"><span>Stripe</span></a><a class="software-marquee-item hover-sound" href="https://obsidian.md/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/obsidian.svg" alt="" aria-hidden="true" loading="lazy"><span>Obsidian</span></a><a class="software-marquee-item hover-sound" href="https://openai.com/codex/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/openai.png" alt="" aria-hidden="true" loading="lazy"><span>Codex</span></a></div>
+                </div></div>
+            </section>
+            <div class="footer-grid">
+                <div class="footer-column"><span>Primary routes</span><a class="hover-sound" href="/">Home</a><a class="hover-sound" href="/pages/games.html">Games</a><a class="hover-sound" href="/pages/studio.html">Studio</a><a class="hover-sound" href="/pages/contact.html">Contact</a></div>
+                <div class="footer-column"><span>Public records</span><a class="hover-sound" href="/pages/DevLog/index.html">Devlog</a><a href="https://www.epicgames.com/site/en-US/privacypolicy" target="_blank" rel="noopener noreferrer">Epic Privacy Policy</a><a href="#">Nightshift Privacy Policy</a><a href="#">Applicant Privacy Policy</a></div>
+                <div class="footer-column"><span>External surfaces</span><a href="#">Press Kit</a><a href="#">Brand Assets</a><a href="#">Careers</a><a href="#">Community</a></div>
+            </div>
+            <div class="footer-bottom"><div class="social-row"><a class="action-pill hover-sound" href="https://www.youtube.com/@nstx" target="_blank" rel="noopener noreferrer">YouTube</a><a class="action-pill primary hover-sound" href="/pages/Studio/Donations.html">Support the studio</a></div><p class="footer-note">Copyright 2026 Nightshift. All rights reserved.</p></div>
+        </footer>
+    </main>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const audio = new Audio("../../../audio/bop.mp3");
+            audio.volume = 0.25;
+            const clock = document.getElementById("mockup-clock");
+            function updateClock() {
+                if (!clock) return;
+                clock.textContent = new Date().toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", second: "2-digit", timeZone: "America/Chicago", timeZoneName: "short" });
+            }
+            document.querySelectorAll(".hover-sound").forEach((element) => {
+                element.addEventListener("mouseenter", function() {
+                    audio.currentTime = 0;
+                    audio.play().catch(() => {});
+                });
+            });
+            updateClock();
+            window.setInterval(updateClock, 1000);
+        });
+    </script>
+</body>
+</html>

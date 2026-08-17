@@ -10,6 +10,7 @@ const outDir = path.join(root, "pages", "DevLog");
 const postsDir = path.join(outDir, "posts");
 const galleryBlockPattern = /^:::gallery\s*\n([\s\S]*?)\n:::/gm;
 const youtubeBlockPattern = /^:::youtube\s*\n([\s\S]*?)\n:::/gm;
+const highlightBlueBlockPattern = /^:::highlight-blue\s*\n([\s\S]*?)\n:::/gm;
 const rawHtmlPattern = /<\/?[A-Za-z][A-Za-z0-9:-]*(?:\s|>|\/>)/;
 const imageExtensions = new Set([".gif", ".jpeg", ".jpg", ".png", ".svg", ".webp"]);
 const videoExtensions = new Set([".mp4", ".webm"]);
@@ -131,11 +132,29 @@ const extractYoutubeId = (value, file) => {
     throw new Error(`Invalid YouTube media source in ${file}: ${source}`);
 };
 
+const extractYoutubeStartSeconds = (value) => {
+    try {
+        const url = new URL(String(value ?? "").trim());
+        const raw = url.searchParams.get("t") || url.searchParams.get("start");
+        if (!raw) return 0;
+        if (/^\d+$/.test(raw)) return Number(raw);
+
+        const match = raw.match(/^(?:(\d+)h)?(?:(\d+)m)?(?:(\d+)s)?$/i);
+        if (!match || !match[0]) return 0;
+
+        return (Number(match[1] || 0) * 3600) + (Number(match[2] || 0) * 60) + Number(match[3] || 0);
+    } catch {
+        return 0;
+    }
+};
+
 const renderYoutubeFigure = ({ source, title = "YouTube video", caption = "", file, className = "devlog-youtube" }) => {
     const id = extractYoutubeId(source, file);
+    const startSeconds = extractYoutubeStartSeconds(source);
     const safeTitle = escapeHtml(title || "YouTube video");
     const safeCaption = escapeHtml(caption || title || "");
-    const embedUrl = `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&loop=1&playlist=${id}&playsinline=1`;
+    const startQuery = startSeconds > 0 ? `&start=${startSeconds}` : "";
+    const embedUrl = `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&loop=1&playlist=${id}&playsinline=1${startQuery}`;
 
     return `<figure class="${escapeHtml(className)}">
 <div class="video-frame">
@@ -179,10 +198,16 @@ const renderGalleryBlocks = (content, file) =>
 const renderMediaBlocks = (content, file) =>
     renderYoutubeBlocks(renderGalleryBlocks(content, file), file);
 
+const renderHighlightBlocks = (content) =>
+    content.replace(highlightBlueBlockPattern, (_match, body) =>
+        `<section class="devlog-highlight devlog-highlight-blue">${marked.parse(body)}</section>`
+    );
+
 const validateDevlogContent = (content, file) => {
     const withoutMediaBlocks = content
         .replace(galleryBlockPattern, "")
-        .replace(youtubeBlockPattern, "");
+        .replace(youtubeBlockPattern, "")
+        .replace(highlightBlueBlockPattern, "");
     assertNoRawHtml(withoutMediaBlocks, file);
 };
 
@@ -209,7 +234,7 @@ const renderViewCount = (path) => `
                     </span>`;
 
 const archiveConfig = [
-    { year: 2026, months: [7, 6, 5, 4, 3, 2, 1] },
+    { year: 2026, months: [8, 7, 6, 5, 4, 3, 2, 1] },
 ];
 
 const parseFrontmatterDate = (value, file) => {
@@ -280,7 +305,7 @@ const readPosts = async () => {
             hero: data.hero || "",
             heroLabel: data.heroLabel || "",
             pitch: data.pitch || "",
-            html: marked.parse(renderMediaBlocks(content, file)),
+            html: marked.parse(renderHighlightBlocks(renderMediaBlocks(content, file))),
         });
     }
 
@@ -317,7 +342,7 @@ const softwareItems = [
     ["Unreal", "https://www.unrealengine.com/", "/images/icons/software/unreal-engine.svg"],
     ["Source 2", "https://developer.valvesoftware.com/wiki/Source_2", "/images/icons/software/source-2.svg"],
     ["Enfusion", "https://enfusionengine.com/", "/images/icons/software/enfusion.svg"],
-    ["RAGE", "https://www.rockstargames.com/", "/images/icons/software/rage.svg"],
+    ["RAGE", "https://docs.fivem.net/docs/", "/images/icons/software/rage.svg"],
     ["Blender", "https://www.blender.org/", "/images/icons/software/blender.svg"],
     ["Adobe 3D", "https://www.adobe.com/products/substance3d.html", "/images/icons/software/adobe-3d.svg"],
     ["Affinity Suite", "https://affinity.serif.com/", "/images/icons/software/affinity-suite.png"],
@@ -361,7 +386,7 @@ ${softwareMarquee()}
             <div class="footer-bottom"><div class="social-row"><a class="action-pill hover-sound" href="https://www.youtube.com/@nstx" target="_blank" rel="noopener noreferrer">YouTube</a><a class="action-pill primary hover-sound" href="/pages/Studio/Donations.html">Support the studio</a></div><p class="footer-note">Copyright 2026 Nightshift. All rights reserved.</p></div>
         </footer>`;
 
-const styleVersion = "20260702-footer-universal";
+const styleVersion = "20260711-devlog-highlight";
 
 const layout = ({ title, body, assetPrefix, pagePrefix, readout }) => `<!DOCTYPE html>
 <html lang="en">
