@@ -1,6 +1,7 @@
 ---
 title: "OpenBox: A Decentralized s&box Server Ecosystem"
 date: 2026-07-11
+unlisted: true
 game: OpenBox
 excerpt: "A blockchain-backed ecosystem for independently operated s&box worlds, wallet-based users, explicit content rights, and verifiable preservation records."
 tags:

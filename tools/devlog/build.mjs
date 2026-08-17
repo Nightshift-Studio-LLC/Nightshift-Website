@@ -257,18 +257,20 @@ const ensureDir = async (dir) => {
 };
 
 const parseFrontmatter = (raw, file) => {
-    if (!raw.startsWith("---\n")) {
-        return { data: {}, content: raw };
+    const normalizedRaw = raw.replace(/\r\n?/g, "\n");
+
+    if (!normalizedRaw.startsWith("---\n")) {
+        return { data: {}, content: normalizedRaw };
     }
 
     const endMarker = "\n---\n";
-    const endIndex = raw.indexOf(endMarker, 4);
+    const endIndex = normalizedRaw.indexOf(endMarker, 4);
     if (endIndex === -1) {
         throw new Error(`Unclosed frontmatter block in ${file}`);
     }
 
-    const frontmatterSource = raw.slice(4, endIndex);
-    const content = raw.slice(endIndex + endMarker.length);
+    const frontmatterSource = normalizedRaw.slice(4, endIndex);
+    const content = normalizedRaw.slice(endIndex + endMarker.length);
     const parsed = yaml.load(frontmatterSource);
 
     if (parsed != null && (typeof parsed !== "object" || Array.isArray(parsed))) {
@@ -289,6 +291,7 @@ const readPosts = async () => {
         if (!file.endsWith(".md")) continue;
         const raw = await fs.readFile(path.join(contentDir, file), "utf-8");
         const { data, content } = parseFrontmatter(raw, file);
+        if (data.unlisted === true) continue;
         if (data.draft === true) continue;
 
         validateDevlogContent(content, file);
