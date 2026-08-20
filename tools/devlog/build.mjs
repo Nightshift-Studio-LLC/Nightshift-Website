@@ -294,12 +294,17 @@ const parseFrontmatter = (raw, file) => {
 const readPosts = async () => {
     const files = await fs.readdir(contentDir);
     const posts = [];
+    const draftSlugs = [];
 
     for (const file of files) {
         if (!file.endsWith(".md")) continue;
         const raw = await fs.readFile(path.join(contentDir, file), "utf-8");
         const { data, content } = parseFrontmatter(raw, file);
         if (data.unlisted === true) continue;
+        if (data.draft === true) {
+            draftSlugs.push(path.basename(file, ".md"));
+            continue;
+        }
 
         validateDevlogContent(content, file);
         const dateObj = parseFrontmatterDate(data.date, file);
@@ -320,7 +325,10 @@ const readPosts = async () => {
         });
     }
 
-    return posts.sort((a, b) => b.dateObj - a.dateObj);
+    return {
+        posts: posts.sort((a, b) => b.dateObj - a.dateObj),
+        draftSlugs,
+    };
 };
 
 const groupPostsByMonth = (posts) => {
@@ -610,8 +618,16 @@ ${post.draft ? "                    <div><span>Status</span><strong>Draft / work
 };
 
 const build = async () => {
-    const posts = await readPosts();
+    const { posts, draftSlugs } = await readPosts();
     await ensureDir(postsDir);
+    await Promise.all(draftSlugs.map(async (slug) => {
+        const draftOutput = path.join(postsDir, `${slug}.html`);
+        try {
+            await fs.unlink(draftOutput);
+        } catch (error) {
+            if (error.code !== "ENOENT") throw error;
+        }
+    }));
     const indexMarkup = renderIndex(posts);
     await fs.writeFile(path.join(outDir, "index.html"), indexMarkup);
     await fs.writeFile(path.join(outDir, "devlog.html"), indexMarkup);
