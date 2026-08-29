@@ -1,34 +1,57 @@
 :root {
-    --bg-0: #040506;
-    --bg-1: #090b0a;
-    --bg-2: #121511;
-    --ink: #e5ebdf;
-    --muted: #97a18f;
-    --accent: #4f6242;
-    --accent-2: #aeb889;
-    --accent-3: #c4b38f;
-    --stroke: rgba(117, 135, 102, 0.22);
+    --bg-0: #050607;
+    --bg-1: #0b0d10;
+    --bg-2: #15181c;
+    --ink: #e8ebef;
+    --muted: #a3a9b1;
+    --accent: #626a74;
+    --accent-2: #c0c6ce;
+    --accent-3: #d2d6dc;
+    --stroke: rgba(142, 151, 163, 0.24);
     --shadow: 0 22px 48px rgba(0, 0, 0, 0.62);
-    --font-body: "IBM Plex Mono", "Segoe UI", sans-serif;
-    --font-display: "Chakra Petch", "Segoe UI", sans-serif;
+    --font-body: "Barlow", "Arial Narrow", "Segoe UI", sans-serif;
+    --font-display: "Barlow Condensed", "Arial Narrow", "Segoe UI", sans-serif;
     --exile-pad: clamp(16px, 2vw, 24px);
     --exile-max: min(1180px, calc(100vw - 2 * var(--exile-pad)));
 }
 
 body {
+    font-family: var(--font-body);
     background:
-        radial-gradient(78% 72% at 12% 8%, rgba(95, 116, 80, 0.18), transparent 48%),
-        radial-gradient(88% 88% at 88% 82%, rgba(156, 160, 116, 0.1), transparent 56%),
-        linear-gradient(160deg, #040506 0%, #090b0a 48%, #121511 100%);
+        radial-gradient(78% 72% at 12% 8%, rgba(101, 112, 126, 0.18), transparent 48%),
+        radial-gradient(88% 88% at 88% 82%, rgba(164, 171, 181, 0.1), transparent 56%),
+        linear-gradient(160deg, #050607 0%, #0b0d10 48%, #15181c 100%);
+}
+
+/* Homefront stays neutral with a worn steel wash instead of an olive field palette. */
+body::before {
+    background:
+        radial-gradient(72% 54% at 18% 14%, rgba(120, 132, 148, 0.1), transparent 70%),
+        radial-gradient(54% 48% at 84% 78%, rgba(91, 101, 114, 0.1), transparent 72%),
+        linear-gradient(148deg, rgba(27, 31, 37, 0.82), rgba(5, 7, 9, 0.92));
+    animation: none;
+}
+
+body::after {
+    background:
+        linear-gradient(90deg, transparent 0 49.8%, rgba(164, 172, 184, 0.035) 50%, transparent 50.2%),
+        linear-gradient(rgba(164, 172, 184, 0.024) 1px, transparent 1px);
+    background-size: 100% 100%, 100% 96px;
+    opacity: 0.42;
+}
+
+.screen-fx {
+    display: none;
 }
 
 .topbar {
-    border-bottom-color: rgba(117, 135, 102, 0.2);
+    border-top: 2px solid rgba(194, 202, 212, 0.46);
+    border-bottom-color: rgba(142, 151, 163, 0.2);
     background:
-        linear-gradient(180deg, rgba(11, 13, 11, 0.95), rgba(7, 8, 7, 0.88)),
+        linear-gradient(180deg, rgba(13, 15, 18, 0.95), rgba(8, 10, 13, 0.88)),
         linear-gradient(120deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0));
     box-shadow:
-        0 0 0 1px rgba(117, 135, 102, 0.05),
+        0 0 0 1px rgba(142, 151, 163, 0.05),
         0 24px 72px rgba(0, 0, 0, 0.48);
     padding-left: var(--exile-pad);
     padding-right: var(--exile-pad);
@@ -37,14 +60,18 @@ body {
 
 .topbar,
 .panel {
-    border-color: rgba(117, 135, 102, 0.16);
+    border-color: rgba(142, 151, 163, 0.16);
 }
 
 .brand-tag,
 .eyebrow,
 .footer-note {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
     color: var(--accent-2);
-    text-shadow: 0 0 18px rgba(95, 116, 80, 0.12);
+    text-shadow: 0 0 18px rgba(122, 132, 145, 0.12);
 }
 
 .utility-nav {
@@ -52,25 +79,38 @@ body {
 }
 
 .utility-nav a {
-    border-color: rgba(117, 135, 102, 0.14);
-    color: #c8cfbd;
-    background: rgba(8, 9, 8, 0.62);
+    border-radius: 1px;
+    border-color: rgba(142, 151, 163, 0.14);
+    color: #d3d8df;
+    background: rgba(9, 11, 14, 0.62);
     padding: 8px 12px;
     min-height: 34px;
+    font-family: var(--font-display);
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
 }
 
 .utility-nav a.active,
 .utility-nav a:hover {
-    border-color: rgba(196, 179, 143, 0.3);
-    background: linear-gradient(135deg, rgba(117, 135, 102, 0.2), rgba(156, 160, 116, 0.08));
+    border-color: rgba(202, 209, 218, 0.3);
+    background: linear-gradient(135deg, rgba(118, 129, 143, 0.2), rgba(164, 171, 181, 0.08));
     box-shadow: 0 14px 28px rgba(0, 0, 0, 0.3);
 }
 
 .topbar-readout strong {
-    color: #eef2ea;
+    font-family: var(--font-display);
+    font-size: 1rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #f1f3f5;
 }
 
 .topbar-readout span {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: 0.14em;
     color: var(--accent-2);
 }
 
@@ -84,11 +124,12 @@ body {
 
 .panel {
     background:
-        linear-gradient(180deg, rgba(20, 22, 19, 0.96), rgba(10, 12, 10, 0.98)),
+        linear-gradient(180deg, rgba(22, 25, 30, 0.96), rgba(10, 12, 16, 0.98)),
         linear-gradient(120deg, rgba(0, 0, 0, 0.12), rgba(0, 0, 0, 0));
-    box-shadow: 0 0 0 1px rgba(117, 135, 102, 0.05), 0 18px 52px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 0 1px rgba(142, 151, 163, 0.05), 0 18px 52px rgba(0, 0, 0, 0.5);
     padding: clamp(16px, 2vw, 22px);
-    border-radius: 22px;
+    border-left-width: 3px;
+    border-radius: 3px;
     position: relative;
     overflow: hidden;
 }
@@ -98,8 +139,8 @@ body {
     position: absolute;
     inset: 0;
     background:
-        radial-gradient(circle at top right, rgba(196, 185, 147, 0.08), transparent 24%),
-        linear-gradient(135deg, rgba(95, 116, 80, 0.08), transparent 38%);
+        radial-gradient(circle at top right, rgba(204, 211, 220, 0.08), transparent 24%),
+        linear-gradient(135deg, rgba(111, 123, 138, 0.08), transparent 38%);
     pointer-events: none;
     z-index: 0;
 }
@@ -111,28 +152,28 @@ body {
 
 .screen-fx::before {
     background:
-        linear-gradient(rgba(117, 135, 102, 0.022) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(117, 135, 102, 0.018) 1px, transparent 1px);
+        linear-gradient(rgba(142, 151, 163, 0.022) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(142, 151, 163, 0.018) 1px, transparent 1px);
     background-size: 42px 42px, 42px 42px;
 }
 
 .screen-fx::after {
     background:
-        linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(117, 135, 102, 0.045) 48%, rgba(0, 0, 0, 0)),
+        linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(142, 151, 163, 0.045) 48%, rgba(0, 0, 0, 0)),
         linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0));
     opacity: 0.35;
 }
 
 body::after {
     background:
-        repeating-linear-gradient(180deg, rgba(117, 135, 102, 0) 0 3px, rgba(117, 135, 102, 0.045) 3px 5px),
-        linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 52%, rgba(12, 14, 12, 0.08) 66%, rgba(18, 20, 17, 0.17) 82%, rgba(117, 135, 102, 0.12) 100%);
+        repeating-linear-gradient(180deg, rgba(142, 151, 163, 0) 0 3px, rgba(142, 151, 163, 0.045) 3px 5px),
+        linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 52%, rgba(13, 16, 20, 0.08) 66%, rgba(19, 22, 27, 0.17) 82%, rgba(142, 151, 163, 0.12) 100%);
 }
 
 .exile-hold-hero {
     min-height: min(78vh, 860px);
     display: grid;
-    align-items: end;
+    align-items: center;
     isolation: isolate;
 }
 
@@ -143,33 +184,58 @@ body::after {
 
 .exile-hero-overlay {
     background:
-        linear-gradient(180deg, rgba(4, 5, 4, 0.3), rgba(4, 5, 4, 0.88) 68%, rgba(4, 5, 4, 0.96) 100%),
-        radial-gradient(circle at 18% 22%, rgba(95, 116, 80, 0.26), transparent 34%),
-        radial-gradient(circle at 82% 18%, rgba(196, 179, 143, 0.08), transparent 24%),
+        linear-gradient(180deg, rgba(5, 6, 8, 0.3), rgba(5, 6, 8, 0.88) 68%, rgba(5, 6, 8, 0.96) 100%),
+        radial-gradient(circle at 18% 22%, rgba(99, 111, 126, 0.26), transparent 34%),
+        radial-gradient(circle at 82% 18%, rgba(202, 209, 218, 0.08), transparent 24%),
         linear-gradient(120deg, rgba(0, 0, 0, 0.18), rgba(0, 0, 0, 0.62));
 }
 
 .exile-hero-content {
     display: grid;
     gap: 14px;
-    max-width: 760px;
+    justify-items: center;
+    max-width: 900px;
+    margin-inline: auto;
     padding: clamp(10px, 2vw, 14px);
+    text-align: center;
+}
+
+.hero-homefront-logo {
+    width: min(100%, clamp(260px, 40vw, 540px));
+    height: auto;
+    margin-bottom: clamp(2px, 1vw, 10px);
+    filter: drop-shadow(0 18px 30px rgba(0, 0, 0, 0.68));
 }
 
 .exile-hold-hero h1 {
     margin: 0;
+    font-family: var(--font-display);
     font-size: clamp(3rem, 8vw, 6.4rem);
     line-height: 0.92;
     text-transform: uppercase;
-    letter-spacing: 0.04em;
-    max-width: 9ch;
+    font-weight: 900;
+    letter-spacing: 0.015em;
+    max-width: 12ch;
+}
+
+.homefront-title span {
+    display: block;
+}
+
+.homefront-title span:first-child {
+    margin-bottom: 0.06em;
+    color: var(--accent-3);
+    font-size: 0.42em;
+    font-weight: 700;
+    letter-spacing: 0.34em;
+    line-height: 1;
 }
 
 .hero-lede {
     margin: 0;
     font-size: clamp(1.05rem, 2vw, 1.34rem);
     line-height: 1.65;
-    color: #eef2ea;
+    color: #f1f3f5;
     max-width: 46ch;
 }
 
@@ -182,27 +248,39 @@ body::after {
 
 .hero-actions {
     display: flex;
+    justify-content: center;
     flex-wrap: wrap;
     gap: 10px;
     margin-top: 6px;
 }
 
 .action-pill {
-    border-color: rgba(156, 160, 116, 0.28);
-    color: #edf0e5;
-    background: rgba(13, 14, 13, 0.86);
+    border-radius: 1px;
+    font-family: var(--font-display);
+    font-size: 0.94rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-color: rgba(225, 214, 161, 0.52);
+    color: #f0f2f4;
+    background:
+        linear-gradient(rgba(7, 9, 7, 0.32), rgba(7, 9, 7, 0.5)),
+        url("/images/ServerHosting/Arma/frogskin-camo.png") center / cover;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.95);
 }
 
 .action-pill:hover,
 .action-pill:focus-visible {
-    border-color: rgba(196, 179, 147, 0.42);
+    border-color: rgba(202, 209, 218, 0.42);
     box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
 }
 
 .action-pill.primary {
-    background: linear-gradient(120deg, #7f704a, #9c7a45);
+    background:
+        linear-gradient(rgba(7, 9, 7, 0.32), rgba(7, 9, 7, 0.5)),
+        url("/images/ServerHosting/Arma/frogskin-camo.png") center / cover;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
-    border-color: rgba(158, 132, 85, 0.55);
+    border-color: rgba(225, 214, 161, 0.62);
 }
 
 .exile-status-strip {
@@ -210,27 +288,31 @@ body::after {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 10px;
     margin-top: 8px;
+    max-width: 860px;
+    width: 100%;
 }
 
 .exile-status-card {
-    border: 1px solid rgba(117, 135, 102, 0.22);
-    border-radius: 14px;
+    border: 1px solid rgba(142, 151, 163, 0.22);
+    border-radius: 2px;
     padding: 12px 14px;
-    background: rgba(8, 10, 8, 0.74);
+    background: rgba(9, 11, 14, 0.74);
     backdrop-filter: blur(6px);
     display: grid;
     gap: 5px;
 }
 
 .exile-status-card span {
-    color: #a2ad8e;
+    color: #b1b8c1;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    font-size: 0.72rem;
+    font-family: var(--font-display);
+    font-size: 0.78rem;
+    font-weight: 600;
 }
 
 .exile-status-card strong {
-    color: #edf2e4;
+    color: #f0f2f4;
     font-family: var(--font-display);
     letter-spacing: 0.04em;
     text-transform: uppercase;
@@ -249,12 +331,360 @@ body::after {
 }
 
 .footer-note.muted {
-    color: #9aa38f;
+    color: #a8afb8;
+}
+
+.store-shell {
+    padding-top: calc(var(--exile-pad) + 4px);
+}
+
+.store-hero {
+    min-height: 440px;
+    display: grid;
+    align-items: end;
+    isolation: isolate;
+    padding: clamp(22px, 5vw, 56px);
+}
+
+.store-hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(90deg, rgba(5, 6, 8, 0.96) 0%, rgba(5, 6, 8, 0.78) 52%, rgba(5, 6, 8, 0.22) 100%),
+        linear-gradient(0deg, rgba(5, 6, 8, 0.9), transparent 62%),
+        url("/images/ServerHosting/Arma/campsite-1.png") center 46% / cover no-repeat;
+    filter: grayscale(1) contrast(1.08);
+    z-index: 0;
+}
+
+.store-hero-content {
+    display: grid;
+    gap: 14px;
+    max-width: 720px;
+}
+
+.store-hero h1 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(2.8rem, 7vw, 5.8rem);
+    line-height: 0.94;
+    font-weight: 900;
+    letter-spacing: 0.015em;
+    text-transform: uppercase;
+}
+
+.store-kicker {
+    margin: 0;
+    color: var(--accent-3);
+    font-size: 0.78rem;
+    font-family: var(--font-display);
+    font-size: 0.86rem;
+    font-weight: 700;
+    letter-spacing: 0.17em;
+    text-transform: uppercase;
+}
+
+.store-lede {
+    margin: 0;
+    max-width: 58ch;
+    color: #e8ebef;
+    font-size: clamp(1rem, 2vw, 1.22rem);
+    line-height: 1.7;
+}
+
+.store-status {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+.store-status span {
+    border: 1px solid rgba(202, 209, 218, 0.28);
+    border-radius: 1px;
+    background: rgba(7, 9, 12, 0.78);
+    color: #d6dbe1;
+    padding: 7px 10px;
+    font-family: var(--font-display);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.store-section {
+    display: grid;
+    gap: 18px;
+}
+
+.store-section-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    gap: 20px;
+}
+
+.store-section-heading h2,
+.store-callout h2 {
+    margin: 4px 0 0;
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 4vw, 3.2rem);
+    letter-spacing: 0.035em;
+    line-height: 1;
+    text-transform: uppercase;
+}
+
+.store-section-heading p,
+.store-callout p {
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.7;
+}
+
+.store-section-heading > p {
+    max-width: 50ch;
+    text-align: right;
+}
+
+.store-tabs {
+    display: inline-flex;
+    width: fit-content;
+    gap: 6px;
+    border: 1px solid rgba(142, 151, 163, 0.2);
+    border-radius: 2px;
+    background: rgba(7, 9, 12, 0.7);
+    padding: 5px;
+}
+
+.store-tab {
+    appearance: none;
+    border: 1px solid transparent;
+    border-radius: 0;
+    background: transparent;
+    color: #b6bdc6;
+    cursor: pointer;
+    font: 700 0.86rem/1 var(--font-display);
+    letter-spacing: 0.1em;
+    padding: 11px 16px;
+    text-transform: uppercase;
+}
+
+.store-tab:hover,
+.store-tab:focus-visible {
+    color: #f0f2f4;
+    outline: none;
+}
+
+.store-tab.active {
+    border-color: rgba(225, 214, 161, 0.52);
+    background:
+        linear-gradient(rgba(7, 9, 7, 0.32), rgba(7, 9, 7, 0.5)),
+        url("/images/ServerHosting/Arma/frogskin-camo.png") center / cover;
+    color: #f5f6f8;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.28);
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.95);
+}
+
+.store-tab-panel[hidden] {
+    display: none;
+}
+
+.store-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.membership-grid {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 940px;
+}
+
+.store-card {
+    min-width: 0;
+    position: relative;
+    border: 1px solid rgba(142, 151, 163, 0.2);
+    border-radius: 2px;
+    overflow: hidden;
+    background: rgba(8, 10, 13, 0.82);
+}
+
+.membership-card {
+    display: grid;
+    grid-template-columns: minmax(260px, 0.82fr) minmax(0, 1.18fr);
+}
+
+.membership-card .store-card-media {
+    min-height: 260px;
+    aspect-ratio: auto;
+    border-right: 1px solid rgba(142, 151, 163, 0.2);
+    border-bottom: 0;
+}
+
+.membership-card .store-card-copy {
+    align-content: center;
+    padding: clamp(22px, 4vw, 38px);
+}
+
+.membership-featured {
+    border-color: rgba(202, 209, 218, 0.48);
+    background:
+        linear-gradient(120deg, rgba(117, 128, 142, 0.12), transparent 42%),
+        rgba(8, 10, 13, 0.92);
+    box-shadow: 0 18px 46px rgba(0, 0, 0, 0.42), 0 0 0 1px rgba(202, 209, 218, 0.08);
+}
+
+.membership-featured .store-card-state {
+    border-color: rgba(202, 209, 218, 0.52);
+    background: rgba(68, 77, 89, 0.9);
+    color: #f3f5f7;
+}
+
+.membership-accelerate {
+    width: calc(100% - clamp(0px, 5vw, 64px));
+    margin-left: clamp(0px, 5vw, 64px);
+    border-color: rgba(142, 151, 163, 0.3);
+}
+
+.store-card-media {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    border-bottom: 1px solid rgba(142, 151, 163, 0.2);
+    background: #090b0e;
+}
+
+.store-card-media::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 44%, rgba(5, 6, 8, 0.86));
+}
+
+.store-card-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(1) contrast(1.08);
+    transition: transform 180ms ease, filter 180ms ease;
+}
+
+.store-card:hover .store-card-media img {
+    transform: scale(1.025);
+    filter: grayscale(1) brightness(1.08) contrast(1.08);
+}
+
+.store-card-state {
+    position: absolute;
+    left: 12px;
+    bottom: 12px;
+    z-index: 1;
+    border: 1px solid rgba(202, 209, 218, 0.3);
+    border-radius: 1px;
+    background: rgba(6, 8, 11, 0.82);
+    color: var(--accent-3);
+    padding: 6px 9px;
+    font-family: var(--font-display);
+    font-size: 0.74rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.store-card-copy {
+    display: grid;
+    gap: 8px;
+    padding: 18px;
+}
+
+.store-card-copy h3 {
+    margin: 0;
+    color: #f0f2f4;
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: 0.035em;
+    text-transform: uppercase;
+}
+
+.store-card-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    gap: 12px;
+}
+
+.store-price {
+    flex: 0 0 auto;
+    display: grid;
+    justify-items: end;
+    margin: 0;
+    color: var(--accent-3);
+    font-family: var(--font-display);
+    line-height: 1;
+    text-transform: uppercase;
+}
+
+.store-price strong {
+    color: #f0f2f4;
+    font-size: 1.5rem;
+}
+
+.store-price span {
+    margin-top: 3px;
+    color: #aeb5be;
+    font: 500 0.66rem/1 var(--font-body);
+    letter-spacing: 0.08em;
+}
+
+.store-price-tbd {
+    border: 1px solid rgba(142, 151, 163, 0.22);
+    border-radius: 1px;
+    padding: 6px 8px;
+    color: #aeb5be;
+    font: 500 0.65rem/1 var(--font-body);
+    letter-spacing: 0.08em;
+}
+
+.store-card-copy p {
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.65;
+}
+
+.store-callout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) auto;
+    align-items: end;
+    gap: 24px;
+}
+
+.store-callout-copy {
+    display: grid;
+    gap: 10px;
+    max-width: 720px;
 }
 
 @media (max-width: 980px) {
     .exile-status-strip {
         grid-template-columns: 1fr;
+    }
+
+    .store-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .store-card {
+        display: grid;
+        grid-template-columns: minmax(220px, 0.8fr) 1fr;
+    }
+
+    .store-card-media {
+        aspect-ratio: auto;
+        min-height: 220px;
+        border-right: 1px solid rgba(142, 151, 163, 0.2);
+        border-bottom: 0;
     }
 }
 
@@ -317,5 +747,61 @@ body::after {
 
     .exile-footer {
         justify-content: flex-start;
+    }
+
+    .store-hero {
+        min-height: 500px;
+        padding: 22px;
+    }
+
+    .store-hero::after {
+        background:
+            linear-gradient(180deg, rgba(5, 6, 8, 0.24) 0%, rgba(5, 6, 8, 0.82) 50%, rgba(5, 6, 8, 0.97) 100%),
+            url("/images/ServerHosting/Arma/campsite-1.png") 58% center / cover no-repeat;
+    }
+
+    .store-section-heading,
+    .store-callout {
+        display: grid;
+        grid-template-columns: 1fr;
+        align-items: start;
+    }
+
+    .store-section-heading > p {
+        text-align: left;
+    }
+
+    .store-callout .action-pill {
+        width: 100%;
+        text-align: center;
+    }
+
+    .membership-card {
+        grid-template-columns: 1fr;
+    }
+
+    .membership-card .store-card-media {
+        min-height: 0;
+        aspect-ratio: 16 / 10;
+        border-right: 0;
+        border-bottom: 1px solid rgba(142, 151, 163, 0.2);
+    }
+
+    .membership-accelerate {
+        width: 100%;
+        margin-left: 0;
+    }
+}
+
+@media (max-width: 620px) {
+    .store-card {
+        grid-template-columns: 1fr;
+    }
+
+    .store-card-media {
+        aspect-ratio: 16 / 10;
+        min-height: 0;
+        border-right: 0;
+        border-bottom: 1px solid rgba(142, 151, 163, 0.2);
     }
 }
