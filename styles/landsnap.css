@@ -1,12 +1,176 @@
+/* LandSnap is intentionally self-contained: it does not inherit the main-site shell. */
 body.landsnap-page {
+    --heading: "Tektur", "Arial Black", sans-serif;
+    --body: "Instrument Sans", "Segoe UI", sans-serif;
+    --text: #f0f5e9;
+    --muted: #aebbac;
+    --line: rgba(167, 230, 83, 0.18);
+    --shadow: rgba(0, 0, 0, 0.52);
     --landsnap-green: #a7e653;
     --landsnap-green-bright: #c7ff6e;
     --landsnap-green-soft: rgba(167, 230, 83, 0.13);
-    --landsnap-cyan: #6ecdf2;
+    --landsnap-info: #87b8c5;
     --landsnap-orange: #ff8752;
     --landsnap-ink: #020604;
     --landsnap-panel: rgba(4, 10, 8, 0.94);
     --landsnap-line: rgba(167, 230, 83, 0.2);
+    box-sizing: border-box;
+    min-width: 0;
+    min-height: 100vh;
+    margin: 0;
+    overflow-x: hidden;
+    color: var(--text);
+    font-family: var(--body);
+    background:
+        radial-gradient(circle at 12% -12%, rgba(167, 230, 83, 0.18), transparent 34rem),
+        radial-gradient(circle at 100% 36%, rgba(82, 137, 59, 0.12), transparent 36rem),
+        linear-gradient(145deg, #071008 0%, #020604 48%, #050a06 100%);
+}
+
+body.landsnap-page *,
+body.landsnap-page *::before,
+body.landsnap-page *::after {
+    box-sizing: border-box;
+}
+
+body.landsnap-page a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.landsnap-page .screen-fx {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.26;
+    background-image: linear-gradient(rgba(167, 230, 83, 0.035) 1px, transparent 1px);
+    background-size: 100% 5px;
+}
+
+.landsnap-page .topbar {
+    display: grid;
+    grid-template-columns: minmax(150px, 1fr) auto minmax(150px, 1fr);
+    gap: 20px;
+    align-items: center;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 24px clamp(20px, 4vw, 64px);
+    border-bottom: 1px solid var(--line);
+}
+
+.landsnap-page .brand img { display: block; width: 112px; height: auto; }
+
+.landsnap-page .utility-nav,
+.landsnap-page .hero-actions,
+.landsnap-page .social-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.landsnap-page .utility-nav a,
+.landsnap-page .cta-btn,
+.landsnap-page .action-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 38px;
+    padding: 0 14px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    color: var(--muted);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: background 160ms ease, border-color 160ms ease, color 160ms ease;
+}
+
+.landsnap-page .utility-nav a:hover,
+.landsnap-page .utility-nav a.active,
+.landsnap-page .cta-btn:hover,
+.landsnap-page .action-pill:hover {
+    border-color: rgba(199, 255, 110, 0.68);
+    background: var(--landsnap-green-soft);
+    color: var(--text);
+}
+
+.landsnap-page .cta-btn.primary,
+.landsnap-page .action-pill.primary {
+    border-color: rgba(199, 255, 110, 0.58);
+    background: linear-gradient(135deg, rgba(167, 230, 83, 0.28), rgba(67, 113, 36, 0.28));
+    color: var(--text);
+}
+
+.landsnap-page .topbar-readout {
+    justify-self: end;
+    color: var(--muted);
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-align: right;
+    text-transform: uppercase;
+}
+
+.landsnap-page .topbar-readout span,
+.landsnap-page .topbar-readout strong { display: block; }
+.landsnap-page .topbar-readout strong { margin-top: 4px; color: var(--landsnap-green-bright); font-family: var(--heading); font-size: 0.68rem; }
+
+.landsnap-page .landsnap-shell {
+    display: grid;
+    gap: 22px;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 30px clamp(20px, 4vw, 64px) 72px;
+}
+
+.landsnap-page .page-hero-grid { display: grid; gap: 18px; }
+.landsnap-page .page-hero-panel,
+.landsnap-page .panel {
+    position: relative;
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: 22px;
+    background: var(--landsnap-panel);
+    box-shadow: 0 22px 58px var(--shadow);
+}
+
+.landsnap-page .page-hero-panel::before { content: ""; position: absolute; inset: 0; pointer-events: none; }
+.landsnap-page .eyebrow { margin: 0; color: var(--landsnap-green); font-size: 0.68rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; }
+.landsnap-page .page-title { color: var(--text); font-family: var(--heading); font-weight: 600; }
+.landsnap-page .page-lede { color: var(--muted); line-height: 1.8; }
+.landsnap-page .hero-actions { position: relative; z-index: 1; }
+
+.landsnap-page .panel { padding: clamp(24px, 3.5vw, 44px); }
+.landsnap-page .panel h2,
+.landsnap-page .panel h3 { color: var(--text); font-family: var(--heading); font-weight: 500; }
+.landsnap-page .panel strong { color: var(--text); }
+
+.landsnap-page .site-footer { padding: 0; }
+.landsnap-page .software-marquee-section { overflow: hidden; border-bottom: 1px solid var(--line); }
+.landsnap-page .software-marquee { position: relative; width: 100%; overflow: hidden; }
+.landsnap-page .software-marquee-track {
+    display: inline-flex;
+    align-items: center;
+    width: max-content;
+    min-width: max-content;
+    will-change: transform;
+    animation: landsnapSoftwareMarquee 36s linear infinite;
+}
+.landsnap-page .software-marquee-group { display: inline-flex; align-items: center; flex: 0 0 auto; gap: 14px; padding: 15px 18px; }
+.landsnap-page .software-marquee-item { display: inline-flex; align-items: center; gap: 7px; color: var(--muted); font-size: 0.72rem; white-space: nowrap; }
+.landsnap-page .software-marquee-icon { width: 17px; height: 17px; object-fit: contain; }
+.landsnap-page .footer-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; padding: 30px; }
+.landsnap-page .footer-column { display: grid; gap: 8px; color: var(--muted); font-size: 0.8rem; }
+.landsnap-page .footer-column > span:first-child { color: var(--landsnap-green); font-size: 0.68rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; }
+.landsnap-page .footer-column a:hover { color: var(--text); }
+.landsnap-page .footer-bottom { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 22px 30px; border-top: 1px solid var(--line); }
+.landsnap-page .footer-note { margin: 0; color: var(--muted); font-size: 0.72rem; }
+
+@keyframes landsnapSoftwareMarquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
 }
 
 html {
@@ -71,7 +235,7 @@ body.landsnap-page summary:focus-visible {
 .landsnap-page .landsnap-hero-copy::before {
     background:
         linear-gradient(90deg, var(--landsnap-green) 0 76px, transparent 76px) top left / 100% 2px no-repeat,
-        radial-gradient(circle at bottom right, rgba(110, 205, 242, 0.09), transparent 32%);
+        radial-gradient(circle at bottom right, rgba(167, 230, 83, 0.08), transparent 32%);
 }
 
 .landsnap-release-line {
@@ -127,8 +291,36 @@ body.landsnap-page summary:focus-visible {
 .landsnap-page .landsnap-hero-copy .cta-btn.primary,
 .landsnap-page .landsnap-final-cta .cta-btn.primary {
     border-color: rgba(167, 230, 83, 0.46);
-    background: linear-gradient(135deg, rgba(167, 230, 83, 0.28), rgba(110, 205, 242, 0.12));
+    background: linear-gradient(135deg, rgba(167, 230, 83, 0.28), rgba(67, 113, 36, 0.26));
     box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04), 0 10px 34px rgba(91, 143, 40, 0.1);
+}
+
+.landsnap-page .landsnap-fab-link {
+    color: var(--landsnap-orange);
+    text-decoration: underline;
+    text-decoration-color: rgba(255, 135, 82, 0.58);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.22em;
+}
+
+.landsnap-page .landsnap-fab-link:hover {
+    color: #ffae78;
+    text-decoration-color: currentColor;
+}
+
+.landsnap-page .landsnap-hero-copy .cta-btn.landsnap-fab-cta,
+.landsnap-page .landsnap-final-cta .cta-btn.landsnap-fab-cta,
+.landsnap-page .landsnap-hero-copy .cta-btn.landsnap-update-cta {
+    border-color: rgba(255, 135, 82, 0.68);
+    background: linear-gradient(135deg, rgba(255, 135, 82, 0.3), rgba(142, 68, 35, 0.3));
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05), 0 10px 34px rgba(160, 66, 29, 0.14);
+}
+
+.landsnap-page .landsnap-hero-copy .cta-btn.landsnap-fab-cta:hover,
+.landsnap-page .landsnap-final-cta .cta-btn.landsnap-fab-cta:hover,
+.landsnap-page .landsnap-hero-copy .cta-btn.landsnap-update-cta:hover {
+    border-color: rgba(255, 174, 120, 0.92);
+    background: linear-gradient(135deg, rgba(255, 135, 82, 0.4), rgba(142, 68, 35, 0.38));
 }
 
 .landsnap-assurance {
@@ -296,7 +488,7 @@ body.landsnap-page summary:focus-visible {
     align-items: center;
     min-width: 0;
     padding: 12px;
-    border: 1px solid rgba(110, 205, 242, 0.18);
+    border: 1px solid rgba(167, 230, 83, 0.2);
     border-radius: 14px;
     background: rgba(5, 13, 16, 0.78);
 }
@@ -566,7 +758,7 @@ body.landsnap-page summary:focus-visible {
     display: grid;
     gap: 16px;
     padding: 18px;
-    border: 1px solid rgba(110, 205, 242, 0.16);
+    border: 1px solid color-mix(in srgb, var(--landsnap-info) 38%, transparent);
     border-radius: 20px;
     background: linear-gradient(180deg, rgba(5, 13, 16, 0.92), rgba(2, 7, 8, 0.96));
 }
@@ -581,7 +773,7 @@ body.landsnap-page summary:focus-visible {
 
 .landsnap-video {
     margin: 0;
-    border-color: rgba(110, 205, 242, 0.22);
+    border-color: color-mix(in srgb, var(--landsnap-info) 44%, transparent);
 }
 
 .landsnap-artwork {
@@ -1041,7 +1233,7 @@ body.landsnap-page summary:focus-visible {
 }
 
 .landsnap-final-cta::after {
-    content: "LANDSNAP / 1.1.0";
+    content: "LANDSNAP / 2.0.0";
     position: absolute;
     right: 28px;
     top: 22px;
@@ -1136,6 +1328,31 @@ body.landsnap-page summary:focus-visible {
 }
 
 @media (max-width: 760px) {
+    .landsnap-page .topbar {
+        grid-template-columns: 1fr;
+        justify-items: center;
+        gap: 14px;
+        padding: 18px 20px;
+    }
+
+    .landsnap-page .brand img { width: 92px; }
+
+    .landsnap-page .utility-nav { justify-content: center; }
+
+    .landsnap-page .utility-nav a {
+        min-height: 34px;
+        padding: 0 11px;
+        font-size: 0.62rem;
+    }
+
+    .landsnap-page .topbar-readout {
+        justify-self: center;
+        text-align: center;
+    }
+
+    .landsnap-page .footer-grid { grid-template-columns: 1fr; padding: 24px; }
+    .landsnap-page .footer-bottom { align-items: flex-start; flex-direction: column; padding: 20px 24px; }
+
     .landsnap-heading-row,
     .landsnap-final-cta {
         grid-template-columns: 1fr;
@@ -1205,7 +1422,10 @@ body.landsnap-page summary:focus-visible {
 
 @media (max-width: 560px) {
     .landsnap-page .landsnap-hero .page-title {
-        font-size: clamp(2.4rem, 12.5vw, 4rem);
+        max-width: 100%;
+        font-size: clamp(1.95rem, 9.2vw, 2.6rem);
+        overflow-wrap: normal;
+        white-space: nowrap;
     }
 
     .landsnap-release-line {
@@ -1284,6 +1504,73 @@ body.landsnap-page summary:focus-visible {
     }
 }
 
+/* Slate base; green identifies active, ready, and confirmatory states. */
+body.landsnap-page {
+    --text: #edf1f3;
+    --muted: #aeb8c1;
+    --line: rgba(177, 192, 203, 0.18);
+    --landsnap-panel: rgba(27, 34, 40, 0.94);
+    --landsnap-line: rgba(177, 192, 203, 0.18);
+    background:
+        radial-gradient(circle at 10% -10%, rgba(104, 121, 134, 0.26), transparent 36rem),
+        radial-gradient(circle at 100% 28%, rgba(62, 74, 85, 0.22), transparent 34rem),
+        linear-gradient(145deg, #171e25 0%, #0f151b 48%, #1b232b 100%);
+}
+
+.landsnap-page .screen-fx {
+    opacity: 0.22;
+    background-image: linear-gradient(rgba(199, 213, 224, 0.045) 1px, transparent 1px);
+}
+
+.landsnap-page .page-hero-panel,
+.landsnap-page .panel,
+.landsnap-page .landsnap-proof-strip,
+.landsnap-page .landsnap-section-nav {
+    background-color: rgba(25, 32, 39, 0.94);
+}
+
+.landsnap-page .landsnap-hero-copy {
+    background:
+        radial-gradient(circle at 8% 0%, rgba(167, 230, 83, 0.1), transparent 32%),
+        linear-gradient(150deg, rgba(38, 47, 56, 0.98), rgba(20, 27, 33, 0.99));
+}
+
+.landsnap-page .landsnap-console,
+.landsnap-page .landsnap-agent-panel,
+.landsnap-page .landsnap-final-cta {
+    background:
+        radial-gradient(circle at 75% 5%, rgba(167, 230, 83, 0.11), transparent 32%),
+        linear-gradient(150deg, rgba(41, 50, 59, 0.98), rgba(20, 27, 33, 0.99));
+}
+
+.landsnap-page .landsnap-console-header,
+.landsnap-page .landsnap-console-footer,
+.landsnap-page .landsnap-command-header,
+.landsnap-page .landsnap-command-footer {
+    background: rgba(13, 18, 24, 0.34);
+}
+
+.landsnap-page .landsnap-console-screen,
+.landsnap-page .landsnap-command-body {
+    background-color: rgba(32, 41, 49, 0.7);
+}
+
+.landsnap-page .landsnap-console-readout,
+.landsnap-page .landsnap-tool-command,
+.landsnap-page .landsnap-feature-card,
+.landsnap-page .landsnap-capability-card,
+.landsnap-page .landsnap-workflow-step,
+.landsnap-page .landsnap-disclosure,
+.landsnap-page .landsnap-doc-columns > div,
+.landsnap-page .landsnap-tool-list > div,
+.landsnap-page .landsnap-agent-flow li {
+    background-color: rgba(21, 28, 35, 0.82);
+}
+
+.landsnap-page .landsnap-demo-card {
+    background: linear-gradient(180deg, rgba(37, 48, 58, 0.94), rgba(22, 29, 36, 0.97));
+}
+
 @media (prefers-reduced-motion: reduce) {
     html {
         scroll-behavior: auto;
@@ -1294,4 +1581,135 @@ body.landsnap-page summary:focus-visible {
     .landsnap-skip-link {
         transition: none;
     }
+
+    .landsnap-page .software-marquee-track {
+        animation: none;
+        transform: none;
+    }
 }
+
+/* V2 launch composition. Product-specific styles stay on this surface. */
+body.landsnap-page {
+    background: radial-gradient(ellipse at 85% 2%, #2c383b 0, transparent 40rem), #141b21;
+}
+.landsnap-page .landsnap-shell { gap: 28px; padding-top: 38px; }
+.landsnap-page .topbar { padding-top: 20px; padding-bottom: 20px; }
+.landsnap-page .utility-nav a { border-color: transparent; }
+.landsnap-page .page-hero-panel, .landsnap-page .panel { border-radius: 9px; box-shadow: none; }
+.landsnap-page .landsnap-hero { grid-template-columns: minmax(0, .95fr) minmax(0, 1.15fr); gap: 0; border: 1px solid var(--line); border-radius: 9px; overflow: hidden; background: #192228; }
+.landsnap-page .landsnap-hero-copy { padding: clamp(26px, 3vw, 44px); min-height: 610px; border: 0; border-radius: 0; background: radial-gradient(ellipse at 0 0, #283338 0, transparent 80%); }
+.landsnap-page .landsnap-hero-copy::before { background: none; }
+.landsnap-release-line { margin-bottom: 30px; }
+.landsnap-release-line span { border-radius: 3px; font-size: .6rem; letter-spacing: .1em; }
+.landsnap-release-line span:first-child { background: var(--landsnap-green); color: #1c2c17; border-color: var(--landsnap-green); font-weight: 700; }
+.landsnap-page .landsnap-hero .page-title { display: flex; align-items: baseline; gap: 12px; margin: 20px 0; font-size: clamp(2.4rem, 4.1vw, 4.1rem); letter-spacing: -.055em; line-height: 1; white-space: nowrap; }
+.landsnap-version { font-family: var(--body); color: var(--landsnap-green); font-size: .38em; letter-spacing: -.04em; font-weight: 500; }
+.landsnap-hero-kicker { font-family: var(--body); color: var(--text); font-size: clamp(2rem, 3.2vw, 3.2rem); line-height: 1.08; letter-spacing: -.055em; margin-bottom: 24px; font-weight: 500; }
+.landsnap-page .landsnap-hero-copy .page-lede { font-size: 1rem; line-height: 1.75; max-width: 43ch; }
+.landsnap-page .landsnap-hero-copy .cta-btn { border-radius: 4px; min-height: 46px; padding: 0 17px; font-size: .64rem; }
+.landsnap-page .landsnap-hero-copy .cta-btn.primary { background: #ff995f; color: #20231e; border-color: #ff995f; box-shadow: none; }
+.landsnap-page .landsnap-hero-copy .cta-btn.primary:hover { background: #ffb380; }
+.landsnap-assurance { font-size: .6rem; letter-spacing: .035em; }
+.landsnap-assurance span { margin: 0 3px; }
+.landsnap-page .landsnap-console { grid-template-rows: auto 1fr auto auto; min-height: 610px; border: 0; border-left: 1px solid var(--line); border-radius: 0; background: radial-gradient(ellipse at 45% 42%, #2c3c38, #192328 75%); }
+.landsnap-console-header { padding: 24px; background: transparent !important; border-bottom: 0; }
+.landsnap-console-identity img { width: 32px; height: 32px; }
+.landsnap-console-identity span { font-size: .6rem; color: var(--muted); letter-spacing: .08em; }
+.landsnap-console-identity strong { font-family: var(--body); font-size: .9rem; margin-top: 4px; }
+.landsnap-ready { font-size: .55rem; }
+.landsnap-terrain-study { position: relative; min-width: 0; align-self: center; background-image: radial-gradient(#8aab8424 .7px, transparent .7px); background-size: 18px 18px; }
+.landsnap-terrain-study svg { display: block; width: 100%; height: auto; overflow: visible; }
+.landsnap-study-axis { position: absolute; bottom: 45px; right: 24px; color: #8ca794; font: 10px/1.6 monospace; }
+.landsnap-study-caption { position: absolute; bottom: 7px; left: 24px; color: #9aaea7; text-transform: uppercase; letter-spacing: .12em; font-size: .55rem; }
+.study-actor { transition: transform 700ms cubic-bezier(.2,.7,.2,1); transition-delay: var(--actor-delay); }
+.study-guide { transition: opacity 400ms; }
+[data-settled="true"] .study-guide { opacity: 0; }
+.landsnap-study-controls { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 15px; margin: 20px 24px 24px; padding-top: 20px; border-top: 1px solid var(--line); }
+.landsnap-study-controls strong { display: block; font-size: .72rem; font-weight: 500; margin-top: 5px; color: #c3d2c9; }
+.landsnap-study-controls .landsnap-console-label { font-size: .55rem; }
+.landsnap-study-controls button { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; border: 1px solid #a7e65380; border-radius: 4px; padding: 8px 12px; background: #a7e65318; color: #d2f6a2; font: 600 .72rem var(--body); cursor: pointer; }
+.landsnap-study-controls button[hidden] { display: none; }
+.landsnap-study-controls button:hover { background: #a7e65330; }
+.landsnap-study-controls button:focus-visible { outline: 3px solid #ff995f; outline-offset: 4px; }
+.landsnap-study-controls button img { width: 23px; height: 23px; }
+.landsnap-study-fallback { margin: 0 24px 20px; color: var(--muted); }
+.landsnap-console-footer { padding: 14px 24px; border-top: 1px solid var(--line); font-size: .58rem; }
+.landsnap-proof-strip { border-radius: 5px; }
+.landsnap-proof-strip > div { min-height: 104px; padding: 21px; }
+.landsnap-proof-strip strong { font-family: var(--body); font-size: .98rem; font-weight: 500; }
+.landsnap-page .landsnap-section-nav { border-radius: 0; border-width: 0 0 1px; background: transparent; padding: 8px 0 15px; justify-content: flex-start; gap: 20px; }
+.landsnap-section-nav a { font-size: .66rem; border-radius: 4px; }
+.landsnap-page .landsnap-release-panel { padding-top: 42px; background: transparent; border: 0; padding-left: 0; padding-right: 0; }
+.landsnap-heading-row h2 { font-size: clamp(1.5rem, 2.5vw, 2.3rem); letter-spacing: -.04em; line-height: 1.15; }
+.landsnap-release-grid { gap: 0; border: 1px solid var(--line); border-radius: 7px; overflow: hidden; }
+.landsnap-page .landsnap-feature-card { border: 0; border-right: 1px solid var(--line); border-radius: 0; padding: 28px 24px; background: #1b252c; }
+.landsnap-feature-card:last-child { border-right: 0; }
+.landsnap-card-index { color: var(--landsnap-green); font-size: .6rem; }
+.landsnap-feature-card h3 { margin-top: 34px; }
+.landsnap-page .landsnap-feature-card:hover { transform: none; background: #222e35; box-shadow: none; }
+.landsnap-capability-card, .landsnap-workflow-step, .landsnap-demo-card, .landsnap-disclosure, .landsnap-command-console { border-radius: 5px; }
+.landsnap-page .landsnap-final-cta { margin-top: 14px; border-top: 2px solid var(--landsnap-green); }
+@media (max-width: 1100px) {
+    .landsnap-page .landsnap-hero { grid-template-columns: 1fr; }
+    .landsnap-page .landsnap-hero-copy { min-height: 0; padding: 38px; }
+    .landsnap-page .landsnap-console { min-height: 0; border-left: 0; border-top: 1px solid var(--line); }
+    .landsnap-terrain-study svg { max-height: 480px; }
+    .landsnap-page .landsnap-hero .page-title { font-size: 3.7rem; }
+    .landsnap-hero-kicker { font-size: 2.8rem; }
+}
+@media (max-width: 920px) {
+    .landsnap-feature-card:nth-child(2) { border-right: 0; }
+    .landsnap-feature-card:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+}
+@media (max-width: 560px) {
+    .landsnap-page .landsnap-shell { padding: 20px 16px 35px; gap: 20px; }
+    .landsnap-page .landsnap-hero-copy { padding: 26px 22px; }
+    .landsnap-page .landsnap-hero .page-title { font-size: clamp(2.1rem, 10vw, 3.3rem); }
+    .landsnap-hero-kicker { font-size: 2.3rem; }
+    .landsnap-release-line { gap: 6px; margin-bottom: 24px; }
+    .landsnap-release-line span { padding: 0 7px; font-size: .53rem; }
+    .landsnap-console-header { padding: 20px 16px; }
+    .landsnap-study-controls { margin-left: 16px; margin-right: 16px; }
+    .landsnap-study-caption { left: 16px; font-size: .46rem; }
+    .landsnap-study-axis { bottom: 24px; }
+    .landsnap-proof-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .landsnap-proof-strip > div { padding: 16px 12px; min-height: 115px; }
+    .landsnap-proof-strip strong { font-size: .84rem; }
+    .landsnap-proof-strip > div:nth-child(odd) { border-right: 1px solid var(--line); }
+    .landsnap-proof-strip > div:nth-last-child(-n+2) { border-bottom: 0; }
+    .landsnap-page .landsnap-feature-card { border-right: 0; border-bottom: 1px solid var(--line); }
+    .landsnap-feature-card:last-child { border-bottom: 0; }
+    .landsnap-feature-card h3 { margin-top: 20px; }
+    .landsnap-page .landsnap-section-nav { gap: 6px; }
+    .landsnap-console-footer { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .study-actor, .study-guide { transition: none; }
+}
+.landsnap-video { aspect-ratio: 16 / 9; overflow: hidden; }
+.landsnap-video iframe { display: block; width: 100%; height: 100%; border: 0; }
+.landsnap-companion-copy p { color: var(--muted); font-size: .95rem; line-height: 1.8; }
+.landsnap-companion-copy .cta-btn { margin-top: 12px; gap: 12px; }
+.landsnap-motion-toggle { margin: 14px 30px 0; padding: 8px 12px; border: 1px solid var(--line); border-radius: 4px; background: transparent; color: var(--muted); font: .72rem var(--body); cursor: pointer; }
+.landsnap-motion-toggle:focus-visible { outline: 3px solid var(--landsnap-green); outline-offset: 3px; }
+.landsnap-page .software-marquee:hover .software-marquee-track,
+.landsnap-page .landsnap-motion-paused .software-marquee-track { animation-play-state: paused; }
+.landsnap-page .software-marquee:focus-within .software-marquee-track { animation: none; transform: none; width: 100%; min-width: 0; }
+.landsnap-page .software-marquee:focus-within .software-marquee-group { flex-wrap: wrap; width: 100%; }
+.landsnap-page .software-marquee:focus-within .software-marquee-group[aria-hidden] { display: none; }
+@media (max-width: 560px) { .landsnap-assurance span { display: inline; } }
+.landsnap-demo-poster { display: block; margin-top: 24px; border: 1px solid var(--line); border-radius: 5px; overflow: hidden; background: #141b21; }
+.landsnap-demo-poster > img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; }
+.landsnap-demo-poster > span { display: flex; align-items: center; gap: 12px; padding: 18px; color: var(--text); font-size: .8rem; }
+.landsnap-demo-poster b { color: var(--landsnap-green); font-size: 1rem; }
+.landsnap-demo-poster > span > span { margin-left: auto; }
+.landsnap-demo-poster:hover { border-color: var(--landsnap-green); }
+
+/* Reserved live demo; hidden also prevents layout space before launch. */
+.landsnap-page .landsnap-live-demo[hidden] { display: none !important; }
+.landsnap-live-player { margin: 24px 0; border: 1px solid var(--line); border-radius: 5px; overflow: hidden; background: #10171c; }
+.landsnap-live-player p { padding: 16px 20px; margin: 0; color: var(--muted); font-size: .85rem; }
+.landsnap-live-player iframe { display: block; width: 100%; aspect-ratio: 16 / 9; border: 0; }
+.landsnap-live-demo button { font-family: var(--body); cursor: pointer; }
+.landsnap-live-demo button:focus-visible { outline: 3px solid var(--landsnap-green); outline-offset: 4px; }
+.landsnap-live-demo button:disabled { opacity: .55; cursor: default; }

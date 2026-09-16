@@ -3,22 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LandSnap for Unreal Engine 5.8 | Nightshift</title>
-    <meta name="description" content="LandSnap is an editor-only Unreal Engine 5.8 tool for snapping actors, particle systems, and splines to terrain or intentionally tagged surfaces.">
-    <meta name="theme-color" content="#050a08">
+    <title>LandSnap 2.0 for Unreal Engine 5.8 | Nightshift</title>
+    <meta name="description" content="LandSnap 2.0 is an editor-only Unreal Engine 5.8 tool for precise terrain placement, global AutoSnap, and deterministic review repair.">
+    <meta name="theme-color" content="#141b21">
     <link rel="canonical" href="https://ns-tx.com/pages/Studio/Landsnap.html">
     <meta property="og:type" content="website">
-    <meta property="og:title" content="LandSnap for Unreal Engine 5.8">
-    <meta property="og:description" content="Settle actors, particles, and splines onto terrain in one predictable, undoable editor pass.">
+    <meta property="og:title" content="LandSnap 2.0 for Unreal Engine 5.8">
+    <meta property="og:description" content="Settle actors, particles, and splines onto terrain with AutoSnap, deterministic review, and undoable repair.">
     <meta property="og:url" content="https://ns-tx.com/pages/Studio/Landsnap.html">
     <meta property="og:image" content="https://ns-tx.com/images/landsnap/FAB-thumbnail.png">
     <meta name="twitter:card" content="summary_large_image">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wdth,wght@75..100,400;75..100,500;75..100,600;75..100,700&family=Tektur:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="../../images/icons/nightshift.ico">
-    <link rel="stylesheet" href="../../styles/home-modus-mockup.css?v=20260702-footer-universal">
-    <link rel="stylesheet" href="../../styles/landsnap.css">
+    <link rel="stylesheet" href="../../styles/landsnap.css?v=20260907-v2">
+    <script defer src="../../scripts/landsnap.js?v=20260907-v2"></script>
     <script defer src="/scripts/analytics.js" data-analytics-endpoint="/api/analytics"></script>
 </head>
 <body class="landsnap-page">
@@ -31,7 +31,6 @@
         <nav class="utility-nav" aria-label="Primary">
             <a href="/" class="hover-sound">Home</a>
             <a href="../games.html" class="hover-sound">Games</a>
-            <a href="../studio.html" class="hover-sound active" aria-current="page">Studio</a>
             <a href="../DevLog/index.html" class="hover-sound">Devlog</a>
             <a href="../contact.html" class="hover-sound">Contact</a>
         </nav>
@@ -42,108 +41,109 @@
         <section class="page-hero-grid game-detail-hero landsnap-hero" aria-labelledby="landsnap-title">
             <article class="page-hero-panel game-detail-copy landsnap-hero-copy">
                 <div class="landsnap-release-line" aria-label="Product version and compatibility">
-                    <span>LandSnap 1.1.0</span>
+                    <span>Version 2.0 submitted to Fab</span>
                     <span>Unreal Engine 5.8</span>
                 </div>
-                <p class="eyebrow">Nightshift editor tooling / available on Fab</p>
-                <h1 id="landsnap-title" class="page-title">LandSnap</h1>
-                <p class="landsnap-hero-kicker">Settle the scene. Keep building.</p>
-                <p class="page-lede">Snap actors, particle systems, splines, and spline meshes to Landscapes, UE 5.8 Mesh Terrain, or intentionally tagged surfaces in one predictable, undoable editor pass.</p>
+                <p class="eyebrow">Editor tooling / <a class="landsnap-fab-link" href="https://www.fab.com/listings/4ad39cca-a866-4112-bbfb-4972e2d2eb99" target="_blank" rel="noopener noreferrer">available on Fab</a></p>
+                <h1 id="landsnap-title" class="page-title">LandSnap<span class="landsnap-version">2.0</span></h1>
+                <p class="landsnap-hero-kicker">Less nudging.<br>More worldbuilding.</p>
+                <p class="page-lede">Place it. Move it. Keep it grounded. AutoSnap follows your edits, terrain fitting finds the support, and Placement Studio puts the next move in your hands.</p>
                 <div class="hero-actions">
-                    <a class="cta-btn primary hover-sound" href="https://www.fab.com/listings/4ad39cca-a866-4112-bbfb-4972e2d2eb99" target="_blank" rel="noopener noreferrer">Get LandSnap On Fab</a>
-                    <a class="cta-btn hover-sound" href="../DevLog/posts/2026-07-21-landsnap-ue-5-8-agent-workflows.html">See What Is New</a>
+                    <a class="cta-btn primary landsnap-update-cta hover-sound" href="#release">See What Is New</a>
                     <a class="cta-btn hover-sound" href="#documentation">Read Documentation</a>
                 </div>
                 <p class="landsnap-assurance">Editor-only <span aria-hidden="true">/</span> no runtime component <span aria-hidden="true">/</span> no packaged-build cost</p>
             </article>
 
-            <aside class="page-hero-panel landsnap-console" aria-label="LandSnap control surface preview">
+            <aside class="page-hero-panel landsnap-console" aria-label="Interactive placement illustration">
                 <div class="landsnap-console-header">
                     <div class="landsnap-console-identity">
                         <img src="../../images/landsnap/video_icon.png" alt="" aria-hidden="true">
-                        <div><span>LandSnap</span><strong>Control Surface</strong></div>
+                        <div><span>Placement study / 001</span><strong>Find your footing.</strong></div>
                     </div>
-                    <span class="landsnap-ready"><i aria-hidden="true"></i>Ready</span>
+                    <span class="landsnap-ready"><i aria-hidden="true"></i>Interactive</span>
                 </div>
-                <div class="landsnap-console-screen">
-                    <p class="landsnap-console-label">Active placement contract</p>
-                    <div class="landsnap-console-readout">
-                        <span>Target mode</span>
-                        <strong>Terrain surfaces</strong>
-                        <small>Landscape + experimental Mesh Terrain</small>
-                    </div>
-                    <div class="landsnap-console-readout">
-                        <span>Selection</span>
-                        <strong>Actors / particles / splines</strong>
-                        <small>Pivot-aware, bounds-aware, normal-aligned</small>
-                    </div>
-                    <div class="landsnap-console-readout">
-                        <span>Agent gate</span>
-                        <strong>Disabled by default</strong>
-                        <small>Explicit environment opt-in required</small>
-                    </div>
+                <div class="landsnap-terrain-study" data-settled="false">
+                    <svg id="landsnap-terrain" viewBox="0 0 720 460" role="img" aria-label="Illustrated blocks above a contoured terrain surface. Use Snap Selected to bring them onto the surface."></svg>
+                    <span class="landsnap-study-axis" aria-hidden="true">Z ↑<br>Y ↗ &nbsp; X ↘</span>
+                    <span class="landsnap-study-caption">Terrain placement / schematic illustration</span>
                 </div>
-                <div class="landsnap-console-actions" aria-label="LandSnap editor actions">
-                    <div class="landsnap-tool-command">
-                        <img src="../../images/landsnap/Icon40.png" alt="" aria-hidden="true">
-                        <span><small>Actor action</small><strong>LandSnap Selected</strong></span>
-                    </div>
-                    <div class="landsnap-tool-command">
-                        <img src="../../images/landsnap/Icon40-spline.png" alt="" aria-hidden="true">
-                        <span><small>Spline action</small><strong>LandSnap Splines</strong></span>
-                    </div>
+                <div class="landsnap-study-controls">
+                    <div><span class="landsnap-console-label">Selection state</span><strong id="landsnap-study-state" aria-live="polite">06 actors · awaiting placement</strong></div>
+                    <button id="landsnap-snap-demo" type="button" aria-pressed="false" hidden><img src="../../images/landsnap/Icon40.png" alt=""><span>Snap Selected</span><span aria-hidden="true">↘</span></button>
                 </div>
-                <div class="landsnap-console-footer"><span>v1.1.0</span><span>UE 5.8 tested</span><span>Editor module</span></div>
+                <noscript><p class="landsnap-study-fallback">Snap Selected places your selection on the target surface. Enable JavaScript to try the illustrated before-and-after.</p></noscript>
+                <div class="landsnap-console-footer"><span>One selection</span><span>One deliberate action</span><span>Your next move</span></div>
             </aside>
         </section>
 
         <section class="landsnap-proof-strip" aria-label="LandSnap product facts">
-            <div><span>Compatibility</span><strong>UE 5.8 tested</strong><small>Landscape + Mesh Terrain</small></div>
+            <div><span>Built for</span><strong>Unreal Engine 5.8</strong><small>Win64 editor</small></div>
             <div><span>Runtime cost</span><strong>Editor-only</strong><small>No packaged-build component</small></div>
             <div><span>Placement safety</span><strong>Undoable</strong><small>Scoped editor transactions</small></div>
-            <div><span>World scale</span><strong>Large-world ready</strong><small>World Partition + HLOD safe</small></div>
+            <div><span>Your surfaces</span><strong>Terrain + tagged meshes</strong><small>Landscape / Mesh Terrain / explicit tags</small></div>
         </section>
 
         <nav class="landsnap-section-nav" aria-label="LandSnap page sections">
-            <a href="#release">Version 1.1</a>
+            <a href="#release">Version 2.0</a>
             <a href="#workflow">Workflow</a>
             <a href="#capabilities">Capabilities</a>
-            <a href="#agent-workflows">Agent tools</a>
+            <a href="#agent-workflows">MCP companion</a>
             <a href="#documentation">Documentation</a>
         </nav>
+
+        <!-- Future Pixel Streaming hookup:
+             Set data-stream-url to the hosted HTTPS player page (not its signalling WebSocket),
+             then remove hidden from this section. The player loads only on Start live demo.
+             Session allocation, timeout/reset, and embedding support belong to the stream host. -->
+        <section id="live-demo" class="panel landsnap-live-demo" aria-labelledby="landsnap-live-title" data-stream-url="" hidden>
+            <div class="landsnap-heading-row">
+                <div>
+                    <p class="eyebrow">Hands-on / Unreal Editor</p>
+                    <h2 id="landsnap-live-title">Try LandSnap Live.</h2>
+                </div>
+                <p>Explore a terrain playground and try LandSnap in a streamed Unreal Editor session, right here in your browser.</p>
+            </div>
+            <div class="landsnap-live-player" id="landsnap-live-player">
+                <p id="landsnap-live-status" role="status">Start the demo to connect to the playground.</p>
+            </div>
+            <div class="hero-actions">
+                <button class="cta-btn primary" id="landsnap-live-start" type="button">Start live demo</button>
+            </div>
+        </section>
 
         <section id="release" class="panel notes-panel landsnap-release-panel">
             <div class="panel-heading landsnap-heading-row">
                 <div>
-                    <p class="eyebrow">New in version 1.1.0</p>
-                    <h2>A tighter placement workflow for UE 5.8</h2>
+                    <p class="eyebrow">Version 2.0.0 / pending Fab approval</p>
+                    <h2>The placement pass.<br>Rebuilt around your flow.</h2>
                 </div>
-                <p>The core snap stays fast and predictable. Version 1.1.0 expands the terrain, content, and control surfaces around it.</p>
+                <p>Submitted for Fab review on September 16, 2026. Automatic publication follows approval. From the first prop to a whole selection, v2 brings placement, contact review, and repair into one dockable workspace.</p>
             </div>
             <div class="landsnap-release-grid">
                 <article class="landsnap-feature-card">
-                    <span class="landsnap-card-index">01 / Terrain</span>
-                    <h3>Mesh Terrain recognition</h3>
-                    <p>Snap to Landscapes and UE 5.8's experimental Mesh Terrain path without forcing a hard Mesh Partition module dependency.</p>
+                    <span class="landsnap-card-index">01 / AutoSnap</span>
+                    <h3>One global placement mode</h3>
+                    <p>Use the checkable AutoSnap toolbar toggle to settle eligible placed or edited actors after their changes finish—without per-object enrollment.</p>
                 </article>
                 <article class="landsnap-feature-card">
-                    <span class="landsnap-card-index">02 / Particles</span>
-                    <h3>Particle-safe snapping</h3>
-                    <p>Place Niagara and Cascade emitters from a stable pivot, preserve rotation by default, and skip mesh-only settling passes.</p>
+                    <span class="landsnap-card-index">02 / Terrain fitting</span>
+                    <h3>Uneven ground. Considered.</h3>
+                    <p>Rigid actors fit against real support edges. Contact checks keep unresolved placements visible in Needs Review, ready for your next pass.</p>
                 </article>
                 <article class="landsnap-feature-card">
-                    <span class="landsnap-card-index">03 / Control</span>
-                    <h3>Dockable LandSnap Panel</h3>
-                    <p>Run actor or spline actions and tune the live searchable settings object from <strong>Window -&gt; LandSnap Panel</strong>.</p>
+                    <span class="landsnap-card-index">03 / Review</span>
+                    <h3>Progressive repair</h3>
+                    <p>Exact-target verification sends unresolved placements to Needs Review, where Repair Current and Repair All test deterministic candidates one editor tick at a time.</p>
                 </article>
                 <article class="landsnap-feature-card">
-                    <span class="landsnap-card-index">04 / Automation</span>
-                    <h3>Agent-ready command layer</h3>
-                    <p>Expose opt-in editor commands for deterministic search, dry runs, snapping, and single-line JSON receipts.</p>
+                    <span class="landsnap-card-index">04 / Placement Studio</span>
+                    <h3>Your tools. In one place.</h3>
+                    <p>Dock placement controls, review, repair, and repeatable Scatter and Domino calibration layouts beside your viewport. Rebind your shortcuts live.</p>
                 </article>
             </div>
             <div class="landsnap-inline-action">
-                <a class="cta-btn hover-sound" href="../DevLog/posts/2026-07-21-landsnap-ue-5-8-agent-workflows.html">Read The 1.1.0 Release Notes</a>
+                <a class="cta-btn hover-sound" href="#documentation">Read The v2 Workflow</a>
             </div>
         </section>
 
@@ -164,35 +164,26 @@
                     </article>
                     <article class="landsnap-workflow-step">
                         <span>Step 02</span>
-                        <h3>Choose the target mode</h3>
-                        <p>Use <strong>Only Terrain Surfaces</strong> for Landscape and Mesh Terrain, or <strong>Only Tagged Surfaces</strong> for explicit designer-owned geometry.</p>
+                        <h3>Choose AutoSnap or Snap Selected</h3>
+                        <p>Enable global AutoSnap for eligible editor changes, or run the one-shot unified Snap Selected action when you want a deliberate pass.</p>
                     </article>
                     <article class="landsnap-workflow-step">
                         <span>Step 03</span>
-                        <h3>Snap and refine</h3>
-                        <p>Run the actor or spline action, then tune alignment, Z offset, trace distance, or size tiers only if needed.</p>
+                        <h3>Review and refine</h3>
+                        <p>Use Needs Review for exact-target exceptions, then tune alignment, Z offset, trace distance, or size tiers only if the scene needs it.</p>
                     </article>
                     <p class="landsnap-workflow-note"><strong>Predictable by design:</strong> terrain and tagged-surface modes are mutually exclusive. Tagged placement is surface-based, not free-form stacking.</p>
                 </div>
                 <div id="watch" class="landsnap-demo-card">
                     <div class="landsnap-demo-copy">
-                        <p class="eyebrow">Core workflow demo</p>
-                        <h3>See LandSnap in the editor</h3>
-                        <p>The video covers the original actor-and-spline workflow. Version 1.1.0 adds Mesh Terrain, particles, the dockable panel, and agent commands described on this page.</p>
+                        <p class="eyebrow">Legacy workflow reference</p>
+                        <h3>Original LandSnap demo</h3>
+                        <p>This video documents the earlier actor-and-spline workflow. LandSnap v2 adds global AutoSnap, unified Snap Selected, review repair, and calibration.</p>
                     </div>
-                    <div class="video-frame landsnap-video">
-                        <iframe
-                            src="https://www.youtube-nocookie.com/embed/3kf6S1Dcyp4"
-                            title="LandSnap core actor and spline workflow overview"
-                            loading="lazy"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            allowfullscreen
-                        ></iframe>
-                    </div>
-                    <figure class="landsnap-artwork">
-                        <img src="../../images/landsnap/FAB-thumbnail.png" alt="LandSnap artwork showing actors snapping down onto an Unreal landscape" loading="lazy" decoding="async">
-                        <figcaption>Original LandSnap placement artwork. The current 1.1.0 surface coverage is detailed below.</figcaption>
-                    </figure>
+                    <a class="landsnap-demo-poster" href="https://www.youtube.com/watch?v=3kf6S1Dcyp4" target="_blank" rel="noopener noreferrer" aria-label="Watch the original LandSnap workflow on YouTube (opens in a new tab)">
+                        <img src="../../images/landsnap/FAB-thumbnail.png" alt="LandSnap actors snapping onto terrain" width="1280" height="720" loading="lazy" decoding="async">
+                        <span><b aria-hidden="true">▶</b> Watch the original workflow <span aria-hidden="true">↗</span></span>
+                    </a>
                 </div>
             </div>
         </section>
@@ -201,7 +192,7 @@
             <div class="panel-heading landsnap-heading-row">
                 <div>
                     <p class="eyebrow">Placement coverage</p>
-                    <h2>One tool. Four placement paths.</h2>
+                    <h2>One tool. Explicit placement paths.</h2>
                 </div>
                 <p>LandSnap keeps each target contract explicit, so fast placement does not turn into surprising placement.</p>
             </div>
@@ -209,12 +200,12 @@
                 <article class="landsnap-capability-card">
                     <span class="landsnap-capability-state">Stable</span>
                     <h3>Landscape</h3>
-                    <p>Settle props and spline points against Unreal Landscape with pivot, bounds-bottom, and normal-aligned placement.</p>
+                    <p>Settle eligible placed actors against Unreal Landscape with pivot, bounds-bottom, and normal-aligned placement.</p>
                 </article>
-                <article class="landsnap-capability-card landsnap-capability-experimental">
-                    <span class="landsnap-capability-state">Experimental</span>
+                <article class="landsnap-capability-card">
+                    <span class="landsnap-capability-state">Terrain</span>
                     <h3>UE 5.8 Mesh Terrain</h3>
-                    <p>Recognize reflected Mesh Partition actors and components without forcing a hard module dependency.</p>
+                    <p>Snap to reflected Mesh Terrain without a hard Mesh Partition dependency. Optional deformation remains a separate, default-off experimental workflow.</p>
                 </article>
                 <article class="landsnap-capability-card">
                     <span class="landsnap-capability-state">Explicit</span>
@@ -229,38 +220,16 @@
             </div>
         </section>
 
-        <section id="agent-workflows" class="panel feature-panel landsnap-agent-panel">
-            <div class="landsnap-agent-grid">
-                <div class="landsnap-agent-copy">
-                    <p class="eyebrow">Agent workflow / explicit opt-in</p>
-                    <h2>Built for MCP-connected editor tools—not as an MCP server</h2>
-                    <p>LandSnap exposes five Unreal Editor console commands that external MCP-connected agents or automation tools can call. It does not bundle an MCP server, require an AI provider, or store provider keys.</p>
-                    <div class="landsnap-agent-gate">
-                        <span>Safety gate</span>
-                        <strong>Automation starts disabled.</strong>
-                        <p>Set <code>LANDSNAP_AGENT_ENABLED=1</code> in the operating-system environment before Unreal Editor launches to opt in.</p>
-                    </div>
-                    <ol class="landsnap-agent-flow">
-                        <li><span>01</span><div><strong>Search</strong><small>Dry-run a bounded filter before transforms change.</small></div></li>
-                        <li><span>02</span><div><strong>Review</strong><small>Inspect deterministic JSON matches in the Unreal log.</small></div></li>
-                        <li><span>03</span><div><strong>Search and snap</strong><small>Select the same matches and run the existing action.</small></div></li>
-                        <li><span>04</span><div><strong>Undo if needed</strong><small>Keep the normal scoped transaction available.</small></div></li>
-                    </ol>
+        <section id="agent-workflows" class="panel landsnap-agent-panel">
+            <div class="landsnap-heading-row">
+                <div>
+                    <p class="eyebrow">Included editor module / LandSnapMCP</p>
+                    <h2>Your editor.<br>Your agent workflow.</h2>
                 </div>
-
-                <div class="landsnap-command-console" aria-label="LandSnap agent command example">
-                    <div class="landsnap-command-header"><span>Output Log / LandSnapAgent</span><strong>JSON receipts</strong></div>
-                    <div class="landsnap-command-body">
-                        <p><span class="landsnap-prompt">&gt;</span> LandSnap.Agent.Status</p>
-                        <p><span class="landsnap-prompt">&gt;</span> LandSnap.Agent.Search</p>
-                        <p><span class="landsnap-prompt">&gt;</span> LandSnap.Agent.SnapSelected</p>
-                        <p><span class="landsnap-prompt">&gt;</span> LandSnap.Agent.SnapSplines</p>
-                        <p><span class="landsnap-prompt">&gt;</span> LandSnap.Agent.SearchAndSnap</p>
-                        <div class="landsnap-command-separator"></div>
-                        <p class="landsnap-command-example"><span class="landsnap-prompt">&gt;</span> LandSnap.Agent.Search folder=Environment/Rocks max=100</p>
-                        <p class="landsnap-json">[LandSnapAgent] {"ok":true,"command":"search","query":"","class":"","tags":"","folder":"Environment/Rocks","assetfolder":"","count":1,"matches":[{"score":100,"label":"Rock_01","path":"/Game/Maps/Test.Test:PersistentLevel.Rock_01","class":"StaticMeshActor","folder":"Environment/Rocks","asset_paths":"/Game/Environment/Rocks/SM_Rock_01"}]}</p>
-                    </div>
-                    <div class="landsnap-command-footer"><span>Filters</span><strong>text / class / tags / folder / asset folder</strong></div>
+                <div class="landsnap-companion-copy">
+                    <p>LandSnap 2.0 ships the LandSnapMCP editor module beside the core module in one Fab install. Connect compatible MCP tools to search a bounded selection, inspect the results, then run a deliberate placement pass.</p>
+                    <p>MCP integration remains optional. The core works independently, while transport activation and agent mutation remain separate opt-ins.</p>
+                    <a class="cta-btn" href="#documentation">Read setup and documentation <span aria-hidden="true">↓</span></a>
                 </div>
             </div>
         </section>
@@ -283,18 +252,18 @@
                             <li>Restart Unreal Editor and allow the editor module to rebuild when required.</li>
                             <li>Open <strong>Window -&gt; LandSnap Panel</strong> to dock actions and live settings beside your normal editor tools.</li>
                         </ol>
-                        <p class="landsnap-note">Requirement: Unreal Engine 5.8 tested. LandSnap is editor-only and does not affect packaged builds.</p>
+                        <p class="landsnap-note">Built for Unreal Engine 5.8 on Win64. LandSnap is editor-only and does not affect packaged builds.</p>
                     </div>
                 </details>
 
                 <details class="landsnap-disclosure">
-                    <summary><span>02</span><strong>Toolbar, panel, and hotkeys</strong><small>Daily controls</small></summary>
+                    <summary><span>02</span><strong>AutoSnap, toolbar, and hotkeys</strong><small>Daily controls</small></summary>
                     <div class="landsnap-disclosure-body">
                         <div class="landsnap-tool-list">
-                            <div><img src="../../images/landsnap/Icon40.png" alt="" aria-hidden="true"><span><strong>LandSnap Selected</strong><small>Snap the current actor or particle selection.</small></span><kbd>Ctrl + Down</kbd></div>
-                            <div><img src="../../images/landsnap/Icon40-spline.png" alt="" aria-hidden="true"><span><strong>LandSnap Splines</strong><small>Snap spline points and spline mesh endpoints.</small></span><kbd>Shift + Down</kbd></div>
+                            <div><img src="../../images/landsnap/Icon40-Auto.png" alt="" aria-hidden="true"><span><strong>AutoSnap</strong><small>Check the default-visible toolbar toggle to settle eligible actor edits globally. AutoSnap starts off. Toggle it with Ctrl + Shift + Down.</small></span><kbd>Ctrl + Shift + Down</kbd></div>
+                            <div><img src="../../images/landsnap/Icon40.png" alt="" aria-hidden="true"><span><strong>Snap Selected</strong><small>Run the one-shot unified actor, particle, and spline action. Its toolbar button is visible by default.</small></span><kbd>Ctrl + Down</kbd></div>
                         </div>
-                        <p>The dockable panel edits the same settings object used by toolbar, hotkey, and agent commands, so changes apply immediately.</p>
+                        <p>Use <strong>Setup -&gt; Configure Hotbar</strong> to independently control <strong>Show AutoSnap Toolbar Button</strong> and <strong>Show Single Snap Toolbar Button</strong>. <strong>Setup -&gt; Hotkeys</strong> exposes <strong>Snap Selected Hotkey</strong> and <strong>AutoSnap Toggle Hotkey</strong>; rebinding applies live and stays synchronized with Unreal’s Keyboard Shortcuts. The viewport actor right-click <strong>Snapping</strong> menu also exposes Snap Selected and shows its current chord.</p>
                     </div>
                 </details>
 
@@ -317,19 +286,20 @@
                 </details>
 
                 <details class="landsnap-disclosure">
-                    <summary><span>05</span><strong>Advanced settling and size tiers</strong><small>Uneven terrain</small></summary>
+                    <summary><span>05</span><strong>Hinge fitting and Needs Review</strong><small>Uneven terrain</small></summary>
                     <div class="landsnap-disclosure-body landsnap-doc-columns">
-                        <div><h3>Footprints</h3><p>Use convex best-fit alignment or the experimental concave paths for irregular footprints and uneven contact.</p></div>
-                        <div><h3>Floater correction</h3><p>The optional bounce pass uses down- and up-traces to close small residual gaps after placement.</p></div>
-                        <div><h3>Scale-aware tuning</h3><p>Auto and manual size tiers tune trace lift, depth, convex thresholds, push, and bounce limits for different asset scales.</p></div>
+                        <div><h3>Adjacent-edge hinge fitting</h3><p>For rigid actors, LandSnap evaluates real neighboring bottom edges—not diagonals—then searches balanced and three-corner support for the strongest supported pose.</p></div>
+                        <div><h3>Review classifier</h3><p>Exact-target verification recognizes seated four-corner and bounded penetrating three-corner support while keeping one-edge-only, floating, and split-terrain misses reviewable.</p></div>
+                        <div><h3>Progressive repair</h3><p>Needs Review can Repair Current or Repair All with one unique deterministic candidate per editor tick. Published winners are freshly audited; stopped or exhausted actors return to their immutable baseline.</p></div>
                     </div>
                 </details>
 
                 <details class="landsnap-disclosure">
-                    <summary><span>06</span><strong>Debugging and practical limits</strong><small>Diagnostics</small></summary>
+                    <summary><span>06</span><strong>Calibration, experimental Mesh Terrain, and limits</strong><small>Setup</small></summary>
                     <div class="landsnap-disclosure-body landsnap-doc-columns landsnap-doc-columns-two">
-                        <div><h3>Diagnostics</h3><p>Enable debug line draw, verbose <code>LogLandSnap</code> output, and auto-tier logging to inspect traces and classification decisions.</p></div>
-                        <div><h3>Expectations</h3><p>Very thin meshes, extreme slopes, missing simple collision, or highly concave targets can still need manual tuning. LandSnap favors predictable placement over physical simulation.</p></div>
+                        <div><h3>Calibration</h3><p><strong>Setup -&gt; Calibration</strong> provides repeatable Scatter and Domino layouts. Compare placement across size tiers, exercise Snap Selected, and clean up only the owned calibration actors.</p></div>
+                        <div><h3>Experimental Mesh Terrain</h3><p><strong>Setup -&gt; Experimental Settings -&gt; Enable Mesh Terrain (Experimental)</strong> is off by default. It gates optional non-destructive deformation only; ordinary Mesh Terrain snapping remains available when it is off.</p></div>
+                        <p class="landsnap-note landsnap-column-span">Very thin meshes, extreme slopes, missing simple collision, or highly concave targets can still need manual tuning. LandSnap favors predictable placement over physical simulation.</p>
                     </div>
                 </details>
             </div>
@@ -350,13 +320,13 @@
 
         <section class="panel landsnap-final-cta" aria-labelledby="landsnap-final-title">
             <div>
-                <p class="eyebrow">Available on Fab</p>
+                <p class="eyebrow"><a class="landsnap-fab-link" href="https://www.fab.com/listings/4ad39cca-a866-4112-bbfb-4972e2d2eb99" target="_blank" rel="noopener noreferrer">Available on Fab</a></p>
                 <h2 id="landsnap-final-title">Spend the pass on the level—not on transform cleanup.</h2>
-                <p>LandSnap 1.1.0 targets Unreal Engine 5.8 and stays entirely inside the editor.</p>
+                <p>LandSnap 2.0 is built for Unreal Engine 5.8 and stays entirely inside the editor.</p>
             </div>
             <div class="hero-actions">
-                <a class="cta-btn primary hover-sound" href="https://www.fab.com/listings/4ad39cca-a866-4112-bbfb-4972e2d2eb99" target="_blank" rel="noopener noreferrer">Get LandSnap On Fab</a>
-                <a class="cta-btn hover-sound" href="../DevLog/posts/2026-07-21-landsnap-ue-5-8-agent-workflows.html">Read The 1.1.0 Release Notes</a>
+                <a class="cta-btn primary landsnap-fab-cta hover-sound" href="https://www.fab.com/listings/4ad39cca-a866-4112-bbfb-4972e2d2eb99" target="_blank" rel="noopener noreferrer">Get LandSnap On Fab</a>
+                <a class="cta-btn hover-sound" href="#documentation">Read The v2 Documentation</a>
             </div>
         </section>
 
@@ -364,15 +334,16 @@
             <section class="software-marquee-section" aria-label="Software used by Nightshift">
                 <div class="software-marquee"><div class="software-marquee-track">
                     <div class="software-marquee-group"><a class="software-marquee-item hover-sound" href="https://www.unrealengine.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/unreal-engine.svg" alt="" aria-hidden="true" loading="lazy"><span>Unreal</span></a><a class="software-marquee-item hover-sound" href="https://developer.valvesoftware.com/wiki/Source_2" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/source-2.svg" alt="" aria-hidden="true" loading="lazy"><span>Source 2</span></a><a class="software-marquee-item hover-sound" href="https://enfusionengine.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/enfusion.svg" alt="" aria-hidden="true" loading="lazy"><span>Enfusion</span></a><a class="software-marquee-item hover-sound" href="https://docs.fivem.net/docs/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/rage.svg" alt="" aria-hidden="true" loading="lazy"><span>RAGE</span></a><a class="software-marquee-item hover-sound" href="https://www.blender.org/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/blender.svg" alt="" aria-hidden="true" loading="lazy"><span>Blender</span></a><a class="software-marquee-item hover-sound" href="https://www.adobe.com/products/substance3d.html" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/adobe-3d.svg" alt="" aria-hidden="true" loading="lazy"><span>Adobe 3D</span></a><a class="software-marquee-item hover-sound" href="https://affinity.serif.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/affinity-suite.png" alt="" aria-hidden="true" loading="lazy"><span>Affinity Suite</span></a><a class="software-marquee-item hover-sound" href="https://quadspinner.com/gaea/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/gaea.png" alt="" aria-hidden="true" loading="lazy"><span>Gaea 2.0</span></a><a class="software-marquee-item hover-sound" href="https://www.reallusion.com/character-creator/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/cc5.png" alt="" aria-hidden="true" loading="lazy"><span>CC5</span></a><a class="software-marquee-item hover-sound" href="https://www.reallusion.com/iclone/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/iclone-8.png" alt="" aria-hidden="true" loading="lazy"><span>iClone 8</span></a><a class="software-marquee-item hover-sound" href="https://www.marvelousdesigner.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/marvelous-designer.png" alt="" aria-hidden="true" loading="lazy"><span>Marvelous Designer</span></a><a class="software-marquee-item hover-sound" href="https://ephere.com/plugins/ornatrix/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/ornatrix.png" alt="" aria-hidden="true" loading="lazy"><span>Ornatrix</span></a><a class="software-marquee-item hover-sound" href="https://www.image-line.com/fl-studio/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/fl-studio.png" alt="" aria-hidden="true" loading="lazy"><span>FruityLoops</span></a><a class="software-marquee-item hover-sound" href="https://code.visualstudio.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/vs-code.png" alt="" aria-hidden="true" loading="lazy"><span>VS Code</span></a><a class="software-marquee-item hover-sound" href="https://visualstudio.microsoft.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/visual-studio.svg" alt="" aria-hidden="true" loading="lazy"><span>Visual Studio</span></a><a class="software-marquee-item hover-sound" href="https://github.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/github.svg" alt="" aria-hidden="true" loading="lazy"><span>GitHub</span></a><a class="software-marquee-item hover-sound" href="https://git-lfs.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/git-lfs.svg" alt="" aria-hidden="true" loading="lazy"><span>Git LFS</span></a><a class="software-marquee-item hover-sound" href="https://pages.github.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/github-pages.svg" alt="" aria-hidden="true" loading="lazy"><span>GitHub Pages</span></a><a class="software-marquee-item hover-sound" href="https://www.wix.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/wix.svg" alt="" aria-hidden="true" loading="lazy"><span>Wix</span></a><a class="software-marquee-item hover-sound" href="https://stripe.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/stripe.svg" alt="" aria-hidden="true" loading="lazy"><span>Stripe</span></a><a class="software-marquee-item hover-sound" href="https://obsidian.md/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/obsidian.svg" alt="" aria-hidden="true" loading="lazy"><span>Obsidian</span></a><a class="software-marquee-item hover-sound" href="https://openai.com/codex/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/openai.png" alt="" aria-hidden="true" loading="lazy"><span>Codex</span></a></div>
-                    <div class="software-marquee-group" aria-hidden="true"><a class="software-marquee-item hover-sound" href="https://www.unrealengine.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/unreal-engine.svg" alt="" aria-hidden="true" loading="lazy"><span>Unreal</span></a><a class="software-marquee-item hover-sound" href="https://developer.valvesoftware.com/wiki/Source_2" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/source-2.svg" alt="" aria-hidden="true" loading="lazy"><span>Source 2</span></a><a class="software-marquee-item hover-sound" href="https://enfusionengine.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/enfusion.svg" alt="" aria-hidden="true" loading="lazy"><span>Enfusion</span></a><a class="software-marquee-item hover-sound" href="https://docs.fivem.net/docs/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/rage.svg" alt="" aria-hidden="true" loading="lazy"><span>RAGE</span></a><a class="software-marquee-item hover-sound" href="https://www.blender.org/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/blender.svg" alt="" aria-hidden="true" loading="lazy"><span>Blender</span></a><a class="software-marquee-item hover-sound" href="https://www.adobe.com/products/substance3d.html" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/adobe-3d.svg" alt="" aria-hidden="true" loading="lazy"><span>Adobe 3D</span></a><a class="software-marquee-item hover-sound" href="https://affinity.serif.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/affinity-suite.png" alt="" aria-hidden="true" loading="lazy"><span>Affinity Suite</span></a><a class="software-marquee-item hover-sound" href="https://quadspinner.com/gaea/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/gaea.png" alt="" aria-hidden="true" loading="lazy"><span>Gaea 2.0</span></a><a class="software-marquee-item hover-sound" href="https://www.reallusion.com/character-creator/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/cc5.png" alt="" aria-hidden="true" loading="lazy"><span>CC5</span></a><a class="software-marquee-item hover-sound" href="https://www.reallusion.com/iclone/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/iclone-8.png" alt="" aria-hidden="true" loading="lazy"><span>iClone 8</span></a><a class="software-marquee-item hover-sound" href="https://www.marvelousdesigner.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/marvelous-designer.png" alt="" aria-hidden="true" loading="lazy"><span>Marvelous Designer</span></a><a class="software-marquee-item hover-sound" href="https://ephere.com/plugins/ornatrix/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/ornatrix.png" alt="" aria-hidden="true" loading="lazy"><span>Ornatrix</span></a><a class="software-marquee-item hover-sound" href="https://www.image-line.com/fl-studio/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/fl-studio.png" alt="" aria-hidden="true" loading="lazy"><span>FruityLoops</span></a><a class="software-marquee-item hover-sound" href="https://code.visualstudio.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/vs-code.png" alt="" aria-hidden="true" loading="lazy"><span>VS Code</span></a><a class="software-marquee-item hover-sound" href="https://visualstudio.microsoft.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/visual-studio.svg" alt="" aria-hidden="true" loading="lazy"><span>Visual Studio</span></a><a class="software-marquee-item hover-sound" href="https://github.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/github.svg" alt="" aria-hidden="true" loading="lazy"><span>GitHub</span></a><a class="software-marquee-item hover-sound" href="https://git-lfs.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/git-lfs.svg" alt="" aria-hidden="true" loading="lazy"><span>Git LFS</span></a><a class="software-marquee-item hover-sound" href="https://pages.github.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/github-pages.svg" alt="" aria-hidden="true" loading="lazy"><span>GitHub Pages</span></a><a class="software-marquee-item hover-sound" href="https://www.wix.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/wix.svg" alt="" aria-hidden="true" loading="lazy"><span>Wix</span></a><a class="software-marquee-item hover-sound" href="https://stripe.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/stripe.svg" alt="" aria-hidden="true" loading="lazy"><span>Stripe</span></a><a class="software-marquee-item hover-sound" href="https://obsidian.md/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/obsidian.svg" alt="" aria-hidden="true" loading="lazy"><span>Obsidian</span></a><a class="software-marquee-item hover-sound" href="https://openai.com/codex/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/openai.png" alt="" aria-hidden="true" loading="lazy"><span>Codex</span></a></div>
+                    <div class="software-marquee-group" aria-hidden="true" inert><a class="software-marquee-item hover-sound" href="https://www.unrealengine.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/unreal-engine.svg" alt="" aria-hidden="true" loading="lazy"><span>Unreal</span></a><a class="software-marquee-item hover-sound" href="https://developer.valvesoftware.com/wiki/Source_2" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/source-2.svg" alt="" aria-hidden="true" loading="lazy"><span>Source 2</span></a><a class="software-marquee-item hover-sound" href="https://enfusionengine.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/enfusion.svg" alt="" aria-hidden="true" loading="lazy"><span>Enfusion</span></a><a class="software-marquee-item hover-sound" href="https://docs.fivem.net/docs/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/rage.svg" alt="" aria-hidden="true" loading="lazy"><span>RAGE</span></a><a class="software-marquee-item hover-sound" href="https://www.blender.org/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/blender.svg" alt="" aria-hidden="true" loading="lazy"><span>Blender</span></a><a class="software-marquee-item hover-sound" href="https://www.adobe.com/products/substance3d.html" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/adobe-3d.svg" alt="" aria-hidden="true" loading="lazy"><span>Adobe 3D</span></a><a class="software-marquee-item hover-sound" href="https://affinity.serif.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/affinity-suite.png" alt="" aria-hidden="true" loading="lazy"><span>Affinity Suite</span></a><a class="software-marquee-item hover-sound" href="https://quadspinner.com/gaea/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/gaea.png" alt="" aria-hidden="true" loading="lazy"><span>Gaea 2.0</span></a><a class="software-marquee-item hover-sound" href="https://www.reallusion.com/character-creator/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/cc5.png" alt="" aria-hidden="true" loading="lazy"><span>CC5</span></a><a class="software-marquee-item hover-sound" href="https://www.reallusion.com/iclone/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/iclone-8.png" alt="" aria-hidden="true" loading="lazy"><span>iClone 8</span></a><a class="software-marquee-item hover-sound" href="https://www.marvelousdesigner.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/marvelous-designer.png" alt="" aria-hidden="true" loading="lazy"><span>Marvelous Designer</span></a><a class="software-marquee-item hover-sound" href="https://ephere.com/plugins/ornatrix/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/ornatrix.png" alt="" aria-hidden="true" loading="lazy"><span>Ornatrix</span></a><a class="software-marquee-item hover-sound" href="https://www.image-line.com/fl-studio/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/fl-studio.png" alt="" aria-hidden="true" loading="lazy"><span>FruityLoops</span></a><a class="software-marquee-item hover-sound" href="https://code.visualstudio.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/vs-code.png" alt="" aria-hidden="true" loading="lazy"><span>VS Code</span></a><a class="software-marquee-item hover-sound" href="https://visualstudio.microsoft.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/visual-studio.svg" alt="" aria-hidden="true" loading="lazy"><span>Visual Studio</span></a><a class="software-marquee-item hover-sound" href="https://github.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/github.svg" alt="" aria-hidden="true" loading="lazy"><span>GitHub</span></a><a class="software-marquee-item hover-sound" href="https://git-lfs.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/git-lfs.svg" alt="" aria-hidden="true" loading="lazy"><span>Git LFS</span></a><a class="software-marquee-item hover-sound" href="https://pages.github.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/github-pages.svg" alt="" aria-hidden="true" loading="lazy"><span>GitHub Pages</span></a><a class="software-marquee-item hover-sound" href="https://www.wix.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/wix.svg" alt="" aria-hidden="true" loading="lazy"><span>Wix</span></a><a class="software-marquee-item hover-sound" href="https://stripe.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/stripe.svg" alt="" aria-hidden="true" loading="lazy"><span>Stripe</span></a><a class="software-marquee-item hover-sound" href="https://obsidian.md/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/obsidian.svg" alt="" aria-hidden="true" loading="lazy"><span>Obsidian</span></a><a class="software-marquee-item hover-sound" href="https://openai.com/codex/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/openai.png" alt="" aria-hidden="true" loading="lazy"><span>Codex</span></a></div>
                 </div></div>
             </section>
+            <button class="landsnap-motion-toggle" type="button" hidden>Pause footer motion</button>
             <div class="footer-grid">
-                <div class="footer-column"><span>Primary routes</span><a class="hover-sound" href="/">Home</a><a class="hover-sound" href="/pages/games.html">Games</a><a class="hover-sound" href="/pages/studio.html">Studio</a><a class="hover-sound" href="/pages/contact.html">Contact</a></div>
+                <div class="footer-column"><span>Primary routes</span><a class="hover-sound" href="/">Home</a><a class="hover-sound" href="/pages/games.html">Games</a><a class="hover-sound" href="/pages/contact.html">Contact</a></div>
                 <div class="footer-column"><span>Public records</span><a class="hover-sound" href="/pages/DevLog/index.html">Devlog</a><a href="https://www.epicgames.com/site/en-US/privacypolicy" target="_blank" rel="noopener noreferrer">Epic Privacy Policy</a><span class="footer-link-unavailable">Nightshift Privacy Policy</span><span class="footer-link-unavailable">Applicant Privacy Policy</span></div>
                 <div class="footer-column"><span>External surfaces</span><span class="footer-link-unavailable">Press Kit</span><span class="footer-link-unavailable">Brand Assets</span><span class="footer-link-unavailable">Careers</span><span class="footer-link-unavailable">Community</span></div>
             </div>
-            <div class="footer-bottom"><div class="social-row"><a class="action-pill hover-sound" href="https://www.youtube.com/@nstx" target="_blank" rel="noopener noreferrer">YouTube</a><a class="action-pill primary hover-sound" href="/pages/Studio/Donations.html">Support the studio</a></div><p class="footer-note">Copyright 2026 Nightshift. All rights reserved.</p></div>
+            <div class="footer-bottom"><div class="social-row"><a class="action-pill hover-sound" href="https://www.youtube.com/@nstx" target="_blank" rel="noopener noreferrer">YouTube</a><a class="action-pill primary hover-sound" href="/pages/contact.html#support">Support the studio</a></div><p class="footer-note">Copyright 2026 Nightshift. All rights reserved.</p></div>
         </footer>
     </main>
 
