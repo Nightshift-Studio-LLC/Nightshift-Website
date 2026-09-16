@@ -301,6 +301,45 @@
                         <p class="landsnap-note landsnap-column-span">Very thin meshes, extreme slopes, missing simple collision, or highly concave targets can still need manual tuning. LandSnap favors predictable placement over physical simulation.</p>
                     </div>
                 </details>
+
+                <details class="landsnap-disclosure" id="advanced-documentation">
+                    <summary><span>07</span><strong>Advanced configuration and behavior</strong><small>Deep dive</small></summary>
+                    <div class="landsnap-disclosure-body landsnap-doc-columns landsnap-doc-columns-two">
+                        <div>
+                            <h3>Anchors, alignment, and traces</h3>
+                            <p>Choose pivot placement for origin-driven assets or bounds-bottom placement for rigid props. Surface alignment can preserve yaw while applying pitch and roll. Max slope, normal push, Z offset, trace lift, and trace depth define how LandSnap searches for and seats against a valid target.</p>
+                        </div>
+                        <div>
+                            <h3>AutoSnap fine-tuning</h3>
+                            <p>AutoSnap waits for an eligible edit to settle, then runs once. Its default target mode is Terrain / Mesh Terrain. <strong>Allow Z Correction</strong> preserves deliberate Z-only edits, while <strong>Allow Rotation Fine-Tuning</strong> preserves rotation-only edits. Multi-actor selections remain manual through <strong>Snap Selected</strong>.</p>
+                        </div>
+                        <div>
+                            <h3>Scale-aware terrain fitting</h3>
+                            <p>Automatic or manual size tiers tune trace reach, contact thresholds, and correction ranges without selecting a different solver. Physical-large Landscape footprints use nine exact-target terrain samples, four-corner seating, and bounded support-edge fitting for a stable pose on uneven ground.</p>
+                        </div>
+                        <div>
+                            <h3>Verification results</h3>
+                            <p>Every supported placement is checked against the exact actor and component captured by the initial snap. Results distinguish <code>landed</code>, <code>floating</code>, <code>penetrating</code>, <code>wrong surface</code>, <code>insufficient target hits</code>, <code>excessive angle</code>, and <code>no initial target</code> instead of treating every imperfect result as the same failure.</p>
+                        </div>
+                        <div>
+                            <h3>Review and heuristic repair</h3>
+                            <p>Questionable results enter Placement Studio's Needs Review list. <strong>Previous</strong> and <strong>Next</strong> inspect without changing the actor. <strong>Heuristic Repair Selected</strong> and <strong>Heuristic Repair All Errored</strong> test the same bounded candidate flow used by Snap Selected, one visible candidate per editor tick. <strong>Mark Resolved</strong> removes only the current warning.</p>
+                        </div>
+                        <div>
+                            <h3>Large selections, Undo, and Cancel</h3>
+                            <p>Large rigid selections prepare across editor frames and publish bounded groups under one Undo step. <strong>Keep Published Batches When Cancelled</strong> retains only completed, target-verified groups when you cancel. Pending actors remain unchanged, while world, settings, or Undo interruptions restore the original invocation.</p>
+                        </div>
+                        <div>
+                            <h3>Calibration and diagnostics</h3>
+                            <p>The deterministic Scatter fixture creates 500 mixed-scale Engine cubes. Domino fixtures cover ten production size references through row, map-coverage, and mixed layouts. Creation only prepares the fixture; run Snap Selected to test it. Debug lines, verbose LogLandSnap output, notifications, sounds, and Snap VFX can be enabled separately.</p>
+                        </div>
+                        <div>
+                            <h3>Included MCP integration</h3>
+                            <p>The Fab plugin includes LandSnapMCP for structured status, settings, placement, and review tools. Setup -&gt; MCP configures Epic's local Unreal transport per user and project. Read-only access can remain available while mutating tools stay disabled unless <code>LANDSNAP_AGENT_ENABLED=1</code> was set before Unreal Editor launched.</p>
+                        </div>
+                        <p class="landsnap-note landsnap-column-span">All placement mutations remain editor-only and transaction-safe. The normal toolbar, AutoSnap, Placement Studio, and MCP routes share the same live settings, verification rules, and Needs Review state.</p>
+                    </div>
+                </details>
             </div>
         </section>
 
