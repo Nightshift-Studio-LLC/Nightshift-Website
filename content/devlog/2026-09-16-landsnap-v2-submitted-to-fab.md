@@ -9,14 +9,14 @@ tags:
   - Unreal Engine
   - Terrain Fitting
   - Editor Tooling
-hero: ../../../images/landsnap/FAB-thumbnail.png
+hero: ../../../images/landsnap/FAB-thumbnail-v2.png
 ---
 
 :::highlight-blue
 ## LandSnap Version 2 has been submitted to Fab
 
 - Global AutoSnap follows eligible placement, duplication, movement, rotation, and scaling changes.
-- Placement Studio brings snapping, settings, review, repair, and calibration into one dockable workspace.
+- Placement Studio puts LandSnap’s deterministic snapping controls, review, and repair in one dockable workspace.
 - Large selections prepare across editor frames and publish in bounded groups under one Undo step.
 - Exact-target verification keeps difficult placements visible in Needs Review.
 - LandSnap and the included LandSnapMCP editor module now ship together in one Fab plugin; using the MCP integration remains optional.
@@ -26,7 +26,7 @@ LandSnap Version 2 was submitted to Fab for review on September 16, 2026, with a
 
 The release expands the editor workflow without adding a runtime gameplay dependency. AutoSnap provides an effectively real-time placement mode for individual edits, while Snap Selected handles deliberate one-shot operations across actors, Niagara and Cascade particle systems, spline points, and spline mesh components. Large mixed-size selections trade some speed for more accurate, deterministic placement and stay grouped under one Undo step.
 
-Placement Studio also makes difficult results explicit. Exact-target verification sends unresolved actors to Needs Review instead of silently calling them successful, and bounded repair actions let the editor test deterministic alternatives without turning placement into an uncontrolled simulation.
+Placement Studio is the compact control center for LandSnap’s deterministic snapping behavior. It keeps placement anchors, alignment, offsets, trace behavior, size tiers, and surface policy alongside review and repair, so a level designer can configure the exact placement contract a scene needs. Exact-target verification then sends unresolved actors to Needs Review instead of silently calling them successful, and bounded repair actions test deterministic alternatives without turning placement into an uncontrolled simulation.
 
 The Fab package includes both editor modules in one install. The core LandSnap workflow remains independently usable. LandSnapMCP is optional, and its transport activation and agent mutation controls remain separate opt-ins.
 

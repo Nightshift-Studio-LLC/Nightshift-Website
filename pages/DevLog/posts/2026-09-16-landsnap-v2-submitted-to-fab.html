@@ -34,7 +34,7 @@
                 <p class="page-lede">LandSnap Version 2 has been submitted to Fab with AutoSnap, Placement Studio, progressive multi-actor placement, exact-target review, and the included LandSnapMCP editor module.</p>
                 <div class="hero-actions"><a class="cta-btn hover-sound" href="../index.html">Back To Devlog</a></div>
                 <div class="tag-row"><span class="tag">LandSnap</span><span class="tag">Unreal Engine</span><span class="tag">Terrain Fitting</span><span class="tag">Editor Tooling</span></div>
-                <div class="media-frame devlog-hero"><img src="../../../images/landsnap/FAB-thumbnail.png" alt="LandSnap Version 2 submitted to Fab: rebuilt placement workflows and rigid terrain fitting"></div>
+                <div class="media-frame devlog-hero"><img src="../../../images/landsnap/FAB-thumbnail-v2.png" alt="LandSnap Version 2 submitted to Fab: rebuilt placement workflows and rigid terrain fitting"></div>
             </article>
             <aside class="page-hero-panel">
                 <p class="eyebrow">Entry metadata</p>
@@ -61,7 +61,7 @@
             <div class="devlog-post-body"><section class="devlog-highlight devlog-highlight-blue"><h2>LandSnap Version 2 has been submitted to Fab</h2>
 <ul>
 <li>Global AutoSnap follows eligible placement, duplication, movement, rotation, and scaling changes.</li>
-<li>Placement Studio brings snapping, settings, review, repair, and calibration into one dockable workspace.</li>
+<li>Placement Studio puts LandSnap’s deterministic snapping controls, review, and repair in one dockable workspace.</li>
 <li>Large selections prepare across editor frames and publish in bounded groups under one Undo step.</li>
 <li>Exact-target verification keeps difficult placements visible in Needs Review.</li>
 <li>LandSnap and the included LandSnapMCP editor module now ship together in one Fab plugin; using the MCP integration remains optional.</li>
@@ -70,7 +70,7 @@
 
 <p>LandSnap Version 2 was submitted to Fab for review on September 16, 2026, with automatic publication enabled after approval. The existing LandSnap listing remains available while Fab reviews the update.</p>
 <p>The release expands the editor workflow without adding a runtime gameplay dependency. AutoSnap provides an effectively real-time placement mode for individual edits, while Snap Selected handles deliberate one-shot operations across actors, Niagara and Cascade particle systems, spline points, and spline mesh components. Large mixed-size selections trade some speed for more accurate, deterministic placement and stay grouped under one Undo step.</p>
-<p>Placement Studio also makes difficult results explicit. Exact-target verification sends unresolved actors to Needs Review instead of silently calling them successful, and bounded repair actions let the editor test deterministic alternatives without turning placement into an uncontrolled simulation.</p>
+<p>Placement Studio is the compact control center for LandSnap’s deterministic snapping behavior. It keeps placement anchors, alignment, offsets, trace behavior, size tiers, and surface policy alongside review and repair, so a level designer can configure the exact placement contract a scene needs. Exact-target verification then sends unresolved actors to Needs Review instead of silently calling them successful, and bounded repair actions test deterministic alternatives without turning placement into an uncontrolled simulation.</p>
 <p>The Fab package includes both editor modules in one install. The core LandSnap workflow remains independently usable. LandSnapMCP is optional, and its transport activation and agent mutation controls remain separate opt-ins.</p>
 <p>The current public video demonstrates the original LandSnap workflow. A new Version 2 overview is in production; the updated product page and Fab gallery show the current interface and feature set.</p>
 <div class="devlog-gallery">
