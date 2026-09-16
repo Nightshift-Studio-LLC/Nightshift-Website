@@ -32,7 +32,7 @@
             <article class="page-hero-panel">
                 <p class="eyebrow">Devlog / entry</p>
                 <h1 class="page-title">AfterDark tests a privacy-first age gate with AgeKey and YubiKey</h1>
-                <p class="page-lede">AfterDark is evaluating whether AgeKey and YubiKey can support an adult gate with less identity exposure—and what metadata, correlation, and acquisition risks remain.</p>
+                <p class="page-lede">AfterDark is evaluating whether AgeKey and YubiKey can support an adult gate with less identity exposure - and what metadata, correlation, and acquisition risks remain.</p>
                 <div class="hero-actions"><a class="cta-btn hover-sound" href="../index.html">Back To Devlog</a></div>
                 <div class="tag-row"><span class="tag">AfterDarkRP</span><span class="tag">Age Assurance</span><span class="tag">Privacy</span><span class="tag">AgeKey</span><span class="tag">YubiKey</span><span class="tag">FIDO2</span><span class="tag">Passkeys</span></div>
                 
@@ -106,7 +106,7 @@
 <li>review proxy, analytics, support, and incident tooling as part of the data flow, not as an afterthought; and</li>
 <li>fail closed on invalid responses, replay, provider outage, or uncertain state.</li>
 </ul>
-<p>That does not make the provider literally untrusted—the signed result still comes from it. It limits how much AfterDark discloses and how much damage a provider-side failure or policy change can cause.</p>
+<p>That does not make the provider literally untrusted - the signed result still comes from it. It limits how much AfterDark discloses and how much damage a provider-side failure or policy change can cause.</p>
 <h2>Where the YubiKey fits</h2>
 <p>A FIDO2-capable YubiKey can store device-bound passkeys. Instead of leaving the AgeKey credential synchronized through a general platform account, a player could potentially keep it on a physical security key and authorize use with the key&#39;s FIDO2 PIN and required touch.</p>
 <p>Yubico documents passkey storage on supported FIDO2-certified keys in its <a href="https://docs.yubico.com/software/yubikey/tools/authenticator/auth-guide/fido2.html">FIDO2 and passkey guide</a>. That establishes the hardware capability, but it does not prove that AgeKey&#39;s current registration prompt will offer <code>Security key</code>, that each target Windows browser will route the prompt correctly, or that the PC and VR handoff will work cleanly. Exact AgeKey, browser, operating-system, VR, and hardware-key compatibility is an empirical pass-or-fail test. Linux browser and handoff compatibility would belong to a later pass only if s&amp;box makes Linux a supported target; mobile USB or NFC is a secondary enrollment, recovery, or authenticator-companion test.</p>
@@ -144,7 +144,7 @@
 <h2>Current verdict</h2>
 <p>AgeKey with a YubiKey is promising enough for a contained prototype. The core direction is still good: ask for a threshold, validate a signed result, and keep Nightshift away from the player&#39;s source identity evidence. It is not <code>perfect privacy</code>, and the public marketing page is not a substitute for reading the detailed notice.</p>
 <p>The deciding hardware test is Windows PC and VR, not generic mobile coverage. AgeKey&#39;s passkey ceremony must consistently expose the FIDO2 YubiKey path in supported Windows browsers and authentication surfaces, survive the handoff from both desktop and headset play, keep the WebAuthn prompt usable in VR, and provide a workable cancellation, loss, and recovery story. Linux compatibility is only a possible future testing track if s&amp;box supports that platform; it is not an MVP promise. Mobile enrollment or NFC can help as a companion path; console support stays deferred. Before AfterDark depends on any of it, Nightshift also needs clear protocol and threat-model documentation, retention and subprocessor terms, credible audit evidence for non-correlation, and answers for takeover, policy changes, API changes, and shutdown.</p>
-<p>If those questions have good answers, this could become a materially more private adult gate than collecting identity proof ourselves. If they do not, it does not ship. For now, this remains an evaluation path—not an integration announcement or a compliance guarantee.</p>
+<p>If those questions have good answers, this could become a materially more private adult gate than collecting identity proof ourselves. If they do not, it does not ship. For now, this remains an evaluation path - not an integration announcement or a compliance guarantee.</p>
 
             <div class="devlog-signoff">
                 <p>Signed, <strong>Nightshift</strong></p>

@@ -87,7 +87,7 @@ That does not make the project small, but it does mean less foundational content
 
 The commercial window around Arma Reforger is narrower. Arma 4 is currently expected in 2027, and Bohemia Interactive may revise the relevant terms as its next title and ecosystem take shape. We are treating the present opportunity as finite rather than assuming the current conditions will remain unchanged.
 
-The technical work still has value beyond that window. The server is being built in Enfusion Workbench, so the experience gained now—in tools, content, terrain, systems, and production discipline—should put Nightshift in a stronger position to carry the server concept into future Enfusion titles when the path becomes clear.
+The technical work still has value beyond that window. The server is being built in Enfusion Workbench, so the experience gained now - in tools, content, terrain, systems, and production discipline - should put Nightshift in a stronger position to carry the server concept into future Enfusion titles when the path becomes clear.
 
 That is the balance behind the current direction: move while the Reforger opportunity is here, build the project on technology that can remain useful later, and give AfterDark enough room for the engine and its own MVP scope to settle before the next serious playtest push.
 
@@ -95,4 +95,4 @@ That is the balance behind the current direction: move while the Reforger opport
 
 AfterDark has not stopped. It is closer to MVP completion than it was before the last push, the arrest loop is becoming a real gameplay sequence, and the next target is clearer because the scope has been tightened.
 
-For now, the right move is to let the engine updates settle, keep improving the mocap hardware and production pipeline over time, and reduce the amount of unfinished design material released publicly. When the detailed AfterDark updates return, they should be attached to a project that is ready to be played—not only discussed.
+For now, the right move is to let the engine updates settle, keep improving the mocap hardware and production pipeline over time, and reduce the amount of unfinished design material released publicly. When the detailed AfterDark updates return, they should be attached to a project that is ready to be played - not only discussed.

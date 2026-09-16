@@ -2,7 +2,7 @@
 title: "AfterDark tests a privacy-first age gate with AgeKey and YubiKey"
 date: 2026-08-14
 game: AfterDarkRP
-excerpt: "AfterDark is evaluating whether AgeKey and YubiKey can support an adult gate with less identity exposure—and what metadata, correlation, and acquisition risks remain."
+excerpt: "AfterDark is evaluating whether AgeKey and YubiKey can support an adult gate with less identity exposure - and what metadata, correlation, and acquisition risks remain."
 tags:
   - AfterDarkRP
   - Age Assurance
@@ -78,7 +78,7 @@ AfterDark should get the privacy benefit even if AgeKey is treated as an externa
 - review proxy, analytics, support, and incident tooling as part of the data flow, not as an afterthought; and
 - fail closed on invalid responses, replay, provider outage, or uncertain state.
 
-That does not make the provider literally untrusted—the signed result still comes from it. It limits how much AfterDark discloses and how much damage a provider-side failure or policy change can cause.
+That does not make the provider literally untrusted - the signed result still comes from it. It limits how much AfterDark discloses and how much damage a provider-side failure or policy change can cause.
 
 ## Where the YubiKey fits
 
@@ -128,4 +128,4 @@ AgeKey with a YubiKey is promising enough for a contained prototype. The core di
 
 The deciding hardware test is Windows PC and VR, not generic mobile coverage. AgeKey's passkey ceremony must consistently expose the FIDO2 YubiKey path in supported Windows browsers and authentication surfaces, survive the handoff from both desktop and headset play, keep the WebAuthn prompt usable in VR, and provide a workable cancellation, loss, and recovery story. Linux compatibility is only a possible future testing track if s&box supports that platform; it is not an MVP promise. Mobile enrollment or NFC can help as a companion path; console support stays deferred. Before AfterDark depends on any of it, Nightshift also needs clear protocol and threat-model documentation, retention and subprocessor terms, credible audit evidence for non-correlation, and answers for takeover, policy changes, API changes, and shutdown.
 
-If those questions have good answers, this could become a materially more private adult gate than collecting identity proof ourselves. If they do not, it does not ship. For now, this remains an evaluation path—not an integration announcement or a compliance guarantee.
+If those questions have good answers, this could become a materially more private adult gate than collecting identity proof ourselves. If they do not, it does not ship. For now, this remains an evaluation path - not an integration announcement or a compliance guarantee.
