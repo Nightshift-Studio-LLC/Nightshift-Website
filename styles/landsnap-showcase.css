@@ -1,0 +1,599 @@
+:root {
+    color-scheme: dark;
+}
+
+body.landsnap-showcase-page {
+    --landsnap-bg: #07100b;
+    --landsnap-panel: rgba(13, 25, 18, 0.92);
+    --landsnap-panel-solid: #0d1912;
+    --landsnap-panel-deep: #080f0b;
+    --landsnap-text: #edf5e9;
+    --landsnap-muted: #9fac9f;
+    --landsnap-faint: #718074;
+    --landsnap-green: #b6f36a;
+    --landsnap-green-bright: #d6ff9d;
+    --landsnap-green-wash: rgba(182, 243, 106, 0.12);
+    --landsnap-line: rgba(194, 245, 142, 0.2);
+    --landsnap-warning: #ee8a65;
+    min-width: 0;
+    min-height: 100vh;
+    margin: 0;
+    overflow-x: hidden;
+    color: var(--landsnap-text);
+    font-family: "IBM Plex Mono", monospace;
+    background:
+        radial-gradient(circle at 6% -12%, rgba(182, 243, 106, 0.14), transparent 31rem),
+        radial-gradient(circle at 94% 15%, rgba(83, 142, 68, 0.12), transparent 35rem),
+        linear-gradient(150deg, #0b1610 0%, var(--landsnap-bg) 56%, #09110d 100%);
+}
+
+.landsnap-showcase-page *,
+.landsnap-showcase-page *::before,
+.landsnap-showcase-page *::after {
+    box-sizing: border-box;
+}
+
+.landsnap-showcase-page a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.landsnap-showcase-noise {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.26;
+    background-image: linear-gradient(rgba(226, 255, 211, 0.04) 1px, transparent 1px);
+    background-size: 100% 5px;
+}
+
+.landsnap-showcase-skip-link {
+    position: fixed;
+    z-index: 5;
+    top: 12px;
+    left: 12px;
+    padding: 10px 14px;
+    transform: translateY(-150%);
+    border: 1px solid var(--landsnap-green);
+    background: var(--landsnap-panel-solid);
+    color: var(--landsnap-green-bright);
+    font-size: 0.75rem;
+    transition: transform 160ms ease;
+}
+
+.landsnap-showcase-skip-link:focus {
+    transform: translateY(0);
+}
+
+.landsnap-showcase-topbar {
+    display: grid;
+    grid-template-columns: minmax(120px, 1fr) auto minmax(120px, 1fr);
+    align-items: center;
+    gap: 20px;
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 22px clamp(20px, 4vw, 64px);
+    border-bottom: 1px solid var(--landsnap-line);
+}
+
+.landsnap-showcase-brand img {
+    display: block;
+    width: min(130px, 22vw);
+    height: auto;
+}
+
+.landsnap-showcase-topbar > p {
+    margin: 0;
+    color: var(--landsnap-muted);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+}
+
+.landsnap-showcase-return {
+    justify-self: end;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--landsnap-muted);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.landsnap-showcase-return:hover {
+    color: var(--landsnap-green-bright);
+}
+
+.landsnap-showcase-shell {
+    display: grid;
+    gap: clamp(24px, 3vw, 42px);
+    width: min(1600px, 100%);
+    margin: 0 auto;
+    padding: clamp(28px, 4vw, 60px) clamp(20px, 4vw, 64px) 72px;
+}
+
+.landsnap-showcase-heading {
+    max-width: 740px;
+}
+
+.landsnap-showcase-eyebrow,
+.landsnap-showcase-section-label {
+    margin: 0;
+    color: var(--landsnap-green);
+    font-size: 0.64rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    line-height: 1.5;
+    text-transform: uppercase;
+}
+
+.landsnap-showcase-heading h1,
+.landsnap-showcase-panel h2,
+.landsnap-showcase-stream-header h2 {
+    margin: 0;
+    color: var(--landsnap-text);
+    font-family: "Chakra Petch", sans-serif;
+    font-weight: 600;
+}
+
+.landsnap-showcase-heading h1 {
+    margin-top: 8px;
+    font-size: clamp(2.4rem, 5vw, 4.9rem);
+    letter-spacing: -0.06em;
+    line-height: 0.96;
+}
+
+.landsnap-showcase-heading h1 span {
+    color: var(--landsnap-green);
+    font-weight: 400;
+}
+
+.landsnap-showcase-heading > p:last-child {
+    max-width: 68ch;
+    margin: 19px 0 0;
+    color: var(--landsnap-muted);
+    font-size: clamp(0.84rem, 1.2vw, 0.96rem);
+    line-height: 1.8;
+}
+
+.landsnap-showcase-workspace {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(296px, 342px);
+    align-items: start;
+    border: 1px solid var(--landsnap-line);
+    background: rgba(5, 12, 8, 0.58);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
+}
+
+.landsnap-showcase-stream-column {
+    min-width: 0;
+    padding: clamp(16px, 2.3vw, 30px);
+}
+
+.landsnap-showcase-stream-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 14px;
+}
+
+.landsnap-showcase-stream-header h2,
+.landsnap-showcase-panel h2 {
+    margin-top: 3px;
+    font-size: clamp(1.25rem, 2vw, 1.65rem);
+    letter-spacing: -0.035em;
+}
+
+.landsnap-showcase-connection {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 8px;
+    margin: 4px 0 0;
+    color: var(--landsnap-muted);
+    font-size: 0.64rem;
+    letter-spacing: 0.07em;
+    text-align: right;
+    text-transform: uppercase;
+}
+
+.landsnap-showcase-connection span {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--landsnap-warning);
+    box-shadow: 0 0 0 3px rgba(238, 138, 101, 0.12);
+}
+
+.landsnap-showcase-connection[data-connection-state="connecting"] span {
+    background: #e7d077;
+    box-shadow: 0 0 0 3px rgba(231, 208, 119, 0.12);
+}
+
+.landsnap-showcase-connection[data-connection-state="connected"] span {
+    background: var(--landsnap-green);
+    box-shadow: 0 0 0 3px rgba(182, 243, 106, 0.13);
+}
+
+.landsnap-showcase-stream-mount {
+    position: relative;
+    display: grid;
+    width: 100%;
+    min-height: min(60vw, 660px);
+    overflow: hidden;
+    border: 1px solid rgba(214, 255, 157, 0.22);
+    background: #050a07;
+    isolation: isolate;
+}
+
+.landsnap-showcase-stream-mount:focus-visible {
+    outline: 3px solid var(--landsnap-green-bright);
+    outline-offset: 4px;
+}
+
+.landsnap-showcase-stream-mount > video,
+.landsnap-showcase-stream-mount > canvas,
+.landsnap-showcase-stream-mount > div:not(.landsnap-showcase-stream-placeholder) {
+    width: 100%;
+    height: 100%;
+    min-height: inherit;
+    border: 0;
+}
+
+.landsnap-showcase-stream-placeholder {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    color: var(--landsnap-faint);
+}
+
+.landsnap-showcase-placeholder-grid {
+    position: absolute;
+    inset: -30%;
+    background-image:
+        linear-gradient(rgba(182, 243, 106, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(182, 243, 106, 0.08) 1px, transparent 1px);
+    background-size: 42px 42px;
+    transform: perspective(480px) rotateX(61deg) translateY(13%);
+    transform-origin: 50% 100%;
+}
+
+.landsnap-showcase-placeholder-crosshair {
+    position: absolute;
+    width: 52px;
+    height: 52px;
+    border: 1px solid rgba(182, 243, 106, 0.5);
+    border-radius: 50%;
+    box-shadow: 0 0 0 10px rgba(182, 243, 106, 0.035);
+}
+
+.landsnap-showcase-placeholder-crosshair::before,
+.landsnap-showcase-placeholder-crosshair::after {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    content: "";
+    background: rgba(182, 243, 106, 0.5);
+    transform: translate(-50%, -50%);
+}
+
+.landsnap-showcase-placeholder-crosshair::before {
+    width: 72px;
+    height: 1px;
+}
+
+.landsnap-showcase-placeholder-crosshair::after {
+    width: 1px;
+    height: 72px;
+}
+
+.landsnap-showcase-stream-placeholder p {
+    z-index: 1;
+    align-self: end;
+    margin: 0 0 clamp(18px, 3vw, 34px);
+    padding: 7px 10px;
+    border: 1px solid rgba(182, 243, 106, 0.15);
+    background: rgba(7, 16, 11, 0.82);
+    font-size: 0.62rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.landsnap-showcase-pointer-guidance {
+    margin: 13px 0 0;
+    color: var(--landsnap-muted);
+    font-size: 0.72rem;
+    line-height: 1.65;
+}
+
+.landsnap-showcase-pointer-guidance strong {
+    color: var(--landsnap-green-bright);
+    font-weight: 600;
+}
+
+.landsnap-showcase-panel {
+    display: grid;
+    align-content: start;
+    min-width: 0;
+    border-left: 1px solid var(--landsnap-line);
+    background:
+        radial-gradient(circle at 93% 4%, rgba(182, 243, 106, 0.08), transparent 15rem),
+        var(--landsnap-panel);
+}
+
+.landsnap-showcase-panel-heading,
+.landsnap-showcase-scenario-controls,
+.landsnap-showcase-action-stack,
+.landsnap-showcase-operation,
+.landsnap-showcase-disclosure {
+    padding: 22px;
+}
+
+.landsnap-showcase-panel-heading > p:last-child {
+    margin: 11px 0 0;
+    color: var(--landsnap-muted);
+    font-size: 0.72rem;
+    line-height: 1.65;
+}
+
+.landsnap-showcase-scenario-controls,
+.landsnap-showcase-action-stack,
+.landsnap-showcase-operation,
+.landsnap-showcase-disclosure {
+    border-top: 1px solid var(--landsnap-line);
+}
+
+.landsnap-showcase-scenario-controls > span {
+    display: block;
+    color: var(--landsnap-faint);
+    font-size: 0.58rem;
+    font-weight: 600;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+}
+
+.landsnap-showcase-scenario-controls > div {
+    display: grid;
+    grid-template-columns: 36px minmax(0, 1fr) 36px;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.landsnap-showcase-scenario-controls output {
+    overflow: hidden;
+    color: var(--landsnap-text);
+    font-family: "Chakra Petch", sans-serif;
+    font-size: 0.95rem;
+    line-height: 1.3;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.landsnap-showcase-action-stack {
+    display: grid;
+    gap: 9px;
+}
+
+.landsnap-showcase-history-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 9px;
+}
+
+.landsnap-showcase-action,
+.landsnap-showcase-icon-button {
+    appearance: none;
+    border: 1px solid rgba(214, 255, 157, 0.22);
+    border-radius: 0;
+    background: rgba(182, 243, 106, 0.055);
+    color: var(--landsnap-text);
+    font: 600 0.68rem "IBM Plex Mono", monospace;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.landsnap-showcase-action {
+    display: grid;
+    gap: 4px;
+    width: 100%;
+    min-height: 48px;
+    padding: 11px 13px;
+    text-align: left;
+}
+
+.landsnap-showcase-action small {
+    color: var(--landsnap-muted);
+    font-size: 0.57rem;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    text-transform: none;
+}
+
+.landsnap-showcase-icon-button {
+    display: grid;
+    width: 36px;
+    height: 36px;
+    place-items: center;
+    padding: 0;
+    font-size: 1rem;
+}
+
+.landsnap-showcase-action-primary {
+    border-color: rgba(214, 255, 157, 0.54);
+    background: linear-gradient(135deg, rgba(182, 243, 106, 0.24), rgba(74, 116, 42, 0.22));
+}
+
+.landsnap-showcase-action-reset {
+    border-color: rgba(238, 138, 101, 0.28);
+    color: #ffd4c3;
+}
+
+.landsnap-showcase-action:not(:disabled):hover,
+.landsnap-showcase-icon-button:not(:disabled):hover {
+    border-color: var(--landsnap-green-bright);
+    background: rgba(182, 243, 106, 0.16);
+    cursor: pointer;
+}
+
+.landsnap-showcase-action:focus-visible,
+.landsnap-showcase-icon-button:focus-visible,
+.landsnap-showcase-return:focus-visible,
+.landsnap-showcase-brand:focus-visible,
+.landsnap-showcase-disclosure summary:focus-visible {
+    outline: 3px solid var(--landsnap-green-bright);
+    outline-offset: 4px;
+}
+
+.landsnap-showcase-action:disabled,
+.landsnap-showcase-icon-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.44;
+}
+
+.landsnap-showcase-operation {
+    min-height: 108px;
+    background: rgba(2, 7, 4, 0.34);
+}
+
+.landsnap-showcase-operation > p:last-child {
+    margin: 9px 0 0;
+    color: var(--landsnap-muted);
+    font-size: 0.69rem;
+    line-height: 1.65;
+}
+
+.landsnap-showcase-disclosure {
+    color: var(--landsnap-muted);
+    font-size: 0.66rem;
+    line-height: 1.7;
+}
+
+.landsnap-showcase-disclosure summary {
+    color: var(--landsnap-text);
+    cursor: pointer;
+    font-family: "Chakra Petch", sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    list-style: none;
+}
+
+.landsnap-showcase-disclosure summary::-webkit-details-marker {
+    display: none;
+}
+
+.landsnap-showcase-disclosure summary::after {
+    float: right;
+    color: var(--landsnap-green);
+    content: "+";
+    font-family: "IBM Plex Mono", monospace;
+}
+
+.landsnap-showcase-disclosure[open] summary::after {
+    content: "−";
+}
+
+.landsnap-showcase-disclosure p {
+    margin: 13px 0 0;
+}
+
+@media (max-width: 960px) {
+    .landsnap-showcase-workspace {
+        grid-template-columns: 1fr;
+    }
+
+    .landsnap-showcase-panel {
+        grid-template-columns: minmax(0, 1fr) minmax(260px, 0.75fr);
+        border-top: 1px solid var(--landsnap-line);
+        border-left: 0;
+    }
+
+    .landsnap-showcase-panel-heading,
+    .landsnap-showcase-scenario-controls {
+        border-top: 0;
+    }
+
+    .landsnap-showcase-scenario-controls,
+    .landsnap-showcase-disclosure {
+        border-left: 1px solid var(--landsnap-line);
+    }
+
+    .landsnap-showcase-action-stack,
+    .landsnap-showcase-operation {
+        border-top: 1px solid var(--landsnap-line);
+    }
+}
+
+@media (max-width: 640px) {
+    .landsnap-showcase-topbar {
+        grid-template-columns: 1fr auto;
+        gap: 12px;
+        padding-top: 17px;
+        padding-bottom: 17px;
+    }
+
+    .landsnap-showcase-topbar > p {
+        display: none;
+    }
+
+    .landsnap-showcase-return {
+        font-size: 0.57rem;
+    }
+
+    .landsnap-showcase-shell {
+        padding-bottom: 36px;
+    }
+
+    .landsnap-showcase-stream-column {
+        padding: 14px;
+    }
+
+    .landsnap-showcase-stream-header {
+        align-items: flex-end;
+        gap: 12px;
+    }
+
+    .landsnap-showcase-stream-header h2 {
+        font-size: 1.2rem;
+    }
+
+    .landsnap-showcase-connection {
+        max-width: 125px;
+        font-size: 0.54rem;
+    }
+
+    .landsnap-showcase-stream-mount {
+        min-height: 56vw;
+    }
+
+    .landsnap-showcase-panel {
+        display: block;
+    }
+
+    .landsnap-showcase-scenario-controls,
+    .landsnap-showcase-disclosure {
+        border-left: 0;
+    }
+
+    .landsnap-showcase-panel-heading,
+    .landsnap-showcase-scenario-controls,
+    .landsnap-showcase-action-stack,
+    .landsnap-showcase-operation,
+    .landsnap-showcase-disclosure {
+        padding: 18px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .landsnap-showcase-skip-link {
+        transition: none;
+    }
+}
