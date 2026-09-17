@@ -26,6 +26,8 @@ const COMMAND_ACTIONS = new Set([
     "reset_scene",
     "previous_scenario",
     "next_scenario",
+    "toggle_autosnap",
+    "prepare_calibration",
 ]);
 const REQUEST_ID_PATTERN = /^[A-Za-z0-9_-]{8,64}$/;
 const PROTOCOL_VERSION = "landsnap-showcase-v1";
@@ -159,6 +161,9 @@ export const createLocalShowcaseTransportWithDependencies = (
         emitUIInteraction(payload) {
             if (!stream || !isAllowlistedShowcasePayload(payload)) return false;
             return stream.emitUIInteraction(payload) === true;
+        },
+        disconnect() {
+            if (stream && typeof stream.disconnect === "function") stream.disconnect();
         },
         onConnectionState(listener) {
             if (typeof listener !== "function") return;

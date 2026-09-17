@@ -16,6 +16,8 @@ export const SHOWCASE_COMMANDS = Object.freeze({
     "reset-scene": Object.freeze({ action: "reset_scene" }),
     "previous-scenario": Object.freeze({ action: "previous_scenario" }),
     "next-scenario": Object.freeze({ action: "next_scenario" }),
+    "toggle-autosnap": Object.freeze({ action: "toggle_autosnap" }),
+    "prepare-calibration": Object.freeze({ action: "prepare_calibration" }),
 });
 
 export const STREAM_INPUT_POLICY = Object.freeze({
@@ -38,8 +40,36 @@ const RESULT_MESSAGES = Object.freeze({
     nothing_to_redo: "There is no showcase action to redo.",
     scenario_changed: "The showcase scenario changed.",
     scene_reset: "The showcase scene was reset.",
+    autosnap_enabled: "AutoSnap is enabled for the prepared showcase objects.",
+    autosnap_disabled: "AutoSnap is disabled for the prepared showcase objects.",
+    calibration_ready: "Calibration row prepared: 12 Medium Domino cubes are selected for LandSnap.",
+    calibration_unavailable: "The calibration row is unavailable in this Showcase session.",
     operation_rejected: "That action is not available in the current showcase state.",
     operation_failed: "The showcase could not complete that action. Try again or reset the scene.",
+});
+const RESULT_CODES_BY_ACTION = Object.freeze({
+    snap_selected: new Set(["completed", "no_selection", "operation_rejected", "operation_failed"]),
+    undo: new Set(["completed", "nothing_to_undo", "operation_rejected", "operation_failed"]),
+    redo: new Set(["completed", "nothing_to_redo", "operation_rejected", "operation_failed"]),
+    reset_scene: new Set(["scene_reset", "operation_rejected", "operation_failed"]),
+    previous_scenario: new Set(["scenario_changed", "operation_rejected", "operation_failed"]),
+    next_scenario: new Set(["scenario_changed", "operation_rejected", "operation_failed"]),
+    toggle_autosnap: new Set(["autosnap_enabled", "autosnap_disabled", "operation_rejected", "operation_failed"]),
+    prepare_calibration: new Set(["calibration_ready", "calibration_unavailable", "operation_rejected", "operation_failed"]),
+});
+const RESULT_TYPE_BY_CODE = Object.freeze({
+    completed: "success",
+    no_selection: "rejected",
+    nothing_to_undo: "rejected",
+    nothing_to_redo: "rejected",
+    scenario_changed: "success",
+    scene_reset: "success",
+    autosnap_enabled: "success",
+    autosnap_disabled: "success",
+    calibration_ready: "success",
+    calibration_unavailable: "error",
+    operation_rejected: "rejected",
+    operation_failed: "error",
 });
 const RESPONSE_KEYS = Object.freeze(["action", "code", "requestId", "result", "type", "version"]);
 const REQUEST_ID_PATTERN = /^[A-Za-z0-9_-]{8,64}$/;
@@ -110,7 +140,10 @@ export const parseShowcaseResult = (raw) => {
     if (typeof candidate.requestId !== "string" || !REQUEST_ID_PATTERN.test(candidate.requestId)) return null;
     if (typeof candidate.action !== "string" || !ACTIONS.has(candidate.action)) return null;
     if (typeof candidate.result !== "string" || !RESULT_TYPES.has(candidate.result)) return null;
-    if (typeof candidate.code !== "string" || !own(RESULT_MESSAGES, candidate.code)) return null;
+    if (typeof candidate.code !== "string"
+        || !own(RESULT_MESSAGES, candidate.code)
+        || !RESULT_CODES_BY_ACTION[candidate.action]?.has(candidate.code)
+        || RESULT_TYPE_BY_CODE[candidate.code] !== candidate.result) return null;
 
     return Object.freeze({
         requestId: candidate.requestId,
@@ -125,6 +158,15 @@ const isTransport = (value) => value
     && typeof value.emitUIInteraction === "function"
     && typeof value.onConnectionState === "function"
     && typeof value.onResponse === "function";
+
+const isLoopbackHost = (hostname) => typeof hostname === "string"
+    && ["127.0.0.1", "localhost", "[::1]"].includes(hostname.toLowerCase());
+
+const hasActiveQueueLease = (lease) => lease
+    && lease.status === "active"
+    && typeof lease.leaseId === "string"
+    && Number.isSafeInteger(lease.expiresAt)
+    && lease.expiresAt > Date.now();
 
 const getSurface = (documentRef) => ({
     mount: documentRef.getElementById("landsnap-showcase-stream-mount"),
@@ -266,18 +308,34 @@ export const attachShowcaseSurface = (documentRef, transport) => {
  * once when that happens, without adding duplicate control listeners.
  */
 export const initializeShowcaseSurface = (documentRef, windowRef) => {
-    let attached = attachShowcaseSurface(documentRef, windowRef.LandSnapShowcasePixelStreaming);
-    const handleTransportReady = (event) => {
-        const transport = event?.detail || windowRef.LandSnapShowcasePixelStreaming;
-        if (!transport) return;
+    let attached = null;
+    let attachedTransport = null;
+    let wasAuthorized = null;
+
+    const isAuthorized = () => isLoopbackHost(windowRef.location?.hostname)
+        || hasActiveQueueLease(windowRef.LandSnapShowcaseQueueLease);
+
+    const renderTransportBoundary = () => {
+        const authorized = isAuthorized();
+        const transport = authorized ? windowRef.LandSnapShowcasePixelStreaming : null;
+        if (wasAuthorized === authorized && attachedTransport === transport) return;
+
         if (attached) attached.detach();
+        if (!authorized && attachedTransport && typeof attachedTransport.disconnect === "function") {
+            attachedTransport.disconnect();
+        }
+        attachedTransport = transport || null;
         attached = attachShowcaseSurface(documentRef, transport);
+        wasAuthorized = authorized;
     };
 
-    windowRef.addEventListener("landsnap-showcase-transport-ready", handleTransportReady);
+    renderTransportBoundary();
+    windowRef.addEventListener("landsnap-showcase-transport-ready", renderTransportBoundary);
+    windowRef.addEventListener("landsnap-showcase-lease-change", renderTransportBoundary);
     return Object.freeze({
         detach() {
-            windowRef.removeEventListener("landsnap-showcase-transport-ready", handleTransportReady);
+            windowRef.removeEventListener("landsnap-showcase-transport-ready", renderTransportBoundary);
+            windowRef.removeEventListener("landsnap-showcase-lease-change", renderTransportBoundary);
             if (attached) attached.detach();
         },
     });
