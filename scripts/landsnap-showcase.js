@@ -229,14 +229,14 @@ export const attachShowcaseSurface = (documentRef, transport) => {
         }, 10_000);
     };
 
-    surface.controls.forEach((control) => control.addEventListener("click", handleControl));
-
     if (!isTransport(transport)) {
         setText(surface.mount, "A purpose-built Showcase transport is required before this local review page can connect.");
         displayConnection("disconnected");
         displayOperation("No showcase action has been sent.");
         return null;
     }
+
+    surface.controls.forEach((control) => control.addEventListener("click", handleControl));
 
     transport.onConnectionState((nextState) => {
         if (typeof nextState !== "string" || !CONNECTION_STATES.has(nextState)) return;
@@ -252,9 +252,37 @@ export const attachShowcaseSurface = (documentRef, transport) => {
         input: STREAM_INPUT_POLICY,
     }))).catch(() => displayConnection("error"));
 
-    return Object.freeze({ detach: clearPending });
+    return Object.freeze({
+        detach() {
+            clearPending();
+            surface.controls.forEach((control) => control.removeEventListener("click", handleControl));
+        },
+    });
+};
+
+/**
+ * A deployment-owned transport can arrive after this shell module (the local
+ * bootstrap loads the frontend only for loopback origins). Re-attach exactly
+ * once when that happens, without adding duplicate control listeners.
+ */
+export const initializeShowcaseSurface = (documentRef, windowRef) => {
+    let attached = attachShowcaseSurface(documentRef, windowRef.LandSnapShowcasePixelStreaming);
+    const handleTransportReady = (event) => {
+        const transport = event?.detail || windowRef.LandSnapShowcasePixelStreaming;
+        if (!transport) return;
+        if (attached) attached.detach();
+        attached = attachShowcaseSurface(documentRef, transport);
+    };
+
+    windowRef.addEventListener("landsnap-showcase-transport-ready", handleTransportReady);
+    return Object.freeze({
+        detach() {
+            windowRef.removeEventListener("landsnap-showcase-transport-ready", handleTransportReady);
+            if (attached) attached.detach();
+        },
+    });
 };
 
 if (typeof document !== "undefined") {
-    attachShowcaseSurface(document, window.LandSnapShowcasePixelStreaming);
+    initializeShowcaseSurface(document, window);
 }

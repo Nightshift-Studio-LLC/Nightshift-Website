@@ -5,10 +5,16 @@
   "scripts": {
     "build:devlog": "node tools/devlog/build.mjs",
     "dev:devlog": "node tools/devlog/build.mjs --watch",
+    "build:landsnap-showcase": "node tools/landsnap/build-local-frontend.mjs",
+    "test:landsnap-showcase": "node --test tests/landsnap-showcase.test.mjs tests/landsnap-showcase-local.test.mjs",
     "security:payloads": "node tools/security/check-payloads.mjs"
   },
   "dependencies": {
     "js-yaml": "^4.3.1",
     "marked": "^12.0.2"
+  },
+  "devDependencies": {
+    "@epicgames-ps/lib-pixelstreamingfrontend-ue5.8": "0.1.2",
+    "esbuild": "0.28.2"
   }
 }
