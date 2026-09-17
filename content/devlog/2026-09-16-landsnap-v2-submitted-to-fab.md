@@ -32,12 +32,6 @@ The Fab package includes both editor modules in one install. The core LandSnap w
 
 The current public video demonstrates the original LandSnap workflow. A new Version 2 overview is in production; the updated product page and Fab gallery show the current interface and feature set.
 
-:::gallery
-image|../../../images/landsnap/landsnap-breakdown1.png|LandSnap terrain-placement breakdown showing a rigid actor settling against uneven terrain|Version 2 keeps rigid placement constraints visible while finding a practical terrain-supported orientation.
-image|../../../images/landsnap/landsnap-breakdown2.png|LandSnap terrain contact and placement comparison|The placement pass evaluates contact rather than deforming the selected asset to force every point onto the surface.
-image|../../../images/landsnap/landsnap-breakdown3-concave.png|LandSnap concave terrain-placement breakdown|Difficult terrain remains reviewable when no clean rigid placement satisfies the selected contract.
-:::
-
 ## Conform without deforming
 
 One of the fitting problems LandSnap Version 2 addresses is how to settle a wide object against uneven terrain without bending its footprint.
@@ -78,6 +72,18 @@ e(P, theta) = n . (P(theta) - T)
 ```
 
 Here, `n` is the normalized triangle normal and `T` is the terrain hit point. This measures separation along the surface normal and should produce a more natural result on strong slopes.
+
+### Saddle Quads, or More Formally: Hyperbolic Paraboloid Fragments
+
+One of the stranger terrain cases LandSnap has to solve is what we’ve been calling a **“saddle quad.”**
+
+This occurs when the four sampled terrain contacts alternate in height: two opposing corners sit above the local reference plane while the other two opposing corners sit below it. The result is a non-planar surface that twists through the footprint of the object instead of behaving like a simple incline.
+
+Mathematically, this configuration resembles a **fragment of a hyperbolic paraboloid**, the classic saddle-shaped surface.
+
+That distinction matters for placement. A normal planar fit can produce a convincing result on slopes, but a saddle-shaped footprint has no single plane that perfectly satisfies all four contact points. LandSnap therefore has to decide how the object should seat against the terrain rather than simply aligning it to one averaged normal.
+
+Internally, “saddle quad” stuck because it describes the problem immediately. The more formal geometric description just happens to be considerably more intimidating: **hyperbolic paraboloid fragment.**
 
 ## The useful limitation
 

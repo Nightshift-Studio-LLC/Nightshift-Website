@@ -73,21 +73,6 @@
 <p>Placement Studio is the compact control center for LandSnap’s deterministic snapping behavior. It keeps placement anchors, alignment, offsets, trace behavior, size tiers, and surface policy alongside review and repair, so a level designer can configure the exact placement contract a scene needs. Exact-target verification then sends unresolved actors to Needs Review instead of silently calling them successful, and bounded repair actions test deterministic alternatives without turning placement into an uncontrolled simulation.</p>
 <p>The Fab package includes both editor modules in one install. The core LandSnap workflow remains independently usable. LandSnapMCP is optional, and its transport activation and agent mutation controls remain separate opt-ins.</p>
 <p>The current public video demonstrates the original LandSnap workflow. A new Version 2 overview is in production; the updated product page and Fab gallery show the current interface and feature set.</p>
-<div class="devlog-gallery">
-<figure>
-<img src="../../../images/landsnap/landsnap-breakdown1.png" alt="LandSnap terrain-placement breakdown showing a rigid actor settling against uneven terrain">
-<figcaption>Version 2 keeps rigid placement constraints visible while finding a practical terrain-supported orientation.</figcaption>
-</figure>
-<figure>
-<img src="../../../images/landsnap/landsnap-breakdown2.png" alt="LandSnap terrain contact and placement comparison">
-<figcaption>The placement pass evaluates contact rather than deforming the selected asset to force every point onto the surface.</figcaption>
-</figure>
-<figure>
-<img src="../../../images/landsnap/landsnap-breakdown3-concave.png" alt="LandSnap concave terrain-placement breakdown">
-<figcaption>Difficult terrain remains reviewable when no clean rigid placement satisfies the selected contract.</figcaption>
-</figure>
-</div>
-
 <h2>Conform without deforming</h2>
 <p>One of the fitting problems LandSnap Version 2 addresses is how to settle a wide object against uneven terrain without bending its footprint.</p>
 <p>Snapping every corner to a separate terrain hit can force contact, but it also deforms the shape. That is not a valid result for a rigid prop, platform, foundation, or modular building piece.</p>
@@ -112,6 +97,12 @@
 <pre><code class="language-text">e(P, theta) = n . (P(theta) - T)
 </code></pre>
 <p>Here, <code>n</code> is the normalized triangle normal and <code>T</code> is the terrain hit point. This measures separation along the surface normal and should produce a more natural result on strong slopes.</p>
+<h3>Saddle Quads, or More Formally: Hyperbolic Paraboloid Fragments</h3>
+<p>One of the stranger terrain cases LandSnap has to solve is what we’ve been calling a <strong>“saddle quad.”</strong></p>
+<p>This occurs when the four sampled terrain contacts alternate in height: two opposing corners sit above the local reference plane while the other two opposing corners sit below it. The result is a non-planar surface that twists through the footprint of the object instead of behaving like a simple incline.</p>
+<p>Mathematically, this configuration resembles a <strong>fragment of a hyperbolic paraboloid</strong>, the classic saddle-shaped surface.</p>
+<p>That distinction matters for placement. A normal planar fit can produce a convincing result on slopes, but a saddle-shaped footprint has no single plane that perfectly satisfies all four contact points. LandSnap therefore has to decide how the object should seat against the terrain rather than simply aligning it to one averaged normal.</p>
+<p>Internally, “saddle quad” stuck because it describes the problem immediately. The more formal geometric description just happens to be considerably more intimidating: <strong>hyperbolic paraboloid fragment.</strong></p>
 <h2>The useful limitation</h2>
 <p>One hinge angle normally cannot make both free corners touch arbitrary terrain exactly. That is not a failure of the solver; it is the unavoidable constraint that keeps the object rigid.</p>
 <p>LandSnap is finding the best compromise:</p>
