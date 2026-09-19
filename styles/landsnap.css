@@ -393,24 +393,6 @@ body.landsnap-page summary:focus-visible {
     text-transform: uppercase;
 }
 
-.landsnap-ready {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    color: var(--landsnap-green-bright);
-    font-size: 0.7rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-}
-
-.landsnap-ready i {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--landsnap-green);
-    box-shadow: 0 0 14px var(--landsnap-green);
-}
-
 .landsnap-console-screen {
     position: relative;
     display: grid;
@@ -620,7 +602,7 @@ body.landsnap-page summary:focus-visible {
 .landsnap-page .landsnap-capability-panel,
 .landsnap-page .landsnap-agent-panel,
 .landsnap-page .landsnap-docs-panel,
-.landsnap-page .landsnap-design-intent,
+.landsnap-page .landsnap-limitations,
 .landsnap-page .landsnap-final-cta {
     position: relative;
     overflow: hidden;
@@ -635,8 +617,12 @@ body.landsnap-page summary:focus-visible {
     margin-bottom: 22px;
 }
 
+.landsnap-heading-row-single {
+    grid-template-columns: minmax(0, 1fr);
+}
+
 .landsnap-heading-row h2,
-.landsnap-design-intent h2,
+.landsnap-limitations h2,
 .landsnap-final-cta h2,
 .landsnap-agent-copy h2 {
     margin: 8px 0 0;
@@ -647,7 +633,6 @@ body.landsnap-page summary:focus-visible {
 
 .landsnap-heading-row > p,
 .landsnap-agent-copy > p,
-.landsnap-design-intent > p,
 .landsnap-final-cta p {
     margin: 0;
     color: var(--muted);
@@ -1182,14 +1167,30 @@ body.landsnap-page summary:focus-visible {
     color: var(--muted);
 }
 
-.landsnap-design-intent {
+.landsnap-limitations {
     display: grid;
-    grid-template-columns: minmax(0, 0.9fr) minmax(260px, 0.72fr) minmax(260px, 0.78fr);
-    gap: 26px;
+    grid-template-columns: minmax(220px, 0.48fr) minmax(0, 1.52fr);
+    gap: clamp(26px, 5vw, 72px);
     align-items: center;
     background:
-        linear-gradient(90deg, rgba(255, 135, 82, 0.045), transparent 40%),
+        linear-gradient(90deg, rgba(255, 135, 82, 0.06), transparent 40%),
         rgba(4, 9, 7, 0.94);
+}
+
+.landsnap-limitations > div {
+    align-self: center;
+}
+
+.landsnap-page .panel.landsnap-limitations h2 {
+    margin: 0;
+    color: #ff8752;
+    font-size: clamp(1.45rem, 2.5vw, 2rem);
+}
+
+.landsnap-limitations h2 span {
+    font-family: var(--body);
+    font-size: 0.8em;
+    vertical-align: 0.08em;
 }
 
 .landsnap-intent-list {
@@ -1289,7 +1290,7 @@ body.landsnap-page summary:focus-visible {
 
     .landsnap-workflow-layout,
     .landsnap-agent-grid,
-    .landsnap-design-intent {
+    .landsnap-limitations {
         grid-template-columns: 1fr;
     }
 
@@ -1297,9 +1298,10 @@ body.landsnap-page summary:focus-visible {
         min-height: 480px;
     }
 
-    .landsnap-design-intent {
+    .landsnap-limitations {
         align-items: start;
     }
+
 }
 
 @media (max-width: 920px) {
@@ -1611,26 +1613,16 @@ body.landsnap-page {
 .landsnap-page .landsnap-hero-copy .cta-btn.primary:hover { background: #ffb380; }
 .landsnap-assurance { font-size: .6rem; letter-spacing: .035em; }
 .landsnap-assurance span { margin: 0 3px; }
-.landsnap-page .landsnap-console { grid-template-rows: auto 1fr auto auto; min-height: 610px; border: 0; border-left: 1px solid var(--line); border-radius: 0; background: radial-gradient(ellipse at 45% 42%, #2c3c38, #192328 75%); }
+.landsnap-page .landsnap-console { grid-template-rows: auto 1fr auto; min-height: 610px; border: 0; border-left: 1px solid var(--line); border-radius: 0; background: radial-gradient(ellipse at 45% 42%, #2c3c38, #192328 75%); }
 .landsnap-console-header { padding: 24px; background: transparent !important; border-bottom: 0; }
 .landsnap-console-identity img { width: 32px; height: 32px; }
 .landsnap-console-identity span { font-size: .6rem; color: var(--muted); letter-spacing: .08em; }
 .landsnap-console-identity strong { font-family: var(--body); font-size: .9rem; margin-top: 4px; }
-.landsnap-ready { font-size: .55rem; }
 .landsnap-terrain-study { position: relative; min-width: 0; align-self: center; background-image: radial-gradient(#8aab8424 .7px, transparent .7px); background-size: 18px 18px; }
 .landsnap-terrain-study svg { display: block; width: 100%; height: auto; overflow: visible; }
 .landsnap-study-caption { position: absolute; bottom: 7px; left: 24px; color: #9aaea7; text-transform: uppercase; letter-spacing: .12em; font-size: .55rem; }
-.study-actor { transition: transform 700ms cubic-bezier(.2,.7,.2,1); transition-delay: var(--actor-delay); }
 .study-guide { transition: opacity 400ms; }
 [data-settled="true"] .study-guide { opacity: 0; }
-.landsnap-study-controls { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 15px; margin: 20px 24px 24px; padding-top: 20px; border-top: 1px solid var(--line); }
-.landsnap-study-controls strong { display: block; font-size: .72rem; font-weight: 500; margin-top: 5px; color: #c3d2c9; }
-.landsnap-study-controls .landsnap-console-label { font-size: .55rem; }
-.landsnap-study-controls button { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; border: 1px solid #a7e65380; border-radius: 4px; padding: 8px 12px; background: #a7e65318; color: #d2f6a2; font: 600 .72rem var(--body); cursor: pointer; }
-.landsnap-study-controls button[hidden] { display: none; }
-.landsnap-study-controls button:hover { background: #a7e65330; }
-.landsnap-study-controls button:focus-visible { outline: 3px solid #ff995f; outline-offset: 4px; }
-.landsnap-study-controls button img { width: 23px; height: 23px; }
 .landsnap-study-fallback { margin: 0 24px 20px; color: var(--muted); }
 .landsnap-console-footer { padding: 14px 24px; border-top: 1px solid var(--line); font-size: .58rem; }
 .landsnap-proof-strip { border-radius: 5px; }
@@ -1686,12 +1678,10 @@ body.landsnap-page {
 }
 .landsnap-video { aspect-ratio: 16 / 9; overflow: hidden; }
 .landsnap-video iframe { display: block; width: 100%; height: 100%; border: 0; }
+.landsnap-companion-copy { max-width: 72ch; }
 .landsnap-companion-copy p { color: var(--muted); font-size: .95rem; line-height: 1.8; }
 .landsnap-companion-copy .cta-btn { margin-top: 12px; gap: 12px; }
-.landsnap-motion-toggle { margin: 14px 30px 0; padding: 8px 12px; border: 1px solid var(--line); border-radius: 4px; background: transparent; color: var(--muted); font: .72rem var(--body); cursor: pointer; }
-.landsnap-motion-toggle:focus-visible { outline: 3px solid var(--landsnap-green); outline-offset: 3px; }
-.landsnap-page .software-marquee:hover .software-marquee-track,
-.landsnap-page .landsnap-motion-paused .software-marquee-track { animation-play-state: paused; }
+.landsnap-page .software-marquee:hover .software-marquee-track { animation-play-state: paused; }
 .landsnap-page .software-marquee:focus-within .software-marquee-track { animation: none; transform: none; width: 100%; min-width: 0; }
 .landsnap-page .software-marquee:focus-within .software-marquee-group { flex-wrap: wrap; width: 100%; }
 .landsnap-page .software-marquee:focus-within .software-marquee-group[aria-hidden] { display: none; }
@@ -1702,6 +1692,130 @@ body.landsnap-page {
 .landsnap-demo-poster b { color: var(--landsnap-green); font-size: 1rem; }
 .landsnap-demo-poster > span > span { margin-left: auto; }
 .landsnap-demo-poster:hover { border-color: var(--landsnap-green); }
+
+.landsnap-page .landsnap-showcase-embed {
+    padding: 0;
+    overflow: hidden;
+    border-color: rgba(167, 230, 83, 0.28);
+    background: #161d1a;
+}
+
+.landsnap-page #showcase {
+    scroll-margin-top: 24px;
+}
+
+.landsnap-showcase-embed > summary {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 22px;
+    align-items: center;
+    padding: 22px 26px;
+    cursor: pointer;
+    list-style: none;
+    background:
+        linear-gradient(90deg, rgba(167, 230, 83, 0.08), transparent 55%),
+        #1b252c;
+}
+
+.landsnap-showcase-embed > summary::-webkit-details-marker { display: none; }
+
+.landsnap-showcase-embed > summary:focus-visible {
+    outline: 3px solid var(--landsnap-green);
+    outline-offset: -3px;
+}
+
+.landsnap-showcase-embed-copy {
+    display: grid;
+    gap: 5px;
+}
+
+.landsnap-showcase-embed-copy .eyebrow {
+    color: var(--landsnap-green);
+    font-size: 0.58rem;
+}
+
+.landsnap-showcase-embed-title {
+    color: var(--text);
+    font-family: var(--heading);
+    font-size: clamp(1.3rem, 2.2vw, 1.85rem);
+    font-weight: 500;
+    letter-spacing: -0.035em;
+    line-height: 1.15;
+}
+
+.landsnap-showcase-embed-description {
+    color: var(--muted);
+    font-size: 0.88rem;
+    line-height: 1.55;
+}
+
+.landsnap-showcase-embed-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    min-height: 38px;
+    padding: 0 13px;
+    border: 1px solid rgba(167, 230, 83, 0.58);
+    border-radius: 3px;
+    color: var(--landsnap-green);
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.landsnap-showcase-embed-action-opened { display: none; }
+
+.landsnap-showcase-embed-action-chevron {
+    display: inline-block;
+    transition: transform 180ms ease;
+}
+
+.landsnap-showcase-embed[open] > summary { border-bottom: 1px solid #454545; }
+.landsnap-showcase-embed[open] .landsnap-showcase-embed-action-closed { display: none; }
+.landsnap-showcase-embed[open] .landsnap-showcase-embed-action-opened { display: inline; }
+.landsnap-showcase-embed[open] .landsnap-showcase-embed-action-chevron { transform: rotate(180deg); }
+
+.landsnap-showcase-embed-body {
+    padding: clamp(14px, 2.5vw, 26px);
+    background: #1b1b1b;
+}
+
+/* The product panel has broad typography rules; preserve the native editor treatment inside this embedded surface. */
+.landsnap-page .landsnap-showcase-embed .landsnap-showcase-panel h2 {
+    color: #d5d5d5;
+    font-family: Arial, "Segoe UI", sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0;
+}
+
+.landsnap-page .landsnap-showcase-embed .landsnap-showcase-native-row strong {
+    color: #cfcfcf;
+    font-family: Arial, "Segoe UI", sans-serif;
+    font-size: inherit;
+    letter-spacing: 0;
+}
+
+.landsnap-page .landsnap-showcase-embed .landsnap-showcase-notification strong {
+    font-family: "IBM Plex Mono", monospace;
+}
+
+@media (max-width: 720px) {
+    .landsnap-showcase-embed > summary {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .landsnap-showcase-embed-action { justify-self: start; }
+}
+
+@media (max-width: 560px) {
+    .landsnap-showcase-embed > summary { padding: 19px 18px; }
+    .landsnap-showcase-embed-description { font-size: 0.8rem; }
+    .landsnap-showcase-embed-body { padding: 10px; }
+}
 
 /* Reserved live demo; hidden also prevents layout space before launch. */
 .landsnap-page .landsnap-live-demo[hidden] { display: none !important; }

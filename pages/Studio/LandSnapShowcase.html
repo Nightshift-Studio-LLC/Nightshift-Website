@@ -30,9 +30,8 @@
 
     <main id="showcase-main" class="landsnap-showcase-shell">
         <section class="landsnap-showcase-heading" aria-labelledby="landsnap-showcase-title">
-            <p class="landsnap-showcase-eyebrow">Interactive product demonstration</p>
             <h1 id="landsnap-showcase-title">LandSnap <span>Showcase</span></h1>
-            <p>Use the prepared scene and limited placement actions to see how LandSnap settles selected objects onto their target surface.</p>
+            <p>Controlled Unreal Editor demonstration.</p>
         </section>
 
         <section class="landsnap-showcase-workspace" aria-label="LandSnap Showcase workspace">
@@ -40,7 +39,7 @@
                 <div class="landsnap-showcase-stream-header">
                     <div>
                         <p class="landsnap-showcase-section-label">Unreal level viewport</p>
-                        <h2>Showcase stream</h2>
+                        <h2>Showcase viewport</h2>
                     </div>
                     <p id="landsnap-showcase-connection-state" class="landsnap-showcase-connection" role="status" aria-live="polite">
                         <span aria-hidden="true"></span>
@@ -48,26 +47,36 @@
                     </p>
                 </div>
 
-                <div id="landsnap-showcase-stream-mount" class="landsnap-showcase-stream-mount" role="region" aria-label="LandSnap streamed Unreal level viewport" aria-busy="true" tabindex="-1">
-                    <div class="landsnap-showcase-stream-placeholder" aria-hidden="true">
-                        <span class="landsnap-showcase-placeholder-grid"></span>
-                        <span class="landsnap-showcase-placeholder-crosshair"></span>
-                        <p>Preparing viewport</p>
+                <div class="landsnap-showcase-viewport-frame">
+                    <div id="landsnap-showcase-stream-mount" class="landsnap-showcase-stream-mount" role="region" aria-label="LandSnap streamed Unreal level viewport" aria-busy="true" tabindex="-1">
+                        <div class="landsnap-showcase-stream-placeholder" aria-hidden="true">
+                            <span class="landsnap-showcase-placeholder-grid"></span>
+                            <span class="landsnap-showcase-placeholder-crosshair"></span>
+                            <p>Preparing viewport</p>
+                        </div>
                     </div>
                 </div>
 
-                <p class="landsnap-showcase-pointer-guidance"><strong>Mouse:</strong> click a prepared object in the viewport, then run a placement action from the panel.</p>
+                <p class="landsnap-showcase-pointer-guidance"><strong>Mouse:</strong> select a prepared object, then run an action.</p>
             </div>
 
             <aside class="landsnap-showcase-panel" aria-labelledby="landsnap-showcase-controls-title">
+                <div class="landsnap-showcase-panel-tab" aria-hidden="true">
+                    <img src="../../images/landsnap/Icon40.png" alt="">
+                    <span>LandSnap</span>
+                </div>
                 <div class="landsnap-showcase-panel-heading">
-                    <p class="landsnap-showcase-section-label">LandSnap / restricted control surface</p>
-                    <h2 id="landsnap-showcase-controls-title">Placement controls</h2>
-                    <p>Only prepared showcase actions are available in this session.</p>
+                    <h2 id="landsnap-showcase-controls-title"><span aria-hidden="true">▾</span> Placement Studio</h2>
+                </div>
+
+                <div class="landsnap-showcase-native-row landsnap-showcase-target-row" aria-label="Snap Targets prepared scene">
+                    <span aria-hidden="true">▸</span>
+                    <strong>Snap Targets</strong>
+                    <small>Prepared scene</small>
                 </div>
 
                 <div class="landsnap-showcase-scenario-controls" aria-label="Scenario selection">
-                    <span>Prepared scenario</span>
+                    <span>Scene</span>
                     <div>
                         <button id="landsnap-showcase-previous-scenario" class="landsnap-showcase-icon-button" type="button" data-command="previous-scenario" disabled aria-label="Previous scenario">
                             <span aria-hidden="true">←</span>
@@ -81,33 +90,73 @@
 
                 <div class="landsnap-showcase-action-stack" aria-label="Scene actions">
                     <button id="landsnap-showcase-snap-selected" class="landsnap-showcase-action landsnap-showcase-action-primary" type="button" data-command="snap-selected" disabled>
+                        <img class="landsnap-showcase-action-icon" src="../../images/landsnap/Icon40.png" alt="" aria-hidden="true">
                         <span>Snap Selected</span>
-                        <small>Settle the selected object</small>
                     </button>
                     <div class="landsnap-showcase-history-actions">
-                        <button id="landsnap-showcase-undo" class="landsnap-showcase-action" type="button" data-command="undo" disabled>Undo</button>
-                        <button id="landsnap-showcase-redo" class="landsnap-showcase-action" type="button" data-command="redo" disabled>Redo</button>
+                        <button id="landsnap-showcase-undo" class="landsnap-showcase-action" type="button" data-command="undo" disabled><span class="landsnap-showcase-action-glyph" aria-hidden="true">↶</span>Undo</button>
+                        <button id="landsnap-showcase-redo" class="landsnap-showcase-action" type="button" data-command="redo" disabled><span class="landsnap-showcase-action-glyph" aria-hidden="true">↷</span>Redo</button>
                     </div>
-                    <button id="landsnap-showcase-reset-scene" class="landsnap-showcase-action landsnap-showcase-action-reset" type="button" data-command="reset-scene" disabled>Reset Scene</button>
+                    <button id="landsnap-showcase-reset-scene" class="landsnap-showcase-action landsnap-showcase-action-reset" type="button" data-command="reset-scene" disabled><span class="landsnap-showcase-action-glyph" aria-hidden="true">↺</span>Reset Scene</button>
                     <button id="landsnap-showcase-toggle-autosnap" class="landsnap-showcase-action" type="button" data-command="toggle-autosnap" disabled>
+                        <img class="landsnap-showcase-action-icon" src="../../images/landsnap/Icon40-Auto.png" alt="" aria-hidden="true">
                         <span>Toggle AutoSnap</span>
-                        <small>Report the prepared AutoSnap state</small>
                     </button>
-                    <button id="landsnap-showcase-prepare-calibration" class="landsnap-showcase-action" type="button" data-command="prepare-calibration" disabled>
-                        <span>Prepare Calibration Row</span>
-                        <small>Prepare and select 12 Medium Domino cubes</small>
-                    </button>
+                    <div class="landsnap-showcase-calibration" aria-label="Calibration setup">
+                        <div class="landsnap-showcase-calibration-fields">
+                            <label for="landsnap-showcase-calibration-size">Size
+                                <select id="landsnap-showcase-calibration-size" data-showcase-calibration-size disabled>
+                                    <option value="small">Small</option>
+                                    <option value="medium" selected>Medium</option>
+                                    <option value="large">Large</option>
+                                </select>
+                            </label>
+                            <label for="landsnap-showcase-calibration-layout">Layout
+                                <select id="landsnap-showcase-calibration-layout" data-showcase-calibration-layout disabled>
+                                    <option value="row" selected>Row</option>
+                                    <option value="coverage">Full map coverage</option>
+                                </select>
+                            </label>
+                        </div>
+                        <button id="landsnap-showcase-prepare-fixtures" class="landsnap-showcase-action" type="button" data-command="prepare-medium-row" disabled><span class="landsnap-showcase-action-glyph" aria-hidden="true">▦</span><span>Prepare Medium Row</span></button>
+                    </div>
+                    <button id="landsnap-showcase-clean-scene" class="landsnap-showcase-action landsnap-showcase-action-clean" type="button" data-command="clean-scene" disabled><span class="landsnap-showcase-action-glyph" aria-hidden="true">⌫</span>Clean Scene</button>
                 </div>
 
+                <section class="landsnap-showcase-outliner" aria-labelledby="landsnap-showcase-outliner-label">
+                    <div class="landsnap-showcase-native-row">
+                        <span aria-hidden="true">▸</span>
+                        <strong id="landsnap-showcase-outliner-label">Outliner</strong>
+                        <small>Showcase fixtures</small>
+                    </div>
+                    <div class="landsnap-showcase-outliner-body">
+                        <div class="landsnap-showcase-outliner-select">
+                            <button class="landsnap-showcase-icon-button" type="button" data-command="select-previous-fixture" disabled aria-label="Select previous showcase fixture"><span aria-hidden="true">←</span></button>
+                            <output id="landsnap-showcase-outliner-target" aria-live="polite">No prepared fixtures</output>
+                            <button class="landsnap-showcase-icon-button" type="button" data-command="select-next-fixture" disabled aria-label="Select next showcase fixture"><span aria-hidden="true">→</span></button>
+                        </div>
+                        <button class="landsnap-showcase-action" type="button" data-command="focus-selected-fixture" disabled><span class="landsnap-showcase-action-glyph" aria-hidden="true">⌖</span>Focus Selected</button>
+                    </div>
+                </section>
+
                 <section class="landsnap-showcase-operation" aria-labelledby="landsnap-showcase-operation-label">
-                    <p id="landsnap-showcase-operation-label" class="landsnap-showcase-section-label">Operation result</p>
+                    <p id="landsnap-showcase-operation-label" class="landsnap-showcase-section-label">Review</p>
                     <p id="landsnap-showcase-operation-status" role="status" aria-live="polite">Connect to begin a prepared showcase session.</p>
                 </section>
 
-                <details class="landsnap-showcase-disclosure" open>
+                <details class="landsnap-showcase-disclosure">
                     <summary>Showcase disclosure</summary>
                     <p>This showcase demonstrates LandSnap in a custom Unreal Engine scene. Purchasing LandSnap includes only the plugin and content explicitly listed on its product page. Showcase environments, props, materials, effects, third-party tools, and streaming or hosting services are not included unless explicitly stated.</p>
                 </details>
+                <div class="landsnap-showcase-notification-slot">
+                    <aside id="landsnap-showcase-notification" class="landsnap-showcase-notification" role="status" aria-live="polite" aria-atomic="true" data-notification-level="info" hidden>
+                        <span class="landsnap-showcase-notification-marker" aria-hidden="true"></span>
+                        <div>
+                            <strong id="landsnap-showcase-notification-title">Server offline</strong>
+                            <p id="landsnap-showcase-notification-message">The Showcase stream is unavailable. Controls will return when it reconnects.</p>
+                        </div>
+                    </aside>
+                </div>
             </aside>
 
             <section id="landsnap-showcase-queue-overlay" class="landsnap-showcase-queue-overlay" aria-labelledby="landsnap-showcase-queue-title" aria-live="polite" hidden>

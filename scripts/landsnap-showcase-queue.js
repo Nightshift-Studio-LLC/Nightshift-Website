@@ -320,6 +320,9 @@ export const installShowcaseQueueGate = (windowRef = globalThis.window, document
     if (!windowRef || !documentRef) return null;
     const hostname = windowRef.location?.hostname;
     const surface = getQueueSurface(documentRef);
+    const expander = typeof documentRef.querySelector === "function"
+        ? documentRef.querySelector("[data-landsnap-showcase-expander]")
+        : null;
     const local = isLocalShowcaseHost(hostname);
     const service = local
         ? createLocalQueueFixture()
@@ -334,7 +337,16 @@ export const installShowcaseQueueGate = (windowRef = globalThis.window, document
 
     windowRef.LandSnapShowcaseQueue = controller;
     renderQueueSurface(surface, controller.getLease());
-    void controller.start();
+    const startQueue = () => void controller.start();
+    if (expander) {
+        expander.addEventListener("toggle", () => {
+            if (expander.open) startQueue();
+            else void controller.leave();
+        });
+        if (expander.open) startQueue();
+    } else {
+        startQueue();
+    }
     const clock = windowRef.setInterval(() => {
         const lease = controller.tick();
         renderQueueSurface(surface, lease);

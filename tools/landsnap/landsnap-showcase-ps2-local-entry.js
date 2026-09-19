@@ -27,7 +27,16 @@ const COMMAND_ACTIONS = new Set([
     "previous_scenario",
     "next_scenario",
     "toggle_autosnap",
-    "prepare_calibration",
+    "prepare_small_row",
+    "prepare_medium_row",
+    "prepare_large_row",
+    "prepare_small_coverage",
+    "prepare_medium_coverage",
+    "prepare_large_coverage",
+    "clean_scene",
+    "select_previous_fixture",
+    "select_next_fixture",
+    "focus_selected_fixture",
 ]);
 const REQUEST_ID_PATTERN = /^[A-Za-z0-9_-]{8,64}$/;
 const PROTOCOL_VERSION = "landsnap-showcase-v1";

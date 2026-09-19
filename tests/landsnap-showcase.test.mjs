@@ -2,8 +2,10 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import {
     SHOWCASE_COMMANDS,
+    SHOWCASE_NOTIFICATION_CODES,
     SHOWCASE_PROTOCOL_VERSION,
     createShowcaseCommand,
+    isShowcaseSessionExpiring,
     parseShowcaseResult,
 } from "../scripts/landsnap-showcase.js";
 
@@ -16,7 +18,16 @@ test("each public control has one fixed no-argument command envelope", () => {
         "previous-scenario": "previous_scenario",
         "next-scenario": "next_scenario",
         "toggle-autosnap": "toggle_autosnap",
-        "prepare-calibration": "prepare_calibration",
+        "prepare-small-row": "prepare_small_row",
+        "prepare-medium-row": "prepare_medium_row",
+        "prepare-large-row": "prepare_large_row",
+        "prepare-small-coverage": "prepare_small_coverage",
+        "prepare-medium-coverage": "prepare_medium_coverage",
+        "prepare-large-coverage": "prepare_large_coverage",
+        "clean-scene": "clean_scene",
+        "select-previous-fixture": "select_previous_fixture",
+        "select-next-fixture": "select_next_fixture",
+        "focus-selected-fixture": "focus_selected_fixture",
     };
     assert.deepEqual(Object.fromEntries(Object.entries(SHOWCASE_COMMANDS).map(([id, value]) => [id, value.action])), expected);
 
@@ -66,7 +77,7 @@ test("only an exact, correlated bridge result is accepted", () => {
     assert.equal(parseShowcaseResult(JSON.stringify({ type: "operation-result" })), null);
 });
 
-test("AutoSnap and calibration messages stay inside the fixed eight-action protocol", () => {
+test("AutoSnap, calibration, cleanup, and outliner messages stay inside the fixed protocol", () => {
     const autosnap = JSON.stringify({
         version: SHOWCASE_PROTOCOL_VERSION,
         type: "operation-result",
@@ -78,27 +89,70 @@ test("AutoSnap and calibration messages stay inside the fixed eight-action proto
     const calibration = JSON.stringify({
         version: SHOWCASE_PROTOCOL_VERSION,
         type: "operation-result",
-        action: "prepare_calibration",
+        action: "prepare_medium_row",
         requestId: "request_123",
         result: "success",
         code: "calibration_ready",
     });
     assert.equal(parseShowcaseResult(autosnap)?.message, "AutoSnap is enabled for the prepared showcase objects.");
-    assert.equal(parseShowcaseResult(calibration)?.message, "Calibration row prepared: 12 Medium Domino cubes are selected for LandSnap.");
+    assert.equal(parseShowcaseResult(calibration)?.message, "Calibration scene prepared with the selected size and layout.");
     assert.equal(parseShowcaseResult(JSON.stringify({
         version: SHOWCASE_PROTOCOL_VERSION,
         type: "operation-result",
-        action: "prepare_calibration",
+        action: "prepare_medium_row",
         requestId: "request_123",
         result: "error",
         code: "calibration_unavailable",
-    }))?.message, "The calibration row is unavailable in this Showcase session.");
+    }))?.message, "That calibration preset is unavailable in this Showcase session.");
     assert.equal(parseShowcaseResult(JSON.stringify({
         version: SHOWCASE_PROTOCOL_VERSION,
         type: "operation-result",
-        action: "prepare_calibration",
+        action: "prepare_medium_row",
         requestId: "request_123",
         result: "success",
         code: "calibration_unavailable",
     })), null);
+
+    const cleanup = JSON.stringify({
+        version: SHOWCASE_PROTOCOL_VERSION,
+        type: "operation-result",
+        action: "clean_scene",
+        requestId: "request_123",
+        result: "success",
+        code: "scene_cleaned",
+    });
+    const outliner = JSON.stringify({
+        version: SHOWCASE_PROTOCOL_VERSION,
+        type: "operation-result",
+        action: "focus_selected_fixture",
+        requestId: "request_123",
+        result: "success",
+        code: "fixture_focused",
+    });
+    assert.equal(parseShowcaseResult(cleanup)?.message, "Prepared calibration fixtures were removed from the scene.");
+    assert.equal(parseShowcaseResult(outliner)?.message, "The selected showcase fixture is focused in the viewport.");
+});
+
+test("viewport notifications use fixed copy for connecting, stream failures, and expiring sessions", () => {
+    const now = 1_700_000_000_000;
+    const activeLease = {
+        status: "active",
+        leaseId: "active-showcase-lease-1234",
+        expiresAt: now + 60_000,
+    };
+
+    assert.deepEqual(SHOWCASE_NOTIFICATION_CODES.connecting, {
+        level: "warning",
+        title: "Connecting to server",
+        message: "Starting the Showcase stream. Controls will unlock when the editor is ready.",
+    });
+    assert.deepEqual(SHOWCASE_NOTIFICATION_CODES.server_offline, {
+        level: "error",
+        title: "Server offline",
+        message: "The Showcase stream is unavailable. Controls will return when it reconnects.",
+    });
+    assert.equal(SHOWCASE_NOTIFICATION_CODES.session_expiring.level, "warning");
+    assert.equal(isShowcaseSessionExpiring(activeLease, now), true);
+    assert.equal(isShowcaseSessionExpiring({ ...activeLease, expiresAt: now + 60_001 }, now), false);
+    assert.equal(isShowcaseSessionExpiring({ status: "waiting" }, now), false);
 });

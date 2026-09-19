@@ -18,7 +18,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wdth,wght@75..100,400;75..100,500;75..100,600;75..100,700&family=Tektur:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="../../images/icons/nightshift.ico">
     <link rel="stylesheet" href="../../styles/landsnap.css?v=20260907-v2">
+    <link rel="stylesheet" href="../../styles/landsnap-showcase.css">
     <script defer src="../../scripts/landsnap.js?v=20260907-v2"></script>
+    <script type="module" src="../../scripts/landsnap-showcase-queue.js"></script>
+    <script type="module" src="../../scripts/landsnap-showcase-local.js"></script>
+    <script type="module" src="../../scripts/landsnap-showcase.js"></script>
     <script defer src="/scripts/analytics.js" data-analytics-endpoint="/api/analytics"></script>
 </head>
 <body class="landsnap-page">
@@ -46,7 +50,7 @@
                 </div>
                 <p class="eyebrow">Editor tooling / <a class="landsnap-fab-link" href="https://www.fab.com/listings/4ad39cca-a866-4112-bbfb-4972e2d2eb99" target="_blank" rel="noopener noreferrer">available on Fab</a></p>
                 <h1 id="landsnap-title" class="page-title">LandSnap<span class="landsnap-version">2.0</span></h1>
-                <p class="landsnap-hero-kicker">Less nudging.<br>More worldbuilding.</p>
+                <p class="landsnap-hero-kicker">Less nudging.<br>More building.</p>
                 <p class="page-lede">Place it. Move it. Keep it grounded. AutoSnap follows your edits, terrain fitting finds the support, and Placement Studio puts the next move in your hands.</p>
                 <div class="hero-actions">
                     <a class="cta-btn primary landsnap-update-cta hover-sound" href="#release">See What Is New</a>
@@ -61,20 +65,173 @@
                         <img src="../../images/landsnap/video_icon.png" alt="" aria-hidden="true">
                         <div><span>Placement study / 001</span><strong>Find your footing.</strong></div>
                     </div>
-                    <span class="landsnap-ready"><i aria-hidden="true"></i>Interactive</span>
                 </div>
                 <div class="landsnap-terrain-study" data-settled="false">
-                    <svg id="landsnap-terrain" viewBox="0 0 720 460" role="img" aria-label="Illustrated blocks above a contoured terrain surface. Use Snap Selected to bring them onto the surface."></svg>
+                    <svg id="landsnap-terrain" viewBox="0 0 720 460" role="img" aria-label="Six illustrated blocks above a contoured terrain surface. They settle onto it when the study enters view."></svg>
                     <span class="landsnap-study-caption">Terrain placement / schematic illustration</span>
                 </div>
-                <div class="landsnap-study-controls">
-                    <div><span class="landsnap-console-label">Selection state</span><strong id="landsnap-study-state" aria-live="polite">06 actors · awaiting placement</strong></div>
-                    <button id="landsnap-snap-demo" type="button" aria-pressed="false" hidden><img src="../../images/landsnap/Icon40.png" alt=""><span>Snap Selected</span><span aria-hidden="true">↘</span></button>
-                </div>
                 <noscript><p class="landsnap-study-fallback">Snap Selected places your selection on the target surface. Enable JavaScript to try the illustrated before-and-after.</p></noscript>
-                <div class="landsnap-console-footer"><span>One selection</span><span>One deliberate action</span><span>Your next move</span></div>
             </aside>
         </section>
+
+        <nav class="landsnap-section-nav" aria-label="LandSnap page sections">
+            <a href="#showcase">Showcase</a>
+            <a href="#release">Version 2.0</a>
+            <a href="#workflow">Workflow</a>
+            <a href="#capabilities">Capabilities</a>
+            <a href="#agent-workflows">MCP companion</a>
+            <a href="#documentation">Documentation</a>
+        </nav>
+
+        <details id="showcase" class="panel landsnap-showcase-embed" data-landsnap-showcase-expander open>
+            <summary>
+                <span class="landsnap-showcase-embed-copy">
+                    <span class="eyebrow">Studio live / interactive editor session</span>
+                    <span class="landsnap-showcase-embed-title">Open LandSnap Showcase</span>
+                </span>
+                <span class="landsnap-showcase-embed-action">
+                    <span class="landsnap-showcase-embed-action-label">
+                        <span class="landsnap-showcase-embed-action-closed">Expand session</span>
+                        <span class="landsnap-showcase-embed-action-opened">Collapse session</span>
+                    </span>
+                    <span class="landsnap-showcase-embed-action-chevron" aria-hidden="true">▾</span>
+                </span>
+            </summary>
+
+            <div class="landsnap-showcase-embed-body">
+                <section class="landsnap-showcase-workspace" aria-label="LandSnap Showcase workspace">
+                    <div class="landsnap-showcase-stream-column">
+                        <div class="landsnap-showcase-stream-header">
+                            <div>
+                                <p class="landsnap-showcase-section-label">Unreal level viewport</p>
+                                <h2>Showcase viewport</h2>
+                            </div>
+                        </div>
+
+                        <div class="landsnap-showcase-viewport-frame">
+                            <div id="landsnap-showcase-stream-mount" class="landsnap-showcase-stream-mount" role="region" aria-label="LandSnap streamed Unreal level viewport" aria-busy="true" tabindex="-1">
+                                <div class="landsnap-showcase-stream-placeholder" aria-hidden="true">
+                                    <span class="landsnap-showcase-placeholder-grid"></span>
+                                    <span class="landsnap-showcase-placeholder-crosshair"></span>
+                                    <p>Preparing viewport</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <aside class="landsnap-showcase-panel" aria-labelledby="landsnap-showcase-controls-title">
+                        <div class="landsnap-showcase-panel-tab" aria-hidden="true">
+                            <img src="../../images/landsnap/Icon40.png" alt="">
+                            <span>LandSnap</span>
+                        </div>
+                        <div class="landsnap-showcase-panel-heading">
+                            <h2 id="landsnap-showcase-controls-title"><span aria-hidden="true">▾</span> Placement Studio</h2>
+                        </div>
+                        <div class="landsnap-showcase-native-row landsnap-showcase-target-row" aria-label="Snap Targets prepared scene">
+                            <span aria-hidden="true">▸</span>
+                            <strong>Snap Targets</strong>
+                            <small>Prepared scene</small>
+                        </div>
+
+                        <div class="landsnap-showcase-scenario-controls" aria-label="Scenario selection">
+                            <span>Scene</span>
+                            <div>
+                                <button id="landsnap-showcase-previous-scenario" class="landsnap-showcase-icon-button" type="button" data-command="previous-scenario" disabled aria-label="Previous scenario"><span aria-hidden="true">←</span></button>
+                                <output id="landsnap-showcase-scenario-name" aria-live="polite">Awaiting stream</output>
+                                <button id="landsnap-showcase-next-scenario" class="landsnap-showcase-icon-button" type="button" data-command="next-scenario" disabled aria-label="Next scenario"><span aria-hidden="true">→</span></button>
+                            </div>
+                        </div>
+
+                        <div class="landsnap-showcase-action-stack" aria-label="Scene actions">
+                            <button id="landsnap-showcase-snap-selected" class="landsnap-showcase-action landsnap-showcase-action-primary" type="button" data-command="snap-selected" disabled><img class="landsnap-showcase-action-icon" src="../../images/landsnap/Icon40.png" alt="" aria-hidden="true"><span>Snap Selected</span></button>
+                            <div class="landsnap-showcase-history-actions">
+                                <button id="landsnap-showcase-undo" class="landsnap-showcase-action" type="button" data-command="undo" disabled><span class="landsnap-showcase-action-glyph" aria-hidden="true">↶</span>Undo</button>
+                                <button id="landsnap-showcase-redo" class="landsnap-showcase-action" type="button" data-command="redo" disabled><span class="landsnap-showcase-action-glyph" aria-hidden="true">↷</span>Redo</button>
+                            </div>
+                            <button id="landsnap-showcase-reset-scene" class="landsnap-showcase-action landsnap-showcase-action-reset" type="button" data-command="reset-scene" disabled><span class="landsnap-showcase-action-glyph" aria-hidden="true">↺</span>Reset Scene</button>
+                            <button id="landsnap-showcase-toggle-autosnap" class="landsnap-showcase-action" type="button" data-command="toggle-autosnap" disabled><img class="landsnap-showcase-action-icon" src="../../images/landsnap/Icon40-Auto.png" alt="" aria-hidden="true"><span>Toggle AutoSnap</span></button>
+                            <div class="landsnap-showcase-calibration" aria-label="Calibration setup">
+                                <div class="landsnap-showcase-calibration-fields">
+                                    <label for="landsnap-showcase-calibration-size">Size
+                                        <select id="landsnap-showcase-calibration-size" data-showcase-calibration-size disabled>
+                                            <option value="small">Small</option>
+                                            <option value="medium" selected>Medium</option>
+                                            <option value="large">Large</option>
+                                        </select>
+                                    </label>
+                                    <label for="landsnap-showcase-calibration-layout">Layout
+                                        <select id="landsnap-showcase-calibration-layout" data-showcase-calibration-layout disabled>
+                                            <option value="row" selected>Row</option>
+                                            <option value="coverage">Full map coverage</option>
+                                        </select>
+                                    </label>
+                                </div>
+                                <button id="landsnap-showcase-prepare-fixtures" class="landsnap-showcase-action" type="button" data-command="prepare-medium-row" disabled><span class="landsnap-showcase-action-glyph" aria-hidden="true">▦</span><span>Prepare Medium Row</span></button>
+                            </div>
+                            <button id="landsnap-showcase-clean-scene" class="landsnap-showcase-action landsnap-showcase-action-clean" type="button" data-command="clean-scene" disabled><span class="landsnap-showcase-action-glyph" aria-hidden="true">⌫</span>Clean Scene</button>
+                        </div>
+
+                        <section class="landsnap-showcase-outliner" aria-labelledby="landsnap-showcase-outliner-label">
+                            <div class="landsnap-showcase-native-row">
+                                <span aria-hidden="true">▸</span>
+                                <strong id="landsnap-showcase-outliner-label">Outliner</strong>
+                                <small>Showcase fixtures</small>
+                            </div>
+                            <div class="landsnap-showcase-outliner-body">
+                                <div class="landsnap-showcase-outliner-select">
+                                    <button class="landsnap-showcase-icon-button" type="button" data-command="select-previous-fixture" disabled aria-label="Select previous showcase fixture"><span aria-hidden="true">←</span></button>
+                                    <output id="landsnap-showcase-outliner-target" aria-live="polite">No prepared fixtures</output>
+                                    <button class="landsnap-showcase-icon-button" type="button" data-command="select-next-fixture" disabled aria-label="Select next showcase fixture"><span aria-hidden="true">→</span></button>
+                                </div>
+                                <button class="landsnap-showcase-action" type="button" data-command="focus-selected-fixture" disabled><span class="landsnap-showcase-action-glyph" aria-hidden="true">⌖</span>Focus Selected</button>
+                            </div>
+                        </section>
+
+                        <section class="landsnap-showcase-operation" aria-labelledby="landsnap-showcase-operation-label">
+                            <div class="landsnap-showcase-native-row landsnap-showcase-review-row">
+                                <span aria-hidden="true">▸</span>
+                                <strong id="landsnap-showcase-operation-label">Review</strong>
+                                <small>Placement issues</small>
+                            </div>
+                            <div class="landsnap-showcase-review-body">
+                                <p id="landsnap-showcase-operation-status" role="status" aria-live="polite">Review results will appear here after a LandSnap action.</p>
+                                <p class="landsnap-showcase-review-guidance"><strong>Mouse</strong><span>Select a prepared object, then run an action.</span></p>
+                            </div>
+                        </section>
+
+                        <details class="landsnap-showcase-disclosure">
+                            <summary>Showcase disclosure</summary>
+                            <p>This showcase demonstrates LandSnap in a custom Unreal Engine scene. Purchasing LandSnap includes only the plugin and content explicitly listed on its product page. Showcase environments, props, materials, effects, third-party tools, and streaming or hosting services are not included unless explicitly stated.</p>
+                        </details>
+
+                        <div class="landsnap-showcase-notification-slot">
+                            <aside id="landsnap-showcase-notification" class="landsnap-showcase-notification" role="status" aria-live="polite" aria-atomic="true" data-notification-level="info" hidden>
+                                <span class="landsnap-showcase-notification-marker" aria-hidden="true"></span>
+                                <div>
+                                    <strong id="landsnap-showcase-notification-title">Server offline</strong>
+                                    <p id="landsnap-showcase-notification-message">The Showcase stream is unavailable. Controls will return when it reconnects.</p>
+                                </div>
+                            </aside>
+                        </div>
+                    </aside>
+
+                    <section id="landsnap-showcase-queue-overlay" class="landsnap-showcase-queue-overlay" aria-labelledby="landsnap-showcase-queue-title" aria-live="polite" hidden>
+                        <div class="landsnap-showcase-queue-card">
+                            <p class="landsnap-showcase-section-label">Exclusive demo queue</p>
+                            <h2 id="landsnap-showcase-queue-title">Checking Showcase access</h2>
+                            <p id="landsnap-showcase-queue-message">The streamed workspace stays unavailable until the deployment queue grants a five-minute lease.</p>
+                            <dl class="landsnap-showcase-queue-metrics">
+                                <div><dt>Your queue position</dt><dd id="landsnap-showcase-queue-position">—</dd></div>
+                                <div><dt>Estimated wait</dt><dd id="landsnap-showcase-queue-estimate">—</dd></div>
+                                <div><dt>Live countdown</dt><dd id="landsnap-showcase-queue-countdown"><time datetime="PT0S">—</time></dd></div>
+                            </dl>
+                            <p class="landsnap-showcase-queue-note">A session is exclusive for five minutes. Leaving it early immediately advances the next visitor.</p>
+                        </div>
+                    </section>
+                </section>
+            </div>
+        </details>
 
         <section class="landsnap-proof-strip" aria-label="LandSnap product facts">
             <div><span>Built for</span><strong>Unreal Engine 5.8</strong><small>Win64 editor</small></div>
@@ -83,25 +240,16 @@
             <div><span>Your surfaces</span><strong>Terrain + tagged meshes</strong><small>Landscape / Mesh Terrain / explicit tags</small></div>
         </section>
 
-        <nav class="landsnap-section-nav" aria-label="LandSnap page sections">
-            <a href="#release">Version 2.0</a>
-            <a href="#workflow">Workflow</a>
-            <a href="#capabilities">Capabilities</a>
-            <a href="#agent-workflows">MCP companion</a>
-            <a href="#documentation">Documentation</a>
-        </nav>
-
         <!-- Future Pixel Streaming hookup:
              Set data-stream-url to the hosted HTTPS player page (not its signalling WebSocket),
              then remove hidden from this section. The player loads only on Start live demo.
              Session allocation, timeout/reset, and embedding support belong to the stream host. -->
         <section id="live-demo" class="panel landsnap-live-demo" aria-labelledby="landsnap-live-title" data-stream-url="" hidden>
-            <div class="landsnap-heading-row">
+            <div class="landsnap-heading-row landsnap-heading-row-single">
                 <div>
                     <p class="eyebrow">Hands-on / Unreal Editor</p>
                     <h2 id="landsnap-live-title">Try LandSnap Live.</h2>
                 </div>
-                <p>Explore a terrain playground and try LandSnap in a streamed Unreal Editor session, right here in your browser.</p>
             </div>
             <div class="landsnap-live-player" id="landsnap-live-player">
                 <p id="landsnap-live-status" role="status">Start the demo to connect to the playground.</p>
@@ -112,12 +260,11 @@
         </section>
 
         <section id="release" class="panel notes-panel landsnap-release-panel">
-            <div class="panel-heading landsnap-heading-row">
+            <div class="panel-heading landsnap-heading-row landsnap-heading-row-single">
                 <div>
                     <p class="eyebrow">Version 2.0.0 / pending Fab approval</p>
                     <h2>The placement pass.<br>Rebuilt around your flow.</h2>
                 </div>
-                <p>Submitted for Fab review on September 16, 2026. Automatic publication follows approval. From the first prop to a whole selection, v2 puts deterministic snapping controls, contact review, and repair in one dockable workspace.</p>
             </div>
             <div class="landsnap-release-grid">
                 <article class="landsnap-feature-card">
@@ -147,12 +294,11 @@
         </section>
 
         <section id="workflow" class="panel feature-panel landsnap-workflow-panel">
-            <div class="panel-heading landsnap-heading-row">
+            <div class="panel-heading landsnap-heading-row landsnap-heading-row-single">
                 <div>
                     <p class="eyebrow">Core workflow</p>
                     <h2>From selection to settled in three steps</h2>
                 </div>
-                <p>Use the default contract for fast passes. Tune only when the scene asks for more control.</p>
             </div>
             <div class="landsnap-workflow-layout">
                 <div class="landsnap-workflow-grid">
@@ -175,25 +321,23 @@
                 </div>
                 <div id="watch" class="landsnap-demo-card">
                     <div class="landsnap-demo-copy">
-                        <p class="eyebrow">Legacy workflow reference</p>
-                        <h3>Original LandSnap demo</h3>
-                        <p>This video documents the earlier actor-and-spline workflow. LandSnap v2 adds global AutoSnap, unified Snap Selected, review repair, and Placement Studio.</p>
+                        <p class="eyebrow">Interactive product demo</p>
+                        <h3>LandSnap Showcase</h3>
+                        <p>Open the controlled streamed Unreal Editor workspace to explore prepared scenes, review placement results, and run deliberate LandSnap actions.</p>
                     </div>
-                    <a class="landsnap-demo-poster" href="https://www.youtube.com/watch?v=3kf6S1Dcyp4" target="_blank" rel="noopener noreferrer" aria-label="Watch the original LandSnap workflow on YouTube (opens in a new tab)">
-                        <img src="../../images/landsnap/FAB-thumbnail.png" alt="LandSnap actors snapping onto terrain" width="1280" height="720" loading="lazy" decoding="async">
-                        <span><b aria-hidden="true">▶</b> Watch the original workflow <span aria-hidden="true">↗</span></span>
+                    <a class="landsnap-demo-poster" href="#showcase" aria-label="Open the interactive LandSnap Showcase">
+                        <span><b aria-hidden="true">↗</b> Open the interactive Showcase <span aria-hidden="true">↓</span></span>
                     </a>
                 </div>
             </div>
         </section>
 
         <section id="capabilities" class="panel feature-panel landsnap-capability-panel">
-            <div class="panel-heading landsnap-heading-row">
+            <div class="panel-heading landsnap-heading-row landsnap-heading-row-single">
                 <div>
                     <p class="eyebrow">Placement coverage</p>
                     <h2>One tool. Explicit placement paths.</h2>
                 </div>
-                <p>LandSnap keeps each target contract explicit, so fast placement does not turn into surprising placement.</p>
             </div>
             <div class="landsnap-capability-grid">
                 <article class="landsnap-capability-card">
@@ -220,26 +364,25 @@
         </section>
 
         <section id="agent-workflows" class="panel landsnap-agent-panel">
-            <div class="landsnap-heading-row">
+            <div class="landsnap-heading-row landsnap-heading-row-single">
                 <div>
                     <p class="eyebrow">Included editor module / LandSnapMCP</p>
                     <h2>Your editor.<br>Your agent workflow.</h2>
                 </div>
-                <div class="landsnap-companion-copy">
-                    <p>LandSnap 2.0 ships the LandSnapMCP editor module beside the core module in one Fab install. Connect compatible MCP tools to search a bounded selection, inspect the results, then run a deliberate placement pass.</p>
-                    <p>MCP integration remains optional. The core works independently, while transport activation and agent mutation remain separate opt-ins.</p>
-                    <a class="cta-btn" href="#documentation">Read setup and documentation <span aria-hidden="true">↓</span></a>
-                </div>
+            </div>
+            <div class="landsnap-companion-copy">
+                <p>LandSnap 2.0 ships the LandSnapMCP editor module beside the core module in one Fab install. Connect compatible MCP tools to search a bounded selection, inspect the results, then run a deliberate placement pass.</p>
+                <p>MCP integration remains optional. The core works independently, while transport activation and agent mutation remain separate opt-ins.</p>
+                <a class="cta-btn" href="#documentation">Read setup and documentation <span aria-hidden="true">↓</span></a>
             </div>
         </section>
 
         <section id="documentation" class="panel feature-panel landsnap-docs-panel">
-            <div class="panel-heading landsnap-heading-row">
+            <div class="panel-heading landsnap-heading-row landsnap-heading-row-single">
                 <div>
                     <p class="eyebrow">Documentation</p>
                     <h2>Start in minutes. Tune only when needed.</h2>
                 </div>
-                <p>The common path is short. Open a section when you need the deeper placement contract.</p>
             </div>
             <div class="landsnap-doc-disclosures">
                 <details class="landsnap-disclosure" open>
@@ -343,12 +486,10 @@
             </div>
         </section>
 
-        <section class="panel landsnap-design-intent" aria-labelledby="landsnap-intent-title">
+        <section class="panel landsnap-limitations" aria-labelledby="landsnap-intent-title">
             <div>
-                <p class="eyebrow">Design intent</p>
-                <h2 id="landsnap-intent-title">Fast and predictable - not simulated perfection</h2>
+                <h2 id="landsnap-intent-title"><span aria-hidden="true">⚠</span> Limitations</h2>
             </div>
-            <p>Terrain, collision, and asset bounds vary. LandSnap uses conservative, size-aware placement heuristics so the common case stays quick, undoable, and easy to reason about.</p>
             <ul class="landsnap-intent-list">
                 <li>Missing simple collision can reduce trace reliability.</li>
                 <li>Extreme slopes and highly concave geometry may need tuning.</li>
@@ -376,7 +517,6 @@
                     <div class="software-marquee-group" aria-hidden="true" inert><a class="software-marquee-item hover-sound" href="https://www.unrealengine.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/unreal-engine.svg" alt="" aria-hidden="true" loading="lazy"><span>Unreal</span></a><a class="software-marquee-item hover-sound" href="https://developer.valvesoftware.com/wiki/Source_2" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/source-2.svg" alt="" aria-hidden="true" loading="lazy"><span>Source 2</span></a><a class="software-marquee-item hover-sound" href="https://enfusionengine.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/enfusion.svg" alt="" aria-hidden="true" loading="lazy"><span>Enfusion</span></a><a class="software-marquee-item hover-sound" href="https://docs.fivem.net/docs/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/rage.svg" alt="" aria-hidden="true" loading="lazy"><span>RAGE</span></a><a class="software-marquee-item hover-sound" href="https://www.blender.org/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/blender.svg" alt="" aria-hidden="true" loading="lazy"><span>Blender</span></a><a class="software-marquee-item hover-sound" href="https://www.adobe.com/products/substance3d.html" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/adobe-3d.svg" alt="" aria-hidden="true" loading="lazy"><span>Adobe 3D</span></a><a class="software-marquee-item hover-sound" href="https://affinity.serif.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/affinity-suite.png" alt="" aria-hidden="true" loading="lazy"><span>Affinity Suite</span></a><a class="software-marquee-item hover-sound" href="https://quadspinner.com/gaea/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/gaea.png" alt="" aria-hidden="true" loading="lazy"><span>Gaea 2.0</span></a><a class="software-marquee-item hover-sound" href="https://www.reallusion.com/character-creator/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/cc5.png" alt="" aria-hidden="true" loading="lazy"><span>CC5</span></a><a class="software-marquee-item hover-sound" href="https://www.reallusion.com/iclone/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/iclone-8.png" alt="" aria-hidden="true" loading="lazy"><span>iClone 8</span></a><a class="software-marquee-item hover-sound" href="https://www.marvelousdesigner.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/marvelous-designer.png" alt="" aria-hidden="true" loading="lazy"><span>Marvelous Designer</span></a><a class="software-marquee-item hover-sound" href="https://ephere.com/plugins/ornatrix/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/ornatrix.png" alt="" aria-hidden="true" loading="lazy"><span>Ornatrix</span></a><a class="software-marquee-item hover-sound" href="https://www.image-line.com/fl-studio/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/fl-studio.png" alt="" aria-hidden="true" loading="lazy"><span>FruityLoops</span></a><a class="software-marquee-item hover-sound" href="https://code.visualstudio.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/vs-code.png" alt="" aria-hidden="true" loading="lazy"><span>VS Code</span></a><a class="software-marquee-item hover-sound" href="https://visualstudio.microsoft.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/visual-studio.svg" alt="" aria-hidden="true" loading="lazy"><span>Visual Studio</span></a><a class="software-marquee-item hover-sound" href="https://github.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/github.svg" alt="" aria-hidden="true" loading="lazy"><span>GitHub</span></a><a class="software-marquee-item hover-sound" href="https://git-lfs.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/git-lfs.svg" alt="" aria-hidden="true" loading="lazy"><span>Git LFS</span></a><a class="software-marquee-item hover-sound" href="https://pages.github.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/github-pages.svg" alt="" aria-hidden="true" loading="lazy"><span>GitHub Pages</span></a><a class="software-marquee-item hover-sound" href="https://www.wix.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/wix.svg" alt="" aria-hidden="true" loading="lazy"><span>Wix</span></a><a class="software-marquee-item hover-sound" href="https://stripe.com/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/stripe.svg" alt="" aria-hidden="true" loading="lazy"><span>Stripe</span></a><a class="software-marquee-item hover-sound" href="https://obsidian.md/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/obsidian.svg" alt="" aria-hidden="true" loading="lazy"><span>Obsidian</span></a><a class="software-marquee-item hover-sound" href="https://openai.com/codex/" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="/images/icons/software/openai.png" alt="" aria-hidden="true" loading="lazy"><span>Codex</span></a></div>
                 </div></div>
             </section>
-            <button class="landsnap-motion-toggle" type="button" hidden>Pause footer motion</button>
             <div class="footer-grid">
                 <div class="footer-column"><span>Primary routes</span><a class="hover-sound" href="/">Home</a><a class="hover-sound" href="/pages/games.html">Games</a><a class="hover-sound" href="/pages/contact.html">Contact</a></div>
                 <div class="footer-column"><span>Public records</span><a class="hover-sound" href="/pages/DevLog/index.html">Devlog</a><a href="https://www.epicgames.com/site/en-US/privacypolicy" target="_blank" rel="noopener noreferrer">Epic Privacy Policy</a><span class="footer-link-unavailable">Nightshift Privacy Policy</span><span class="footer-link-unavailable">Applicant Privacy Policy</span></div>

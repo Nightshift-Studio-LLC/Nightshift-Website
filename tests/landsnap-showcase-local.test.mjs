@@ -135,6 +135,9 @@ test("local transport forwards only allowlisted UI interactions and raw UE Respo
     assert.equal(isMouseOnlyInput(mouseOnlyInput), true);
     assert.equal(isMouseOnlyInput({ ...mouseOnlyInput, keyboard: true }), false);
     assert.equal(isAllowlistedShowcasePayload(valid), true);
+    assert.equal(isAllowlistedShowcasePayload({ ...valid, action: "prepare_large_coverage" }), true);
+    assert.equal(isAllowlistedShowcasePayload({ ...valid, action: "focus_selected_fixture" }), true);
+    assert.equal(isAllowlistedShowcasePayload({ ...valid, action: "prepare_calibration" }), false);
     assert.equal(transport.emitUIInteraction(valid), true);
     assert.equal(transport.emitUIInteraction({ ...valid, action: "console_command" }), false);
     assert.deepEqual(FakePixelStreaming.latest.sent, [valid]);

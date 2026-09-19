@@ -25,20 +25,9 @@
             liveStart.disabled = true;
         });
     }
-    const motionButton = document.querySelector('.landsnap-motion-toggle');
-    const footer = document.querySelector('.site-footer');
-    if (motionButton && footer) {
-        motionButton.hidden = false;
-        motionButton.setAttribute('aria-pressed', 'false');
-        motionButton.addEventListener('click', () => {
-            const paused = footer.classList.toggle('landsnap-motion-paused');
-            motionButton.textContent = paused ? 'Resume footer motion' : 'Pause footer motion';
-            motionButton.setAttribute('aria-pressed', String(paused));
-        });
-    }
     const svg = document.getElementById('landsnap-terrain');
-    const button = document.getElementById('landsnap-snap-demo');
-    if (!svg || !button) return;
+    if (!svg || !svg.parentElement) return;
+    const study = svg.parentElement;
     const ns = 'http://www.w3.org/2000/svg';
     const add = (tag, attributes, parent = svg) => {
         const node = document.createElementNS(ns, tag);
@@ -62,31 +51,42 @@
         add('path', {d: path(a), fill: 'none', stroke: '#a7e653', 'stroke-opacity': Number.isInteger(i) ? '.3' : '.12', 'stroke-width': '.8'}, terrain);
         add('path', {d: path(b), fill: 'none', stroke: '#a7e653', 'stroke-opacity': Number.isInteger(i) ? '.3' : '.12', 'stroke-width': '.8'}, terrain);
     }
-    const locations = [[-3,-2],[-1,-3],[2,-2],[-2,1],[1,1],[3,3]];
+    // Keep the fixtures intentionally spread across the terrain: this is a
+    // simple placement pass, not a physical orientation simulation.
+    const locations = [[-4, -1], [-2, -4], [3, -3], [-3, 2], [2, 1], [3, 4]];
     const actors = [];
     locations.forEach(([x,y], index) => {
-        const z = height(x, y), size = 0.6;
-        const base = [[x-size,y-size],[x+size,y-size],[x+size,y+size],[x-size,y+size]].map(([a,b]) => project(a,b,z));
-        const top = base.map(([a,b]) => [a,b-34]);
-        const center = project(x,y,z);
-        add('ellipse', {cx: center[0], cy: center[1]+3, rx: 28, ry: 11, fill:'#a7e653', opacity:'.12'});
-        add('path', {d: `M${center[0]},${center[1]}v-95`, class:'study-guide', fill:'none', stroke:'#ff8752', 'stroke-dasharray':'3 5', 'stroke-opacity':'.5'});
-        const actor = add('g', {class:'study-actor', style:`--actor-delay: ${index * 65}ms; transform: translateY(-76px)`});
+        const z = height(x, y);
+        const size = 0.6;
+        const base = [[x - size, y - size], [x + size, y - size], [x + size, y + size], [x - size, y + size]].map(([a,b]) => project(a, b, z));
+        const top = base.map(([a,b]) => [a, b - 34]);
+        const center = project(x, y, z);
+        add('ellipse', {cx: center[0], cy: center[1] + 3, rx: 28, ry: 11, fill:'#a7e653', opacity:'.12'});
+        const actor = add('g', {class:'study-actor', style:`transform: translateY(-76px); transition: transform 620ms cubic-bezier(.16, 1, .3, 1) ${index * 65}ms`});
         add('polygon', {points:points([base[1],base[2],top[2],top[1]]),fill:'#496b3b',stroke:'#c7ff6e','stroke-width':'1'}, actor);
         add('polygon', {points:points([base[2],base[3],top[3],top[2]]),fill:'#253d2b',stroke:'#a7e653','stroke-width':'1'}, actor);
         add('polygon', {points:points(top),fill:'#8cab67',stroke:'#dbf4b1','stroke-width':'1'}, actor);
-        const label = add('text', {x:center[0],y:center[1]-47,fill:'#bbc6ca','font-size':'10','text-anchor':'middle','font-family':'monospace'},actor);
-        label.textContent = `0${index + 1}`;
+        if (index === 0) {
+            const label = add('text', {x:center[0],y:center[1]-47,fill:'#bbc6ca','font-size':'10','text-anchor':'middle','font-family':'monospace','aria-hidden':'true'},actor);
+            label.textContent = '01';
+        }
         actors.push(actor);
     });
-    button.hidden = false;
-    button.addEventListener('click', () => {
-        const settled = button.getAttribute('aria-pressed') !== 'true';
-        button.setAttribute('aria-pressed', String(settled));
-        svg.parentElement.dataset.settled = String(settled);
+    const setStudySettled = settled => {
+        if (study.dataset.settled === String(settled)) return;
+        study.dataset.settled = String(settled);
         actors.forEach(actor => actor.style.transform = settled ? 'translateY(0)' : 'translateY(-76px)');
-        button.querySelector('span').textContent = settled ? 'Reset placement' : 'Snap Selected';
-        document.getElementById('landsnap-study-state').textContent = settled ? '06 actors · on the surface' : '06 actors · awaiting placement';
         svg.setAttribute('aria-label', settled ? 'Six illustrated blocks resting on the terrain surface.' : 'Six illustrated blocks above the terrain surface.');
-    });
+    };
+
+    // The placement study is a scroll-triggered demonstration: entering settles it; leaving resets it for the next pass.
+    if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver(entries => {
+            const entry = entries.find(candidate => candidate.target === study);
+            if (entry) setStudySettled(entry.isIntersecting);
+        }, {threshold: 0});
+        observer.observe(study);
+    } else {
+        setStudySettled(true);
+    }
 })();

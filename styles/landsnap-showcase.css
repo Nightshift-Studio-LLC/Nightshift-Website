@@ -27,6 +27,23 @@ body.landsnap-showcase-page {
         linear-gradient(150deg, #0b1610 0%, var(--landsnap-bg) 56%, #09110d 100%);
 }
 
+.landsnap-showcase-embed {
+    --landsnap-bg: #07100b;
+    --landsnap-panel: rgba(13, 25, 18, 0.92);
+    --landsnap-panel-solid: #0d1912;
+    --landsnap-panel-deep: #080f0b;
+    --landsnap-text: #edf5e9;
+    --landsnap-muted: #9fac9f;
+    --landsnap-faint: #718074;
+    --landsnap-green: #b6f36a;
+    --landsnap-green-bright: #d6ff9d;
+    --landsnap-green-wash: rgba(182, 243, 106, 0.12);
+    --landsnap-line: rgba(194, 245, 142, 0.2);
+    --landsnap-warning: #ee8a65;
+    color: var(--landsnap-text);
+    font-family: "IBM Plex Mono", monospace;
+}
+
 .landsnap-showcase-page *,
 .landsnap-showcase-page *::before,
 .landsnap-showcase-page *::after {
@@ -298,11 +315,17 @@ body.landsnap-showcase-page {
     box-shadow: 0 0 0 3px rgba(182, 243, 106, 0.13);
 }
 
+.landsnap-showcase-viewport-frame {
+    position: relative;
+    width: 100%;
+    min-height: min(60vw, 660px);
+}
+
 .landsnap-showcase-stream-mount {
     position: relative;
     display: grid;
     width: 100%;
-    min-height: min(60vw, 660px);
+    min-height: inherit;
     overflow: hidden;
     border: 1px solid rgba(214, 255, 157, 0.22);
     background: #050a07;
@@ -321,6 +344,67 @@ body.landsnap-showcase-page {
     height: 100%;
     min-height: inherit;
     border: 0;
+}
+
+.landsnap-showcase-notification {
+    position: relative;
+    display: grid;
+    grid-template-columns: 8px minmax(0, 1fr);
+    gap: 10px;
+    width: 100%;
+    padding: 12px 13px;
+    border: 1px solid rgba(238, 138, 101, 0.48);
+    border-left-width: 3px;
+    background: rgba(19, 25, 21, 0.94);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.34);
+    pointer-events: none;
+}
+
+.landsnap-showcase-notification[hidden] {
+    display: none;
+}
+
+.landsnap-showcase-notification-marker {
+    width: 8px;
+    height: 8px;
+    margin-top: 4px;
+    border-radius: 50%;
+    background: var(--landsnap-warning);
+    box-shadow: 0 0 0 4px rgba(238, 138, 101, 0.12);
+}
+
+.landsnap-showcase-notification strong,
+.landsnap-showcase-notification p {
+    display: block;
+    margin: 0;
+}
+
+.landsnap-showcase-notification strong {
+    color: #ffe0d4;
+    font-family: "Chakra Petch", sans-serif;
+    font-size: 0.88rem;
+    font-weight: 600;
+    letter-spacing: 0.025em;
+}
+
+.landsnap-showcase-notification p {
+    margin-top: 4px;
+    color: #c8d0c7;
+    font-size: 0.62rem;
+    line-height: 1.55;
+}
+
+.landsnap-showcase-notification[data-notification-level="warning"] {
+    border-color: rgba(231, 208, 119, 0.56);
+}
+
+.landsnap-showcase-notification[data-notification-level="warning"] .landsnap-showcase-notification-marker {
+    background: #e7d077;
+    box-shadow: 0 0 0 4px rgba(231, 208, 119, 0.12);
+}
+
+.landsnap-showcase-notification[data-notification-level="warning"] strong {
+    color: #fff1b3;
 }
 
 .landsnap-showcase-stream-placeholder {
@@ -396,45 +480,115 @@ body.landsnap-showcase-page {
     font-weight: 600;
 }
 
+/* Placement Studio borrows the compact, neutral hierarchy of an Unreal Editor details panel. */
+.landsnap-showcase-workspace {
+    grid-template-columns: minmax(0, 1fr) clamp(390px, 30vw, 500px);
+    border-color: #3a3a3a;
+    background: #1b1b1b;
+    box-shadow: none;
+}
+
 .landsnap-showcase-panel {
+    align-self: stretch;
+    color: #d5d5d5;
+    font-family: Arial, "Segoe UI", sans-serif;
+    border-left-color: #3a3a3a;
+    background: #242424;
+}
+
+.landsnap-showcase-panel-tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    min-height: 34px;
+    padding: 6px 14px 5px;
+    border-bottom: 2px solid #56a6dc;
+    color: #f2f2f2;
+    font-size: 0.78rem;
+    font-weight: 600;
+}
+
+.landsnap-showcase-panel-tab img {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
+
+.landsnap-showcase-panel-heading {
+    padding: 10px 14px;
+    border-top: 1px solid #171717;
+    border-bottom: 1px solid #111;
+    background: linear-gradient(#323232, #2b2b2b);
+}
+
+.landsnap-showcase-panel-heading h2 {
+    margin: 0;
+    color: #d9d9d9;
+    font-family: Arial, "Segoe UI", sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0;
+}
+
+.landsnap-showcase-panel-heading h2 span {
+    margin-right: 7px;
+    color: #a0a0a0;
+}
+
+.landsnap-showcase-native-row {
     display: grid;
-    align-content: start;
+    grid-template-columns: 15px minmax(0, 1fr) auto;
+    align-items: center;
+    min-height: 34px;
+    padding: 0 14px;
+    border-top: 1px solid #383838;
+    border-bottom: 1px solid #171717;
+    background: #2b2b2b;
+    color: #cfcfcf;
+    font-size: 0.74rem;
+}
+
+.landsnap-showcase-native-row > span {
+    color: #9d9d9d;
+    font-size: 0.7rem;
+}
+
+.landsnap-showcase-native-row strong {
+    font-weight: 600;
+}
+
+.landsnap-showcase-native-row small {
+    color: #9b9b9b;
+    font-size: 0.68rem;
+}
+
+.landsnap-showcase-panel {
+    display: flex;
+    flex-direction: column;
     min-width: 0;
     border-left: 1px solid var(--landsnap-line);
-    background:
-        radial-gradient(circle at 93% 4%, rgba(182, 243, 106, 0.08), transparent 15rem),
-        var(--landsnap-panel);
+    background: #242424;
 }
 
 .landsnap-showcase-panel-heading,
 .landsnap-showcase-scenario-controls,
 .landsnap-showcase-action-stack,
-.landsnap-showcase-operation,
 .landsnap-showcase-disclosure {
-    padding: 22px;
-}
-
-.landsnap-showcase-panel-heading > p:last-child {
-    margin: 11px 0 0;
-    color: var(--landsnap-muted);
-    font-size: 0.72rem;
-    line-height: 1.65;
+    padding: 13px 14px;
 }
 
 .landsnap-showcase-scenario-controls,
 .landsnap-showcase-action-stack,
-.landsnap-showcase-operation,
 .landsnap-showcase-disclosure {
-    border-top: 1px solid var(--landsnap-line);
+    border-top: 1px solid #3a3a3a;
 }
 
 .landsnap-showcase-scenario-controls > span {
     display: block;
-    color: var(--landsnap-faint);
-    font-size: 0.58rem;
+    color: #b9b9b9;
+    font-size: 0.69rem;
     font-weight: 600;
-    letter-spacing: 0.13em;
-    text-transform: uppercase;
+    letter-spacing: 0;
 }
 
 .landsnap-showcase-scenario-controls > div {
@@ -442,14 +596,14 @@ body.landsnap-showcase-page {
     grid-template-columns: 36px minmax(0, 1fr) 36px;
     align-items: center;
     gap: 8px;
-    margin-top: 10px;
+    margin-top: 8px;
 }
 
 .landsnap-showcase-scenario-controls output {
     overflow: hidden;
-    color: var(--landsnap-text);
-    font-family: "Chakra Petch", sans-serif;
-    font-size: 0.95rem;
+    color: #dfdfdf;
+    font-family: Arial, "Segoe UI", sans-serif;
+    font-size: 0.76rem;
     line-height: 1.3;
     text-align: center;
     text-overflow: ellipsis;
@@ -458,72 +612,127 @@ body.landsnap-showcase-page {
 
 .landsnap-showcase-action-stack {
     display: grid;
-    gap: 9px;
+    gap: 6px;
+    background: #242424;
+}
+
+.landsnap-showcase-calibration {
+    display: grid;
+    gap: 6px;
+    padding-top: 7px;
+    border-top: 1px solid #3a3a3a;
+}
+
+.landsnap-showcase-calibration-fields {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+}
+
+.landsnap-showcase-calibration-fields label {
+    display: grid;
+    gap: 4px;
+    color: #b9b9b9;
+    font: 600 0.64rem Arial, "Segoe UI", sans-serif;
+}
+
+.landsnap-showcase-calibration-fields select {
+    width: 100%;
+    min-height: 28px;
+    padding: 3px 24px 3px 7px;
+    border: 1px solid #111;
+    border-radius: 3px;
+    background: #1b1b1b;
+    color: #dedede;
+    font: 0.72rem Arial, "Segoe UI", sans-serif;
+}
+
+.landsnap-showcase-calibration-fields select:not(:disabled):hover {
+    border-color: #5e9bc4;
+}
+
+.landsnap-showcase-calibration-fields select:disabled {
+    color: #888;
+    opacity: 1;
 }
 
 .landsnap-showcase-history-actions {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 9px;
+    gap: 6px;
 }
 
 .landsnap-showcase-action,
 .landsnap-showcase-icon-button {
     appearance: none;
-    border: 1px solid rgba(214, 255, 157, 0.22);
-    border-radius: 0;
-    background: rgba(182, 243, 106, 0.055);
-    color: var(--landsnap-text);
-    font: 600 0.68rem "IBM Plex Mono", monospace;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+    border: 1px solid #111;
+    border-radius: 4px;
+    background: linear-gradient(#3b3b3b, #303030);
+    box-shadow: inset 0 1px rgba(255, 255, 255, 0.07);
+    color: #d8d8d8;
+    font: 0.77rem Arial, "Segoe UI", sans-serif;
+    letter-spacing: 0;
+    text-transform: none;
 }
 
 .landsnap-showcase-action {
-    display: grid;
-    gap: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
     width: 100%;
-    min-height: 48px;
-    padding: 11px 13px;
-    text-align: left;
-}
-
-.landsnap-showcase-action small {
-    color: var(--landsnap-muted);
-    font-size: 0.57rem;
-    font-weight: 400;
-    letter-spacing: 0.02em;
-    text-transform: none;
+    min-height: 31px;
+    padding: 6px 10px;
+    text-align: center;
 }
 
 .landsnap-showcase-icon-button {
     display: grid;
-    width: 36px;
-    height: 36px;
+    width: 31px;
+    height: 28px;
     place-items: center;
     padding: 0;
-    font-size: 1rem;
+    font-size: 0.9rem;
 }
 
 .landsnap-showcase-action-primary {
-    border-color: rgba(214, 255, 157, 0.54);
-    background: linear-gradient(135deg, rgba(182, 243, 106, 0.24), rgba(74, 116, 42, 0.22));
+    border-color: #111;
+    background: linear-gradient(#454545, #393939);
+    color: #f2f2f2;
 }
 
 .landsnap-showcase-action-reset {
-    border-color: rgba(238, 138, 101, 0.28);
-    color: #ffd4c3;
+    color: #d7d7d7;
+}
+
+.landsnap-showcase-action-clean {
+    color: #d7d7d7;
 }
 
 .landsnap-showcase-action:not(:disabled):hover,
 .landsnap-showcase-icon-button:not(:disabled):hover {
-    border-color: var(--landsnap-green-bright);
-    background: rgba(182, 243, 106, 0.16);
+    border-color: #5e9bc4;
+    background: linear-gradient(#4d4d4d, #3a3a3a);
     cursor: pointer;
+}
+
+.landsnap-showcase-action-icon {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+}
+
+.landsnap-showcase-action-glyph {
+    width: 16px;
+    color: #a9cde6;
+    font-family: "Segoe UI Symbol", sans-serif;
+    font-size: 0.95rem;
+    line-height: 1;
 }
 
 .landsnap-showcase-action:focus-visible,
 .landsnap-showcase-icon-button:focus-visible,
+.landsnap-showcase-calibration-fields select:focus-visible,
 .landsnap-showcase-return:focus-visible,
 .landsnap-showcase-brand:focus-visible,
 .landsnap-showcase-disclosure summary:focus-visible {
@@ -534,32 +743,92 @@ body.landsnap-showcase-page {
 .landsnap-showcase-action:disabled,
 .landsnap-showcase-icon-button:disabled {
     cursor: not-allowed;
-    opacity: 0.44;
+    color: #888;
+    opacity: 1;
+}
+
+.landsnap-showcase-outliner {
+    border-top: 1px solid #3a3a3a;
+    background: #242424;
+}
+
+.landsnap-showcase-outliner-body {
+    display: grid;
+    gap: 6px;
+    padding: 11px 14px 13px;
+}
+
+.landsnap-showcase-outliner-select {
+    display: grid;
+    grid-template-columns: 31px minmax(0, 1fr) 31px;
+    align-items: center;
+    gap: 6px;
+}
+
+.landsnap-showcase-outliner-select output {
+    overflow: hidden;
+    color: #dedede;
+    font: 0.72rem Arial, "Segoe UI", sans-serif;
+    line-height: 1.3;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.landsnap-showcase-action:disabled .landsnap-showcase-action-icon,
+.landsnap-showcase-action:disabled .landsnap-showcase-action-glyph {
+    filter: grayscale(1);
+    opacity: 0.58;
 }
 
 .landsnap-showcase-operation {
-    min-height: 108px;
-    background: rgba(2, 7, 4, 0.34);
+    background: #242424;
 }
 
-.landsnap-showcase-operation > p:last-child {
-    margin: 9px 0 0;
-    color: var(--landsnap-muted);
-    font-size: 0.69rem;
-    line-height: 1.65;
+.landsnap-showcase-review-row small {
+    color: #a8a8a8;
+}
+
+.landsnap-showcase-review-body {
+    padding: 11px 14px 13px;
+    background: #242424;
+}
+
+.landsnap-showcase-review-body > p {
+    margin: 0;
+    color: #a8a8a8;
+    font-family: Arial, "Segoe UI", sans-serif;
+    font-size: 0.72rem;
+    line-height: 1.45;
+}
+
+.landsnap-showcase-review-guidance {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px !important;
+    padding-top: 10px;
+    border-top: 1px solid #3a3a3a;
+}
+
+.landsnap-showcase-review-guidance strong {
+    flex: 0 0 auto;
+    color: #a9cde6;
+    font-weight: 600;
 }
 
 .landsnap-showcase-disclosure {
-    color: var(--landsnap-muted);
-    font-size: 0.66rem;
-    line-height: 1.7;
+    color: #a8a8a8;
+    font-family: Arial, "Segoe UI", sans-serif;
+    font-size: 0.7rem;
+    line-height: 1.55;
+    background: #292929;
 }
 
 .landsnap-showcase-disclosure summary {
-    color: var(--landsnap-text);
+    color: #d5d5d5;
     cursor: pointer;
-    font-family: "Chakra Petch", sans-serif;
-    font-size: 0.95rem;
+    font-family: Arial, "Segoe UI", sans-serif;
+    font-size: 0.76rem;
     font-weight: 600;
     list-style: none;
 }
@@ -570,17 +839,27 @@ body.landsnap-showcase-page {
 
 .landsnap-showcase-disclosure summary::after {
     float: right;
-    color: var(--landsnap-green);
-    content: "+";
-    font-family: "IBM Plex Mono", monospace;
+    color: #a8a8a8;
+    content: "▸";
+    font-family: Arial, "Segoe UI", sans-serif;
 }
 
 .landsnap-showcase-disclosure[open] summary::after {
-    content: "−";
+    content: "▾";
 }
 
 .landsnap-showcase-disclosure p {
     margin: 13px 0 0;
+}
+
+.landsnap-showcase-notification-slot {
+    display: flex;
+    flex: 1 1 auto;
+    align-items: flex-end;
+    min-height: 96px;
+    padding: 14px;
+    border-top: 1px solid #3a3a3a;
+    background: #202020;
 }
 
 @media (max-width: 960px) {
@@ -589,24 +868,14 @@ body.landsnap-showcase-page {
     }
 
     .landsnap-showcase-panel {
-        grid-template-columns: minmax(0, 1fr) minmax(260px, 0.75fr);
+        display: flex;
         border-top: 1px solid var(--landsnap-line);
         border-left: 0;
     }
 
-    .landsnap-showcase-panel-heading,
-    .landsnap-showcase-scenario-controls {
-        border-top: 0;
-    }
-
     .landsnap-showcase-scenario-controls,
     .landsnap-showcase-disclosure {
-        border-left: 1px solid var(--landsnap-line);
-    }
-
-    .landsnap-showcase-action-stack,
-    .landsnap-showcase-operation {
-        border-top: 1px solid var(--landsnap-line);
+        border-left: 0;
     }
 }
 
@@ -648,8 +917,13 @@ body.landsnap-showcase-page {
         font-size: 0.54rem;
     }
 
-    .landsnap-showcase-stream-mount {
+    .landsnap-showcase-viewport-frame {
         min-height: 56vw;
+    }
+
+    .landsnap-showcase-notification-slot {
+        min-height: 82px;
+        padding: 10px;
     }
 
     .landsnap-showcase-queue-overlay {
@@ -673,9 +947,7 @@ body.landsnap-showcase-page {
         text-align: right;
     }
 
-    .landsnap-showcase-panel {
-        display: block;
-    }
+    .landsnap-showcase-panel { display: flex; }
 
     .landsnap-showcase-scenario-controls,
     .landsnap-showcase-disclosure {
