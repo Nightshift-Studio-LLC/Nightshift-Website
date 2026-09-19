@@ -1660,9 +1660,7 @@ body.landsnap-page {
 .landsnap-page .landsnap-hero-copy::before { background: none; }
 .landsnap-release-line { margin-bottom: 30px; }
 .landsnap-release-line span { border-radius: 3px; font-size: .6rem; letter-spacing: .1em; }
-.landsnap-release-line span:first-child { background: var(--landsnap-green); color: #1c2c17; border-color: var(--landsnap-green); font-weight: 700; }
 .landsnap-page .landsnap-hero .page-title { display: flex; align-items: baseline; gap: 12px; margin: 20px 0; font-size: clamp(2.4rem, 4.1vw, 4.1rem); letter-spacing: -.055em; line-height: 1; white-space: nowrap; }
-.landsnap-version { font-family: var(--body); color: var(--landsnap-green); font-size: .38em; letter-spacing: -.04em; font-weight: 500; }
 .landsnap-hero-kicker { font-family: var(--body); color: var(--text); font-size: clamp(2rem, 3.2vw, 3.2rem); line-height: 1.08; letter-spacing: -.055em; margin-bottom: 24px; font-weight: 500; }
 .landsnap-page .landsnap-hero-copy .page-lede { font-size: 1rem; line-height: 1.75; max-width: 43ch; }
 .landsnap-page .landsnap-hero-copy .cta-btn { border-radius: 4px; min-height: 46px; padding: 0 17px; font-size: .64rem; }
