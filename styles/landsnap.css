@@ -284,17 +284,16 @@ body.landsnap-page summary:focus-visible {
 }
 
 .landsnap-inline-autosnap {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.28em;
     white-space: nowrap;
 }
 
 .landsnap-inline-autosnap img {
-    width: 1.15em;
-    height: 1.15em;
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    margin-right: 0.28em;
     object-fit: contain;
-    transform: translateY(-0.04em);
+    vertical-align: -0.14em;
 }
 
 .landsnap-page .landsnap-hero-copy .hero-actions {
