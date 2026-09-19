@@ -281,33 +281,55 @@ export const createQueueLeaseController = ({
 
 const getQueueSurface = (documentRef) => ({
     overlay: documentRef.getElementById("landsnap-showcase-queue-overlay"),
+    alert: documentRef.getElementById("landsnap-showcase-queue-alert"),
+    alertText: documentRef.getElementById("landsnap-showcase-queue-alert-text"),
     title: documentRef.getElementById("landsnap-showcase-queue-title"),
     message: documentRef.getElementById("landsnap-showcase-queue-message"),
     position: documentRef.getElementById("landsnap-showcase-queue-position"),
     estimate: documentRef.getElementById("landsnap-showcase-queue-estimate"),
     countdown: documentRef.querySelector("#landsnap-showcase-queue-countdown time"),
+    metrics: documentRef.querySelector(".landsnap-showcase-queue-metrics"),
+    note: documentRef.querySelector(".landsnap-showcase-queue-note"),
 });
+
+export const getQueuePresentation = (lease, now = Date.now()) => {
+    const waiting = lease?.status === "waiting";
+    const active = lease?.status === "active";
+    const delay = waiting ? calculateQueueWaitMs(lease, now) : 0;
+    return Object.freeze({
+        visible: !active,
+        state: waiting ? "waiting" : active ? "active" : "unavailable",
+        alert: waiting ? "Waiting for an available session" : "Waiting for server",
+        title: waiting ? "A demo is already in progress" : "Showcase access unavailable",
+        message: waiting
+            ? `You are number ${lease.position} in the queue. Your streamed workspace will unlock as soon as the active visitor releases or expires their lease.`
+            : "The demo server is unavailable. We’ll reconnect automatically when the Showcase is ready.",
+        position: waiting ? String(lease.position) : "—",
+        estimate: waiting ? `${formatQueueCountdown(delay)} remaining` : "—",
+        countdown: waiting ? formatQueueCountdown(delay) : "—",
+        countdownSeconds: waiting ? Math.ceil(delay / 1_000) : 0,
+        showMetrics: waiting,
+    });
+};
 
 const renderQueueSurface = (surface, lease, now = Date.now()) => {
     if (!surface.overlay) return;
-    const waiting = lease.status === "waiting";
-    const unavailable = lease.status === "unavailable";
-    const delay = waiting ? calculateQueueWaitMs(lease, now) : 0;
-    surface.overlay.hidden = lease.status === "active";
-    surface.overlay.dataset.queueState = lease.status;
-    if (surface.title) surface.title.textContent = waiting ? "A demo is already in progress" : "Showcase access unavailable";
-    if (surface.message) {
-        surface.message.textContent = waiting
-            ? `You are number ${lease.position} in the queue. Your streamed workspace will unlock as soon as the active visitor releases or expires their lease.`
-            : "The streamed workspace stays unavailable until the fixed deployment queue grants an active five-minute lease.";
-    }
-    if (surface.position) surface.position.textContent = waiting ? String(lease.position) : "—";
-    if (surface.estimate) surface.estimate.textContent = waiting ? `${formatQueueCountdown(delay)} remaining` : "—";
+    const presentation = getQueuePresentation(lease, now);
+    surface.overlay.hidden = !presentation.visible;
+    surface.overlay.dataset.queueState = presentation.state;
+    if (surface.alert) surface.alert.hidden = !presentation.visible;
+    if (surface.alertText) surface.alertText.textContent = presentation.alert;
+    if (surface.title) surface.title.textContent = presentation.title;
+    if (surface.message) surface.message.textContent = presentation.message;
+    if (surface.position) surface.position.textContent = presentation.position;
+    if (surface.estimate) surface.estimate.textContent = presentation.estimate;
     if (surface.countdown) {
-        surface.countdown.textContent = waiting ? formatQueueCountdown(delay) : "—";
-        surface.countdown.dateTime = waiting ? `PT${Math.ceil(delay / 1_000)}S` : "PT0S";
+        surface.countdown.textContent = presentation.countdown;
+        surface.countdown.dateTime = `PT${presentation.countdownSeconds}S`;
     }
-    if (unavailable) surface.overlay.setAttribute("aria-busy", "true");
+    if (surface.metrics) surface.metrics.hidden = !presentation.showMetrics;
+    if (surface.note) surface.note.hidden = !presentation.showMetrics;
+    if (presentation.state === "unavailable") surface.overlay.setAttribute("aria-busy", "true");
     else surface.overlay.removeAttribute("aria-busy");
 };
 

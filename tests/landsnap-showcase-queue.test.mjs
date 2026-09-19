@@ -9,6 +9,7 @@ import {
     createQueueLeaseController,
     createQueueServiceClient,
     formatQueueCountdown,
+    getQueuePresentation,
     isActiveQueueLease,
     parseQueueLease,
 } from "../scripts/landsnap-showcase-queue.js";
@@ -50,6 +51,34 @@ test("waiting estimates use active time remaining plus five minutes per queued v
     assert.equal(calculateQueueWaitMs(next, now), 80_000);
     assert.equal(calculateQueueWaitMs(third, now), 80_000 + 2 * SHOWCASE_LEASE_DURATION_MS);
     assert.equal(formatQueueCountdown(80_000), "01:20");
+});
+
+test("queue presentation distinguishes a server outage from a visitor wait", () => {
+    const now = 1_700_000_000_000;
+    assert.deepEqual(getQueuePresentation({ status: "unavailable" }, now), {
+        visible: true,
+        state: "unavailable",
+        alert: "Waiting for server",
+        title: "Showcase access unavailable",
+        message: "The demo server is unavailable. We’ll reconnect automatically when the Showcase is ready.",
+        position: "—",
+        estimate: "—",
+        countdown: "—",
+        countdownSeconds: 0,
+        showMetrics: false,
+    });
+    assert.deepEqual(getQueuePresentation(waitingLease(now, 2), now), {
+        visible: true,
+        state: "waiting",
+        alert: "Waiting for an available session",
+        title: "A demo is already in progress",
+        message: "You are number 2 in the queue. Your streamed workspace will unlock as soon as the active visitor releases or expires their lease.",
+        position: "2",
+        estimate: "06:20 remaining",
+        countdown: "06:20",
+        countdownSeconds: 380,
+        showMetrics: true,
+    });
 });
 
 test("an early active departure promotes the next queued visitor through the fixed event stream", async () => {

@@ -210,6 +210,43 @@ body.landsnap-showcase-page {
     box-shadow: 0 22px 56px rgba(0, 0, 0, 0.35);
 }
 
+.landsnap-showcase-queue-alert {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 16px 0 0;
+    padding: 8px 10px;
+    border: 1px solid rgba(255, 139, 77, 0.58);
+    border-radius: 2px;
+    background: rgba(255, 104, 51, 0.12);
+    color: #ffac78;
+    font-size: 0.57rem;
+    font-weight: 700;
+    letter-spacing: 0.11em;
+    line-height: 1.2;
+    text-transform: uppercase;
+}
+
+.landsnap-showcase-queue-alert[hidden] {
+    display: none;
+}
+
+.landsnap-showcase-queue-alert-icon {
+    color: #ff8650;
+    font-size: 0.92rem;
+    line-height: 0.9;
+}
+
+.landsnap-showcase-queue-overlay[data-queue-state="waiting"] .landsnap-showcase-queue-alert {
+    border-color: rgba(255, 181, 84, 0.58);
+    background: rgba(255, 181, 84, 0.1);
+    color: #ffd091;
+}
+
+.landsnap-showcase-queue-overlay[data-queue-state="waiting"] .landsnap-showcase-queue-alert-icon {
+    color: #ffc16a;
+}
+
 .landsnap-showcase-queue-card h2 {
     margin: 6px 0 0;
     color: #f4f6f2;
@@ -262,6 +299,11 @@ body.landsnap-showcase-page {
 .landsnap-showcase-queue-card .landsnap-showcase-queue-note {
     color: #aeb5ae;
     font-size: 0.65rem;
+}
+
+.landsnap-showcase-queue-metrics[hidden],
+.landsnap-showcase-queue-card .landsnap-showcase-queue-note[hidden] {
+    display: none;
 }
 
 .landsnap-showcase-stream-column {
