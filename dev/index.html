@@ -170,8 +170,86 @@
             background: rgba(42, 108, 61, 0.54);
         }
 
+        .studio-wishlist-panel {
+            display: grid;
+            gap: 18px;
+        }
+
+        .studio-wishlist-header {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            gap: 18px;
+            align-items: start;
+        }
+
+        .studio-wishlist-header .panel-copy {
+            max-width: 76ch;
+            margin: 8px 0 0;
+        }
+
+        .studio-wishlist-status {
+            min-width: 220px;
+            padding: 14px;
+            border: 1px solid rgba(120, 255, 154, 0.32);
+            border-radius: 18px;
+            background: rgba(7, 18, 12, 0.64);
+        }
+
+        .studio-wishlist-status span,
+        .studio-wishlist-item span {
+            display: block;
+            color: var(--muted);
+            font-size: 0.72rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .studio-wishlist-status strong,
+        .studio-wishlist-item strong {
+            display: block;
+            margin-top: 6px;
+            color: var(--text);
+            font-family: var(--heading);
+            letter-spacing: 0.04em;
+        }
+
+        .studio-wishlist-list {
+            display: grid;
+            gap: 10px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .studio-wishlist-item {
+            display: grid;
+            grid-template-columns: minmax(110px, auto) minmax(0, 1fr) auto;
+            gap: 12px;
+            align-items: center;
+            padding: 14px;
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            background: rgba(7, 18, 12, 0.64);
+        }
+
+        .studio-wishlist-item p {
+            margin: 4px 0 0;
+            color: var(--muted);
+            line-height: 1.65;
+        }
+
+        .studio-wishlist-tag {
+            color: var(--accent);
+            font-family: var(--heading);
+            white-space: nowrap;
+        }
+
         @media (max-width: 900px) {
             .outpost-header {
+                grid-template-columns: 1fr;
+            }
+
+            .studio-wishlist-header {
                 grid-template-columns: 1fr;
             }
 
@@ -183,6 +261,14 @@
         @media (max-width: 760px) {
             .outpost-status-grid {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .studio-wishlist-item {
+                grid-template-columns: 1fr;
+            }
+
+            .studio-wishlist-status {
+                min-width: 0;
             }
 
             .outpost-touch-controls {
@@ -308,6 +394,85 @@
                     </div>
                 </aside>
             </div>
+        </section>
+        <section class="panel notes-panel studio-wishlist-panel" aria-labelledby="studio-wishlist-title">
+            <div class="studio-wishlist-header">
+                <div class="panel-heading">
+                    <p class="eyebrow">Internal procurement / private list</p>
+                    <h2 id="studio-wishlist-title">Studio wishlist</h2>
+                    <p class="panel-copy">Production tools under consideration. This list stays on the hidden development surface and is not a public support target.</p>
+                </div>
+                <div class="studio-wishlist-status">
+                    <span>Visibility</span>
+                    <strong>Hidden / internal only</strong>
+                </div>
+            </div>
+            <ul class="studio-wishlist-list" aria-label="Studio wishlist items">
+                <li class="studio-wishlist-item">
+                    <span>01 / Environment</span>
+                    <div>
+                        <strong>The Grove3D Perpetual Indie License</strong>
+                        <p>Tree Software</p>
+                    </div>
+                    <b class="studio-wishlist-tag">Wishlist</b>
+                </li>
+                <li class="studio-wishlist-item">
+                    <span>02 / Character</span>
+                    <div>
+                        <strong>Marvelous Designer</strong>
+                        <p>Annual</p>
+                    </div>
+                    <b class="studio-wishlist-tag">Wishlist</b>
+                </li>
+                <li class="studio-wishlist-item">
+                    <span>03 / Development</span>
+                    <div>
+                        <strong>ModRetro Console and DevKit</strong>
+                        <p>Hardware and development kit</p>
+                    </div>
+                    <b class="studio-wishlist-tag">Wishlist</b>
+                </li>
+                <li class="studio-wishlist-item">
+                    <span>04 / Photography</span>
+                    <div>
+                        <strong>High-Fidelity Camera</strong>
+                        <p>Professional photography</p>
+                    </div>
+                    <b class="studio-wishlist-tag">Wishlist</b>
+                </li>
+                <li class="studio-wishlist-item">
+                    <span>05 / Character</span>
+                    <div>
+                        <strong>FiberShop Perpetual Indie License</strong>
+                        <p>Hair and fiber authoring</p>
+                    </div>
+                    <b class="studio-wishlist-tag">Wishlist</b>
+                </li>
+                <li class="studio-wishlist-item">
+                    <span>06 / Motion Capture</span>
+                    <div>
+                        <strong>Additional Butterfly IMU Sensor Set</strong>
+                        <p>Second set; the first is expected soon for testing and development.</p>
+                    </div>
+                    <b class="studio-wishlist-tag">Wishlist</b>
+                </li>
+                <li class="studio-wishlist-item">
+                    <span>07 / Motion Capture</span>
+                    <div>
+                        <strong>Motion-Capture Suit, Straps, and Storage</strong>
+                        <p>Wearable capture hardware and organization.</p>
+                    </div>
+                    <b class="studio-wishlist-tag">Wishlist</b>
+                </li>
+                <li class="studio-wishlist-item">
+                    <span>08 / Motion Capture</span>
+                    <div>
+                        <strong>2–4 Logitech Cameras</strong>
+                        <p>Multi-camera reference and capture coverage.</p>
+                    </div>
+                    <b class="studio-wishlist-tag">Wishlist</b>
+                </li>
+            </ul>
         </section>
         <section class="panel notes-panel pixel-trials-panel" aria-labelledby="pixel-trials-title">
             <div class="pixel-trials-header">

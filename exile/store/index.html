@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Store | Arma Homefront</title>
+    <meta name="description" content="The Arma Homefront store for monthly server membership and cosmetic clothing, vehicle skins, and campsite skins.">
+    <link rel="canonical" href="/exile/store/">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="/images/icons/nightshift.ico">
+    <link rel="stylesheet" href="/styles/home-modus-mockup.css">
+    <link rel="stylesheet" href="/exile/styles.css?v=frogskin-camo-v2-20260828">
+    <script defer src="/scripts/analytics.js" data-analytics-endpoint="/api/analytics"></script>
+</head>
+<body>
+    <div class="screen-fx" aria-hidden="true"></div>
+
+    <header class="topbar">
+        <a class="brand hover-sound" href="/exile/" aria-label="Arma Homefront home">
+            <img src="/images/index/nightshift-transparent.png" alt="Nightshift logo">
+            <span class="brand-tag">Arma Homefront</span>
+        </a>
+
+        <nav class="utility-nav" aria-label="Primary">
+            <a href="/exile/" class="hover-sound">Overview</a>
+            <a href="/exile/store/" class="hover-sound active" aria-current="page">Store</a>
+            <a href="/pages/DevLog/index.html" class="hover-sound">Devlog</a>
+        </nav>
+
+        <div class="topbar-readout">
+            <span>Supply Status</span>
+            <strong>Catalog Offline</strong>
+        </div>
+    </header>
+
+    <main class="shell exile-shell store-shell">
+        <section class="panel store-hero">
+            <div class="store-hero-content">
+                <p class="store-kicker">Arma Homefront // Supply Bootstrap</p>
+                <h1 class="homefront-title"><span>Arma</span> <span>Homefront</span></h1>
+                <p class="store-lede">
+                    Membership access and cosmetic customization for Arma Homefront. The storefront framework is live; subscriptions, inventory, and checkout are not.
+                </p>
+                <div class="store-status" aria-label="Store launch status">
+                    <span>Phase 01: Store Planning</span>
+                    <span>Inventory Pending</span>
+                    <span>Checkout Offline</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="panel store-section" aria-labelledby="store-catalog-title">
+            <div class="store-section-heading">
+                <div>
+                    <p class="eyebrow">Store Catalog</p>
+                    <h2 id="store-catalog-title">Choose A Channel</h2>
+                </div>
+                <p>Membership pricing is planned. Final benefits, cosmetic inventory, availability, and purchase terms will be added before checkout opens.</p>
+            </div>
+
+            <div class="store-tabs" role="tablist" aria-label="Store categories">
+                <button class="store-tab active" id="membership-tab" type="button" role="tab" aria-selected="true" aria-controls="membership-panel" data-store-tab="membership">Membership</button>
+                <button class="store-tab" id="cosmetics-tab" type="button" role="tab" aria-selected="false" aria-controls="cosmetics-panel" data-store-tab="cosmetics" tabindex="-1">Cosmetics</button>
+            </div>
+
+            <div class="store-tab-panel" id="membership-panel" role="tabpanel" aria-labelledby="membership-tab" data-store-panel="membership">
+                <div class="store-grid membership-grid">
+                    <article class="store-card membership-card membership-featured">
+                        <div class="store-card-media">
+                            <img src="/images/afterdarkrp/Devlogs/6-27-26/exile-flag-ransom-test.png" alt="Faction flags in the Arma Homefront development world">
+                            <span class="store-card-state">Featured Membership</span>
+                        </div>
+                        <div class="store-card-copy">
+                            <div class="store-card-heading">
+                                <h3>Survivor</h3>
+                                <p class="store-price"><strong>$5</strong><span>/ month</span></p>
+                            </div>
+                            <p>The featured monthly whitelist membership for the Arma Homefront server. Final access terms and launch timing will be confirmed before subscriptions open.</p>
+                        </div>
+                    </article>
+
+                    <article class="store-card membership-card membership-accelerate">
+                        <div class="store-card-media">
+                            <img src="/images/afterdarkrp/Devlogs/6-27-26/exile-dirtbike-new-angle.png" alt="An Arma Homefront dirt bike in development">
+                            <span class="store-card-state">Higher Support</span>
+                        </div>
+                        <div class="store-card-copy">
+                            <div class="store-card-heading">
+                                <h3>Accelerate</h3>
+                                <p class="store-price"><strong>$10</strong><span>/ month</span></p>
+                            </div>
+                            <p>For players who wish to support development more directly. Final benefits and access terms will be published before launch.</p>
+                        </div>
+                    </article>
+                </div>
+            </div>
+
+            <div class="store-tab-panel" id="cosmetics-panel" role="tabpanel" aria-labelledby="cosmetics-tab" data-store-panel="cosmetics" hidden>
+                <div class="store-grid">
+                    <article class="store-card">
+                        <div class="store-card-media">
+                            <img src="/images/ServerHosting/Arma/skullcrusher-olive-ingame.png" alt="Olive clothing and equipment in the Arma Homefront project">
+                            <span class="store-card-state">Inventory Pending</span>
+                        </div>
+                        <div class="store-card-copy">
+                            <div class="store-card-heading">
+                                <h3>Clothing</h3>
+                                <p class="store-price store-price-tbd">Price TBD</p>
+                            </div>
+                            <p>Character clothing, equipment finishes, and wearable visual variants for personalizing your survivor.</p>
+                        </div>
+                    </article>
+
+                    <article class="store-card">
+                        <div class="store-card-media">
+                            <img src="/images/ServerHosting/Arma/dirtbike-green-dirt.png" alt="A green vehicle skin shown on an Arma Homefront dirt bike">
+                            <span class="store-card-state">Inventory Pending</span>
+                        </div>
+                        <div class="store-card-copy">
+                            <div class="store-card-heading">
+                                <h3>Vehicle Skins</h3>
+                                <p class="store-price store-price-tbd">Price TBD</p>
+                            </div>
+                            <p>Cosmetic liveries, paint schemes, and finishes for supported vehicles across the survival sandbox.</p>
+                        </div>
+                    </article>
+
+                    <article class="store-card">
+                        <div class="store-card-media">
+                            <img src="/images/ServerHosting/Arma/campsite-1.png" alt="A campsite in the Arma Homefront world">
+                            <span class="store-card-state">Inventory Pending</span>
+                        </div>
+                        <div class="store-card-copy">
+                            <div class="store-card-heading">
+                                <h3>Campsite Skins</h3>
+                                <p class="store-price store-price-tbd">Price TBD</p>
+                            </div>
+                            <p>Visual themes and cosmetic variants for campsite structures, shelters, and placeable field equipment.</p>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="panel store-callout" aria-labelledby="store-next-title">
+            <div class="store-callout-copy">
+                <p class="eyebrow">Next Deployment</p>
+                <h2 id="store-next-title">Inventory Comes Next</h2>
+                <p>No checkout, subscription billing, or customer data collection is active on this bootstrap page. Watch the devlog for the first confirmed catalog release.</p>
+            </div>
+            <a class="action-pill primary hover-sound" href="/pages/DevLog/index.html">Follow The Devlog</a>
+        </section>
+
+        <footer class="site-footer panel exile-footer">
+            <p class="footer-note">Arma Homefront supply catalog // Checkout offline.</p>
+            <p class="footer-note muted">Copyright 2026 Nightshift. All rights reserved.</p>
+        </footer>
+    </main>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const audio = new Audio("/audio/bop.mp3");
+            audio.volume = 0.25;
+
+            document.querySelectorAll(".hover-sound").forEach((element) => {
+                element.addEventListener("mouseenter", function() {
+                    audio.currentTime = 0;
+                    audio.play().catch(() => {});
+                });
+            });
+
+            const tabs = Array.from(document.querySelectorAll("[data-store-tab]"));
+            const panels = Array.from(document.querySelectorAll("[data-store-panel]"));
+
+            function activateStoreTab(name, updateHash) {
+                tabs.forEach((tab) => {
+                    const isActive = tab.dataset.storeTab === name;
+                    tab.classList.toggle("active", isActive);
+                    tab.setAttribute("aria-selected", String(isActive));
+                    tab.tabIndex = isActive ? 0 : -1;
+                });
+
+                panels.forEach((panel) => {
+                    panel.hidden = panel.dataset.storePanel !== name;
+                });
+
+                if (updateHash) {
+                    window.history.replaceState(null, "", `#${name}`);
+                }
+            }
+
+            tabs.forEach((tab, index) => {
+                tab.addEventListener("click", () => activateStoreTab(tab.dataset.storeTab, true));
+                tab.addEventListener("keydown", (event) => {
+                    if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") {
+                        return;
+                    }
+
+                    event.preventDefault();
+                    const direction = event.key === "ArrowRight" ? 1 : -1;
+                    const nextTab = tabs[(index + direction + tabs.length) % tabs.length];
+                    activateStoreTab(nextTab.dataset.storeTab, true);
+                    nextTab.focus();
+                });
+            });
+
+            activateStoreTab(window.location.hash === "#cosmetics" ? "cosmetics" : "membership", false);
+        });
+    </script>
+</body>
+</html>

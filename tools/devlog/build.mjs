@@ -41,6 +41,9 @@ const escapeHtml = (value) =>
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#39;");
 
+const renderCaption = (value) =>
+    escapeHtml(value || "").replace(/==([^=\n]+)==/g, '<span class="devlog-caption-hot">$1</span>');
+
 const assertLocalMediaPath = (src, file) => {
     if (
         !src ||
@@ -69,7 +72,7 @@ const renderGalleryItem = (line, file) => {
     assertLocalMediaPath(src, file);
 
     const ext = path.extname(src).toLowerCase();
-    const safeCaption = escapeHtml(caption || "");
+    const safeCaption = renderCaption(caption);
 
     if (type === "image") {
         if (!imageExtensions.has(ext)) {
@@ -152,7 +155,7 @@ const renderYoutubeFigure = ({ source, title = "YouTube video", caption = "", fi
     const id = extractYoutubeId(source, file);
     const startSeconds = extractYoutubeStartSeconds(source);
     const safeTitle = escapeHtml(title || "YouTube video");
-    const safeCaption = escapeHtml(caption || title || "");
+    const safeCaption = renderCaption(caption || title || "");
     const startQuery = startSeconds > 0 ? `&start=${startSeconds}` : "";
     const embedUrl = `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&loop=1&playlist=${id}&playsinline=1${startQuery}`;
 
@@ -398,11 +401,11 @@ const footerMarkup = (_pagePrefix) => `
         <footer class="site-footer panel">
 ${softwareMarquee()}
             <div class="footer-grid">
-                <div class="footer-column"><span>Primary routes</span><a class="hover-sound" href="/">Home</a><a class="hover-sound" href="/pages/games.html">Games</a><a class="hover-sound" href="/pages/studio.html">Studio</a><a class="hover-sound" href="/pages/contact.html">Contact</a></div>
+                <div class="footer-column"><span>Primary routes</span><a class="hover-sound" href="/">Home</a><a class="hover-sound" href="/pages/games.html">Games</a><a class="hover-sound" href="/pages/contact.html">Contact</a></div>
                 <div class="footer-column"><span>Public records</span><a class="hover-sound" href="/pages/DevLog/index.html">Devlog</a><a href="https://www.epicgames.com/site/en-US/privacypolicy" target="_blank" rel="noopener noreferrer">Epic Privacy Policy</a><a href="#">Nightshift Privacy Policy</a><a href="#">Applicant Privacy Policy</a></div>
                 <div class="footer-column"><span>External surfaces</span><a href="#">Press Kit</a><a href="#">Brand Assets</a><a href="#">Careers</a><a href="#">Community</a></div>
             </div>
-            <div class="footer-bottom"><div class="social-row"><a class="action-pill hover-sound" href="https://www.youtube.com/@nstx" target="_blank" rel="noopener noreferrer">YouTube</a><a class="action-pill primary hover-sound" href="/pages/Studio/Donations.html">Support the studio</a></div><p class="footer-note">Copyright 2026 Nightshift. All rights reserved.</p></div>
+            <div class="footer-bottom"><div class="social-row"><a class="action-pill hover-sound" href="https://www.youtube.com/@nstx" target="_blank" rel="noopener noreferrer">YouTube</a><a class="action-pill primary hover-sound" href="/pages/contact.html#support">Support the studio</a></div><p class="footer-note">Copyright 2026 Nightshift. All rights reserved.</p></div>
         </footer>`;
 
 const styleVersion = "20260816-devlog-style";
@@ -429,7 +432,6 @@ const layout = ({ title, body, assetPrefix, pagePrefix, readout }) => `<!DOCTYPE
         <nav class="utility-nav" aria-label="Primary">
             <a href="${pagePrefix}/home.html" class="hover-sound">Home</a>
             <a href="${pagePrefix}/games.html" class="hover-sound">Games</a>
-            <a href="${pagePrefix}/studio.html" class="hover-sound">Studio</a>
             <a href="${pagePrefix}/DevLog/index.html" class="hover-sound active">Devlog</a>
             <a href="${pagePrefix}/contact.html" class="hover-sound">Contact</a>
         </nav>

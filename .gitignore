@@ -3,3 +3,5 @@ dist/
 output/
 .vite/
 *.log
+/.playwright-cli
+/.codex-build/

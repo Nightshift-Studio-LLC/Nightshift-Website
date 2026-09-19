@@ -28,7 +28,7 @@ tags:
 One small piece of project history surfaced after this entry was drafted: DNSL's [**How to make infinite money in S&Box RP**](https://youtu.be/lRa5O_XjhOc?si=iLcQvC7sWF2YkrWT&t=2773) video includes an older money-printer model from my work with Sousou, before DXRP. The video is about DXRP, not the current AfterDark project, so it should not be read as a showcase of this build. The model shown there is outdated, bugged, and below the quality bar I can produce today. It is still a useful artifact of the project's lineage: the printer concept has been around for a while, while the current work has moved on.
 
 :::youtube
-https://youtu.be/lRa5O_XjhOc?si=iLcQvC7sWF2YkrWT&t=2773|DNSL - How to make infinite money in S&Box RP|An older Sousou-era money-printer model appearing in DXRP footage at 46:13, before the current AfterDark work.
+https://youtu.be/lRa5O_XjhOc?si=iLcQvC7sWF2YkrWT&t=2773|DNSL - How to make infinite money in S&Box RP|An older Sousou-era money-printer model appearing in DXRP footage at ==46:13==, before the current AfterDark work.
 :::
 
 ## A deliberate pause while the engine moves

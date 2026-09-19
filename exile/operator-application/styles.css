@@ -1,0 +1,33 @@
+.operator-shell { max-width: 1180px; padding-top: 42px; }
+.operator-hero { position: relative; overflow: hidden; padding: clamp(28px, 5vw, 64px); background: linear-gradient(120deg, rgba(7, 18, 17, .96), rgba(4, 8, 11, .95)); }
+.operator-hero::after { content: "OPS"; position: absolute; right: -0.05em; bottom: -0.35em; color: rgba(163, 255, 119, .05); font: 900 clamp(8rem, 25vw, 20rem)/1 "Barlow Condensed", sans-serif; pointer-events: none; }
+.operator-kicker, .panel-label { margin: 0 0 10px; color: #b7ff80; font: 700 .75rem/1.2 "Barlow Condensed", sans-serif; letter-spacing: .16em; text-transform: uppercase; }
+.operator-hero h1, .operator-panel h2, .operator-process h2, .application-panel h2, .form-preview h2 { margin: 0; font-family: "Barlow Condensed", sans-serif; font-weight: 800; letter-spacing: .02em; text-transform: uppercase; }
+.operator-hero h1 { max-width: 720px; font-size: clamp(3rem, 7vw, 6.4rem); line-height: .87; }
+.operator-hero h1 span { color: #b7ff80; }
+.operator-lede { max-width: 680px; margin: 22px 0; color: rgba(237, 245, 236, .8); font-size: 1.08rem; line-height: 1.65; }
+.operator-status { display: inline-flex; align-items: center; gap: 10px; padding: 10px 12px; border: 1px solid rgba(183, 255, 128, .35); color: #d9f6d0; font-size: .86rem; }
+.status-dot { width: 8px; height: 8px; border-radius: 50%; background: #b7ff80; box-shadow: 0 0 13px #b7ff80; }
+.operator-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 16px 0; }
+.operator-panel { padding: 24px; }
+.operator-panel h2, .operator-process h2, .application-panel h2, .form-preview h2 { font-size: clamp(1.7rem, 2.6vw, 2.6rem); line-height: 1; }
+.operator-panel p, .operator-panel li, .operator-process li, .application-panel p, .question-grid p { color: rgba(237, 245, 236, .72); line-height: 1.6; }
+.operator-panel ul { margin: 18px 0 0; padding-left: 1.1rem; display: grid; gap: 12px; }
+.operator-process, .application-panel { display: grid; grid-template-columns: .85fr 1.15fr; gap: 36px; margin: 16px 0; padding: 30px; align-items: start; }
+.operator-process ol { margin: 0; padding: 0; list-style: none; counter-reset: steps; display: grid; gap: 12px; }
+.operator-process li { counter-increment: steps; padding: 13px 16px 13px 52px; position: relative; border-left: 1px solid rgba(183, 255, 128, .38); }
+.operator-process li::before { content: counter(steps, decimal-leading-zero); position: absolute; left: 14px; color: #b7ff80; font: 700 .74rem "Barlow Condensed", sans-serif; letter-spacing: .08em; }
+.operator-process strong { color: #fff; }
+.application-panel { align-items: center; background: linear-gradient(120deg, rgba(17, 34, 24, .86), rgba(6, 10, 12, .94)); }
+.application-panel > div { grid-row: span 2; }
+.application-panel p { margin: 13px 0 0; max-width: 650px; }
+.application-disabled { justify-self: end; opacity: .75; pointer-events: none; border-color: rgba(183, 255, 128, .45); }
+.application-note { justify-self: end; margin: 0 !important; font-size: .8rem; }
+.form-preview { padding: 30px; margin-bottom: 42px; }
+.question-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 22px; }
+.question-grid article { min-height: 154px; padding: 18px; border: 1px solid rgba(255,255,255,.14); background: rgba(0,0,0,.24); }
+.question-grid span { color: #b7ff80; font: 700 .75rem "Barlow Condensed", sans-serif; letter-spacing: .12em; }
+.question-grid h3 { margin: 12px 0 6px; font: 700 1.05rem/1.1 "Barlow Condensed", sans-serif; letter-spacing: .05em; text-transform: uppercase; }
+.question-grid p { margin: 0; font-size: .9rem; }
+@media (max-width: 900px) { .operator-grid { grid-template-columns: 1fr; } .operator-process, .application-panel { grid-template-columns: 1fr; gap: 24px; } .application-panel > div { grid-row: auto; } .application-disabled, .application-note { justify-self: start; } }
+@media (max-width: 600px) { .operator-shell { padding-top: 20px; } .operator-hero, .operator-process, .application-panel, .form-preview { padding: 22px; } .question-grid { grid-template-columns: 1fr; } .operator-hero h1 { font-size: clamp(2.8rem, 15vw, 4rem); } }

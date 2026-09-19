@@ -1,0 +1,5 @@
+.role-card { display: grid; gap: 8px; padding: 20px; border: 1px solid var(--line-strong); background: rgba(3, 8, 18, 0.48); }
+.role-card span { color: var(--accent); font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; }
+.role-card strong { font: 600 1.55rem/1 var(--heading); letter-spacing: 0.04em; text-transform: uppercase; }
+.role-card p { margin: 0; color: var(--muted); line-height: 1.55; }
+.role-card .pending { justify-self: start; margin-top: 8px; }
