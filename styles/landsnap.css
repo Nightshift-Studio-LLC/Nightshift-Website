@@ -1625,10 +1625,6 @@ body.landsnap-page {
     color: #f9f5ed;
 }
 
-.landsnap-page .landsnap-demo-poster b {
-    color: var(--landsnap-green-bright);
-}
-
 .landsnap-page .landsnap-demo-poster:hover {
     border-color: #f9f5ed;
     background: #30362f;
