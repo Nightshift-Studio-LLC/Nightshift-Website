@@ -5,6 +5,7 @@ import {
     SHOWCASE_NOTIFICATION_CODES,
     SHOWCASE_PROTOCOL_VERSION,
     createShowcaseCommand,
+    initializeShowcaseSurface,
     isShowcaseSessionExpiring,
     parseShowcaseResult,
 } from "../scripts/landsnap-showcase.js";
@@ -160,4 +161,85 @@ test("viewport notifications use fixed copy for connecting, stream failures, and
     assert.equal(isShowcaseSessionExpiring(readyLease, now), true);
     assert.equal(isShowcaseSessionExpiring({ ...readyLease, expiresAt: now + 60_001 }, now), false);
     assert.equal(isShowcaseSessionExpiring({ status: "waiting" }, now), false);
+});
+
+const createSurfaceHarness = () => {
+    const element = () => ({
+        dataset: {},
+        addEventListener() {},
+        removeEventListener() {},
+        setAttribute() {},
+    });
+    const mount = element();
+    const operation = element();
+    const control = element();
+    control.dataset.command = "snap-selected";
+    const expander = { ...element(), open: true };
+    const documentRef = {
+        getElementById(id) {
+            if (id === "landsnap-showcase-stream-mount") return mount;
+            if (id === "landsnap-showcase-operation-status") return operation;
+            return null;
+        },
+        querySelector(selector) { return selector === "[data-landsnap-showcase-expander]" ? expander : null; },
+        querySelectorAll(selector) { return selector === "[data-command]" ? [control] : []; },
+    };
+    return { documentRef };
+};
+
+const createSurfaceTransport = () => ({
+    disconnectCalls: 0,
+    mountCalls: [],
+    disconnect() { this.disconnectCalls += 1; },
+    emitUIInteraction() { return true; },
+    mount(_element, options) { this.mountCalls.push(options); },
+    onConnectionState() {},
+    onResponse() {},
+    onSessionReady() {},
+});
+
+test("heartbeat token rotation keeps the active player mounted and unavailable can recover", () => {
+    const now = Date.now();
+    const listeners = new Map();
+    const lease = {
+        status: "ready",
+        leaseId: "ready-showcase-lease-1234",
+        expiresAt: now + 120_000,
+        session: {
+            url: "/api/landsnap-showcase/session/v1/player/showcase-player-ticket-001",
+            token: "signed-session-ticket-for-showcase-0001",
+            expiresAt: now + 60_000,
+        },
+    };
+    const firstTransport = createSurfaceTransport();
+    const windowRef = {
+        location: { hostname: "ns-tx.com" },
+        LandSnapShowcasePixelStreaming: firstTransport,
+        LandSnapShowcaseQueueLease: lease,
+        addEventListener(type, listener) { listeners.set(type, listener); },
+        removeEventListener(type) { listeners.delete(type); },
+    };
+    const { documentRef } = createSurfaceHarness();
+    const binding = initializeShowcaseSurface(documentRef, windowRef);
+    assert.equal(firstTransport.mountCalls.length, 1);
+
+    windowRef.LandSnapShowcaseQueueLease = {
+        ...lease,
+        session: { ...lease.session, token: "rotated-session-ticket-for-showcase-0002", expiresAt: now + 90_000 },
+    };
+    listeners.get("landsnap-showcase-lease-change")();
+    assert.equal(firstTransport.mountCalls.length, 1);
+    assert.equal(firstTransport.disconnectCalls, 0);
+
+    windowRef.LandSnapShowcaseQueueLease = { status: "unavailable" };
+    listeners.get("landsnap-showcase-lease-change")();
+    assert.equal(firstTransport.disconnectCalls, 1);
+    assert.equal(windowRef.LandSnapShowcasePixelStreaming, undefined);
+
+    const recoveredTransport = createSurfaceTransport();
+    windowRef.LandSnapShowcasePixelStreaming = recoveredTransport;
+    windowRef.LandSnapShowcaseQueueLease = lease;
+    listeners.get("landsnap-showcase-lease-change")();
+    assert.equal(recoveredTransport.mountCalls.length, 1);
+    binding.detach();
 });

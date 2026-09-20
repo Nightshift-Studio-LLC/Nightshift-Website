@@ -474,7 +474,7 @@ export const initializeShowcaseSurface = (documentRef, windowRef) => {
         return Object.freeze({
             kind: "broker",
             session: lease.session,
-            key: `${lease.leaseId}:${lease.session.token}`,
+            key: `${lease.leaseId}:${lease.session.url}`,
         });
     };
 
@@ -497,6 +497,9 @@ export const initializeShowcaseSurface = (documentRef, windowRef) => {
         if (attached) attached.detach();
         if (attachedTransport && typeof attachedTransport.disconnect === "function") {
             attachedTransport.disconnect();
+        }
+        if (!authorization && attachedTransport === windowRef.LandSnapShowcasePixelStreaming) {
+            delete windowRef.LandSnapShowcasePixelStreaming;
         }
         attachedTransport = transport || null;
         attached = attachShowcaseSurface(documentRef, transport, {

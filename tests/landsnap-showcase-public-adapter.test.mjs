@@ -75,6 +75,28 @@ test("a stale asynchronous factory result is disconnected instead of becoming a 
     assert.equal(windowRef.LandSnapShowcasePixelStreaming, undefined);
 });
 
+test("the asynchronous factory guard rejects a heartbeat-rotated session token", async () => {
+    const windowRef = createWindow();
+    const lease = readyLease();
+    windowRef.LandSnapShowcaseQueueLease = lease;
+    let resolveFactory;
+    const created = transport();
+    windowRef.LandSnapShowcaseCreatePublicTransport = () => new Promise((resolve) => { resolveFactory = resolve; });
+    const pending = installPublicShowcaseTransport(windowRef, lease);
+    windowRef.LandSnapShowcaseQueueLease = {
+        ...lease,
+        session: {
+            ...lease.session,
+            token: "showcase-public-rotated-ticket-0002",
+            expiresAt: lease.session.expiresAt + 10_000,
+        },
+    };
+    resolveFactory(created);
+    assert.equal(await pending, null);
+    assert.equal(created.disconnected, true);
+    assert.equal(windowRef.LandSnapShowcasePixelStreaming, undefined);
+});
+
 test("the bootstrap only listens on the approved public hosts", () => {
     const loopback = createWindow("127.0.0.1");
     assert.equal(installPublicShowcaseAdapterBootstrap(loopback), null);

@@ -40,7 +40,9 @@ The broker owns the atomic state transition:
 
 The browser waits behind a neutral gray overlay for both `starting` and `waiting`. The displayed **Estimated wait** is based on the active session’s remaining five-minute maximum plus a maximum lease for each visitor ahead. It is explicitly an estimate: a visitor may leave early, so the actual wait can be shorter.
 
-The SSE feed is an optional immediate-update path. The client’s one-to-five-second fixed polling fallback is authoritative if that feed is unavailable. The edge broker signs any `ready` event while proxying the Durable Object feed, so the Durable Object never exposes a usable ticket itself. No response may include a direct signalling host, a WebSocket URL, a streamer ID, Unreal launch parameters, credentials, shell command, or server-control operation.
+Waiting membership has a fixed 60-second liveness window. Only an authenticated waiting visitor’s `status` or `heartbeat` poll refreshes its server-owned `lastSeenAt`; `join` retries and SSE traffic do not. The Durable Object prunes invalid or stale members before capacity checks and FIFO promotion, so an abandoned entry cannot consume capacity or trigger an orchestrator start. A legacy waiting record without `lastSeenAt` receives one fresh bounded window from its first current-version state load instead of being evicted immediately.
+
+The SSE feed is an optional immediate-update path. It is available only to the active visitor or a current waiting member, permits one stream per visitor, and has a hard global bound of the configured queue maximum plus the active slot. A replacement stream closes the prior writer without allowing the prior close callback to remove its replacement, membership loss closes the stream, and a stalled or broken writer is evicted without blocking queue operations. The client’s one-to-five-second fixed polling fallback is authoritative and is the only queue-liveness signal. If an active request receives an unavailable or no-longer-a-member result, the next fixed five-second retry uses `join` to recover membership; explicit leave or page shutdown stops timers and suppresses that recovery. The edge broker signs any `ready` event while proxying the Durable Object feed, so the Durable Object never exposes a usable ticket itself. No response may include a direct signalling host, a WebSocket URL, a streamer ID, Unreal launch parameters, credentials, shell command, or server-control operation.
 
 ## Player handoff and reconnect behavior
 
@@ -57,7 +59,7 @@ window.LandSnapShowcasePixelStreaming = {
 };
 ```
 
-The page mounts the public player only with the broker-provided session ticket and keeps controls disabled until both the transport is connected and the existing `session_ready` handshake fires. A disconnect, player error, ticket expiry, or lease expiry clears the local stream UI, disconnects the transport, and re-requests broker `status`. The browser does not attempt to restart Unreal.
+The page mounts the public player only with the broker-provided session ticket and keeps controls disabled until both the transport is connected and the existing `session_ready` handshake fires. Heartbeats may rotate that short-lived ticket; once mounted, the stable authorization identity is the lease ID plus the fixed player URL, so rotation does not disconnect or remount the active stream. The public adapter’s asynchronous factory guard remains ticket-aware and rejects a factory result if the ticket changed while it was resolving. A disconnect, player error, unavailable lease, ticket expiry, or lease expiry clears the local stream UI and transport so a later ready lease can create a fresh transport, then re-requests broker `status`. The browser does not attempt to restart Unreal.
 
 Loopback acceptance retains its fixed local transport shape:
 

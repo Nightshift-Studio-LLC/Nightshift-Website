@@ -4,6 +4,7 @@ import broker, {
     SHOWCASE_QUEUE_PATH,
     SHOWCASE_QUEUE_EVENTS_PATH,
     SHOWCASE_QUEUE_PROTOCOL_VERSION,
+    SHOWCASE_WAITING_MEMBER_TIMEOUT_MS,
     ShowcaseQueue,
 } from "../src/index.js";
 
@@ -45,12 +46,12 @@ const ticketSecret = "showcase-test-ticket-secret-that-is-long-enough";
 const operation = (name) => ({ protocol: SHOWCASE_QUEUE_PROTOCOL_VERSION, operation: name });
 const firstCookie = (response) => response.headers.get("set-cookie").split(";")[0];
 
-const createHarness = () => {
+const createHarness = ({ maxQueue = "100" } = {}) => {
     const orchestrator = new FakeOrchestrator();
     const state = new MemoryDurableObjectState();
     const env = {
         SHOWCASE_ALLOWED_ORIGINS: "https://ns-tx.com,https://www.ns-tx.com",
-        SHOWCASE_MAX_QUEUE: "100",
+        SHOWCASE_MAX_QUEUE: maxQueue,
         SHOWCASE_ORCHESTRATOR: orchestrator,
         SHOWCASE_RELAY: {
             async fetch(request) {
@@ -68,7 +69,7 @@ const createHarness = () => {
         },
         get() { return queue; },
     };
-    return { env, orchestrator };
+    return { env, orchestrator, queue, state };
 };
 
 const request = (path, {
@@ -86,6 +87,29 @@ const request = (path, {
     },
     body: body ? JSON.stringify(body) : undefined,
 });
+
+const cookieVisitorId = (visitorCookie) => visitorCookie.split("=")[1];
+const internalEventsRequest = (visitorId, signal) => new Request("https://landsnap-showcase-queue.internal/events", {
+    headers: {
+        "x-landsnap-showcase-internal": "1",
+        "x-landsnap-showcase-visitor": visitorId,
+    },
+    signal,
+});
+const internalPostRequest = (path, body) => new Request(`https://landsnap-showcase-queue.internal${path}`, {
+    method: "POST",
+    headers: { "content-type": "application/json", "x-landsnap-showcase-internal": "1" },
+    body: JSON.stringify(body),
+});
+const resolvesWithin = async (promise, timeoutMs = 500) => {
+    let timeout;
+    const completed = await Promise.race([
+        promise.then((value) => ({ completed: true, value })),
+        new Promise((resolve) => { timeout = setTimeout(() => resolve({ completed: false }), timeoutMs); }),
+    ]);
+    clearTimeout(timeout);
+    return completed;
+};
 
 test("only the exact browser queue shape can reserve a cookie-bound starting lease", async () => {
     const { env, orchestrator } = createHarness();
@@ -202,4 +226,226 @@ test("a second visitor queues behind the active lease and early leave starts the
     assert.deepEqual(await leave.json(), { released: true });
     assert.equal(orchestrator.calls.filter((call) => call.operation === "start").length, 2);
     assert.equal(orchestrator.calls.filter((call) => call.operation === "release").length, 1);
+});
+
+test("stale waiting members are pruned before capacity checks and never promoted", async () => {
+    const { env, orchestrator, state } = createHarness({ maxQueue: "1" });
+    const first = await broker.fetch(request(SHOWCASE_QUEUE_PATH, { body: operation("join") }), env);
+    const firstCookieValue = firstCookie(first);
+    const abandoned = await broker.fetch(request(SHOWCASE_QUEUE_PATH, { body: operation("join") }), env);
+    const abandonedVisitorId = cookieVisitorId(firstCookie(abandoned));
+
+    const stored = await state.storage.get("showcase-state");
+    stored.queue[0].lastSeenAt = Date.now() - SHOWCASE_WAITING_MEMBER_TIMEOUT_MS;
+    await state.storage.put("showcase-state", stored);
+
+    const live = await broker.fetch(request(SHOWCASE_QUEUE_PATH, { body: operation("join") }), env);
+    const liveCookie = firstCookie(live);
+    const liveVisitorId = cookieVisitorId(liveCookie);
+    assert.equal((await live.json()).status, "waiting");
+    assert.deepEqual((await state.storage.get("showcase-state")).queue.map((entry) => entry.visitorId), [liveVisitorId]);
+
+    await broker.fetch(request(SHOWCASE_QUEUE_PATH, { body: operation("leave"), cookie: firstCookieValue }), env);
+    const promoted = await state.storage.get("showcase-state");
+    assert.equal(promoted.active.visitorId, liveVisitorId);
+    assert.notEqual(promoted.active.visitorId, abandonedVisitorId);
+    assert.equal(orchestrator.calls.filter((call) => call.operation === "start").length, 2);
+});
+
+test("authenticated waiting polls refresh liveness while SSE does not", async () => {
+    const { env, queue, state } = createHarness();
+    await broker.fetch(request(SHOWCASE_QUEUE_PATH, { body: operation("join") }), env);
+    const waiting = await broker.fetch(request(SHOWCASE_QUEUE_PATH, { body: operation("join") }), env);
+    const waitingCookie = firstCookie(waiting);
+    const waitingVisitorId = cookieVisitorId(waitingCookie);
+
+    let stored = await state.storage.get("showcase-state");
+    stored.queue[0].lastSeenAt = Date.now() - 30_000;
+    stored.queue[0].queuedAt = stored.queue[0].lastSeenAt;
+    await state.storage.put("showcase-state", stored);
+    const beforeStatus = Date.now();
+    const status = await broker.fetch(request(SHOWCASE_QUEUE_PATH, { body: operation("status"), cookie: waitingCookie }), env);
+    assert.equal((await status.json()).status, "waiting");
+    stored = await state.storage.get("showcase-state");
+    assert.ok(stored.queue[0].lastSeenAt >= beforeStatus);
+
+    stored.queue[0].lastSeenAt -= 1_000;
+    await state.storage.put("showcase-state", stored);
+    const beforeHeartbeat = Date.now();
+    const heartbeat = await broker.fetch(request(SHOWCASE_QUEUE_PATH, { body: operation("heartbeat"), cookie: waitingCookie }), env);
+    assert.equal((await heartbeat.json()).status, "waiting");
+    stored = await state.storage.get("showcase-state");
+    assert.ok(stored.queue[0].lastSeenAt >= beforeHeartbeat);
+
+    const lastSeenAt = stored.queue[0].lastSeenAt;
+    const controller = new AbortController();
+    const events = await queue.fetch(internalEventsRequest(waitingVisitorId, controller.signal));
+    assert.equal(events.status, 200);
+    assert.equal((await state.storage.get("showcase-state")).queue[0].lastSeenAt, lastSeenAt);
+
+    stored = await state.storage.get("showcase-state");
+    stored.queue[0].lastSeenAt = Date.now() - SHOWCASE_WAITING_MEMBER_TIMEOUT_MS;
+    stored.queue[0].queuedAt = stored.queue[0].lastSeenAt;
+    await state.storage.put("showcase-state", stored);
+    const prune = await queue.fetch(internalEventsRequest("another-nonmember-0001"));
+    assert.equal(prune.status, 403);
+    assert.equal(queue.subscribers.has(waitingVisitorId), false);
+    await events.body?.cancel();
+});
+
+test("legacy waiting records receive a fresh bounded liveness window when loaded", async () => {
+    const { env, state } = createHarness();
+    await broker.fetch(request(SHOWCASE_QUEUE_PATH, { body: operation("join") }), env);
+    const legacyVisitorId = "legacy-waiter-visitor-0001";
+    const stored = await state.storage.get("showcase-state");
+    stored.queue = [{ visitorId: legacyVisitorId, queuedAt: Date.now() - 10 * SHOWCASE_WAITING_MEMBER_TIMEOUT_MS }];
+    await state.storage.put("showcase-state", stored);
+
+    const loadedAt = Date.now();
+    const status = await broker.fetch(request(SHOWCASE_QUEUE_PATH, {
+        body: operation("status"),
+        cookie: `__Secure-LandSnapShowcaseVisitor=${legacyVisitorId}`,
+    }), env);
+    assert.equal((await status.json()).status, "waiting");
+    assert.ok((await state.storage.get("showcase-state")).queue[0].lastSeenAt >= loadedAt);
+});
+
+test("event streams reject non-members before allocating a subscriber", async () => {
+    const { env, queue } = createHarness();
+    const response = await broker.fetch(request(SHOWCASE_QUEUE_EVENTS_PATH, {
+        cookie: "__Secure-LandSnapShowcaseVisitor=nonmember-visitor-0001",
+        method: "GET",
+    }), env);
+    assert.equal(response.status, 403);
+    assert.equal(queue.subscribers.size, 0);
+});
+
+test("event streams replace duplicates safely, honor the global cap, and close when membership ends", async () => {
+    const { env, queue, state } = createHarness({ maxQueue: "1" });
+    const active = await broker.fetch(request(SHOWCASE_QUEUE_PATH, { body: operation("join") }), env);
+    const activeCookie = firstCookie(active);
+    const activeVisitorId = cookieVisitorId(activeCookie);
+    const queued = await broker.fetch(request(SHOWCASE_QUEUE_PATH, { body: operation("join") }), env);
+    const queuedVisitorId = cookieVisitorId(firstCookie(queued));
+
+    const firstController = new AbortController();
+    const first = await queue.fetch(internalEventsRequest(activeVisitorId, firstController.signal));
+    const firstSubscriber = queue.subscribers.get(activeVisitorId);
+    const replacementController = new AbortController();
+    const replacement = await queue.fetch(internalEventsRequest(activeVisitorId, replacementController.signal));
+    const replacementSubscriber = queue.subscribers.get(activeVisitorId);
+    assert.equal(queue.subscribers.size, 1);
+    assert.notEqual(replacementSubscriber, firstSubscriber);
+    firstController.abort();
+    await Promise.resolve();
+    assert.equal(queue.subscribers.get(activeVisitorId), replacementSubscriber);
+
+    const queuedController = new AbortController();
+    const queuedEvents = await queue.fetch(internalEventsRequest(queuedVisitorId, queuedController.signal));
+    assert.equal(queuedEvents.status, 200);
+    assert.equal(queue.subscribers.size, 2);
+
+    const overflowVisitorId = "overflow-visitor-0001";
+    const stored = await state.storage.get("showcase-state");
+    const now = Date.now();
+    stored.queue.push({ visitorId: overflowVisitorId, queuedAt: now, lastSeenAt: now });
+    await state.storage.put("showcase-state", stored);
+    const overflow = await queue.fetch(internalEventsRequest(overflowVisitorId));
+    assert.equal(overflow.status, 503);
+    assert.equal(queue.subscribers.size, 2);
+
+    queuedController.abort();
+    await queuedEvents.body?.cancel();
+    await broker.fetch(request(SHOWCASE_QUEUE_PATH, { body: operation("leave"), cookie: activeCookie }), env);
+    assert.equal(queue.subscribers.has(activeVisitorId), false);
+
+    replacementController.abort();
+    await Promise.all([first.body?.cancel(), replacement.body?.cancel()]);
+});
+
+test("a stalled event subscriber cannot block later status or leave operations", async () => {
+    const { env, queue } = createHarness();
+    const joined = await broker.fetch(request(SHOWCASE_QUEUE_PATH, { body: operation("join") }), env);
+    const visitorCookie = firstCookie(joined);
+    const visitorId = cookieVisitorId(visitorCookie);
+
+    const stalledStatusStream = await queue.fetch(internalEventsRequest(visitorId));
+    const status = await resolvesWithin(broker.fetch(request(SHOWCASE_QUEUE_PATH, {
+        body: operation("status"),
+        cookie: visitorCookie,
+    }), env));
+    assert.equal(status.completed, true);
+    assert.equal(status.value.status, 200);
+    assert.equal(queue.subscribers.size, 0);
+
+    const stalledLeaveStream = await queue.fetch(internalEventsRequest(visitorId));
+    const leave = await resolvesWithin(broker.fetch(request(SHOWCASE_QUEUE_PATH, {
+        body: operation("leave"),
+        cookie: visitorCookie,
+    }), env));
+    assert.equal(leave.completed, true);
+    assert.equal(leave.value.status, 200);
+    assert.equal(queue.subscribers.size, 0);
+    await Promise.all([stalledStatusStream.body?.cancel(), stalledLeaveStream.body?.cancel()]);
+});
+
+test("repeated invalid relay requests persist one expired-state promotion", async () => {
+    const { env, orchestrator, queue, state } = createHarness();
+    await broker.fetch(request(SHOWCASE_QUEUE_PATH, { body: operation("join") }), env);
+    const waiting = await broker.fetch(request(SHOWCASE_QUEUE_PATH, { body: operation("join") }), env);
+    const waitingVisitorId = cookieVisitorId(firstCookie(waiting));
+    const stored = await state.storage.get("showcase-state");
+    stored.active.expiresAt = Date.now() - 1;
+    await state.storage.put("showcase-state", stored);
+
+    const invalidRelay = {
+        playerId: "invalid-player-id-0001",
+        relayId: "invalid-relay-id-00001",
+        visitorId: "invalid-visitor-id-0001",
+    };
+    const first = await queue.fetch(internalPostRequest("/relay", invalidRelay));
+    const promoted = await state.storage.get("showcase-state");
+    const second = await queue.fetch(internalPostRequest("/relay", invalidRelay));
+    const persisted = await state.storage.get("showcase-state");
+
+    assert.deepEqual(await first.json(), { authorized: false });
+    assert.deepEqual(await second.json(), { authorized: false });
+    assert.equal(promoted.active.visitorId, waitingVisitorId);
+    assert.equal(persisted.active.leaseId, promoted.active.leaseId);
+    assert.equal(orchestrator.calls.filter((call) => call.operation === "release").length, 1);
+    assert.equal(orchestrator.calls.filter((call) => call.operation === "start").length, 2);
+});
+
+test("repeated invalid ticket requests persist one expired-state promotion", async () => {
+    const { env, orchestrator, queue, state } = createHarness();
+    const activeResponse = await broker.fetch(request(SHOWCASE_QUEUE_PATH, { body: operation("join") }), env);
+    const activeVisitorId = cookieVisitorId(firstCookie(activeResponse));
+    const waiting = await broker.fetch(request(SHOWCASE_QUEUE_PATH, { body: operation("join") }), env);
+    const waitingVisitorId = cookieVisitorId(firstCookie(waiting));
+    const stored = await state.storage.get("showcase-state");
+    const expiredLeaseId = stored.active.leaseId;
+    stored.active.expiresAt = Date.now() - 1;
+    await state.storage.put("showcase-state", stored);
+
+    const invalidTicket = {
+        expiresAt: Date.now() + 60_000,
+        leaseId: expiredLeaseId,
+        playerId: "invalid-player-id-0001",
+        relayId: "invalid-relay-id-00001",
+        ticketId: "invalid-ticket-id-0001",
+        visitorId: activeVisitorId,
+    };
+    const first = await queue.fetch(internalPostRequest("/ticket", invalidTicket));
+    const promoted = await state.storage.get("showcase-state");
+    const second = await queue.fetch(internalPostRequest("/ticket", invalidTicket));
+    const persisted = await state.storage.get("showcase-state");
+
+    assert.deepEqual(await first.json(), { redeemed: false });
+    assert.deepEqual(await second.json(), { redeemed: false });
+    assert.equal(promoted.active.visitorId, waitingVisitorId);
+    assert.equal(persisted.active.leaseId, promoted.active.leaseId);
+    assert.deepEqual(persisted.usedTickets, []);
+    assert.deepEqual(persisted.relays, []);
+    assert.equal(orchestrator.calls.filter((call) => call.operation === "release").length, 1);
+    assert.equal(orchestrator.calls.filter((call) => call.operation === "start").length, 2);
 });

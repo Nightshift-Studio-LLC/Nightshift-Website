@@ -159,6 +159,48 @@ test("stream loss and ticket expiry clear the local lease before a fixed broker 
     assert.equal(controller.tick().status, "unavailable");
 });
 
+test("an unavailable waiting member rejoins after cooldown while explicit leave suppresses recovery", async () => {
+    const now = 1_700_000_000_000;
+    const operations = [];
+    const timers = [];
+    const service = {
+        async request(operation) {
+            operations.push(operation);
+            if (operation === "join") return waitingLease(now);
+            if (operation === "status") throw new Error("not a current queue member");
+            return { released: true };
+        },
+        subscribe() { return null; },
+    };
+    const controller = createQueueLeaseController({
+        service,
+        now: () => now,
+        setTimer(callback, delay) {
+            timers.push({ callback, delay });
+            return timers.length;
+        },
+        clearTimer() {},
+    });
+
+    await controller.start();
+    assert.equal(controller.getLease().status, "waiting");
+    await controller.recheck();
+    assert.equal(controller.getLease().status, "unavailable");
+    assert.equal(timers.at(-1).delay, 5_000);
+
+    await timers.at(-1).callback();
+    await Promise.resolve();
+    assert.deepEqual(operations, ["join", "status", "join"]);
+    assert.equal(controller.getLease().status, "waiting");
+
+    const scheduledAfterRecovery = timers.at(-1);
+    await controller.leave();
+    assert.equal(controller.getLease().status, "idle");
+    await scheduledAfterRecovery.callback();
+    await Promise.resolve();
+    assert.deepEqual(operations, ["join", "status", "join", "leave"]);
+});
+
 test("public clients fail closed and use only the fixed same-origin broker paths", async () => {
     const now = 1_700_000_000_000;
     const calls = [];
