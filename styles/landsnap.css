@@ -1681,7 +1681,7 @@ body.landsnap-page {
 .landsnap-page .landsnap-hero-copy .cta-btn { border-radius: 4px; min-height: 46px; padding: 0 17px; font-size: .64rem; }
 .landsnap-page .landsnap-hero-copy .cta-btn.primary { background: #ff995f; color: #20231e; border-color: #ff995f; box-shadow: none; }
 .landsnap-page .landsnap-hero-copy .cta-btn.primary:hover { background: #ffb380; }
-.landsnap-assurance { font-size: .36rem; letter-spacing: 0; white-space: nowrap; }
+.landsnap-assurance { font-size: .55rem; letter-spacing: 0; white-space: nowrap; }
 .landsnap-assurance-item { white-space: nowrap; }
 .landsnap-assurance-divider { margin: 0 1px; }
 .landsnap-page .landsnap-console { grid-template-rows: auto 1fr auto; min-height: 610px; border: 0; border-left: 1px solid var(--line); border-radius: 0; background: radial-gradient(ellipse at 45% 42%, #2c3c38, #192328 75%); }
