@@ -40,11 +40,11 @@ The broker owns the atomic state transition:
 
 The browser waits behind a neutral gray overlay for both `starting` and `waiting`. The displayed **Estimated wait** is based on the active session’s remaining five-minute maximum plus a maximum lease for each visitor ahead. It is explicitly an estimate: a visitor may leave early, so the actual wait can be shorter.
 
-The SSE feed is an optional immediate-update path. The client’s one-to-five-second fixed polling fallback is authoritative if that feed is unavailable. No response may include a direct signalling host, a WebSocket URL, a streamer ID, Unreal launch parameters, credentials, shell command, or server-control operation.
+The SSE feed is an optional immediate-update path. The client’s one-to-five-second fixed polling fallback is authoritative if that feed is unavailable. The edge broker signs any `ready` event while proxying the Durable Object feed, so the Durable Object never exposes a usable ticket itself. No response may include a direct signalling host, a WebSocket URL, a streamer ID, Unreal launch parameters, credentials, shell command, or server-control operation.
 
 ## Player handoff and reconnect behavior
 
-The queue response is authorization to attempt the fixed broker player relay; it is not permission to expose or configure Pixel Streaming. A public deployment may install `window.LandSnapShowcasePixelStreaming` only after the broker gives a valid `ready` record. The adapter receives the broker session object directly in memory:
+The queue response is authorization to attempt the fixed broker player relay; it is not permission to expose or configure Pixel Streaming. `scripts/landsnap-showcase-public-adapter.js` may be present in the static page, but it cannot install `window.LandSnapShowcasePixelStreaming` until a current valid `ready` record and a deployment-owned factory both exist. The adapter receives the broker session object directly in memory:
 
 ```js
 window.LandSnapShowcasePixelStreaming = {
