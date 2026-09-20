@@ -1688,7 +1688,7 @@ body.landsnap-page {
     bottom: var(--landsnap-hero-label-bottom);
     left: clamp(28px, 4vw, 54px);
     margin: 0;
-    font-size: .55rem;
+    font-size: .44rem;
     line-height: normal;
     letter-spacing: 0;
     white-space: nowrap;
@@ -1702,7 +1702,7 @@ body.landsnap-page {
 .landsnap-console-identity strong { font-family: var(--body); font-size: .9rem; margin-top: 4px; }
 .landsnap-terrain-study { min-width: 0; align-self: center; background-image: radial-gradient(#8aab8424 .7px, transparent .7px); background-size: 18px 18px; }
 .landsnap-terrain-study svg { display: block; width: 100%; height: auto; overflow: visible; }
-.landsnap-study-caption { position: absolute; bottom: var(--landsnap-hero-label-bottom, 42px); left: 24px; color: #9aaea7; text-transform: uppercase; letter-spacing: .12em; font-size: .55rem; }
+.landsnap-study-caption { position: absolute; bottom: var(--landsnap-hero-label-bottom, 42px); left: 24px; color: #9aaea7; text-transform: uppercase; letter-spacing: .12em; font-size: .44rem; }
 .study-guide { transition: opacity 400ms; }
 [data-settled="true"] .study-guide { opacity: 0; }
 .landsnap-study-fallback { margin: 0 24px 20px; color: var(--muted); }
@@ -1752,7 +1752,7 @@ body.landsnap-page {
     .landsnap-release-line span { padding: 0 7px; font-size: .53rem; }
     .landsnap-console-header { padding: 20px 16px; }
     .landsnap-study-controls { margin-left: 16px; margin-right: 16px; }
-    .landsnap-study-caption { left: 16px; font-size: .46rem; }
+    .landsnap-study-caption { left: 16px; font-size: .44rem; }
     .landsnap-proof-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .landsnap-proof-strip > div { padding: 16px 12px; min-height: 115px; }
     .landsnap-proof-strip strong { font-size: .84rem; }
