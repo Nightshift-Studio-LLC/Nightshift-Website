@@ -17,7 +17,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wdth,wght@75..100,400;75..100,500;75..100,600;75..100,700&family=Tektur:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="../../images/icons/nightshift.ico">
-    <link rel="stylesheet" href="../../styles/landsnap.css?v=20260907-v2">
+    <link rel="stylesheet" href="../../styles/landsnap.css?v=20260919-faq">
     <link rel="stylesheet" href="../../styles/landsnap-showcase.css">
     <script defer src="../../scripts/landsnap.js?v=20260907-v2"></script>
     <script type="module" src="../../scripts/landsnap-showcase-queue.js"></script>
@@ -85,7 +85,7 @@
         <details id="showcase" class="panel landsnap-showcase-embed" data-landsnap-showcase-expander open>
             <summary>
                 <span class="landsnap-showcase-embed-copy">
-                    <span class="eyebrow">Studio live / interactive editor session</span>
+                    <span class="eyebrow">Pixel Streaming demo / interactive editor session</span>
                     <span class="landsnap-showcase-embed-title">Open LandSnap Showcase</span>
                 </span>
                 <span class="landsnap-showcase-embed-action">
@@ -98,17 +98,17 @@
             </summary>
 
             <div class="landsnap-showcase-embed-body">
-                <section class="landsnap-showcase-workspace" aria-label="LandSnap Showcase workspace">
+                <section class="landsnap-showcase-workspace" aria-label="LandSnap Pixel Streaming demo workspace">
                     <div class="landsnap-showcase-stream-column">
                         <div class="landsnap-showcase-stream-header">
                             <div>
-                                <p class="landsnap-showcase-section-label">Unreal level viewport</p>
+                                <p class="landsnap-showcase-section-label">Pixel Streaming / Unreal level viewport</p>
                                 <h2>Showcase viewport</h2>
                             </div>
                         </div>
 
                         <div class="landsnap-showcase-viewport-frame">
-                            <div id="landsnap-showcase-stream-mount" class="landsnap-showcase-stream-mount" role="region" aria-label="LandSnap streamed Unreal level viewport" aria-busy="true" tabindex="-1">
+                            <div id="landsnap-showcase-stream-mount" class="landsnap-showcase-stream-mount" role="region" aria-label="LandSnap Pixel Streaming Unreal level viewport" aria-busy="true" tabindex="-1">
                                 <div class="landsnap-showcase-stream-placeholder" aria-hidden="true">
                                     <span class="landsnap-showcase-placeholder-grid"></span>
                                     <span class="landsnap-showcase-placeholder-crosshair"></span>
@@ -262,7 +262,7 @@
         <section id="release" class="panel notes-panel landsnap-release-panel">
             <div class="panel-heading landsnap-heading-row landsnap-heading-row-single">
                 <div>
-                    <p class="eyebrow">Version 2.0.0 / pending Fab approval</p>
+                    <p class="eyebrow">Version 2.0.0 / now available on Fab</p>
                     <h2>The placement pass.<br>Rebuilt around your flow.</h2>
                 </div>
             </div>
@@ -481,6 +481,47 @@
                             <p>The Fab plugin includes LandSnapMCP for structured status, settings, placement, and review tools. Setup -&gt; MCP configures Epic's local Unreal transport per user and project. Read-only access can remain available while mutating tools stay disabled unless <code>LANDSNAP_AGENT_ENABLED=1</code> was set before Unreal Editor launched.</p>
                         </div>
                         <p class="landsnap-note landsnap-column-span">All placement mutations remain editor-only and transaction-safe. The normal toolbar, AutoSnap, Placement Studio, and MCP routes share the same live settings, verification rules, and Needs Review state.</p>
+                    </div>
+                </details>
+                <details class="landsnap-disclosure landsnap-faq" id="technical-faq">
+                    <summary><span>08</span><strong>Frequently asked questions</strong><small>Detailed answers</small></summary>
+                    <div class="landsnap-disclosure-body landsnap-faq-list">
+                        <article class="landsnap-faq-item">
+                            <div class="landsnap-faq-question"><span aria-hidden="true">Q</span><h3>How does LandSnap fit large rigid objects?</h3></div>
+                            <div class="landsnap-faq-answer"><span aria-hidden="true">A</span><p>LandSnap uses a fixed set of representative points across the resolved component's bottom footprint: four corners, four edge midpoints, and the center. For example, a 30 m × 20 m building receives those nine samples rather than a dense scan of every square centimeter. On eligible Landscape footprints at least 5 m wide on both local axes, those target heights can estimate a rigid pitch and roll before LandSnap re-traces and refines the support pose. That physical-large contract is validated for Landscape; Mesh Terrain remains an experimental target path.</p></div>
+                        </article>
+                        <article class="landsnap-faq-item">
+                            <div class="landsnap-faq-question"><span aria-hidden="true">Q</span><h3>How should I interpret placement precision?</h3></div>
+                            <div class="landsnap-faq-answer"><span aria-hidden="true">A</span><p>The default 0.5 cm floating and penetration threshold is an audit classification measured along the captured target normal. It is not a promise of 0.5 cm world-Z accuracy or continuous contact across an entire rigid footprint. Sub-centimeter contact can occur on compatible terrain, but a large rigid asset cannot conform to every rise and dip without deforming the asset or modifying the terrain.</p></div>
+                        </article>
+                        <article class="landsnap-faq-item">
+                            <div class="landsnap-faq-question"><span aria-hidden="true">Q</span><h3>How does LandSnap report an imperfect placement?</h3></div>
+                            <div class="landsnap-faq-answer"><span aria-hidden="true">A</span><p>The final audit re-traces the sampled footprint and records target coverage, supported-corner count, maximum sampled gap, maximum penetration, wrong-surface hits, terrain-normal deviation, and terrain-shape evidence. A mismatch remains in Needs Review for bounded repair or a deliberate project decision; it is not silently reported as a clean placement.</p></div>
+                        </article>
+                        <article class="landsnap-faq-item">
+                            <div class="landsnap-faq-question"><span aria-hidden="true">Q</span><h3>When can LandSnap prepare terrain beneath a foundation?</h3></div>
+                            <div class="landsnap-faq-answer"><span aria-hidden="true">A</span><p>Experimental UE 5.8 Mesh Terrain can use a bounded, non-destructive modifier with optional padding, falloff, custom grayscale maps, and blend modes. This workflow does not alter standard Unreal Landscape heightmaps or tagged static meshes. Because it works from the actor's world-space XY bounds, an irregular foundation, stairs, or basement outline still needs an intentional custom map and project validation.</p></div>
+                        </article>
+                        <article class="landsnap-faq-item">
+                            <div class="landsnap-faq-question"><span aria-hidden="true">Q</span><h3>What surface data does LandSnap use?</h3></div>
+                            <div class="landsnap-faq-answer"><span aria-hidden="true">A</span><p>The placed object is represented by the local bounds of one resolved snap component rather than every underside vertex or polygon. Target evaluation uses Unreal collision-query ray traces, including complex collision where configured. Accurate collision that matches the visible surface is therefore essential for precise results.</p></div>
+                        </article>
+                        <article class="landsnap-faq-item">
+                            <div class="landsnap-faq-question"><span aria-hidden="true">Q</span><h3>How does LandSnap work with World Partition and large worlds?</h3></div>
+                            <div class="landsnap-faq-answer"><span aria-hidden="true">A</span><p>LandSnap recognizes Landscape streaming proxies that belong to the same Landscape GUID. Relevant World Partition cells must still be loaded so terrain collision can be sampled. It uses Unreal's own Large World Coordinates and collision behavior, so validate representative outer-map locations before adopting strict project-wide acceptance limits.</p></div>
+                        </article>
+                        <article class="landsnap-faq-item">
+                            <div class="landsnap-faq-question"><span aria-hidden="true">Q</span><h3>How are large batch placements handled?</h3></div>
+                            <div class="landsnap-faq-answer"><span aria-hidden="true">A</span><p>No published result skips target-aware placement and final verification. Eligible ordinary rigid actors in AutoSnap or queued multi-actor work begin with a faster deterministic Pin-Rotate comparison; insufficient support can be challenged by a higher-accuracy path. For large jobs, process bounded groups and retain per-actor receipts. Exact-path requests accept up to 500 actor paths, while Outliner-folder requests are capped at 500 eligible actors.</p></div>
+                        </article>
+                        <article class="landsnap-faq-item">
+                            <div class="landsnap-faq-question"><span aria-hidden="true">Q</span><h3>What can a connected automation client do?</h3></div>
+                            <div class="landsnap-faq-answer"><span aria-hidden="true">A</span><p>LandSnapMCP provides a native 20-tool interface for status and permissions, snapping and verification, settings, AutoSnap configuration, target modes, hotkeys, repair jobs, enrollment tags, and experimental Mesh Terrain deformation. It can work with the current selection, exact object paths, or an Outliner folder, but it does not create, position, or select actors itself. AutoSnap is configured through settings; there is no separate “run AutoSnap now” command. Snap-and-verify returns structured receipts, while repair jobs progressively report their status. Mutating tools require <code>LANDSNAP_AGENT_ENABLED=1</code> before Unreal Editor launches. A complete existing Needs Review queue and every internal debug value are not exposed as read-only data.</p></div>
+                        </article>
+                        <article class="landsnap-faq-item">
+                            <div class="landsnap-faq-question"><span aria-hidden="true">Q</span><h3>How does LandSnap fit into an agent-assisted world-building workflow?</h3></div>
+                            <div class="landsnap-faq-answer"><span aria-hidden="true">A</span><p>Use a general Unreal automation tool to create or position actors, then pass the resulting exact paths or folder to LandSnapMCP. Read the contact receipts, retry unresolved actors, or start progressive review repair as needed. Apply any stricter project-specific acceptance limit in that outer workflow.</p></div>
+                        </article>
                     </div>
                 </details>
             </div>

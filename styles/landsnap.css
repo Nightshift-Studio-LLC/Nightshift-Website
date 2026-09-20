@@ -1880,3 +1880,120 @@ body.landsnap-page {
 .landsnap-live-demo button { font-family: var(--body); cursor: pointer; }
 .landsnap-live-demo button:focus-visible { outline: 3px solid var(--landsnap-green); outline-offset: 4px; }
 .landsnap-live-demo button:disabled { opacity: .55; cursor: default; }
+
+/* Keep the FAQ visually distinct from the operating guide and make every answer easy to scan. */
+.landsnap-page .landsnap-faq,
+.landsnap-page .landsnap-faq[open] {
+    border-color: #ff995f;
+    background: #ff995f;
+}
+
+.landsnap-page .landsnap-faq > summary {
+    background: #ff995f;
+    color: #20231e;
+}
+
+.landsnap-page .landsnap-faq > summary > span,
+.landsnap-page .landsnap-faq > summary > small,
+.landsnap-page .landsnap-faq > summary::after {
+    color: #20231e;
+}
+
+.landsnap-page .landsnap-faq > summary > small {
+    color: rgba(32, 35, 30, 0.76);
+}
+
+.landsnap-page .landsnap-faq > summary::after {
+    border-color: rgba(32, 35, 30, 0.38);
+}
+
+.landsnap-page .landsnap-faq > summary:focus-visible {
+    outline: 3px solid #20231e;
+    outline-offset: -3px;
+}
+
+.landsnap-page .landsnap-faq .landsnap-disclosure-body {
+    padding: 14px;
+    border-top-color: rgba(32, 35, 30, 0.42);
+    background: #141b21;
+}
+
+.landsnap-faq-list {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+}
+
+.landsnap-faq-item {
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: 5px;
+    background: #1b252c;
+}
+
+.landsnap-faq-question,
+.landsnap-faq-answer {
+    display: grid;
+    grid-template-columns: 36px minmax(0, 1fr);
+    gap: 13px;
+    align-items: start;
+    padding: 14px 16px;
+}
+
+.landsnap-faq-question {
+    border-bottom: 1px solid rgba(255, 153, 95, 0.42);
+    background: linear-gradient(90deg, rgba(255, 153, 95, 0.21), rgba(255, 153, 95, 0.06));
+}
+
+.landsnap-faq-question > span,
+.landsnap-faq-answer > span {
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 3px;
+    font-family: var(--heading);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+}
+
+.landsnap-faq-question > span {
+    background: #ff995f;
+    color: #20231e;
+}
+
+.landsnap-faq-answer > span {
+    border: 1px solid rgba(167, 230, 83, 0.52);
+    color: var(--landsnap-green);
+}
+
+.landsnap-faq-question h3,
+.landsnap-faq-answer p {
+    margin: 0;
+}
+
+.landsnap-faq-question h3 {
+    color: var(--text);
+    font-family: var(--heading);
+    font-size: 0.98rem;
+    line-height: 1.35;
+}
+
+.landsnap-faq-answer p {
+    color: var(--muted);
+    line-height: 1.75;
+}
+
+@media (max-width: 560px) {
+    .landsnap-page .landsnap-faq .landsnap-disclosure-body {
+        padding: 10px;
+    }
+
+    .landsnap-faq-question,
+    .landsnap-faq-answer {
+        grid-template-columns: 30px minmax(0, 1fr);
+        gap: 10px;
+        padding: 12px;
+    }
+}

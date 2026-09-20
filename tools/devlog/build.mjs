@@ -610,8 +610,7 @@ ${post.draft ? "                    <div><span>Status</span><strong>Draft / work
                     <div><span>Route</span><strong>Public archive</strong></div>
                 </div>
             </aside>
-        </section>
-        ${pitch}
+        </section>${pitch}
         <section class="panel feature-panel">
             <div class="panel-heading"><p class="eyebrow">Field Notes</p><h2>Entry body</h2></div>
             <div class="devlog-post-body">${post.html}${signoff}</div>
