@@ -266,7 +266,10 @@ export const createQueueLeaseController = ({
         scheduleForLease(next);
         return lease;
     };
-    const nextOperation = () => lease.status === "ready" ? "heartbeat" : "status";
+    const nextOperation = () => {
+        if (lease.status === "ready") return "heartbeat";
+        return lease.status === "unavailable" ? "join" : "status";
+    };
     const refresh = async (operation = nextOperation()) => {
         if (!started) return lease;
         try {

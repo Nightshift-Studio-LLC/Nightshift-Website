@@ -11,6 +11,7 @@
 export const SHOWCASE_QUEUE_PROTOCOL_VERSION = "landsnap-showcase-queue-v2";
 export const SHOWCASE_LEASE_DURATION_MS = 5 * 60 * 1_000;
 export const SHOWCASE_TICKET_DURATION_MS = 2 * 60 * 1_000;
+export const SHOWCASE_WAITING_MEMBER_TIMEOUT_MS = 60 * 1_000;
 export const SHOWCASE_QUEUE_PATH = "/api/landsnap-showcase/queue/v1/lease";
 export const SHOWCASE_QUEUE_EVENTS_PATH = "/api/landsnap-showcase/queue/v1/events";
 export const SHOWCASE_PLAYER_PATH = "/api/landsnap-showcase/session/v1/player/";
@@ -390,6 +391,7 @@ const handleEvents = async (request, env) => {
         const response = await stub.fetch(new Request("https://landsnap-showcase-queue.internal/events", {
             headers: { "x-landsnap-showcase-internal": "1", "x-landsnap-showcase-visitor": visitorId },
         }));
+        if (response?.status === 403) return failure(403, "lease_required");
         if (!response?.ok || !response.body) return failure(503, "showcase_unavailable");
         const headers = baseHeaders();
         headers.set("content-type", "text/event-stream; charset=utf-8");
@@ -479,10 +481,18 @@ export class ShowcaseQueue {
 
     async withState(callback) {
         const stored = await this.state.storage.get("showcase-state");
+        const loadedAt = Date.now();
         const state = isPlainRecord(stored) && stored.version === 1 ? stored : defaultState();
         state.queue = Array.isArray(state.queue) ? state.queue : [];
+        let migratedQueue = false;
+        state.queue = state.queue.map((entry) => {
+            if (!isPlainRecord(entry) || !hasExactKeys(entry, ["queuedAt", "visitorId"])) return entry;
+            migratedQueue = true;
+            return { ...entry, lastSeenAt: loadedAt };
+        });
         state.relays = Array.isArray(state.relays) ? state.relays : [];
         state.usedTickets = Array.isArray(state.usedTickets) ? state.usedTickets : [];
+        if (migratedQueue) await this.state.storage.put("showcase-state", state);
         return callback(state);
     }
 
@@ -499,7 +509,7 @@ export class ShowcaseQueue {
             await this.expireAndPromote(state, now);
             let result;
             if (payload.operation === "leave") {
-                result = await this.releaseVisitor(state, payload.visitorId);
+                result = await this.releaseVisitor(state, payload.visitorId, now);
                 await this.save(state);
                 await this.publish(state);
                 return internalJson({ released: result });
@@ -517,11 +527,12 @@ export class ShowcaseQueue {
     }
 
     async joinVisitor(state, visitorId, now) {
+        this.pruneQueue(state, now);
         const existing = await this.statusForVisitor(state, visitorId, now, false);
         if (!isUnavailableRecord(existing)) return existing;
         if (!state.active) return this.startVisitor(state, visitorId, now);
         if (state.queue.length >= this.maxQueue()) return { status: "unavailable" };
-        state.queue.push({ visitorId, queuedAt: now });
+        state.queue.push({ visitorId, queuedAt: now, lastSeenAt: now });
         return this.waitingRecord(state, visitorId);
     }
 
@@ -530,6 +541,8 @@ export class ShowcaseQueue {
             if (refresh) await this.refreshActive(state, now);
             return this.activeRecord(state.active);
         }
+        const waiting = state.queue.find((entry) => entry?.visitorId === visitorId);
+        if (waiting && refresh) waiting.lastSeenAt = now;
         return this.waitingRecord(state, visitorId);
     }
 
@@ -570,6 +583,31 @@ export class ShowcaseQueue {
     maxQueue() {
         const value = Number.parseInt(String(this.env.SHOWCASE_MAX_QUEUE || DEFAULT_MAX_QUEUE), 10);
         return Number.isSafeInteger(value) && value > 0 && value <= DEFAULT_MAX_QUEUE ? value : DEFAULT_MAX_QUEUE;
+    }
+
+    pruneQueue(state, now) {
+        const seen = new Set(state.active?.visitorId ? [state.active.visitorId] : []);
+        state.queue = state.queue.filter((entry) => {
+            const valid = isPlainRecord(entry)
+                && hasExactKeys(entry, ["lastSeenAt", "queuedAt", "visitorId"])
+                && ID_PATTERN.test(entry.visitorId)
+                && isSafeTimestamp(entry.queuedAt)
+                && isSafeTimestamp(entry.lastSeenAt)
+                && entry.queuedAt <= entry.lastSeenAt
+                && entry.lastSeenAt <= now
+                && entry.lastSeenAt > now - SHOWCASE_WAITING_MEMBER_TIMEOUT_MS
+                && !seen.has(entry.visitorId);
+            if (valid) seen.add(entry.visitorId);
+            return valid;
+        });
+    }
+
+    closeEndedSubscribers(state) {
+        for (const [visitorId, subscriber] of this.subscribers) {
+            const isMember = state.active?.visitorId === visitorId
+                || state.queue.some((entry) => entry?.visitorId === visitorId);
+            if (!isMember) subscriber.close();
+        }
     }
 
     async startVisitor(state, visitorId, now) {
@@ -621,6 +659,7 @@ export class ShowcaseQueue {
     }
 
     async expireAndPromote(state, now) {
+        this.pruneQueue(state, now);
         state.usedTickets = state.usedTickets.filter((entry) => entry?.expiresAt > now);
         state.relays = state.relays.filter((entry) => entry?.expiresAt > now);
         if (state.active?.expiresAt <= now) {
@@ -629,7 +668,8 @@ export class ShowcaseQueue {
         }
     }
 
-    async releaseVisitor(state, visitorId) {
+    async releaseVisitor(state, visitorId, now) {
+        this.pruneQueue(state, now);
         const queued = state.queue.findIndex((entry) => entry?.visitorId === visitorId);
         if (queued !== -1) {
             state.queue.splice(queued, 1);
@@ -637,7 +677,7 @@ export class ShowcaseQueue {
         }
         if (state.active?.visitorId !== visitorId) return false;
         await this.releaseActive(state, true);
-        await this.promote(state, Date.now());
+        await this.promote(state, now);
         return true;
     }
 
@@ -650,6 +690,7 @@ export class ShowcaseQueue {
     }
 
     async promote(state, now) {
+        this.pruneQueue(state, now);
         const next = state.queue.shift();
         if (!next?.visitorId) return;
         await this.startVisitor(state, next.visitorId, now);
@@ -690,8 +731,8 @@ export class ShowcaseQueue {
             if (valid) {
                 state.usedTickets.push({ expiresAt: payload.expiresAt, ticketId: payload.ticketId });
                 state.relays.push({ expiresAt: payload.expiresAt, playerId: payload.playerId, relayId: payload.relayId, visitorId: payload.visitorId });
-                await this.save(state);
             }
+            await this.save(state);
             return internalJson({ redeemed: valid });
         });
     }
@@ -704,6 +745,7 @@ export class ShowcaseQueue {
         return this.withState(async (state) => {
             const now = Date.now();
             await this.expireAndPromote(state, now);
+            await this.save(state);
             const active = state.active;
             const authorized = active?.status === "ready"
                 && active.playerId === payload.playerId
@@ -719,30 +761,52 @@ export class ShowcaseQueue {
     async events(request) {
         const visitorId = request.headers.get("x-landsnap-showcase-visitor") || "";
         if (!ID_PATTERN.test(visitorId)) return internalJson({ status: "unavailable" }, 400);
-        const stream = new TransformStream();
-        const writer = stream.writable.getWriter();
-        const id = createOpaqueId();
-        const close = () => {
-            this.subscribers.delete(id);
-            writer.close().catch(() => undefined);
-        };
-        request.signal?.addEventListener("abort", close, { once: true });
-        this.subscribers.set(id, { close, visitorId, writer });
-        await this.withState(async (state) => {
-            const record = await this.statusForVisitor(state, visitorId, Date.now(), false);
+        return this.withState(async (state) => {
+            const now = Date.now();
+            await this.expireAndPromote(state, now);
+            this.closeEndedSubscribers(state);
+            const record = await this.statusForVisitor(state, visitorId, now, false);
+            await this.save(state);
+            if (isUnavailableRecord(record)) return internalJson({ status: "unavailable" }, 403);
+
+            const previous = this.subscribers.get(visitorId);
+            if (!previous && this.subscribers.size >= this.maxQueue() + 1) {
+                return internalJson({ status: "unavailable" }, 503);
+            }
+
+            const stream = new TransformStream();
+            const writer = stream.writable.getWriter();
+            const subscriber = { close: null, visitorId, writer };
+            const close = () => {
+                if (this.subscribers.get(visitorId) === subscriber) this.subscribers.delete(visitorId);
+                writer.close().catch(() => undefined);
+            };
+            subscriber.close = close;
+            this.subscribers.set(visitorId, subscriber);
+            if (previous) previous.close();
+            request.signal?.addEventListener("abort", close, { once: true });
             // The browser cannot consume the stream until this Response is returned.
             // Queue the initial event without awaiting the reader's backpressure.
             void this.writeEvent(writer, record, visitorId).catch(close);
-        });
-        return new Response(stream.readable, {
-            headers: { "cache-control": "no-store", "content-type": "text/event-stream; charset=utf-8" },
+            return new Response(stream.readable, {
+                headers: { "cache-control": "no-store", "content-type": "text/event-stream; charset=utf-8" },
+            });
         });
     }
 
     async publish(state) {
         await Promise.all([...this.subscribers.values()].map(async (subscriber) => {
             try {
-                await this.writeEvent(subscriber.writer, await this.statusForVisitor(state, subscriber.visitorId, Date.now(), false), subscriber.visitorId);
+                const record = await this.statusForVisitor(state, subscriber.visitorId, Date.now(), false);
+                if (isUnavailableRecord(record)) {
+                    subscriber.close();
+                    return;
+                }
+                if (!(subscriber.writer.desiredSize > 0)) {
+                    subscriber.close();
+                    return;
+                }
+                void this.writeEvent(subscriber.writer, record, subscriber.visitorId).catch(subscriber.close);
             } catch {
                 subscriber.close();
             }
