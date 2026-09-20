@@ -199,22 +199,30 @@ export const parseShowcaseResult = (raw) => {
     });
 };
 
-const isTransport = (value) => value
+const isTransport = (value, requiresSessionReady = false) => value
     && typeof value.mount === "function"
     && typeof value.emitUIInteraction === "function"
     && typeof value.onConnectionState === "function"
-    && typeof value.onResponse === "function";
+    && typeof value.onResponse === "function"
+    && (!requiresSessionReady || typeof value.onSessionReady === "function");
 
 const isLoopbackHost = (hostname) => typeof hostname === "string"
     && ["127.0.0.1", "localhost", "[::1]"].includes(hostname.toLowerCase());
 
-const hasActiveQueueLease = (lease, now = Date.now()) => lease
-    && lease.status === "active"
+const hasReadyQueueLease = (lease, now = Date.now()) => lease
+    && lease.status === "ready"
     && typeof lease.leaseId === "string"
     && Number.isSafeInteger(lease.expiresAt)
-    && lease.expiresAt > now;
+    && lease.expiresAt > now
+    && lease.session
+    && typeof lease.session.url === "string"
+    && /^\/api\/landsnap-showcase\/session\/v1\/player\/[A-Za-z0-9_-]{16,128}$/.test(lease.session.url)
+    && typeof lease.session.token === "string"
+    && /^[A-Za-z0-9._~-]{24,512}$/.test(lease.session.token)
+    && Number.isSafeInteger(lease.session.expiresAt)
+    && lease.session.expiresAt > now;
 
-export const isShowcaseSessionExpiring = (lease, now = Date.now()) => hasActiveQueueLease(lease, now)
+export const isShowcaseSessionExpiring = (lease, now = Date.now()) => hasReadyQueueLease(lease, now)
     && lease.expiresAt - now <= SHOWCASE_SESSION_WARNING_MS;
 
 const getSurface = (documentRef) => ({
@@ -240,7 +248,10 @@ const setText = (element, value) => {
  * transport is supplied by the deployment-specific PS2 bootstrap, not by a URL,
  * query parameter, page dataset, or visitor-controlled form field.
  */
-export const attachShowcaseSurface = (documentRef, transport) => {
+export const attachShowcaseSurface = (documentRef, transport, {
+    brokerSession = null,
+    onStreamLoss = () => {},
+} = {}) => {
     const surface = getSurface(documentRef);
     if (!surface.mount || !surface.operation || !surface.controls.length) return null;
 
@@ -248,6 +259,10 @@ export const attachShowcaseSurface = (documentRef, transport) => {
     let pendingRequest = null;
     let pendingTimer = null;
     let sessionExpiring = false;
+    let sessionReady = brokerSession === null;
+    let streamLossReported = false;
+    let detached = false;
+    let mountRequested = false;
 
     const syncCalibrationCommand = () => {
         if (!surface.calibrationSize || !surface.calibrationLayout || !surface.calibrationPrepare) return;
@@ -282,7 +297,7 @@ export const attachShowcaseSurface = (documentRef, transport) => {
     };
 
     const render = () => {
-        const ready = connectionState === "connected" && pendingRequest === null;
+        const ready = connectionState === "connected" && sessionReady && pendingRequest === null;
         surface.controls.forEach((control) => {
             control.disabled = !ready;
             control.setAttribute("aria-disabled", String(!ready));
@@ -296,7 +311,7 @@ export const attachShowcaseSurface = (documentRef, transport) => {
         surface.mount.setAttribute("aria-busy", String(connectionState === "connecting"));
         renderNotification();
         if (surface.scenario) {
-            surface.scenario.textContent = connectionState === "connected" ? "Prepared scene" : "Awaiting stream";
+            surface.scenario.textContent = connectionState === "connected" && sessionReady ? "Prepared scene" : "Awaiting stream";
         }
     };
 
@@ -333,7 +348,7 @@ export const attachShowcaseSurface = (documentRef, transport) => {
 
     const handleControl = (event) => {
         const control = event.currentTarget;
-        if (connectionState !== "connected" || pendingRequest || !(control instanceof HTMLButtonElement)) return;
+        if (connectionState !== "connected" || !sessionReady || pendingRequest || !(control instanceof HTMLButtonElement)) return;
 
         let request;
         try {
@@ -366,7 +381,7 @@ export const attachShowcaseSurface = (documentRef, transport) => {
         }, 10_000);
     };
 
-    if (!isTransport(transport)) {
+    if (!isTransport(transport, brokerSession !== null)) {
         setText(surface.mount, "A purpose-built Showcase transport is required before this local review page can connect.");
         displayConnection("disconnected");
         displayOperation("Review is unavailable until the Showcase stream connects.");
@@ -380,21 +395,50 @@ export const attachShowcaseSurface = (documentRef, transport) => {
     syncCalibrationCommand();
 
     transport.onConnectionState((nextState) => {
+        if (detached) return;
         if (typeof nextState !== "string" || !CONNECTION_STATES.has(nextState)) return;
+        const wasConnected = connectionState === "connected";
         if (nextState !== "connected") clearPending();
+        if (nextState === "connected") {
+            streamLossReported = false;
+            if (brokerSession === null) sessionReady = true;
+        } else if (brokerSession !== null
+            && mountRequested
+            && (wasConnected || nextState === "disconnected" || nextState === "error")
+            && !streamLossReported) {
+            sessionReady = false;
+            streamLossReported = true;
+            onStreamLoss();
+        }
         displayConnection(nextState);
     });
+    if (brokerSession !== null) {
+        transport.onSessionReady(() => {
+            if (detached) return;
+            sessionReady = true;
+            render();
+        });
+    }
     transport.onResponse(handleResponse);
     displayConnection("connecting");
     displayOperation("Review results will appear here after a LandSnap action.");
 
-    Promise.resolve(transport.mount(surface.mount, Object.freeze({
-        streamerId: SHOWCASE_STREAMER_ID,
-        input: STREAM_INPUT_POLICY,
-    }))).catch(() => displayConnection("error"));
+    const mountOptions = brokerSession === null
+        ? Object.freeze({ streamerId: SHOWCASE_STREAMER_ID, input: STREAM_INPUT_POLICY })
+        : Object.freeze({ session: brokerSession, input: STREAM_INPUT_POLICY });
+    mountRequested = true;
+    Promise.resolve(transport.mount(surface.mount, mountOptions)).catch(() => {
+        if (detached) return;
+        if (brokerSession !== null && !streamLossReported) {
+            streamLossReported = true;
+            onStreamLoss();
+        }
+        displayConnection("error");
+    });
 
     return Object.freeze({
         detach() {
+            detached = true;
             clearPending();
             surface.controls.forEach((control) => control.removeEventListener("click", handleControl));
             [surface.calibrationSize, surface.calibrationLayout].forEach((control) => {
@@ -416,13 +460,23 @@ export const attachShowcaseSurface = (documentRef, transport) => {
 export const initializeShowcaseSurface = (documentRef, windowRef) => {
     let attached = null;
     let attachedTransport = null;
-    let wasAuthorized = null;
+    let authorizationKey = null;
     const expander = typeof documentRef.querySelector === "function"
         ? documentRef.querySelector("[data-landsnap-showcase-expander]")
         : null;
 
-    const isAuthorized = () => isLoopbackHost(windowRef.location?.hostname)
-        || hasActiveQueueLease(windowRef.LandSnapShowcaseQueueLease);
+    const getAuthorization = () => {
+        if (isLoopbackHost(windowRef.location?.hostname)) {
+            return Object.freeze({ kind: "loopback", session: null, key: "loopback" });
+        }
+        const lease = windowRef.LandSnapShowcaseQueueLease;
+        if (!hasReadyQueueLease(lease)) return null;
+        return Object.freeze({
+            kind: "broker",
+            session: lease.session,
+            key: `${lease.leaseId}:${lease.session.token}`,
+        });
+    };
 
     const renderTransportBoundary = () => {
         if (expander && !expander.open) {
@@ -430,23 +484,26 @@ export const initializeShowcaseSurface = (documentRef, windowRef) => {
             if (attachedTransport && typeof attachedTransport.disconnect === "function") attachedTransport.disconnect();
             attached = null;
             attachedTransport = null;
-            wasAuthorized = null;
+            authorizationKey = null;
             return;
         }
-        const authorized = isAuthorized();
-        const transport = authorized ? windowRef.LandSnapShowcasePixelStreaming : null;
-        if (wasAuthorized === authorized && attachedTransport === transport) {
+        const authorization = getAuthorization();
+        const transport = authorization ? windowRef.LandSnapShowcasePixelStreaming : null;
+        if (authorizationKey === authorization?.key && attachedTransport === transport) {
             attached?.setSessionExpiryWarning(windowRef.LandSnapShowcaseQueueLease);
             return;
         }
 
         if (attached) attached.detach();
-        if (!authorized && attachedTransport && typeof attachedTransport.disconnect === "function") {
+        if (attachedTransport && typeof attachedTransport.disconnect === "function") {
             attachedTransport.disconnect();
         }
         attachedTransport = transport || null;
-        attached = attachShowcaseSurface(documentRef, transport);
-        wasAuthorized = authorized;
+        attached = attachShowcaseSurface(documentRef, transport, {
+            brokerSession: authorization?.session || null,
+            onStreamLoss: () => { void windowRef.LandSnapShowcaseQueue?.recheck?.(); },
+        });
+        authorizationKey = authorization?.key || null;
         attached?.setSessionExpiryWarning(windowRef.LandSnapShowcaseQueueLease);
     };
 
@@ -460,6 +517,7 @@ export const initializeShowcaseSurface = (documentRef, windowRef) => {
             windowRef.removeEventListener("landsnap-showcase-lease-change", renderTransportBoundary);
             if (expander) expander.removeEventListener("toggle", renderTransportBoundary);
             if (attached) attached.detach();
+            if (attachedTransport && typeof attachedTransport.disconnect === "function") attachedTransport.disconnect();
         },
     });
 };

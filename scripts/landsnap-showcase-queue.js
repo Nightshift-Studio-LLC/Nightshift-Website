@@ -1,12 +1,13 @@
 /*
- * Fixed, deployment-owned admission gate for the LandSnap Showcase.
+ * Fixed, broker-owned admission gate for the LandSnap Showcase.
  *
- * This module intentionally has no endpoint, streamer, or credential inputs.
- * The queue service uses a same-origin secure HttpOnly cookie to identify a
- * browser session; it never trusts a visitor-supplied session identifier.
+ * The browser can request, check, heartbeat, or release a cookie-bound demo
+ * lease. It cannot launch Unreal, select a streamer, receive a signalling
+ * endpoint, or issue a host-control action. A broker issues a short-lived
+ * session ticket only after its isolated Unreal session reports ready.
  */
 
-export const SHOWCASE_QUEUE_PROTOCOL_VERSION = "landsnap-showcase-queue-v1";
+export const SHOWCASE_QUEUE_PROTOCOL_VERSION = "landsnap-showcase-queue-v2";
 export const SHOWCASE_LEASE_DURATION_MS = 5 * 60 * 1000;
 export const SHOWCASE_QUEUE_PATH = "/api/landsnap-showcase/queue/v1/lease";
 export const SHOWCASE_QUEUE_EVENTS_PATH = "/api/landsnap-showcase/queue/v1/events";
@@ -14,16 +15,20 @@ export const SHOWCASE_QUEUE_EVENTS_PATH = "/api/landsnap-showcase/queue/v1/event
 const PUBLIC_SHOWCASE_HOSTS = new Set(["ns-tx.com", "www.ns-tx.com"]);
 const LOCAL_SHOWCASE_HOSTS = new Set(["127.0.0.1", "localhost", "[::1]"]);
 const RESPONSE_KEYS = Object.freeze({
-    active: Object.freeze(["expiresAt", "heartbeatAfterMs", "leaseId", "protocol", "status"]),
+    starting: Object.freeze(["expectedReadyAt", "leaseId", "pollAfterMs", "protocol", "status"]),
     waiting: Object.freeze(["activeLeaseExpiresAt", "pollAfterMs", "position", "protocol", "status"]),
+    ready: Object.freeze(["expiresAt", "heartbeatAfterMs", "leaseId", "protocol", "sessionExpiresAt", "sessionToken", "sessionUrl", "status"]),
 });
 const MIN_POLL_MS = 1_000;
 const MAX_POLL_MS = 5_000;
 const MIN_HEARTBEAT_MS = 5_000;
 const MAX_HEARTBEAT_MS = 60_000;
-const QUEUE_OPERATIONS = new Set(["join", "heartbeat", "leave"]);
+const MAX_SESSION_TICKET_MS = 2 * 60 * 1000;
+const QUEUE_OPERATIONS = new Set(["join", "status", "heartbeat", "leave"]);
+const OPAQUE_ID_PATTERN = /^[A-Za-z0-9_-]{16,128}$/;
+const SESSION_TOKEN_PATTERN = /^[A-Za-z0-9._~-]{24,512}$/;
+const SESSION_URL_PREFIX = "/api/landsnap-showcase/session/v1/player/";
 
-const own = (record, key) => Object.prototype.hasOwnProperty.call(record, key);
 const isPlainRecord = (value) => {
     if (!value || typeof value !== "object" || Array.isArray(value)) return false;
     const prototype = Object.getPrototypeOf(value);
@@ -35,6 +40,13 @@ const hasExactKeys = (record, expected) => {
 };
 const isSafeTimestamp = (value) => Number.isSafeInteger(value) && value > 0;
 const clamp = (value, minimum, maximum) => Math.min(Math.max(value, minimum), maximum);
+const createIdleLease = () => Object.freeze({ status: "idle" });
+const createUnavailableLease = () => Object.freeze({ status: "unavailable" });
+const isBrokerSessionUrl = (value) => typeof value === "string"
+    && value.startsWith(SESSION_URL_PREFIX)
+    && !value.includes("?")
+    && !value.includes("#")
+    && /^\/api\/landsnap-showcase\/session\/v1\/player\/[A-Za-z0-9_-]{16,128}$/.test(value);
 
 export const isLocalShowcaseHost = (hostname) =>
     typeof hostname === "string" && LOCAL_SHOWCASE_HOSTS.has(hostname.toLowerCase());
@@ -45,20 +57,18 @@ export const isPublicShowcaseHost = (hostname) =>
 export const parseQueueLease = (raw, now = Date.now()) => {
     if (!isPlainRecord(raw) || raw.protocol !== SHOWCASE_QUEUE_PROTOCOL_VERSION) return null;
 
-    if (raw.status === "active") {
-        if (!hasExactKeys(raw, RESPONSE_KEYS.active)
+    if (raw.status === "starting") {
+        if (!hasExactKeys(raw, RESPONSE_KEYS.starting)
             || typeof raw.leaseId !== "string"
-            || !/^[A-Za-z0-9_-]{16,128}$/.test(raw.leaseId)
-            || !isSafeTimestamp(raw.expiresAt)
-            || !Number.isSafeInteger(raw.heartbeatAfterMs)) return null;
+            || !OPAQUE_ID_PATTERN.test(raw.leaseId)
+            || !isSafeTimestamp(raw.expectedReadyAt)
+            || !Number.isSafeInteger(raw.pollAfterMs)) return null;
 
-        const expiresAt = Math.min(raw.expiresAt, now + SHOWCASE_LEASE_DURATION_MS);
-        if (expiresAt <= now) return null;
         return Object.freeze({
-            status: "active",
+            status: "starting",
             leaseId: raw.leaseId,
-            expiresAt,
-            heartbeatAfterMs: clamp(raw.heartbeatAfterMs, MIN_HEARTBEAT_MS, MAX_HEARTBEAT_MS),
+            expectedReadyAt: Math.max(raw.expectedReadyAt, now),
+            pollAfterMs: clamp(raw.pollAfterMs, MIN_POLL_MS, MAX_POLL_MS),
         });
     }
 
@@ -78,20 +88,52 @@ export const parseQueueLease = (raw, now = Date.now()) => {
         });
     }
 
+    if (raw.status === "ready") {
+        if (!hasExactKeys(raw, RESPONSE_KEYS.ready)
+            || typeof raw.leaseId !== "string"
+            || !OPAQUE_ID_PATTERN.test(raw.leaseId)
+            || !isSafeTimestamp(raw.expiresAt)
+            || !Number.isSafeInteger(raw.heartbeatAfterMs)
+            || !isBrokerSessionUrl(raw.sessionUrl)
+            || typeof raw.sessionToken !== "string"
+            || !SESSION_TOKEN_PATTERN.test(raw.sessionToken)
+            || !isSafeTimestamp(raw.sessionExpiresAt)) return null;
+
+        const expiresAt = Math.min(raw.expiresAt, now + SHOWCASE_LEASE_DURATION_MS);
+        const sessionExpiresAt = Math.min(raw.sessionExpiresAt, expiresAt, now + MAX_SESSION_TICKET_MS);
+        if (expiresAt <= now || sessionExpiresAt <= now) return null;
+        return Object.freeze({
+            status: "ready",
+            leaseId: raw.leaseId,
+            expiresAt,
+            heartbeatAfterMs: clamp(raw.heartbeatAfterMs, MIN_HEARTBEAT_MS, MAX_HEARTBEAT_MS),
+            session: Object.freeze({
+                url: raw.sessionUrl,
+                token: raw.sessionToken,
+                expiresAt: sessionExpiresAt,
+            }),
+        });
+    }
+
     return null;
 };
 
-export const isActiveQueueLease = (lease, now = Date.now()) =>
+export const isReadyQueueLease = (lease, now = Date.now()) =>
     isPlainRecord(lease)
-    && lease.status === "active"
+    && lease.status === "ready"
     && typeof lease.leaseId === "string"
     && isSafeTimestamp(lease.expiresAt)
-    && lease.expiresAt > now;
+    && lease.expiresAt > now
+    && isPlainRecord(lease.session)
+    && isBrokerSessionUrl(lease.session.url)
+    && typeof lease.session.token === "string"
+    && SESSION_TOKEN_PATTERN.test(lease.session.token)
+    && isSafeTimestamp(lease.session.expiresAt)
+    && lease.session.expiresAt > now;
 
 /**
- * Position one is the next visitor after the current active lease, so it has
- * no queued visitors ahead of it. The estimate is exactly the active time
- * remaining plus one five-minute lease for every queued visitor ahead.
+ * Position one is next after the active session. This is intentionally an
+ * estimate: the active visitor may leave before their five-minute maximum.
  */
 export const calculateQueueWaitMs = (lease, now = Date.now()) => {
     if (!lease || lease.status !== "waiting") return 0;
@@ -156,16 +198,19 @@ export const createQueueServiceClient = ({
     });
 };
 
-/** Local-only deterministic fixture. It is not reachable from a public host. */
+/** Local-only deterministic fixture. It is never available from a public host. */
 export const createLocalQueueFixture = ({ now = Date.now } = {}) => Object.freeze({
     async request(operation) {
         if (operation === "leave") return Object.freeze({ released: true });
         return Object.freeze({
             protocol: SHOWCASE_QUEUE_PROTOCOL_VERSION,
-            status: "active",
+            status: "ready",
             leaseId: "local-showcase-fixture-lease",
             expiresAt: now() + SHOWCASE_LEASE_DURATION_MS,
             heartbeatAfterMs: 15_000,
+            sessionUrl: "/api/landsnap-showcase/session/v1/player/local-showcase-fixture",
+            sessionToken: "local-showcase-session-ticket-0001",
+            sessionExpiresAt: now() + MAX_SESSION_TICKET_MS,
         });
     },
     subscribe() { return null; },
@@ -181,7 +226,7 @@ export const createQueueLeaseController = ({
 } = {}) => {
     if (!service || typeof service.request !== "function") throw new TypeError("A fixed Showcase queue service is required.");
 
-    let lease = Object.freeze({ status: "unavailable" });
+    let lease = createIdleLease();
     let timer = null;
     let eventSource = null;
     let started = false;
@@ -199,42 +244,59 @@ export const createQueueLeaseController = ({
         if (!started || typeof setTimer !== "function") return;
         timer = setTimer(() => { void refresh(); }, delay);
     };
+    const scheduleForLease = (next) => {
+        if (next.status === "ready") {
+            schedule(Math.min(next.heartbeatAfterMs, Math.max(MIN_POLL_MS, next.session.expiresAt - now() - 1_000)));
+        } else if (next.status === "starting" || next.status === "waiting") {
+            schedule(next.pollAfterMs);
+        } else {
+            schedule(MAX_POLL_MS);
+        }
+    };
     const apply = (raw) => {
         const next = parseQueueLease(raw, now());
         if (!next) {
-            lease = Object.freeze({ status: "unavailable" });
+            lease = createUnavailableLease();
             publish();
             schedule(MAX_POLL_MS);
             return lease;
         }
         lease = next;
         publish();
-        schedule(next.status === "active" ? next.heartbeatAfterMs : next.pollAfterMs);
+        scheduleForLease(next);
         return lease;
     };
-    const refresh = async () => {
+    const nextOperation = () => lease.status === "ready" ? "heartbeat" : "status";
+    const refresh = async (operation = nextOperation()) => {
+        if (!started) return lease;
         try {
-            return apply(await service.request(lease.status === "active" ? "heartbeat" : "join"));
+            return apply(await service.request(operation));
         } catch {
-            lease = Object.freeze({ status: "unavailable" });
+            lease = createUnavailableLease();
             publish();
             schedule(MAX_POLL_MS);
             return lease;
         }
     };
     const handleEvent = (raw) => {
-        if (typeof raw !== "string" || raw.length > 1_024) return lease;
+        if (!started || typeof raw !== "string" || raw.length > 1_024) return lease;
         try {
             return apply(JSON.parse(raw));
         } catch {
             return lease;
         }
     };
+    const closeEventSource = () => {
+        if (eventSource && typeof eventSource.close === "function") eventSource.close();
+        eventSource = null;
+    };
 
     return Object.freeze({
         async start() {
             if (started) return lease;
             started = true;
+            lease = Object.freeze({ status: "starting" });
+            publish();
             if (typeof service.subscribe === "function") {
                 try {
                     eventSource = service.subscribe(handleEvent);
@@ -242,11 +304,11 @@ export const createQueueLeaseController = ({
                     eventSource = null;
                 }
             }
-            return refresh();
+            return refresh("join");
         },
         tick() {
-            if (lease.status === "active" && !isActiveQueueLease(lease, now())) {
-                lease = Object.freeze({ status: "unavailable" });
+            if (lease.status === "ready" && !isReadyQueueLease(lease, now())) {
+                lease = createUnavailableLease();
                 publish();
                 schedule(MIN_POLL_MS);
             }
@@ -254,26 +316,32 @@ export const createQueueLeaseController = ({
         },
         receive: handleEvent,
         getLease: () => lease,
+        isStarted: () => started,
+        async recheck() {
+            if (!started) return lease;
+            stopTimer();
+            lease = createUnavailableLease();
+            publish();
+            return refresh("status");
+        },
         async leave() {
             started = false;
             stopTimer();
-            if (eventSource && typeof eventSource.close === "function") eventSource.close();
-            eventSource = null;
+            closeEventSource();
             try {
                 await service.request("leave");
             } catch {
                 // Page shutdown still makes a best-effort fixed-endpoint beacon below.
             }
-            lease = Object.freeze({ status: "unavailable" });
+            lease = createIdleLease();
             return publish();
         },
         releaseOnPageHide() {
             started = false;
             stopTimer();
-            if (eventSource && typeof eventSource.close === "function") eventSource.close();
-            eventSource = null;
+            closeEventSource();
             if (typeof service.releaseWithBeacon === "function") service.releaseWithBeacon();
-            lease = Object.freeze({ status: "unavailable" });
+            lease = createIdleLease();
             return publish();
         },
     });
@@ -285,6 +353,7 @@ const getQueueSurface = (documentRef) => ({
     alertText: documentRef.getElementById("landsnap-showcase-queue-alert-text"),
     title: documentRef.getElementById("landsnap-showcase-queue-title"),
     message: documentRef.getElementById("landsnap-showcase-queue-message"),
+    tryDemo: documentRef.getElementById("landsnap-showcase-try-demo"),
     position: documentRef.getElementById("landsnap-showcase-queue-position"),
     estimate: documentRef.getElementById("landsnap-showcase-queue-estimate"),
     countdown: documentRef.querySelector("#landsnap-showcase-queue-countdown time"),
@@ -293,22 +362,76 @@ const getQueueSurface = (documentRef) => ({
 });
 
 export const getQueuePresentation = (lease, now = Date.now()) => {
-    const waiting = lease?.status === "waiting";
-    const active = lease?.status === "active";
+    const state = lease?.status || "idle";
+    const waiting = state === "waiting";
+    const ready = state === "ready";
+    const starting = state === "starting";
     const delay = waiting ? calculateQueueWaitMs(lease, now) : 0;
+
+    if (state === "idle") {
+        return Object.freeze({
+            visible: true,
+            state,
+            alert: "One five-minute demo session",
+            title: "Start the LandSnap Showcase",
+            message: "Try Demo asks the broker for a single isolated Unreal Editor session. The player stays locked until the server reports ready.",
+            position: "—",
+            estimate: "—",
+            countdown: "—",
+            countdownSeconds: 0,
+            showMetrics: false,
+            showNote: false,
+            showTryDemo: true,
+        });
+    }
+
+    if (starting) {
+        return Object.freeze({
+            visible: true,
+            state,
+            alert: "Starting isolated session",
+            title: "Preparing your Showcase",
+            message: "The broker reserved the only demo slot and is starting a restricted Unreal Editor session. The player will unlock only after it is ready.",
+            position: "—",
+            estimate: "—",
+            countdown: "—",
+            countdownSeconds: 0,
+            showMetrics: false,
+            showNote: false,
+            showTryDemo: false,
+        });
+    }
+
+    if (waiting) {
+        return Object.freeze({
+            visible: true,
+            state,
+            alert: "Waiting for an available session",
+            title: "A demo is already in progress",
+            message: `You are number ${lease.position} in the queue. This wait is an estimate based on the five-minute maximum; sessions can end early.`,
+            position: String(lease.position),
+            estimate: `${formatQueueCountdown(delay)} estimated`,
+            countdown: formatQueueCountdown(delay),
+            countdownSeconds: Math.ceil(delay / 1_000),
+            showMetrics: true,
+            showNote: true,
+            showTryDemo: false,
+        });
+    }
+
     return Object.freeze({
-        visible: !active,
-        state: waiting ? "waiting" : active ? "active" : "unavailable",
-        alert: waiting ? "Waiting for an available session" : "Waiting for server",
-        title: waiting ? "A demo is already in progress" : "Showcase access unavailable",
-        message: waiting
-            ? `You are number ${lease.position} in the queue. Your streamed workspace will unlock as soon as the active visitor releases or expires their lease.`
-            : "The demo server is unavailable. We’ll reconnect automatically when the Showcase is ready.",
-        position: waiting ? String(lease.position) : "—",
-        estimate: waiting ? `${formatQueueCountdown(delay)} remaining` : "—",
-        countdown: waiting ? formatQueueCountdown(delay) : "—",
-        countdownSeconds: waiting ? Math.ceil(delay / 1_000) : 0,
-        showMetrics: waiting,
+        visible: !ready,
+        state: ready ? "ready" : "unavailable",
+        alert: "Waiting for server",
+        title: "Showcase access unavailable",
+        message: "The demo server is unavailable. We’ll recheck the broker automatically while your request is active.",
+        position: "—",
+        estimate: "—",
+        countdown: "—",
+        countdownSeconds: 0,
+        showMetrics: false,
+        showNote: false,
+        showTryDemo: false,
     });
 };
 
@@ -321,6 +444,10 @@ const renderQueueSurface = (surface, lease, now = Date.now()) => {
     if (surface.alertText) surface.alertText.textContent = presentation.alert;
     if (surface.title) surface.title.textContent = presentation.title;
     if (surface.message) surface.message.textContent = presentation.message;
+    if (surface.tryDemo) {
+        surface.tryDemo.hidden = !presentation.showTryDemo;
+        surface.tryDemo.disabled = !presentation.showTryDemo;
+    }
     if (surface.position) surface.position.textContent = presentation.position;
     if (surface.estimate) surface.estimate.textContent = presentation.estimate;
     if (surface.countdown) {
@@ -328,9 +455,12 @@ const renderQueueSurface = (surface, lease, now = Date.now()) => {
         surface.countdown.dateTime = `PT${presentation.countdownSeconds}S`;
     }
     if (surface.metrics) surface.metrics.hidden = !presentation.showMetrics;
-    if (surface.note) surface.note.hidden = !presentation.showMetrics;
-    if (presentation.state === "unavailable") surface.overlay.setAttribute("aria-busy", "true");
-    else surface.overlay.removeAttribute("aria-busy");
+    if (surface.note) surface.note.hidden = !presentation.showNote;
+    if (presentation.state === "starting" || presentation.state === "waiting" || presentation.state === "unavailable") {
+        surface.overlay.setAttribute("aria-busy", "true");
+    } else {
+        surface.overlay.removeAttribute("aria-busy");
+    }
 };
 
 const dispatchLeaseChange = (windowRef, lease) => {
@@ -360,14 +490,11 @@ export const installShowcaseQueueGate = (windowRef = globalThis.window, document
     windowRef.LandSnapShowcaseQueue = controller;
     renderQueueSurface(surface, controller.getLease());
     const startQueue = () => void controller.start();
+    if (surface.tryDemo) surface.tryDemo.addEventListener("click", startQueue);
     if (expander) {
         expander.addEventListener("toggle", () => {
-            if (expander.open) startQueue();
-            else void controller.leave();
+            if (!expander.open && controller.isStarted()) void controller.leave();
         });
-        if (expander.open) startQueue();
-    } else {
-        startQueue();
     }
     const clock = windowRef.setInterval(() => {
         const lease = controller.tick();

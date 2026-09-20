@@ -10,16 +10,28 @@ import {
     createQueueServiceClient,
     formatQueueCountdown,
     getQueuePresentation,
-    isActiveQueueLease,
+    isReadyQueueLease,
     parseQueueLease,
 } from "../scripts/landsnap-showcase-queue.js";
 
-const activeLease = (now) => ({
+const opaqueId = "showcase-broker-lease-0001";
+const readyLease = (now) => ({
     protocol: SHOWCASE_QUEUE_PROTOCOL_VERSION,
-    status: "active",
-    leaseId: "active-showcase-lease-1234",
+    status: "ready",
+    leaseId: opaqueId,
     expiresAt: now + SHOWCASE_LEASE_DURATION_MS,
     heartbeatAfterMs: 15_000,
+    sessionUrl: "/api/landsnap-showcase/session/v1/player/showcase-player-ticket-001",
+    sessionToken: "signed-session-ticket-for-showcase-0001",
+    sessionExpiresAt: now + 90_000,
+});
+
+const startingLease = (now) => ({
+    protocol: SHOWCASE_QUEUE_PROTOCOL_VERSION,
+    status: "starting",
+    leaseId: opaqueId,
+    expectedReadyAt: now + 30_000,
+    pollAfterMs: 1_000,
 });
 
 const waitingLease = (now, position = 1) => ({
@@ -30,72 +42,74 @@ const waitingLease = (now, position = 1) => ({
     pollAfterMs: 1_000,
 });
 
-test("queue lease parser rejects malformed data and bounds every active lease to five minutes", () => {
+test("queue parser accepts only broker-issued starting, waiting, or ready records", () => {
     const now = 1_700_000_000_000;
-    assert.deepEqual(parseQueueLease(activeLease(now), now), {
-        status: "active",
-        leaseId: "active-showcase-lease-1234",
+    const parsedReady = parseQueueLease(readyLease(now), now);
+    assert.deepEqual(parsedReady, {
+        status: "ready",
+        leaseId: opaqueId,
         expiresAt: now + SHOWCASE_LEASE_DURATION_MS,
         heartbeatAfterMs: 15_000,
+        session: {
+            url: "/api/landsnap-showcase/session/v1/player/showcase-player-ticket-001",
+            token: "signed-session-ticket-for-showcase-0001",
+            expiresAt: now + 90_000,
+        },
     });
-    assert.equal(isActiveQueueLease(parseQueueLease(activeLease(now), now), now), true);
-    assert.equal(parseQueueLease({ ...activeLease(now), endpoint: "wss://visitor.invalid" }, now), null);
+    assert.equal(isReadyQueueLease(parsedReady, now), true);
+    assert.equal(parseQueueLease({ ...readyLease(now), endpoint: "wss://visitor.invalid" }, now), null);
+    assert.equal(parseQueueLease({ ...readyLease(now), sessionUrl: "https://visitor.invalid/player" }, now), null);
+    assert.equal(parseQueueLease({ ...readyLease(now), sessionExpiresAt: now - 1 }, now), null);
     assert.equal(parseQueueLease({ ...waitingLease(now), position: 0 }, now), null);
-    assert.equal(parseQueueLease({ protocol: SHOWCASE_QUEUE_PROTOCOL_VERSION, status: "active" }, now), null);
+    assert.equal(parseQueueLease({ protocol: SHOWCASE_QUEUE_PROTOCOL_VERSION, status: "ready" }, now), null);
 });
 
-test("waiting estimates use active time remaining plus five minutes per queued visitor ahead", () => {
+test("waiting estimates use the five-minute maximum while making early release an explicit possibility", () => {
     const now = 1_700_000_000_000;
     const next = parseQueueLease(waitingLease(now, 1), now);
     const third = parseQueueLease(waitingLease(now, 3), now);
     assert.equal(calculateQueueWaitMs(next, now), 80_000);
     assert.equal(calculateQueueWaitMs(third, now), 80_000 + 2 * SHOWCASE_LEASE_DURATION_MS);
     assert.equal(formatQueueCountdown(80_000), "01:20");
+    const presentation = getQueuePresentation(third, now);
+    assert.equal(presentation.estimate, "11:20 estimated");
+    assert.match(presentation.message, /estimate/i);
+    assert.match(presentation.message, /end early/i);
 });
 
-test("queue presentation distinguishes a server outage from a visitor wait", () => {
+test("queue presentation starts idle, keeps the gray gate through startup, and hides only once ready", () => {
     const now = 1_700_000_000_000;
-    assert.deepEqual(getQueuePresentation({ status: "unavailable" }, now), {
+    assert.deepEqual(getQueuePresentation({ status: "idle" }, now), {
         visible: true,
-        state: "unavailable",
-        alert: "Waiting for server",
-        title: "Showcase access unavailable",
-        message: "The demo server is unavailable. We’ll reconnect automatically when the Showcase is ready.",
+        state: "idle",
+        alert: "One five-minute demo session",
+        title: "Start the LandSnap Showcase",
+        message: "Try Demo asks the broker for a single isolated Unreal Editor session. The player stays locked until the server reports ready.",
         position: "—",
         estimate: "—",
         countdown: "—",
         countdownSeconds: 0,
         showMetrics: false,
+        showNote: false,
+        showTryDemo: true,
     });
-    assert.deepEqual(getQueuePresentation(waitingLease(now, 2), now), {
-        visible: true,
-        state: "waiting",
-        alert: "Waiting for an available session",
-        title: "A demo is already in progress",
-        message: "You are number 2 in the queue. Your streamed workspace will unlock as soon as the active visitor releases or expires their lease.",
-        position: "2",
-        estimate: "06:20 remaining",
-        countdown: "06:20",
-        countdownSeconds: 380,
-        showMetrics: true,
-    });
+    assert.equal(getQueuePresentation(startingLease(now), now).visible, true);
+    assert.equal(getQueuePresentation(startingLease(now), now).showTryDemo, false);
+    assert.equal(getQueuePresentation(parseQueueLease(readyLease(now), now), now).visible, false);
 });
 
-test("an early active departure promotes the next queued visitor through the fixed event stream", async () => {
+test("Try Demo joins once, then uses status until ready and heartbeat only for a ready lease", async () => {
     let now = 1_700_000_000_000;
-    let receiveEvent;
     const operations = [];
-    const updates = [];
     const timers = [];
     const service = {
         async request(operation) {
             operations.push(operation);
-            return waitingLease(now, 1);
+            if (operation === "join") return startingLease(now);
+            if (operation === "status") return readyLease(now);
+            return readyLease(now);
         },
-        subscribe(listener) {
-            receiveEvent = listener;
-            return { close() {} };
-        },
+        subscribe() { return { close() {} }; },
     };
     const controller = createQueueLeaseController({
         service,
@@ -105,26 +119,26 @@ test("an early active departure promotes the next queued visitor through the fix
             return timers.length;
         },
         clearTimer() {},
-        onUpdate: (lease) => updates.push(lease),
     });
 
+    assert.equal(controller.getLease().status, "idle");
     await controller.start();
-    assert.equal(controller.getLease().status, "waiting");
-    assert.equal(controller.getLease().position, 1);
-    receiveEvent(JSON.stringify(activeLease(now)));
-    assert.equal(controller.getLease().status, "active");
     assert.deepEqual(operations, ["join"]);
-    assert.equal(updates.at(-1).status, "active");
-    assert.equal(timers.at(-1).delay, 15_000);
+    assert.equal(controller.getLease().status, "starting");
+    await controller.recheck();
+    assert.deepEqual(operations, ["join", "status"]);
+    assert.equal(controller.getLease().status, "ready");
+    await timers.at(-1).callback();
+    assert.deepEqual(operations, ["join", "status", "heartbeat"]);
 });
 
-test("expired leases revoke local access and a client leave releases the fixed lease", async () => {
+test("stream loss and ticket expiry clear the local lease before a fixed broker status check", async () => {
     let now = 1_700_000_000_000;
     const operations = [];
     const service = {
         async request(operation) {
             operations.push(operation);
-            return operation === "leave" ? { released: true } : activeLease(now);
+            return operation === "join" ? readyLease(now) : startingLease(now);
         },
         subscribe() { return null; },
     };
@@ -136,13 +150,16 @@ test("expired leases revoke local access and a client leave releases the fixed l
     });
 
     await controller.start();
-    now += SHOWCASE_LEASE_DURATION_MS;
+    assert.equal(controller.getLease().status, "ready");
+    await controller.recheck();
+    assert.deepEqual(operations, ["join", "status"]);
+    assert.equal(controller.getLease().status, "starting");
+    controller.receive(JSON.stringify(readyLease(now)));
+    now += 90_000;
     assert.equal(controller.tick().status, "unavailable");
-    await controller.leave();
-    assert.deepEqual(operations, ["join", "leave"]);
 });
 
-test("unavailable queue service fails closed and only uses the fixed deployment paths", async () => {
+test("public clients fail closed and use only the fixed same-origin broker paths", async () => {
     const now = 1_700_000_000_000;
     const calls = [];
     const client = createQueueServiceClient({
@@ -157,6 +174,7 @@ test("unavailable queue service fails closed and only uses the fixed deployment 
     assert.equal(calls[0].url, `https://ns-tx.com${SHOWCASE_QUEUE_PATH}`);
     assert.equal(calls[0].options.body, JSON.stringify({ protocol: SHOWCASE_QUEUE_PROTOCOL_VERSION, operation: "join" }));
     assert.equal(client.subscribe(() => {}).url, `https://ns-tx.com${SHOWCASE_QUEUE_EVENTS_PATH}`);
+    await assert.rejects(client.request("launch"), /Unknown Showcase queue operation/);
 
     const controller = createQueueLeaseController({
         service: { async request() { throw new Error("offline"); } },

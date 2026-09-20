@@ -1,30 +1,5 @@
 /* Page interactions and an illustrative placement study, not the Unreal solver. */
 (() => {
-    // Dormant until the section is explicitly enabled and given a hosted player URL.
-    const liveSection = document.getElementById('live-demo');
-    const liveStart = document.getElementById('landsnap-live-start');
-    if (liveSection && liveStart) {
-        liveStart.addEventListener('click', () => {
-            if (liveSection.hidden) return;
-            const status = document.getElementById('landsnap-live-status');
-            let playerUrl;
-            try {
-                playerUrl = new URL(liveSection.dataset.streamUrl);
-                if (playerUrl.protocol !== 'https:') throw new Error('HTTPS player required');
-            } catch {
-                status.textContent = 'The live demo is not available yet. Please check back later.';
-                return;
-            }
-            const frame = document.createElement('iframe');
-            frame.title = 'LandSnap live Unreal Editor demo';
-            frame.allow = 'autoplay; fullscreen';
-            frame.allowFullscreen = true;
-            frame.src = playerUrl.href;
-            document.getElementById('landsnap-live-player').append(frame);
-            status.textContent = 'Use the player below to connect. If it is unavailable, please try again later.';
-            liveStart.disabled = true;
-        });
-    }
     const svg = document.getElementById('landsnap-terrain');
     if (!svg || !svg.parentElement) return;
     const study = svg.parentElement;

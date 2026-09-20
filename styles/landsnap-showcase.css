@@ -247,6 +247,26 @@ body.landsnap-showcase-page {
     color: #ffc16a;
 }
 
+.landsnap-showcase-queue-overlay[data-queue-state="idle"] .landsnap-showcase-queue-alert {
+    border-color: rgba(182, 243, 106, 0.48);
+    background: rgba(182, 243, 106, 0.1);
+    color: #d6ff9d;
+}
+
+.landsnap-showcase-queue-overlay[data-queue-state="idle"] .landsnap-showcase-queue-alert-icon {
+    color: var(--landsnap-green);
+}
+
+.landsnap-showcase-queue-overlay[data-queue-state="starting"] .landsnap-showcase-queue-alert {
+    border-color: rgba(241, 245, 238, 0.35);
+    background: rgba(241, 245, 238, 0.08);
+    color: #e1e5df;
+}
+
+.landsnap-showcase-queue-overlay[data-queue-state="starting"] .landsnap-showcase-queue-alert-icon {
+    color: #d4dad2;
+}
+
 .landsnap-showcase-queue-card h2 {
     margin: 6px 0 0;
     color: #f4f6f2;
@@ -299,6 +319,36 @@ body.landsnap-showcase-page {
 .landsnap-showcase-queue-card .landsnap-showcase-queue-note {
     color: #aeb5ae;
     font-size: 0.65rem;
+}
+
+.landsnap-showcase-queue-try {
+    min-width: 156px;
+    margin-top: 20px;
+    padding: 12px 16px;
+    border: 1px solid #d6ff9d;
+    border-radius: 2px;
+    background: #b6f36a;
+    color: #14210c;
+    cursor: pointer;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.landsnap-showcase-queue-try:hover,
+.landsnap-showcase-queue-try:focus-visible {
+    background: #d6ff9d;
+}
+
+.landsnap-showcase-queue-try:focus-visible {
+    outline: 3px solid #f4f6f2;
+    outline-offset: 3px;
+}
+
+.landsnap-showcase-queue-try[hidden] {
+    display: none;
 }
 
 .landsnap-showcase-queue-metrics[hidden],

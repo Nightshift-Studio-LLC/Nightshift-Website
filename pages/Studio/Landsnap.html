@@ -220,13 +220,14 @@
                             <p class="landsnap-showcase-section-label">Exclusive demo queue</p>
                             <p id="landsnap-showcase-queue-alert" class="landsnap-showcase-queue-alert" role="status"><span class="landsnap-showcase-queue-alert-icon" aria-hidden="true">⚠</span><span id="landsnap-showcase-queue-alert-text">Waiting for server</span></p>
                             <h2 id="landsnap-showcase-queue-title">Checking Showcase access</h2>
-                            <p id="landsnap-showcase-queue-message">The streamed workspace stays unavailable until the deployment queue grants a five-minute lease.</p>
+                            <p id="landsnap-showcase-queue-message">Try Demo asks the broker for a single isolated Unreal Editor session.</p>
+                            <button id="landsnap-showcase-try-demo" class="landsnap-showcase-queue-try" type="button">Try Demo</button>
                             <dl class="landsnap-showcase-queue-metrics">
                                 <div><dt>Your queue position</dt><dd id="landsnap-showcase-queue-position">—</dd></div>
                                 <div><dt>Estimated wait</dt><dd id="landsnap-showcase-queue-estimate">—</dd></div>
                                 <div><dt>Live countdown</dt><dd id="landsnap-showcase-queue-countdown"><time datetime="PT0S">—</time></dd></div>
                             </dl>
-                            <p class="landsnap-showcase-queue-note">A session is exclusive for five minutes. Leaving it early immediately advances the next visitor.</p>
+                            <p class="landsnap-showcase-queue-note">Estimated wait uses the five-minute maximum. Sessions can end early and advance the queue sooner.</p>
                         </div>
                     </section>
                 </section>
@@ -238,25 +239,6 @@
             <div><span>Runtime cost</span><strong>Editor-only</strong><small>No packaged-build component</small></div>
             <div><span>Placement safety</span><strong>Undoable</strong><small>Scoped editor transactions</small></div>
             <div><span>Your surfaces</span><strong>Terrain + tagged meshes</strong><small>Landscape / Mesh Terrain / explicit tags</small></div>
-        </section>
-
-        <!-- Future Pixel Streaming hookup:
-             Set data-stream-url to the hosted HTTPS player page (not its signalling WebSocket),
-             then remove hidden from this section. The player loads only on Start live demo.
-             Session allocation, timeout/reset, and embedding support belong to the stream host. -->
-        <section id="live-demo" class="panel landsnap-live-demo" aria-labelledby="landsnap-live-title" data-stream-url="" hidden>
-            <div class="landsnap-heading-row landsnap-heading-row-single">
-                <div>
-                    <p class="eyebrow">Hands-on / Unreal Editor</p>
-                    <h2 id="landsnap-live-title">Try LandSnap Live.</h2>
-                </div>
-            </div>
-            <div class="landsnap-live-player" id="landsnap-live-player">
-                <p id="landsnap-live-status" role="status">Start the demo to connect to the playground.</p>
-            </div>
-            <div class="hero-actions">
-                <button class="cta-btn primary" id="landsnap-live-start" type="button">Start live demo</button>
-            </div>
         </section>
 
         <section id="release" class="panel notes-panel landsnap-release-panel">
