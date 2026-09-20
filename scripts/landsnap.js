@@ -41,10 +41,6 @@
         add('polygon', {points:points([base[1],base[2],top[2],top[1]]),fill:'#496b3b',stroke:'#c7ff6e','stroke-width':'1'}, actor);
         add('polygon', {points:points([base[2],base[3],top[3],top[2]]),fill:'#253d2b',stroke:'#a7e653','stroke-width':'1'}, actor);
         add('polygon', {points:points(top),fill:'#8cab67',stroke:'#dbf4b1','stroke-width':'1'}, actor);
-        if (index === 0) {
-            const label = add('text', {x:center[0],y:center[1]-47,fill:'#bbc6ca','font-size':'10','text-anchor':'middle','font-family':'monospace','aria-hidden':'true'},actor);
-            label.textContent = '01';
-        }
         actors.push(actor);
     });
     const setStudySettled = settled => {
