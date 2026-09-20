@@ -12,7 +12,9 @@ export const SHOWCASE_LEASE_DURATION_MS = 5 * 60 * 1000;
 export const SHOWCASE_QUEUE_PATH = "/api/landsnap-showcase/queue/v1/lease";
 export const SHOWCASE_QUEUE_EVENTS_PATH = "/api/landsnap-showcase/queue/v1/events";
 
-const PUBLIC_SHOWCASE_HOSTS = new Set(["ns-tx.com", "www.ns-tx.com"]);
+// The public queue lives only on the dedicated Nukebox showcase origin.
+// Product pages may link there, but they never become a broker origin.
+const PUBLIC_SHOWCASE_HOSTS = new Set(["showcase.ns-tx.com"]);
 const LOCAL_SHOWCASE_HOSTS = new Set(["127.0.0.1", "localhost", "[::1]"]);
 const RESPONSE_KEYS = Object.freeze({
     starting: Object.freeze(["expectedReadyAt", "leaseId", "pollAfterMs", "protocol", "status"]),

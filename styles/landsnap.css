@@ -1795,6 +1795,49 @@ body.landsnap-page {
     scroll-margin-top: 24px;
 }
 
+.landsnap-page .landsnap-showcase-launch {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: clamp(20px, 4vw, 56px);
+    align-items: center;
+    border-color: rgba(167, 230, 83, 0.3);
+    background:
+        linear-gradient(110deg, rgba(167, 230, 83, 0.1), transparent 52%),
+        #1b252c;
+}
+
+.landsnap-showcase-launch-copy {
+    max-width: 64ch;
+}
+
+.landsnap-showcase-launch-copy h2 {
+    margin: 7px 0 10px;
+    font-size: clamp(1.35rem, 2.3vw, 1.95rem);
+}
+
+.landsnap-showcase-launch-copy p:last-child,
+.landsnap-showcase-launch-action p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.88rem;
+    line-height: 1.65;
+}
+
+.landsnap-showcase-launch-action {
+    display: grid;
+    justify-items: start;
+    gap: 10px;
+    min-width: min(100%, 285px);
+}
+
+.landsnap-showcase-launch-action .cta-btn {
+    min-height: 46px;
+}
+
+@media (max-width: 720px) {
+    .landsnap-page .landsnap-showcase-launch { grid-template-columns: 1fr; }
+}
+
 .landsnap-showcase-embed > summary {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;

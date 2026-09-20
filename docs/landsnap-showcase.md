@@ -2,13 +2,15 @@
 
 ## Scope
 
-The production Showcase is the expandable `#showcase` workspace on `pages/Studio/Landsnap.html`. The legacy direct shell at `pages/Studio/LandSnapShowcase.html` uses the same broker gate, but is not the product-page route. Both are one-session demonstration shells for Unreal Engine 5.8.2 and Pixel Streaming 2 with **Stream Level Editor**. Full Editor remains a trusted local workflow only.
+The production Showcase is the dedicated `https://showcase.ns-tx.com/` host on the Nukebox. `pages/Studio/Landsnap.html#showcase` is an informational handoff that links visitors to that fixed destination; it never loads the queue, player, or Pixel Streaming frontend. `pages/Studio/LandSnapShowcase.html` is the direct-shell source that the dedicated host serves. The Showcase uses one restricted session at a time with Unreal Engine 5.8.2 and Pixel Streaming 2 with **Stream Level Editor**. Full Editor remains a trusted local workflow only.
+
+The dedicated host owns the queue, broker relay, signalling, and on-demand Unreal process. It is reached through the server's direct DNS and port-forwarded HTTPS/WebSocket and WebRTC routes. There is no Worker, tunnel, visitor-selected endpoint, or browser-to-host control route in this static site.
 
 The website never launches Unreal, starts a host, selects a streamer, exposes a signalling endpoint, or sends a host-control action. `scripts/landsnap-showcase-local.js` is the one loopback-only exception for local acceptance work: it imports the bundled Epic UE 5.8 frontend only on `127.0.0.1`, `localhost`, or `[::1]`, then locks the local `Editor` streamer in code. No URL, hash, query parameter, storage value, or visitor-controlled field can alter that configuration.
 
 ## One-session broker contract
 
-The visitor presses **Try Demo** to begin. Until that click, the browser does not make an admission request. It can use only these fixed, same-origin routes:
+The visitor presses **Try Demo** on `showcase.ns-tx.com` to begin. Until that click, the browser does not make an admission request. The direct shell accepts that origin only and can use only these fixed, same-origin routes:
 
 ```text
 POST /api/landsnap-showcase/queue/v1/lease
@@ -44,7 +46,7 @@ The SSE feed is an optional immediate-update path. The client’s one-to-five-se
 
 ## Player handoff and reconnect behavior
 
-The queue response is authorization to attempt the fixed broker player relay; it is not permission to expose or configure Pixel Streaming. A public deployment may install `window.LandSnapShowcasePixelStreaming` only after the broker gives a valid `ready` record. The adapter receives the broker session object directly in memory:
+The queue response is authorization to attempt the fixed broker player relay; it is not permission to expose or configure Pixel Streaming. The dedicated host may install `window.LandSnapShowcasePixelStreaming` only after the broker gives a valid `ready` record. The adapter receives the broker session object directly in memory:
 
 ```js
 window.LandSnapShowcasePixelStreaming = {
@@ -90,8 +92,8 @@ The bridge independently validates the exact object shape, action, session state
 
 ## Validation
 
-1. Run `npm run build:landsnap-showcase`, serve this repository on loopback, and open `http://127.0.0.1:4173/pages/Studio/Landsnap.html#showcase`.
-2. Confirm the initial gray panel shows **Try Demo** and no admission request is made until it is pressed.
+1. Run `npm run build:landsnap-showcase`, serve this repository on loopback, and open `http://127.0.0.1:4173/pages/Studio/LandSnapShowcase.html` for the deterministic local fixture. Confirm `pages/Studio/Landsnap.html#showcase` only links to `https://showcase.ns-tx.com/`.
+2. On the dedicated host, confirm the initial gray panel shows **Try Demo** and no admission request is made until it is pressed.
 3. With broker fixtures, verify `starting`, queued position, explicitly-estimated wait, early-release promotion, ready ticket expiry, malformed records, offline broker behavior, and stream loss. Confirm no raw signalling URL or server-control field is accepted.
 4. Confirm the public adapter cannot mount until a valid ready ticket arrives, and controls remain disabled until its existing `session_ready` handshake.
 5. For loopback only, start **Stream Level Editor**, not Full Editor, and verify keyboard input generates no Pixel Streaming messages while the fixed mouse-only path works.

@@ -10,6 +10,7 @@ import {
     createQueueServiceClient,
     formatQueueCountdown,
     getQueuePresentation,
+    isPublicShowcaseHost,
     isReadyQueueLease,
     parseQueueLease,
 } from "../scripts/landsnap-showcase-queue.js";
@@ -159,11 +160,11 @@ test("stream loss and ticket expiry clear the local lease before a fixed broker 
     assert.equal(controller.tick().status, "unavailable");
 });
 
-test("public clients fail closed and use only the fixed same-origin broker paths", async () => {
+test("only the dedicated Showcase host can use the fixed same-origin broker paths", async () => {
     const now = 1_700_000_000_000;
     const calls = [];
     const client = createQueueServiceClient({
-        locationRef: { hostname: "ns-tx.com", origin: "https://ns-tx.com" },
+        locationRef: { hostname: "showcase.ns-tx.com", origin: "https://showcase.ns-tx.com" },
         fetchImpl: async (url, options) => {
             calls.push({ url, options });
             return { ok: false };
@@ -171,10 +172,17 @@ test("public clients fail closed and use only the fixed same-origin broker paths
         eventSourceFactory: (url) => ({ url }),
     });
     await assert.rejects(client.request("join"), /rejected/);
-    assert.equal(calls[0].url, `https://ns-tx.com${SHOWCASE_QUEUE_PATH}`);
+    assert.equal(isPublicShowcaseHost("showcase.ns-tx.com"), true);
+    assert.equal(isPublicShowcaseHost("ns-tx.com"), false);
+    assert.equal(calls[0].url, `https://showcase.ns-tx.com${SHOWCASE_QUEUE_PATH}`);
     assert.equal(calls[0].options.body, JSON.stringify({ protocol: SHOWCASE_QUEUE_PROTOCOL_VERSION, operation: "join" }));
-    assert.equal(client.subscribe(() => {}).url, `https://ns-tx.com${SHOWCASE_QUEUE_EVENTS_PATH}`);
+    assert.equal(client.subscribe(() => {}).url, `https://showcase.ns-tx.com${SHOWCASE_QUEUE_EVENTS_PATH}`);
     await assert.rejects(client.request("launch"), /Unknown Showcase queue operation/);
+
+    const productPageClient = createQueueServiceClient({
+        locationRef: { hostname: "ns-tx.com", origin: "https://ns-tx.com" },
+    });
+    await assert.rejects(productPageClient.request("join"), /unavailable/);
 
     const controller = createQueueLeaseController({
         service: { async request() { throw new Error("offline"); } },
