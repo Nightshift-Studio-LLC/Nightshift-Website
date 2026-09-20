@@ -829,6 +829,22 @@ body.landsnap-page summary:focus-visible {
     align-items: stretch;
 }
 
+.landsnap-agent-art {
+    display: grid;
+    min-width: 0;
+    margin: 0;
+    place-items: center;
+}
+
+.landsnap-agent-art img {
+    display: block;
+    width: min(100%, 430px);
+    height: auto;
+    max-height: 380px;
+    object-fit: contain;
+    filter: drop-shadow(0 18px 22px rgba(0, 0, 0, 0.3));
+}
+
 .landsnap-agent-copy {
     display: grid;
     align-content: start;
@@ -1665,9 +1681,9 @@ body.landsnap-page {
 .landsnap-page .landsnap-hero-copy .cta-btn { border-radius: 4px; min-height: 46px; padding: 0 17px; font-size: .64rem; }
 .landsnap-page .landsnap-hero-copy .cta-btn.primary { background: #ff995f; color: #20231e; border-color: #ff995f; box-shadow: none; }
 .landsnap-page .landsnap-hero-copy .cta-btn.primary:hover { background: #ffb380; }
-.landsnap-assurance { font-size: .54rem; letter-spacing: .02em; white-space: nowrap; }
+.landsnap-assurance { font-size: .44rem; letter-spacing: .01em; white-space: nowrap; }
 .landsnap-assurance-item { white-space: nowrap; }
-.landsnap-assurance-divider { margin: 0 3px; }
+.landsnap-assurance-divider { margin: 0 2px; }
 .landsnap-page .landsnap-console { grid-template-rows: auto 1fr auto; min-height: 610px; border: 0; border-left: 1px solid var(--line); border-radius: 0; background: radial-gradient(ellipse at 45% 42%, #2c3c38, #192328 75%); }
 .landsnap-console-header { padding: 24px; background: transparent !important; border-bottom: 0; }
 .landsnap-console-identity img { width: 32px; height: 32px; }
@@ -1712,6 +1728,8 @@ body.landsnap-page {
     .landsnap-page .landsnap-shell { padding: 20px 16px 35px; gap: 20px; }
     .landsnap-page .landsnap-hero-copy { padding: 26px 22px; }
     .landsnap-assurance { white-space: normal; }
+    .landsnap-agent-art { margin-top: -10px; }
+    .landsnap-agent-art img { width: min(100%, 320px); }
     .landsnap-page .landsnap-hero .page-title { font-size: clamp(2.1rem, 10vw, 3.3rem); }
     .landsnap-hero-kicker { font-size: 2.3rem; }
     .landsnap-release-line { gap: 6px; margin-bottom: 24px; }
