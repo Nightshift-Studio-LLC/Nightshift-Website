@@ -18,6 +18,7 @@ test("the direct shell identifies the dedicated host without accepting a visitor
 
     assert.match(directShell, /<link rel="canonical" href="https:\/\/showcase\.ns-tx\.com\/">/);
     assert.match(directShell, /landsnap-showcase-queue\.js/);
+    assert.match(directShell, /landsnap-showcase-public\.js/);
     assert.match(directShell, /landsnap-showcase\.js/);
     assert.doesNotMatch(directShell, /signalling|signaling|wss?:\/\//i);
 });

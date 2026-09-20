@@ -33,6 +33,8 @@ The broker identifies the visitor with a secure, HttpOnly, SameSite cookie scope
 
 `leaseId` and the player ID are opaque URL-safe server identifiers. The client accepts only the shown relative player-route form, with no query string or fragment. `sessionToken` is an opaque, broker-signed ticket, must expire before the five-minute lease, and is additionally capped by the page at two minutes. The player route is a same-origin broker relay—not a direct signalling URL—and it must reject expired, replayed, or cookie-mismatched tickets.
 
+Before opening Pixel Streaming, the dedicated shell makes one exact ticket exchange: `POST sessionUrl` with `Authorization: Bearer sessionToken`, `credentials: include`, `cache: no-store`, and `redirect: error`. The broker consumes the ticket, returns `204 No Content`, and sets a Secure, HttpOnly, SameSite cookie scoped to that player path. The frontend then opens `wss://showcase.ns-tx.com` on that same validated player path. The ticket is never appended to a URL, stored in the DOM, logged, or exposed to a visitor-controlled configuration field.
+
 The broker owns the atomic state transition:
 
 1. If no host is starting or leased, reserve the single slot for the cookie-bound visitor, return `starting`, and start one fresh restricted Unreal session **from the broker**.
@@ -59,7 +61,7 @@ window.LandSnapShowcasePixelStreaming = {
 };
 ```
 
-The page mounts the public player only with the broker-provided session ticket and keeps controls disabled until both the transport is connected and the existing `session_ready` handshake fires. A disconnect, player error, ticket expiry, or lease expiry clears the local stream UI, disconnects the transport, and re-requests broker `status`. The browser does not attempt to restart Unreal.
+The page imports the public player only for an exact `showcase.ns-tx.com` ready lease. It mounts only with the broker-provided session ticket, has no configured streamer ID, and keeps controls disabled until both the transport is connected and Pixel Streaming reports its data channel open. A disconnect, player error, ticket expiry, or lease expiry clears the local stream UI, disconnects the transport, and re-requests broker `status`. The browser does not attempt to restart Unreal.
 
 Loopback acceptance retains its fixed local transport shape:
 
@@ -76,7 +78,7 @@ It is never installed on a public host. The local fixture is deterministic and d
 
 ## Pixel Streaming safeguards
 
-The local bootstrap uses Epic’s `@epicgames-ps/lib-pixelstreamingfrontend-ue5.8` 0.1.2 core package without Epic’s stock player UI. Before connecting it disables URL parameters, keyboard, touch, gamepad, XR, fake-touch mouse, microphone, camera, text-modal input, auto-VR, and reconnect attempts. The only enabled browser input is mouse.
+The local and dedicated-host bootstraps use Epic’s `@epicgames-ps/lib-pixelstreamingfrontend-ue5.8` 0.1.2 core package without Epic’s stock player UI. Before connecting they disable URL parameters, keyboard, touch, gamepad, XR, fake-touch mouse, microphone, camera, text-modal input, auto-VR, and reconnect attempts. The only enabled browser input is mouse.
 
 The adapter must use `emitUIInteraction()` for the fixed payload registry below. It must never call `emitCommand()`, `emitConsoleCommand()`, text entry, URL/frame APIs, settings, stats, or developer APIs. The browser is not a trust boundary: retain private control ports, broker authorization, rate limits, disposable session isolation, and a host launch without `-AllowPixelStreamingCommands`.
 
@@ -95,7 +97,7 @@ The bridge independently validates the exact object shape, action, session state
 1. Run `npm run build:landsnap-showcase`, serve this repository on loopback, and open `http://127.0.0.1:4173/pages/Studio/LandSnapShowcase.html` for the deterministic local fixture. Confirm `pages/Studio/Landsnap.html#showcase` only links to `https://showcase.ns-tx.com/`.
 2. On the dedicated host, confirm the initial gray panel shows **Try Demo** and no admission request is made until it is pressed.
 3. With broker fixtures, verify `starting`, queued position, explicitly-estimated wait, early-release promotion, ready ticket expiry, malformed records, offline broker behavior, and stream loss. Confirm no raw signalling URL or server-control field is accepted.
-4. Confirm the public adapter cannot mount until a valid ready ticket arrives, and controls remain disabled until its existing `session_ready` handshake.
+4. Confirm the public adapter cannot import or mount until a valid ready ticket arrives. Verify its one ticket-exchange POST returns `204`, the WebSocket uses the same player path without a query token, and controls remain disabled until the data channel opens.
 5. For loopback only, start **Stream Level Editor**, not Full Editor, and verify keyboard input generates no Pixel Streaming messages while the fixed mouse-only path works.
 6. Run `npm run test:landsnap-showcase` and `npm run security:payloads`. Check desktop and a 320px-wide viewport: queue text remains readable, controls stack, focus is visible, and no horizontal overflow appears.
 
