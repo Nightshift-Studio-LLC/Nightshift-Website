@@ -1,0 +1,33 @@
+name = "landsnap-showcase-broker"
+main = "src/index.js"
+compatibility_date = "2026-09-19"
+workers_dev = false
+
+# These routes require ns-tx.com and www.ns-tx.com to be proxied by the
+# Cloudflare zone while GitHub Pages remains the static origin.
+routes = [
+  { pattern = "ns-tx.com/api/landsnap-showcase/*", zone_name = "ns-tx.com" },
+  { pattern = "www.ns-tx.com/api/landsnap-showcase/*", zone_name = "ns-tx.com" }
+]
+
+[vars]
+SHOWCASE_ALLOWED_ORIGINS = "https://ns-tx.com,https://www.ns-tx.com"
+SHOWCASE_MAX_QUEUE = "100"
+
+[[durable_objects.bindings]]
+name = "SHOWCASE_QUEUE"
+class_name = "ShowcaseQueue"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["ShowcaseQueue"]
+
+# These services are private Cloudflare bindings. They must not be assigned a
+# public route, real host URL, or browser-visible credential.
+[[services]]
+binding = "SHOWCASE_ORCHESTRATOR"
+service = "landsnap-showcase-orchestrator"
+
+[[services]]
+binding = "SHOWCASE_RELAY"
+service = "landsnap-showcase-relay"

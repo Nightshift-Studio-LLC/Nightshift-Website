@@ -6,7 +6,8 @@
     "build:devlog": "node tools/devlog/build.mjs",
     "dev:devlog": "node tools/devlog/build.mjs --watch",
     "build:landsnap-showcase": "node tools/landsnap/build-local-frontend.mjs",
-    "test:landsnap-showcase": "node --test tests/landsnap-showcase.test.mjs tests/landsnap-showcase-local.test.mjs tests/landsnap-showcase-queue.test.mjs",
+    "test:landsnap-showcase": "node --test tests/landsnap-showcase.test.mjs tests/landsnap-showcase-local.test.mjs tests/landsnap-showcase-queue.test.mjs tests/landsnap-showcase-public-adapter.test.mjs services/landsnap-showcase-broker/test/broker.test.mjs",
+    "test:landsnap-showcase-broker": "node --test services/landsnap-showcase-broker/test/broker.test.mjs",
     "security:payloads": "node tools/security/check-payloads.mjs"
   },
   "dependencies": {
