@@ -8,6 +8,13 @@
  */
 
 export const SHOWCASE_PROTOCOL_VERSION = "landsnap-showcase-v1";
+export const SHOWCASE_EMBEDDED_CLASS = "landsnap-showcase-embedded";
+
+export const setShowcaseEmbeddedMode = (documentRef, windowRef) => {
+    const embedded = Boolean(windowRef && windowRef.self !== windowRef.top);
+    documentRef?.body?.classList?.toggle?.(SHOWCASE_EMBEDDED_CLASS, embedded);
+    return embedded;
+};
 
 export const SHOWCASE_CALIBRATION_PRESETS = Object.freeze({
     "prepare-small-row": Object.freeze({ action: "prepare_small_row", label: "Prepare Small Row", outlinerLabel: "Small row fixtures" }),
@@ -523,5 +530,6 @@ export const initializeShowcaseSurface = (documentRef, windowRef) => {
 };
 
 if (typeof document !== "undefined") {
+    setShowcaseEmbeddedMode(document, window);
     initializeShowcaseSurface(document, window);
 }

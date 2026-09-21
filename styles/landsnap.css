@@ -1922,8 +1922,8 @@ body.landsnap-page {
 .landsnap-showcase-embed-frame {
     display: block;
     width: 100%;
-    height: clamp(1080px, 79vw, 1280px);
-    margin-top: 16px;
+    height: clamp(860px, 68vw, 980px);
+    margin-top: 0;
     border: 1px solid #3a3a3a;
     border-radius: 2px;
     background: #161d1a;

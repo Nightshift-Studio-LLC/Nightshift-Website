@@ -3,7 +3,9 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 import {
     SHOWCASE_EMBED_ORIGIN,
+    SHOWCASE_LOCAL_PREVIEW_PATH,
     installEmbeddedShowcase,
+    resolveEmbeddedShowcaseSource,
 } from "../scripts/landsnap-showcase-embed.js";
 
 const readSource = (path) => readFile(new URL(path, import.meta.url), "utf8");
@@ -49,6 +51,25 @@ test("the embedded frame has one fixed origin and releases its child shell when 
     expander.open = true;
     listeners.get("toggle")();
     assert.equal(attributes.get("src"), SHOWCASE_EMBED_ORIGIN);
+});
+
+test("loopback previews restore the complete local Showcase shell without weakening the public origin", () => {
+    assert.equal(
+        resolveEmbeddedShowcaseSource({ protocol: "http:", hostname: "127.0.0.1" }),
+        SHOWCASE_LOCAL_PREVIEW_PATH,
+    );
+    assert.equal(
+        resolveEmbeddedShowcaseSource({ protocol: "http:", hostname: "localhost" }),
+        SHOWCASE_LOCAL_PREVIEW_PATH,
+    );
+    assert.equal(
+        resolveEmbeddedShowcaseSource({ protocol: "https:", hostname: "ns-tx.com" }),
+        SHOWCASE_EMBED_ORIGIN,
+    );
+    assert.equal(
+        resolveEmbeddedShowcaseSource({ protocol: "https:", hostname: "showcase.ns-tx.com.evil.example" }),
+        SHOWCASE_EMBED_ORIGIN,
+    );
 });
 
 test("the direct shell identifies the dedicated host without accepting a visitor endpoint", async () => {

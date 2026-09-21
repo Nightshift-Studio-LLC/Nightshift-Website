@@ -7,7 +7,26 @@ import {
     createShowcaseCommand,
     isShowcaseSessionExpiring,
     parseShowcaseResult,
+    setShowcaseEmbeddedMode,
 } from "../scripts/landsnap-showcase.js";
+
+test("the direct Showcase shell removes standalone chrome when framed", () => {
+    const toggles = [];
+    const documentRef = {
+        body: {
+            classList: {
+                toggle(name, enabled) { toggles.push([name, enabled]); },
+            },
+        },
+    };
+    const top = {};
+    assert.equal(setShowcaseEmbeddedMode(documentRef, { self: {}, top }), true);
+    assert.equal(setShowcaseEmbeddedMode(documentRef, { self: top, top }), false);
+    assert.deepEqual(toggles, [
+        ["landsnap-showcase-embedded", true],
+        ["landsnap-showcase-embedded", false],
+    ]);
+});
 
 test("each public control has one fixed no-argument command envelope", () => {
     const expected = {
