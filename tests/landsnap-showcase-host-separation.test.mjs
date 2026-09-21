@@ -13,21 +13,23 @@ import {
 
 const readSource = (path) => readFile(new URL(path, import.meta.url), "utf8");
 
-test("the product page embeds the fixed dedicated Showcase host without top-level navigation", async () => {
+test("the product page restores the complete inline Showcase workspace without top-level navigation", async () => {
     const productPage = await readSource("../pages/Studio/Landsnap.html");
 
     assert.match(productPage, /data-landsnap-showcase-expander/);
-    assert.match(productPage, /data-landsnap-showcase-frame/);
-    assert.match(productPage, /data-landsnap-showcase-status/);
-    assert.match(productPage, /data-landsnap-showcase-retry/);
-    assert.match(productPage, /src="https:\/\/showcase\.ns-tx\.com\/"/);
-    assert.match(productPage, /landsnap-showcase-embed\.js/);
-    assert.match(productPage, /allow="autoplay; fullscreen; clipboard-read; clipboard-write"/);
-    assert.match(productPage, /sandbox="allow-scripts allow-same-origin allow-forms allow-pointer-lock allow-presentation"/);
-    assert.doesNotMatch(productPage, /<script[^>]+landsnap-showcase-(?:queue|local)\.js/);
-    assert.doesNotMatch(productPage, /landsnap-showcase-stream-mount/);
-    assert.doesNotMatch(productPage, /landsnap-showcase-queue-overlay/);
-    assert.doesNotMatch(productPage, /data-command=/);
+    assert.match(productPage, /landsnap-showcase-stream-mount/);
+    assert.match(productPage, /landsnap-showcase-queue-overlay/);
+    assert.match(productPage, /landsnap-showcase-queue\.js/);
+    assert.match(productPage, /landsnap-showcase-local\.js/);
+    assert.match(productPage, /landsnap-showcase\.js/);
+    assert.match(productPage, /id="landsnap-showcase-retry"/);
+    assert.match(productPage, /id="landsnap-showcase-leave"/);
+    assert.match(productPage, /id="landsnap-showcase-end-session"/);
+    assert.match(productPage, /data-command="snap-selected"/);
+    assert.match(productPage, /data-command="clean-scene"/);
+    assert.doesNotMatch(productPage, /data-landsnap-showcase-frame/);
+    assert.doesNotMatch(productPage, /<iframe/i);
+    assert.doesNotMatch(productPage, /src="https:\/\/showcase\.ns-tx\.com\/"/);
     assert.doesNotMatch(productPage, /href="https:\/\/showcase\.ns-tx\.com\/"/);
     assert.doesNotMatch(productPage, /(?:window|top)\.location|location\.(?:assign|replace)|target=["']_top["']/i);
 });
