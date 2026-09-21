@@ -391,9 +391,9 @@ export const getQueuePresentation = (lease, now = Date.now()) => {
         return Object.freeze({
             visible: true,
             state,
-            alert: "Starting isolated session",
-            title: "Preparing your Showcase",
-            message: "The broker reserved the only demo slot and is starting a restricted Unreal Editor session. The player will unlock only after it is ready.",
+            alert: "Demo initiated",
+            title: "Starting the LandSnap Showcase",
+            message: "Your request was received. The broker reserved the only demo slot and is starting a restricted Unreal Editor session. The player will unlock only after it is ready.",
             position: "—",
             estimate: "—",
             countdown: "—",

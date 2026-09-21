@@ -94,8 +94,12 @@ test("queue presentation starts idle, keeps the gray gate through startup, and h
         showNote: false,
         showTryDemo: true,
     });
-    assert.equal(getQueuePresentation(startingLease(now), now).visible, true);
-    assert.equal(getQueuePresentation(startingLease(now), now).showTryDemo, false);
+    const starting = getQueuePresentation(startingLease(now), now);
+    assert.equal(starting.visible, true);
+    assert.equal(starting.alert, "Demo initiated");
+    assert.equal(starting.title, "Starting the LandSnap Showcase");
+    assert.match(starting.message, /request was received/i);
+    assert.equal(starting.showTryDemo, false);
     assert.equal(getQueuePresentation(parseQueueLease(readyLease(now), now), now).visible, false);
 });
 
