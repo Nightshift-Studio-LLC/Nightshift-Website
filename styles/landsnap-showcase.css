@@ -662,6 +662,11 @@ body.landsnap-showcase-page {
     background: #242424;
 }
 
+.landsnap-showcase-panel-primary,
+.landsnap-showcase-panel-secondary {
+    display: contents;
+}
+
 .landsnap-showcase-panel-heading,
 .landsnap-showcase-scenario-controls,
 .landsnap-showcase-action-stack,
@@ -968,6 +973,52 @@ body.landsnap-showcase-page {
     .landsnap-showcase-scenario-controls,
     .landsnap-showcase-disclosure {
         border-left: 0;
+    }
+}
+
+@media (min-width: 641px) and (max-width: 960px) {
+    .landsnap-showcase-viewport-frame {
+        min-height: clamp(300px, 48vw, 420px);
+    }
+
+    .landsnap-showcase-panel {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        align-items: stretch;
+    }
+
+    .landsnap-showcase-panel-tab,
+    .landsnap-showcase-panel-heading {
+        min-width: 0;
+    }
+
+    .landsnap-showcase-panel-heading {
+        border-top: 0;
+        border-left: 1px solid #3a3a3a;
+    }
+
+    .landsnap-showcase-target-row {
+        grid-column: 1 / -1;
+    }
+
+    .landsnap-showcase-panel-primary,
+    .landsnap-showcase-panel-secondary {
+        display: flex;
+        min-width: 0;
+        flex-direction: column;
+    }
+
+    .landsnap-showcase-panel-secondary {
+        border-left: 1px solid #3a3a3a;
+    }
+
+    .landsnap-showcase-action-stack,
+    .landsnap-showcase-notification-slot {
+        flex: 1 1 auto;
+    }
+
+    .landsnap-showcase-notification-slot {
+        min-height: 74px;
     }
 }
 
