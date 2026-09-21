@@ -2,7 +2,7 @@
  * Installs the dedicated-host Pixel Streaming transport only after a valid
  * broker lease arrives. Public product pages never import the frontend.
  */
-import { isPublicShowcaseHost } from "./landsnap-showcase-queue.js?v=20260921-visitor-states";
+import { isPublicShowcaseHost } from "./landsnap-showcase-queue.js?v=20260921-showcase-ux";
 
 const SESSION_URL_PATTERN = /^\/api\/landsnap-showcase\/session\/v1\/player\/[A-Za-z0-9_-]{16,128}$/;
 const SESSION_TOKEN_PATTERN = /^[A-Za-z0-9._~-]{24,512}$/;
