@@ -324,6 +324,8 @@ const readPosts = async () => {
             hero: data.hero || "",
             heroLabel: data.heroLabel || "",
             pitch: data.pitch || "",
+            cta: data.cta || null,
+            sourceFile: file,
             html: marked.parse(renderHighlightBlocks(renderMediaBlocks(content, file))),
         });
     }
@@ -410,7 +412,7 @@ ${softwareMarquee()}
 
 const styleVersion = "20260816-devlog-style";
 
-const layout = ({ title, body, assetPrefix, pagePrefix, readout }) => `<!DOCTYPE html>
+const layout = ({ title, body, assetPrefix, pagePrefix, readout, stylesheetVersion = styleVersion }) => `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -420,7 +422,7 @@ const layout = ({ title, body, assetPrefix, pagePrefix, readout }) => `<!DOCTYPE
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="${assetPrefix}/images/icons/nightshift.ico">
-    <link rel="stylesheet" href="${assetPrefix}/styles/home-modus-mockup.css?v=${styleVersion}">
+    <link rel="stylesheet" href="${assetPrefix}/styles/home-modus-mockup.css?v=${stylesheetVersion}">
     <script defer src="/scripts/analytics.js" data-analytics-endpoint="/api/analytics"></script>
 </head>
 <body>
@@ -557,6 +559,38 @@ ${thumb}
     });
 };
 
+const renderPostCta = (cta, file) => {
+    if (!cta) return "";
+    if (typeof cta !== "object" || Array.isArray(cta)) {
+        throw new Error(`Invalid CTA in ${file}: expected showcase copy, a label, and an href.`);
+    }
+
+    const eyebrow = String(cta.eyebrow || "").trim();
+    const title = String(cta.title || "").trim();
+    const description = String(cta.description || "").trim();
+    const label = String(cta.label || "").trim();
+    const href = String(cta.href || "").trim();
+    const isExternal = /^https:\/\//i.test(href);
+    const isLocal = /^(?:\/|\.\/|\.\.\/|#)/.test(href);
+
+    if (!eyebrow || !title || !description || !label || (!isExternal && !isLocal)) {
+        throw new Error(`Invalid CTA in ${file}: use complete showcase copy and an HTTPS or local href.`);
+    }
+
+    const externalAttributes = isExternal ? ' target="_blank" rel="noopener noreferrer"' : "";
+    return `
+            <section class="devlog-showcase-cta" aria-labelledby="devlog-showcase-title">
+                <div class="devlog-showcase-copy">
+                    <p class="eyebrow">${escapeHtml(eyebrow)}</p>
+                    <h2 id="devlog-showcase-title">${escapeHtml(title)}</h2>
+                    <p>${escapeHtml(description)}</p>
+                </div>
+                <a class="devlog-showcase-action hover-sound" href="${escapeHtml(href)}"${externalAttributes} aria-label="${escapeHtml(label)}">
+                    <span>${escapeHtml(label)} <span aria-hidden="true">↑</span></span>
+                </a>
+            </section>`;
+};
+
 const renderPost = (post) => {
     const tags = post.tags.length ? `<div class="tag-row">${post.tags.map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`).join("")}</div>` : "";
     const heroSrc = resolveHeroSrc(post.hero, postsDir);
@@ -579,6 +613,7 @@ const renderPost = (post) => {
         ? `<a class="inline-link hover-sound" href="/afterdark/">${escapeHtml(post.game)}</a>`
         : escapeHtml(post.game);
     const draftBanner = renderDraftBanner(post.draft);
+    const callToAction = renderPostCta(post.cta, post.sourceFile);
     const signoff = `
             <div class="devlog-signoff">
                 <p>Signed, <strong>${escapeHtml(post.signer)}</strong></p>
@@ -589,6 +624,7 @@ const renderPost = (post) => {
         assetPrefix: "../../..",
         pagePrefix: "../..",
         readout: "Devlog Entry",
+        stylesheetVersion: post.cta ? "20260920-devlog-cta-v3" : styleVersion,
         body: `
         <section class="page-hero-grid">
             <article class="page-hero-panel${post.draft ? " devlog-entry-panel-draft" : ""}">${draftBanner}
@@ -613,7 +649,7 @@ ${post.draft ? "                    <div><span>Status</span><strong>Draft / work
         </section>${pitch}
         <section class="panel feature-panel">
             <div class="panel-heading"><p class="eyebrow">Field Notes</p><h2>Entry body</h2></div>
-            <div class="devlog-post-body">${post.html}${signoff}</div>
+            <div class="devlog-post-body">${post.html}${callToAction}${signoff}</div>
         </section>`,
     });
 };

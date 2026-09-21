@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="../../../images/icons/nightshift.ico">
-    <link rel="stylesheet" href="../../../styles/home-modus-mockup.css?v=20260816-devlog-style">
+    <link rel="stylesheet" href="../../../styles/home-modus-mockup.css?v=20260920-devlog-cta-v3">
     <script defer src="/scripts/analytics.js" data-analytics-endpoint="/api/analytics"></script>
 </head>
 <body>
@@ -71,8 +71,21 @@
 <p>Large rigid objects receive a more accurate terrain-fitting solve that preserves their shape instead of forcing every sampled point to touch. That extra precision can take a little longer in very large mass-placement passes, so LandSnap now processes those selections in bounded batches. If a pass is cancelled, completed snaps remain intact instead of being lost.</p>
 <p>Placement Studio makes setup and debugging easier in the editor. It combines controls, error flags, a dedicated Outliner, Needs Review, and heuristic repair for placements that need another look. LandSnapMCP is included in the same Fab install for teams using compatible agent tooling, while the core editor workflow remains fully usable on its own.</p>
 <p>The LandSnap page now also features a controlled Pixel Streaming demo: open a prepared Unreal workspace, inspect the scene, and run deliberate LandSnap actions before deciding whether the tool fits your workflow. Demo access depends on the live showcase server and its session queue.</p>
-<p>Get LandSnap Version 2 on <a href="https://www.fab.com/listings/4ad39cca-a866-4112-bbfb-4972e2d2eb99">Fab</a>, or explore the <a href="../../Studio/Landsnap.html#showcase">interactive product page</a>.</p>
+<h2>The technical stack behind the Showcase</h2>
+<p>Shipping that demo required more than embedding a video player. The Showcase combines <strong>Unreal Engine 5.8.2 Stream Level Editor</strong>, <strong>Pixel Streaming 2</strong>, and <strong>WebRTC</strong> to deliver a live, interactive workspace through the browser.</p>
+<p>Epic&#39;s UE 5.8 frontend core is bundled with <strong>esbuild</strong> into a custom Nightshift player, while the surrounding interface stays lightweight with plain HTML, CSS, and JavaScript. A purpose-built session layer coordinates demo availability and lifecycle, and a restricted interaction bridge maps the web controls to the prepared LandSnap operations used in each scene.</p>
+<p>The complete path is backed by automated contract tests, malformed-payload coverage, responsive browser checks, and a separate security review. That keeps the visitor experience simple while the streaming, session, and interaction layers remain independently testable.</p>
 
+            <section class="devlog-showcase-cta" aria-labelledby="devlog-showcase-title">
+                <div class="devlog-showcase-copy">
+                    <p class="eyebrow">Interactive product demo</p>
+                    <h2 id="devlog-showcase-title">LandSnap Showcase</h2>
+                    <p>Open the controlled streamed Unreal Editor workspace to explore prepared scenes, review placement results, and run deliberate LandSnap actions.</p>
+                </div>
+                <a class="devlog-showcase-action hover-sound" href="https://showcase.ns-tx.com/" target="_blank" rel="noopener noreferrer" aria-label="Open the interactive Showcase">
+                    <span>Open the interactive Showcase <span aria-hidden="true">↑</span></span>
+                </a>
+            </section>
             <div class="devlog-signoff">
                 <p>Signed, <strong>Nightshift</strong></p>
             </div></div>

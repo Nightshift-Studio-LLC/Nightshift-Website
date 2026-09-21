@@ -1617,6 +1617,67 @@ h3 {
     color: var(--accent-hot);
 }
 
+.devlog-showcase-cta {
+    display: grid;
+    gap: 22px;
+    max-width: 76ch;
+    margin: 30px 0 4px;
+    padding: 24px;
+    border: 1px solid #ffc09d;
+    border-radius: 5px;
+    background: linear-gradient(145deg, #ffb27d 0%, #ff995f 55%, #e96f3b 100%);
+    box-shadow: 0 20px 44px rgba(141, 57, 24, 0.28);
+}
+
+.devlog-showcase-copy .eyebrow,
+.devlog-showcase-copy h2,
+.devlog-showcase-copy p {
+    color: #20231e;
+}
+
+.devlog-showcase-copy .eyebrow {
+    margin: 0;
+    font-weight: 800;
+}
+
+.devlog-showcase-copy h2 {
+    margin: 14px 0 10px;
+    font-size: 1.4rem;
+}
+
+.devlog-showcase-copy p:last-child {
+    margin: 0;
+    color: rgba(32, 35, 30, 0.82);
+    line-height: 1.75;
+}
+
+.devlog-post-body .devlog-showcase-action {
+    display: block;
+    overflow: hidden;
+    border: 1px solid #20231e;
+    border-radius: 5px;
+    background: #20231e;
+    color: #f9f5ed;
+}
+
+.devlog-showcase-action > span {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 18px;
+    color: #f9f5ed;
+    font-size: 0.8rem;
+}
+
+.devlog-showcase-action > span > span {
+    margin-left: auto;
+}
+
+.devlog-post-body .devlog-showcase-action:hover {
+    border-color: #f9f5ed;
+    background: #30362f;
+}
+
 .devlog-post-body img {
     display: block;
     width: 100%;

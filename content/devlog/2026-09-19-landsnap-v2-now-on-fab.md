@@ -11,6 +11,12 @@ tags:
   - Pixel Streaming
   - Editor Tooling
 hero: ../../../images/landsnap/FAB-thumbnail-v2.png
+cta:
+  eyebrow: "Interactive product demo"
+  title: "LandSnap Showcase"
+  description: "Open the controlled streamed Unreal Editor workspace to explore prepared scenes, review placement results, and run deliberate LandSnap actions."
+  label: "Open the interactive Showcase"
+  href: "https://showcase.ns-tx.com/"
 ---
 
 :::highlight-blue
@@ -33,4 +39,10 @@ Placement Studio makes setup and debugging easier in the editor. It combines con
 
 The LandSnap page now also features a controlled Pixel Streaming demo: open a prepared Unreal workspace, inspect the scene, and run deliberate LandSnap actions before deciding whether the tool fits your workflow. Demo access depends on the live showcase server and its session queue.
 
-Get LandSnap Version 2 on [Fab](https://www.fab.com/listings/4ad39cca-a866-4112-bbfb-4972e2d2eb99), or explore the [interactive product page](../../Studio/Landsnap.html#showcase).
+## The technical stack behind the Showcase
+
+Shipping that demo required more than embedding a video player. The Showcase combines **Unreal Engine 5.8.2 Stream Level Editor**, **Pixel Streaming 2**, and **WebRTC** to deliver a live, interactive workspace through the browser.
+
+Epic's UE 5.8 frontend core is bundled with **esbuild** into a custom Nightshift player, while the surrounding interface stays lightweight with plain HTML, CSS, and JavaScript. A purpose-built session layer coordinates demo availability and lifecycle, and a restricted interaction bridge maps the web controls to the prepared LandSnap operations used in each scene.
+
+The complete path is backed by automated contract tests, malformed-payload coverage, responsive browser checks, and a separate security review. That keeps the visitor experience simple while the streaming, session, and interaction layers remain independently testable.
