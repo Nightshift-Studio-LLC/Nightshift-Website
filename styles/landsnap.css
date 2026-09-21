@@ -1683,18 +1683,21 @@ body.landsnap-page {
 .landsnap-page .landsnap-hero-copy .cta-btn.primary:hover { background: #ffb380; }
 .landsnap-page .landsnap-hero-copy { --landsnap-hero-label-bottom: 42px; }
 .landsnap-assurance {
-    position: absolute;
-    right: clamp(28px, 4vw, 54px);
-    bottom: var(--landsnap-hero-label-bottom);
-    left: clamp(28px, 4vw, 54px);
-    margin: 0;
+    position: static;
+    display: grid;
+    justify-items: start;
+    gap: 5px;
+    margin: 20px 0 0;
     font-size: .44rem;
-    line-height: normal;
+    line-height: 1.5;
     letter-spacing: 0;
-    white-space: nowrap;
+    white-space: normal;
 }
-.landsnap-assurance-item { white-space: nowrap; }
-.landsnap-assurance-divider { margin: 0 1px; }
+.landsnap-assurance-item {
+    display: block;
+    white-space: normal;
+}
+.landsnap-assurance-divider { display: none; }
 .landsnap-page .landsnap-console { grid-template-rows: auto 1fr auto; min-height: 610px; border: 0; border-left: 1px solid var(--line); border-radius: 0; background: radial-gradient(ellipse at 45% 42%, #2c3c38, #192328 75%); }
 .landsnap-console-header { padding: 24px; background: transparent !important; border-bottom: 0; }
 .landsnap-console-identity img { width: 32px; height: 32px; }
@@ -1776,7 +1779,7 @@ body.landsnap-page {
 .landsnap-page .software-marquee:focus-within .software-marquee-track { animation: none; transform: none; width: 100%; min-width: 0; }
 .landsnap-page .software-marquee:focus-within .software-marquee-group { flex-wrap: wrap; width: 100%; }
 .landsnap-page .software-marquee:focus-within .software-marquee-group[aria-hidden] { display: none; }
-@media (max-width: 560px) { .landsnap-assurance span { display: inline; } }
+@media (max-width: 560px) { .landsnap-assurance .landsnap-assurance-item { display: block; } }
 .landsnap-demo-poster { display: block; margin-top: 24px; border: 1px solid var(--line); border-radius: 5px; overflow: hidden; background: #141b21; }
 .landsnap-demo-poster > img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; }
 .landsnap-demo-poster > span { display: flex; align-items: center; gap: 12px; padding: 18px; color: var(--text); font-size: .8rem; }
