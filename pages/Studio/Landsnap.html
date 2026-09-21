@@ -18,11 +18,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wdth,wght@75..100,400;75..100,500;75..100,600;75..100,700&family=Tektur:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="../../images/icons/nightshift.ico">
     <link rel="stylesheet" href="../../styles/landsnap.css?v=20260919-hero-label-fit">
-    <link rel="stylesheet" href="../../styles/landsnap-showcase.css">
     <script defer src="../../scripts/landsnap.js?v=20260919-illustration-cleanup"></script>
-    <script type="module" src="../../scripts/landsnap-showcase-queue.js"></script>
-    <script type="module" src="../../scripts/landsnap-showcase-local.js"></script>
-    <script type="module" src="../../scripts/landsnap-showcase.js"></script>
+    <script type="module" src="../../scripts/landsnap-showcase-embed.js"></script>
     <script defer src="/scripts/analytics.js" data-analytics-endpoint="/api/analytics"></script>
 </head>
 <body class="landsnap-page">
@@ -98,7 +95,18 @@
             </summary>
 
             <div class="landsnap-showcase-embed-body">
-                <section class="landsnap-showcase-workspace" aria-label="LandSnap Pixel Streaming demo workspace">
+                <iframe
+                    class="landsnap-showcase-embed-frame"
+                    data-landsnap-showcase-frame
+                    src="https://showcase.ns-tx.com/"
+                    title="LandSnap Showcase interactive Unreal Editor session"
+                    loading="eager"
+                    allow="autoplay; fullscreen; clipboard-read; clipboard-write"
+                    allowfullscreen
+                    sandbox="allow-scripts allow-same-origin allow-forms allow-pointer-lock allow-presentation"
+                    referrerpolicy="strict-origin-when-cross-origin"></iframe>
+
+                <section class="landsnap-showcase-workspace" aria-label="Legacy LandSnap Pixel Streaming demo workspace" hidden inert aria-hidden="true">
                     <div class="landsnap-showcase-stream-column">
                         <div class="landsnap-showcase-stream-header">
                             <div>

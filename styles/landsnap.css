@@ -1916,6 +1916,16 @@ body.landsnap-page {
     background: #1b1b1b;
 }
 
+.landsnap-showcase-embed-frame {
+    display: block;
+    width: 100%;
+    height: clamp(720px, 68vw, 900px);
+    border: 1px solid #3a3a3a;
+    border-radius: 2px;
+    background: #161d1a;
+    color-scheme: dark;
+}
+
 /* The product panel has broad typography rules; preserve the native editor treatment inside this embedded surface. */
 .landsnap-page .landsnap-showcase-embed .landsnap-showcase-panel h2 {
     color: #d5d5d5;
@@ -1943,12 +1953,17 @@ body.landsnap-page {
     }
 
     .landsnap-showcase-embed-action { justify-self: start; }
+
+    .landsnap-showcase-embed-frame {
+        height: clamp(620px, 82svh, 820px);
+    }
 }
 
 @media (max-width: 560px) {
     .landsnap-showcase-embed > summary { padding: 19px 18px; }
     .landsnap-showcase-embed-description { font-size: 0.8rem; }
     .landsnap-showcase-embed-body { padding: 10px; }
+    .landsnap-showcase-embed-frame { height: clamp(560px, 78svh, 720px); }
 }
 
 /* Reserved live demo; hidden also prevents layout space before launch. */

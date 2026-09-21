@@ -177,6 +177,31 @@ body.landsnap-showcase-page {
     line-height: 1.8;
 }
 
+body.landsnap-showcase-page.landsnap-showcase-embedded {
+    min-height: 0;
+    background: #1b1b1b;
+}
+
+.landsnap-showcase-embedded .landsnap-showcase-noise,
+.landsnap-showcase-embedded .landsnap-showcase-skip-link,
+.landsnap-showcase-embedded .landsnap-showcase-topbar,
+.landsnap-showcase-embedded .landsnap-showcase-heading {
+    display: none;
+}
+
+.landsnap-showcase-embedded .landsnap-showcase-shell {
+    gap: 0;
+    width: 100%;
+    max-width: none;
+    padding: 0;
+}
+
+.landsnap-showcase-embedded .landsnap-showcase-workspace {
+    min-height: 100vh;
+    border: 0;
+    box-shadow: none;
+}
+
 .landsnap-showcase-workspace {
     position: relative;
     display: grid;
