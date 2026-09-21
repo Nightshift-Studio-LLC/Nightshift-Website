@@ -124,6 +124,60 @@ test("the product shell stays nonblank until an exact-origin child handshake arr
     assert.equal(retry.hidden, false);
 });
 
+test("the initial frame reload starts only after the parent handshake listener is installed", () => {
+    const listeners = new Map();
+    const attributes = new Map([["src", SHOWCASE_EMBED_ORIGIN]]);
+    const timers = [];
+    const childWindow = {};
+    const status = { hidden: false, dataset: {} };
+    const retry = { hidden: true, addEventListener() {}, removeEventListener() {} };
+    const expander = { open: true, addEventListener() {}, removeEventListener() {} };
+    const frame = {
+        contentWindow: childWindow,
+        getAttribute(name) { return attributes.get(name) ?? null; },
+        setAttribute(name, value) {
+            attributes.set(name, value);
+            if (name === "src" && value === SHOWCASE_EMBED_ORIGIN) {
+                listeners.get("message")?.({
+                    source: childWindow,
+                    origin: "https://showcase.ns-tx.com",
+                    data: { type: SHOWCASE_SHELL_READY_MESSAGE, version: SHOWCASE_SHELL_READY_VERSION },
+                });
+            }
+        },
+        addEventListener() {},
+        removeEventListener() {},
+    };
+    const nodes = new Map([
+        ["[data-landsnap-showcase-expander]", expander],
+        ["[data-landsnap-showcase-frame]", frame],
+        ["[data-landsnap-showcase-status]", status],
+        ["[data-landsnap-showcase-retry]", retry],
+    ]);
+    const documentRef = { querySelector: (selector) => nodes.get(selector) ?? null };
+    const windowRef = {
+        addEventListener(type, listener) { listeners.set(type, listener); },
+        removeEventListener() {},
+    };
+
+    installEmbeddedShowcase(documentRef, {
+        href: "https://ns-tx.com/pages/Studio/Landsnap.html",
+        protocol: "https:",
+        hostname: "ns-tx.com",
+    }, windowRef, {
+        timeoutMs: 50,
+        setTimeoutRef(callback, delay) {
+            const id = timers.length;
+            timers.push({ callback, delay });
+            return id;
+        },
+        clearTimeoutRef() {},
+    });
+
+    assert.equal(attributes.get("src"), SHOWCASE_EMBED_ORIGIN);
+    assert.equal(status.hidden, true);
+});
+
 test("the embedded frame has one fixed origin and releases its child shell when collapsed", () => {
     const listeners = new Map();
     const attributes = new Map([["src", SHOWCASE_EMBED_ORIGIN]]);

@@ -142,11 +142,17 @@ export const installEmbeddedShowcase = (
             : null;
     };
 
-    syncFrame();
     expander.addEventListener("toggle", syncFrame);
     frame.addEventListener?.("error", handleFrameError);
     surface.retry?.addEventListener?.("click", retryConnection);
     windowRef?.addEventListener?.("message", handleShellMessage);
+
+    // The iframe may already have started (or even finished) its eager HTML
+    // navigation before this deferred module runs. Reset it once after the
+    // listener is installed so a fast/cached child cannot lose its one-shot
+    // readiness announcement between navigation and listener registration.
+    setEmbeddedShowcaseActive(frame, false, activeSource);
+    syncFrame();
 
     return Object.freeze({
         activeSource,
