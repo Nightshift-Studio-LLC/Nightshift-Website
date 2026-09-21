@@ -2,7 +2,9 @@
 
 ## Scope
 
-The production Showcase is the dedicated `https://showcase.ns-tx.com/` host on the Nukebox. `pages/Studio/Landsnap.html#showcase` is an informational handoff that links visitors to that fixed destination; it never loads the queue, player, or Pixel Streaming frontend. `pages/Studio/LandSnapShowcase.html` is the direct-shell source that the dedicated host serves. The Showcase uses one restricted session at a time with Unreal Engine 5.8.2 and Pixel Streaming 2 with **Stream Level Editor**. Full Editor remains a trusted local workflow only.
+The production Showcase is the dedicated `https://showcase.ns-tx.com/` host on the Nukebox. `pages/Studio/Landsnap.html#showcase` keeps the complete Showcase in its existing expandable section through one fixed, responsive iframe; it never redirects the top-level page or loads queue, player, or Pixel Streaming code itself. `pages/Studio/LandSnapShowcase.html` is the direct-shell source that the dedicated host serves inside that frame. The Showcase uses one restricted session at a time with Unreal Engine 5.8.2 and Pixel Streaming 2 with **Stream Level Editor**. Full Editor remains a trusted local workflow only.
+
+The dedicated host must allow only `https://ns-tx.com` as a framing ancestor (for example, with `Content-Security-Policy: frame-ancestors https://ns-tx.com`) and must not send an `X-Frame-Options` policy that blocks the product-page frame. This framing allowance does not widen the queue or player routes: the dedicated origin still owns their secure cookies, ticket exchange, and WebSocket relay.
 
 The dedicated host owns the queue, broker relay, signalling, and on-demand Unreal process. It is reached through the server's direct DNS and port-forwarded HTTPS/WebSocket and WebRTC routes. There is no Worker, tunnel, visitor-selected endpoint, or browser-to-host control route in this static site.
 
@@ -10,7 +12,7 @@ The website never launches Unreal, starts a host, selects a streamer, exposes a 
 
 ## One-session broker contract
 
-The visitor presses **Try Demo** on `showcase.ns-tx.com` to begin. Until that click, the browser does not make an admission request. The direct shell accepts that origin only and can use only these fixed, same-origin routes:
+The visitor presses **Try Demo** inside the embedded `showcase.ns-tx.com` shell to begin. Until that click, the browser does not make an admission request. The direct shell accepts that origin only and can use only these fixed, same-origin routes:
 
 ```text
 POST /api/landsnap-showcase/queue/v1/lease
@@ -94,7 +96,7 @@ The bridge independently validates the exact object shape, action, session state
 
 ## Validation
 
-1. Run `npm run build:landsnap-showcase`, serve this repository on loopback, and open `http://127.0.0.1:4173/pages/Studio/LandSnapShowcase.html` for the deterministic local fixture. Confirm `pages/Studio/Landsnap.html#showcase` only links to `https://showcase.ns-tx.com/`.
+1. Run `npm run build:landsnap-showcase`, serve this repository on loopback, and open `http://127.0.0.1:4173/pages/Studio/LandSnapShowcase.html` for the deterministic local fixture. Confirm `pages/Studio/Landsnap.html#showcase` keeps its top-level URL and embeds only `https://showcase.ns-tx.com/`.
 2. On the dedicated host, confirm the initial gray panel shows **Try Demo** and no admission request is made until it is pressed.
 3. With broker fixtures, verify `starting`, queued position, explicitly-estimated wait, early-release promotion, ready ticket expiry, malformed records, offline broker behavior, and stream loss. Confirm no raw signalling URL or server-control field is accepted.
 4. Confirm the public adapter cannot import or mount until a valid ready ticket arrives. Verify its one ticket-exchange POST returns `204`, the WebSocket uses the same player path without a query token, and controls remain disabled until the data channel opens.

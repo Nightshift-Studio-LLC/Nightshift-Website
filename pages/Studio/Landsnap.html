@@ -19,6 +19,7 @@
     <link rel="icon" type="image/x-icon" href="../../images/icons/nightshift.ico">
     <link rel="stylesheet" href="../../styles/landsnap.css?v=20260919-hero-label-fit">
     <script defer src="../../scripts/landsnap.js?v=20260919-illustration-cleanup"></script>
+    <script type="module" src="../../scripts/landsnap-showcase-embed.js"></script>
     <script defer src="/scripts/analytics.js" data-analytics-endpoint="/api/analytics"></script>
 </head>
 <body class="landsnap-page">
@@ -78,17 +79,33 @@
             <a href="#documentation">Documentation</a>
         </nav>
 
-        <section id="showcase" class="panel landsnap-showcase-launch" aria-labelledby="landsnap-showcase-launch-title">
-            <div class="landsnap-showcase-launch-copy">
-                <p class="eyebrow">Pixel Streaming demo / dedicated demo host</p>
-                <h2 id="landsnap-showcase-launch-title">Try the LandSnap Showcase</h2>
-                <p>Open the controlled Unreal Editor demonstration on its dedicated host. The session queue starts one fresh, time-limited demo at a time.</p>
+        <details id="showcase" class="panel landsnap-showcase-embed" data-landsnap-showcase-expander open>
+            <summary>
+                <span class="landsnap-showcase-embed-copy">
+                    <span class="eyebrow">Pixel Streaming demo / interactive editor session</span>
+                    <span class="landsnap-showcase-embed-title">Open LandSnap Showcase</span>
+                </span>
+                <span class="landsnap-showcase-embed-action">
+                    <span class="landsnap-showcase-embed-action-label">
+                        <span class="landsnap-showcase-embed-action-closed">Expand session</span>
+                        <span class="landsnap-showcase-embed-action-opened">Collapse session</span>
+                    </span>
+                    <span class="landsnap-showcase-embed-action-chevron" aria-hidden="true">▾</span>
+                </span>
+            </summary>
+
+            <div class="landsnap-showcase-embed-body">
+                <p class="landsnap-showcase-embed-description">Try Demo stays on this page. The embedded player uses the dedicated Showcase origin for its queue, secure cookie, and Pixel Streaming relay.</p>
+                <iframe
+                    class="landsnap-showcase-embed-frame"
+                    data-landsnap-showcase-frame
+                    src="https://showcase.ns-tx.com/"
+                    title="LandSnap Showcase interactive Unreal Editor session"
+                    loading="eager"
+                    allow="autoplay; fullscreen"
+                    referrerpolicy="strict-origin-when-cross-origin"></iframe>
             </div>
-            <div class="landsnap-showcase-launch-action">
-                <a class="cta-btn primary hover-sound" href="https://showcase.ns-tx.com/" target="_blank" rel="noopener noreferrer">Open Live Showcase <span aria-hidden="true">↗</span></a>
-                <p>Five-minute sessions. Availability depends on the live demo server.</p>
-            </div>
-        </section>
+        </details>
 
         <section class="landsnap-proof-strip" aria-label="LandSnap product facts">
             <div><span>Built for</span><strong>Unreal Engine 5.8</strong><small>Win64 editor</small></div>
