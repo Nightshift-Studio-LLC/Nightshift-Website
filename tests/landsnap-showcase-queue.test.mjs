@@ -75,8 +75,9 @@ test("waiting estimates use the five-minute maximum while making early release a
     assert.equal(formatQueueCountdown(80_000), "01:20");
     const presentation = getQueuePresentation(third, now);
     assert.equal(presentation.estimate, "11:20 estimated");
-    assert.match(presentation.message, /estimate/i);
-    assert.match(presentation.message, /end early/i);
+    assert.match(presentation.message, /number 3 in line/i);
+    assert.match(presentation.note, /five-minute limit/i);
+    assert.match(presentation.note, /ends early/i);
 });
 
 test("repeated status polls cannot reset a launch or queue countdown backward", () => {
@@ -98,9 +99,9 @@ test("queue presentation starts idle, keeps the gray gate through startup, and h
     assert.deepEqual(getQueuePresentation({ status: "idle" }, now), {
         visible: true,
         state: "idle",
-        alert: "One five-minute demo session",
-        title: "Start the LandSnap Showcase",
-        message: "Try Demo asks the broker for a single isolated Unreal Editor session. The player stays locked until the server reports ready.",
+        alert: "Ready when you are",
+        title: "Start your demo",
+        message: "If someone else is using it, we’ll show your place in line and an estimated wait.",
         position: "—",
         estimate: "—",
         countdown: "—",
@@ -116,18 +117,18 @@ test("queue presentation starts idle, keeps the gray gate through startup, and h
     });
     const starting = getQueuePresentation(startingLease(now), now);
     assert.equal(starting.visible, true);
-    assert.equal(starting.alert, "Demo initiated");
-    assert.equal(starting.title, "Starting the LandSnap Showcase");
-    assert.match(starting.message, /request was received/i);
+    assert.equal(starting.alert, "Your demo is reserved");
+    assert.equal(starting.title, "Starting your demo");
+    assert.match(starting.message, /start automatically/i);
     assert.equal(starting.position, "Reserved");
     assert.equal(starting.estimate, "00:30 estimated");
     assert.equal(starting.showLaunchProgress, true);
     assert.equal(starting.showTryDemo, false);
     assert.equal(starting.showLeave, true);
     const delayed = getQueuePresentation(startingLease(now), now + 31_000);
-    assert.equal(delayed.alert, "Still starting");
+    assert.equal(delayed.alert, "Taking a little longer");
     assert.equal(delayed.countdown, "00:00+");
-    assert.match(delayed.message, /taking longer/i);
+    assert.match(delayed.message, /little longer/i);
     const ready = getQueuePresentation(parseQueueLease(readyLease(now), now), now);
     assert.equal(ready.visible, false);
     assert.equal(ready.showEndSession, true);

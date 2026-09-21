@@ -151,7 +151,7 @@ test("AutoSnap, calibration, cleanup, and outliner messages stay inside the fixe
         requestId: "request_123",
         result: "error",
         code: "calibration_unavailable",
-    }))?.message, "That calibration preset is unavailable in this Showcase session.");
+    }))?.message, "That demo setup is unavailable right now.");
     assert.equal(parseShowcaseResult(JSON.stringify({
         version: SHOWCASE_PROTOCOL_VERSION,
         type: "operation-result",
@@ -177,8 +177,8 @@ test("AutoSnap, calibration, cleanup, and outliner messages stay inside the fixe
         result: "success",
         code: "fixture_focused",
     });
-    assert.equal(parseShowcaseResult(cleanup)?.message, "Prepared calibration fixtures were removed from the scene.");
-    assert.equal(parseShowcaseResult(outliner)?.message, "The selected showcase fixture is focused in the viewport.");
+    assert.equal(parseShowcaseResult(cleanup)?.message, "The prepared demo objects were removed from the scene.");
+    assert.equal(parseShowcaseResult(outliner)?.message, "The selected demo object is focused in the viewport.");
 });
 
 test("viewport notifications use fixed copy for connecting, stream failures, and expiring sessions", () => {
@@ -196,13 +196,13 @@ test("viewport notifications use fixed copy for connecting, stream failures, and
 
     assert.deepEqual(SHOWCASE_NOTIFICATION_CODES.connecting, {
         level: "warning",
-        title: "Connecting to server",
-        message: "Starting the Showcase stream. Controls will unlock when the editor is ready.",
+        title: "Opening your demo",
+        message: "LandSnap is loading. The controls will unlock when the demo is ready.",
     });
     assert.deepEqual(SHOWCASE_NOTIFICATION_CODES.server_offline, {
         level: "error",
-        title: "Server offline",
-        message: "The Showcase stream is unavailable. Controls will return when it reconnects.",
+        title: "Demo interrupted",
+        message: "The live demo disconnected. We’ll try to restore your place automatically.",
     });
     assert.equal(SHOWCASE_NOTIFICATION_CODES.session_expiring.level, "warning");
     assert.equal(isShowcaseSessionExpiring(readyLease, now), true);

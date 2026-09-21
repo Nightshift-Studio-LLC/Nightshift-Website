@@ -375,6 +375,7 @@ export const createQueueLeaseController = ({
 };
 
 const getQueueSurface = (documentRef) => ({
+    document: documentRef,
     overlay: documentRef.getElementById("landsnap-showcase-queue-overlay"),
     alert: documentRef.getElementById("landsnap-showcase-queue-alert"),
     alertText: documentRef.getElementById("landsnap-showcase-queue-alert-text"),
@@ -386,10 +387,14 @@ const getQueueSurface = (documentRef) => ({
     endSession: documentRef.getElementById("landsnap-showcase-end-session"),
     position: documentRef.getElementById("landsnap-showcase-queue-position"),
     estimate: documentRef.getElementById("landsnap-showcase-queue-estimate"),
-    countdown: documentRef.querySelector("#landsnap-showcase-queue-countdown time"),
     metrics: documentRef.querySelector(".landsnap-showcase-queue-metrics"),
     note: documentRef.querySelector(".landsnap-showcase-queue-note"),
     launchProgress: documentRef.getElementById("landsnap-showcase-launch-progress"),
+    backgrounds: typeof documentRef.querySelectorAll === "function"
+        ? [...documentRef.querySelectorAll(".landsnap-showcase-topbar, .landsnap-showcase-heading, .landsnap-showcase-stream-column, .landsnap-showcase-panel")]
+        : [],
+    wasVisible: false,
+    returnFocus: null,
 });
 
 export const getQueuePresentation = (lease, now = Date.now()) => {
@@ -407,9 +412,9 @@ export const getQueuePresentation = (lease, now = Date.now()) => {
         return Object.freeze({
             visible: true,
             state,
-            alert: "One five-minute demo session",
-            title: "Start the LandSnap Showcase",
-            message: "Try Demo asks the broker for a single isolated Unreal Editor session. The player stays locked until the server reports ready.",
+            alert: "Ready when you are",
+            title: "Start your demo",
+            message: "If someone else is using it, we’ll show your place in line and an estimated wait.",
             position: "—",
             estimate: "—",
             countdown: "—",
@@ -429,11 +434,11 @@ export const getQueuePresentation = (lease, now = Date.now()) => {
         return Object.freeze({
             visible: true,
             state,
-            alert: startupEstimatePassed ? "Still starting" : "Demo initiated",
-            title: "Starting the LandSnap Showcase",
+            alert: startupEstimatePassed ? "Taking a little longer" : "Your demo is reserved",
+            title: "Starting your demo",
             message: startupEstimatePassed
-                ? "Startup is taking longer than the server estimate. Your reserved launch is still active, and this page will open the player automatically when the stream reports ready."
-                : "Your request was received and the only demo slot is reserved for you. Keep this page open; the player will unlock automatically when the stream reports ready.",
+                ? "This is taking a little longer than expected. Keep this page open; your demo will start automatically when it is ready."
+                : "Keep this page open. Your demo will start automatically as soon as it is ready.",
             position: "Reserved",
             estimate: startupEstimatePassed ? "Still working" : `${formatQueueCountdown(startupDelay)} estimated`,
             countdown: startupEstimatePassed ? "00:00+" : formatQueueCountdown(startupDelay),
@@ -442,8 +447,8 @@ export const getQueuePresentation = (lease, now = Date.now()) => {
             showNote: true,
             showLaunchProgress: true,
             note: startupEstimatePassed
-                ? "The estimate has passed, but the server has not reported a failure. You can leave the launch if you do not want to keep waiting."
-                : "This is the server's startup estimate, not a guaranteed completion time. The session opens only after the stream is actually ready.",
+                ? "The demo is still preparing. You can leave if you do not want to keep waiting."
+                : "Startup time is an estimate and may vary.",
             showTryDemo: false,
             showRetry: false,
             showLeave: true,
@@ -455,9 +460,9 @@ export const getQueuePresentation = (lease, now = Date.now()) => {
         return Object.freeze({
             visible: true,
             state,
-            alert: "Waiting for an available session",
-            title: "A demo is already in progress",
-            message: `You are number ${lease.position} in the queue. This wait is an estimate based on the five-minute maximum; sessions can end early.`,
+            alert: "You’re in line",
+            title: "Another demo is in progress",
+            message: `You are number ${lease.position} in line. We’ll start your demo automatically when it’s your turn.`,
             position: String(lease.position),
             estimate: `${formatQueueCountdown(delay)} estimated`,
             countdown: formatQueueCountdown(delay),
@@ -465,7 +470,7 @@ export const getQueuePresentation = (lease, now = Date.now()) => {
             showMetrics: true,
             showNote: true,
             showLaunchProgress: false,
-            note: "Estimated wait uses the five-minute maximum. Sessions can end early and advance the queue sooner.",
+            note: "Waits are based on the five-minute limit and may be shorter if a demo ends early.",
             showTryDemo: false,
             showRetry: false,
             showLeave: true,
@@ -476,9 +481,9 @@ export const getQueuePresentation = (lease, now = Date.now()) => {
     return Object.freeze({
         visible: !ready,
         state: ready ? "ready" : "unavailable",
-        alert: "Waiting for server",
-        title: "Showcase access unavailable",
-        message: "The demo server is unavailable. We’ll recheck the broker automatically while your request is active.",
+        alert: "Connection problem",
+        title: "Demo temporarily unavailable",
+        message: "We couldn’t reach the demo. We’ll keep trying while your request is active.",
         position: "—",
         estimate: "—",
         countdown: "—",
@@ -497,6 +502,8 @@ export const getQueuePresentation = (lease, now = Date.now()) => {
 const renderQueueSurface = (surface, lease, now = Date.now()) => {
     if (!surface.overlay) return;
     const presentation = getQueuePresentation(lease, now);
+    const wasVisible = surface.wasVisible;
+    if (presentation.visible && !wasVisible) surface.returnFocus = surface.document?.activeElement || null;
     surface.overlay.hidden = !presentation.visible;
     surface.overlay.dataset.queueState = presentation.state;
     if (surface.alert) surface.alert.hidden = !presentation.visible;
@@ -520,10 +527,9 @@ const renderQueueSurface = (surface, lease, now = Date.now()) => {
         surface.endSession.disabled = !presentation.showEndSession;
     }
     if (surface.position) surface.position.textContent = presentation.position;
-    if (surface.estimate) surface.estimate.textContent = presentation.estimate;
-    if (surface.countdown) {
-        surface.countdown.textContent = presentation.countdown;
-        surface.countdown.dateTime = `PT${presentation.countdownSeconds}S`;
+    if (surface.estimate) {
+        surface.estimate.textContent = presentation.estimate;
+        surface.estimate.dateTime = `PT${presentation.countdownSeconds}S`;
     }
     if (surface.metrics) surface.metrics.hidden = !presentation.showMetrics;
     if (surface.note) {
@@ -536,6 +542,16 @@ const renderQueueSurface = (surface, lease, now = Date.now()) => {
     } else {
         surface.overlay.removeAttribute("aria-busy");
     }
+    surface.backgrounds.forEach((element) => { element.inert = presentation.visible; });
+    if (presentation.visible && !wasVisible) {
+        const focusTarget = presentation.showTryDemo
+            ? surface.tryDemo
+            : presentation.showRetry ? surface.retry : surface.leave;
+        if (typeof focusTarget?.focus === "function") focusTarget.focus();
+    } else if (!presentation.visible && wasVisible && typeof surface.returnFocus?.focus === "function") {
+        surface.returnFocus.focus();
+    }
+    surface.wasVisible = presentation.visible;
 };
 
 const dispatchLeaseChange = (windowRef, lease) => {
@@ -571,6 +587,20 @@ export const installShowcaseQueueGate = (windowRef = globalThis.window, document
     if (surface.retry) surface.retry.addEventListener("click", retryQueue);
     if (surface.leave) surface.leave.addEventListener("click", leaveQueue);
     if (surface.endSession) surface.endSession.addEventListener("click", leaveQueue);
+    if (surface.overlay) {
+        surface.overlay.addEventListener("keydown", (event) => {
+            if (event.key !== "Tab") return;
+            const focusable = [surface.tryDemo, surface.retry, surface.leave]
+                .filter((control) => control && !control.hidden && !control.disabled);
+            if (!focusable.length) return;
+            const current = focusable.indexOf(documentRef.activeElement);
+            const next = event.shiftKey
+                ? (current <= 0 ? focusable.length - 1 : current - 1)
+                : (current + 1) % focusable.length;
+            event.preventDefault();
+            focusable[next].focus();
+        });
+    }
     if (expander) {
         expander.addEventListener("toggle", () => {
             if (!expander.open && controller.isStarted()) void controller.leave();

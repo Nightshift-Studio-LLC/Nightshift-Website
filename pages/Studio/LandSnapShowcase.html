@@ -4,18 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LandSnap Showcase | Interactive Demo</title>
-    <meta name="description" content="Controlled LandSnap Unreal Editor demonstration with an exclusive, time-limited session queue.">
+    <meta name="description" content="Interactive LandSnap Unreal Editor demo with a simple queue and five-minute sessions.">
     <meta name="theme-color" content="#09100d">
     <link rel="canonical" href="https://showcase.ns-tx.com/">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="../../images/icons/nightshift.ico">
-    <link rel="stylesheet" href="../../styles/landsnap-showcase.css">
-    <script type="module" src="../../scripts/landsnap-showcase-queue.js"></script>
-    <script type="module" src="../../scripts/landsnap-showcase-local.js"></script>
-    <script type="module" src="../../scripts/landsnap-showcase-public.js"></script>
-    <script type="module" src="../../scripts/landsnap-showcase.js"></script>
+    <link rel="stylesheet" href="../../styles/landsnap-showcase.css?v=20260921-visitor-states">
+    <script type="module" src="../../scripts/landsnap-showcase-queue.js?v=20260921-visitor-states"></script>
+    <script type="module" src="../../scripts/landsnap-showcase-local.js?v=20260921-visitor-states"></script>
+    <script type="module" src="../../scripts/landsnap-showcase-public.js?v=20260921-visitor-states"></script>
+    <script type="module" src="../../scripts/landsnap-showcase.js?v=20260921-visitor-states"></script>
 </head>
 <body class="landsnap-showcase-page">
     <a class="landsnap-showcase-skip-link" href="#showcase-main">Skip to showcase controls</a>
@@ -27,26 +27,26 @@
             <img src="../../images/index/nightshift-transparent.png" alt="Nightshift">
         </a>
         <p>LandSnap / Showcase</p>
-        <a class="landsnap-showcase-return" href="https://ns-tx.com/pages/Studio/Landsnap.html">LandSnap product page <span aria-hidden="true">↗</span></a>
+        <a class="landsnap-showcase-return" href="https://ns-tx.com/pages/Studio/Landsnap.html">LandSnap product page</a>
     </header>
 
     <main id="showcase-main" class="landsnap-showcase-shell">
         <section class="landsnap-showcase-heading" aria-labelledby="landsnap-showcase-title">
             <h1 id="landsnap-showcase-title">LandSnap <span>Showcase</span></h1>
-            <p>Controlled Unreal Editor demonstration on a dedicated demo host.</p>
+            <p>Try LandSnap in a guided Unreal Editor scene. Each demo lasts up to five minutes.</p>
         </section>
 
         <section class="landsnap-showcase-workspace" aria-label="LandSnap Showcase workspace">
             <div class="landsnap-showcase-stream-column">
                 <div class="landsnap-showcase-stream-header">
                     <div>
-                        <p class="landsnap-showcase-section-label">Unreal level viewport</p>
-                        <h2>Showcase viewport</h2>
+                        <p class="landsnap-showcase-section-label">Live Unreal Editor</p>
+                        <h2>Interactive demo</h2>
                     </div>
                     <div class="landsnap-showcase-stream-session">
                         <p id="landsnap-showcase-connection-state" class="landsnap-showcase-connection" role="status" aria-live="polite">
                             <span aria-hidden="true"></span>
-                            <strong>Waiting for stream</strong>
+                            <strong>Demo not started</strong>
                         </p>
                         <button id="landsnap-showcase-end-session" class="landsnap-showcase-session-end" type="button" hidden>End session</button>
                     </div>
@@ -57,12 +57,12 @@
                         <div class="landsnap-showcase-stream-placeholder" aria-hidden="true">
                             <span class="landsnap-showcase-placeholder-grid"></span>
                             <span class="landsnap-showcase-placeholder-crosshair"></span>
-                            <p>Preparing viewport</p>
+                            <p>Your demo opens here</p>
                         </div>
                     </div>
                 </div>
 
-                <p class="landsnap-showcase-pointer-guidance"><strong>Mouse:</strong> select a prepared object, then run an action.</p>
+                <p class="landsnap-showcase-pointer-guidance"><strong>How to try it:</strong> use Demo objects to select an object, then choose an action.</p>
             </div>
 
             <aside class="landsnap-showcase-panel" aria-labelledby="landsnap-showcase-controls-title">
@@ -103,12 +103,12 @@
                         <button id="landsnap-showcase-undo" class="landsnap-showcase-action" type="button" data-command="undo" disabled><span class="landsnap-showcase-action-glyph" aria-hidden="true">↶</span>Undo</button>
                         <button id="landsnap-showcase-redo" class="landsnap-showcase-action" type="button" data-command="redo" disabled><span class="landsnap-showcase-action-glyph" aria-hidden="true">↷</span>Redo</button>
                     </div>
-                    <button id="landsnap-showcase-reset-scene" class="landsnap-showcase-action landsnap-showcase-action-reset" type="button" data-command="reset-scene" disabled><span class="landsnap-showcase-action-glyph" aria-hidden="true">↺</span>Reset Scene</button>
-                    <button id="landsnap-showcase-toggle-autosnap" class="landsnap-showcase-action" type="button" data-command="toggle-autosnap" disabled>
+                    <button id="landsnap-showcase-reset-scene" class="landsnap-showcase-action landsnap-showcase-action-reset" type="button" data-command="reset-scene" disabled><span class="landsnap-showcase-action-glyph" aria-hidden="true">↺</span>Reset Object Positions</button>
+                    <button id="landsnap-showcase-toggle-autosnap" class="landsnap-showcase-action" type="button" data-command="toggle-autosnap" aria-pressed="false" disabled>
                         <img class="landsnap-showcase-action-icon" src="../../images/landsnap/Icon40-Auto.png" alt="" aria-hidden="true">
-                        <span>Toggle AutoSnap</span>
+                        <span>AutoSnap: Off</span>
                     </button>
-                    <div class="landsnap-showcase-calibration" aria-label="Calibration setup">
+                    <div class="landsnap-showcase-calibration" aria-label="Demo scene setup">
                         <div class="landsnap-showcase-calibration-fields">
                             <label for="landsnap-showcase-calibration-size">Size
                                 <select id="landsnap-showcase-calibration-size" data-showcase-calibration-size disabled>
@@ -120,13 +120,13 @@
                             <label for="landsnap-showcase-calibration-layout">Layout
                                 <select id="landsnap-showcase-calibration-layout" data-showcase-calibration-layout disabled>
                                     <option value="row" selected>Row</option>
-                                    <option value="coverage">Full map coverage</option>
+                                    <option value="coverage">Across the map</option>
                                 </select>
                             </label>
                         </div>
                         <button id="landsnap-showcase-prepare-fixtures" class="landsnap-showcase-action" type="button" data-command="prepare-medium-row" disabled><span class="landsnap-showcase-action-glyph" aria-hidden="true">▦</span><span>Prepare Medium Row</span></button>
                     </div>
-                    <button id="landsnap-showcase-clean-scene" class="landsnap-showcase-action landsnap-showcase-action-clean" type="button" data-command="clean-scene" disabled><span class="landsnap-showcase-action-glyph" aria-hidden="true">⌫</span>Clean Scene</button>
+                    <button id="landsnap-showcase-clean-scene" class="landsnap-showcase-action landsnap-showcase-action-clean" type="button" data-command="clean-scene" disabled><span class="landsnap-showcase-action-glyph" aria-hidden="true">⌫</span>Remove Demo Objects</button>
                 </div>
                 </div>
 
@@ -135,13 +135,13 @@
                     <div class="landsnap-showcase-native-row">
                         <span aria-hidden="true">▸</span>
                         <strong id="landsnap-showcase-outliner-label">Outliner</strong>
-                        <small>Showcase fixtures</small>
+                        <small>Demo objects</small>
                     </div>
                     <div class="landsnap-showcase-outliner-body">
                         <div class="landsnap-showcase-outliner-select">
-                            <button class="landsnap-showcase-icon-button" type="button" data-command="select-previous-fixture" disabled aria-label="Select previous showcase fixture"><span aria-hidden="true">←</span></button>
-                            <output id="landsnap-showcase-outliner-target" aria-live="polite">No prepared fixtures</output>
-                            <button class="landsnap-showcase-icon-button" type="button" data-command="select-next-fixture" disabled aria-label="Select next showcase fixture"><span aria-hidden="true">→</span></button>
+                            <button class="landsnap-showcase-icon-button" type="button" data-command="select-previous-fixture" disabled aria-label="Select previous demo object"><span aria-hidden="true">←</span></button>
+                            <output id="landsnap-showcase-outliner-target" aria-live="polite">No demo objects prepared</output>
+                            <button class="landsnap-showcase-icon-button" type="button" data-command="select-next-fixture" disabled aria-label="Select next demo object"><span aria-hidden="true">→</span></button>
                         </div>
                         <button class="landsnap-showcase-action" type="button" data-command="focus-selected-fixture" disabled><span class="landsnap-showcase-action-glyph" aria-hidden="true">⌖</span>Focus Selected</button>
                     </div>
@@ -149,7 +149,7 @@
 
                 <section class="landsnap-showcase-operation" aria-labelledby="landsnap-showcase-operation-label">
                     <p id="landsnap-showcase-operation-label" class="landsnap-showcase-section-label">Review</p>
-                    <p id="landsnap-showcase-operation-status" role="status" aria-live="polite">Connect to begin a prepared showcase session.</p>
+                    <p id="landsnap-showcase-operation-status" role="status" aria-live="polite">Start the demo, then choose an action to see the result here.</p>
                 </section>
 
                 <details class="landsnap-showcase-disclosure">
@@ -160,24 +160,24 @@
                     <aside id="landsnap-showcase-notification" class="landsnap-showcase-notification" role="status" aria-live="polite" aria-atomic="true" data-notification-level="info" hidden>
                         <span class="landsnap-showcase-notification-marker" aria-hidden="true"></span>
                         <div>
-                            <strong id="landsnap-showcase-notification-title">Server offline</strong>
-                            <p id="landsnap-showcase-notification-message">The Showcase stream is unavailable. Controls will return when it reconnects.</p>
+                            <strong id="landsnap-showcase-notification-title">Demo interrupted</strong>
+                            <p id="landsnap-showcase-notification-message">The live demo disconnected. We’ll try to restore your place automatically.</p>
                         </div>
                     </aside>
                 </div>
                 </div>
             </aside>
 
-            <section id="landsnap-showcase-queue-overlay" class="landsnap-showcase-queue-overlay" aria-labelledby="landsnap-showcase-queue-title" aria-live="polite" hidden>
+            <section id="landsnap-showcase-queue-overlay" class="landsnap-showcase-queue-overlay" role="dialog" aria-modal="true" aria-labelledby="landsnap-showcase-queue-title" aria-describedby="landsnap-showcase-queue-message" hidden>
                 <div class="landsnap-showcase-queue-card">
-                    <p class="landsnap-showcase-section-label">Exclusive demo queue</p>
-                    <p id="landsnap-showcase-queue-alert" class="landsnap-showcase-queue-alert" role="status"><span class="landsnap-showcase-queue-alert-icon" aria-hidden="true">⚠</span><span id="landsnap-showcase-queue-alert-text">Checking broker status</span></p>
-                    <h2 id="landsnap-showcase-queue-title">Checking Showcase access</h2>
-                    <p id="landsnap-showcase-queue-message">Try Demo asks the broker for a single isolated Unreal Editor session.</p>
+                    <p class="landsnap-showcase-section-label">Browser demo</p>
+                    <p id="landsnap-showcase-queue-alert" class="landsnap-showcase-queue-alert" role="status"><span class="landsnap-showcase-queue-alert-icon" aria-hidden="true">⚠</span><span id="landsnap-showcase-queue-alert-text">Checking demo availability</span></p>
+                    <h2 id="landsnap-showcase-queue-title">Start your demo</h2>
+                    <p id="landsnap-showcase-queue-message">If someone else is using it, we’ll show your place in line and an estimated wait.</p>
                     <ol id="landsnap-showcase-launch-progress" class="landsnap-showcase-launch-progress" aria-label="Demo launch progress" hidden>
-                        <li data-launch-step="complete">Request received</li>
-                        <li data-launch-step="active">Server is starting the demo</li>
-                        <li data-launch-step="pending">Browser session opens when the stream is ready</li>
+                        <li data-launch-step="complete">Your demo spot is reserved</li>
+                        <li data-launch-step="active">LandSnap is opening</li>
+                        <li data-launch-step="pending">The interactive demo starts when it is ready</li>
                     </ol>
                     <div class="landsnap-showcase-queue-actions">
                         <button id="landsnap-showcase-try-demo" class="landsnap-showcase-queue-try" type="button">Try Demo</button>
@@ -186,19 +186,15 @@
                     </div>
                     <dl class="landsnap-showcase-queue-metrics">
                         <div>
-                            <dt>Your queue position</dt>
+                            <dt>Place in line</dt>
                             <dd id="landsnap-showcase-queue-position">—</dd>
                         </div>
                         <div>
                             <dt>Estimated wait</dt>
-                            <dd id="landsnap-showcase-queue-estimate">—</dd>
-                        </div>
-                        <div>
-                            <dt>Live countdown</dt>
-                            <dd id="landsnap-showcase-queue-countdown"><time datetime="PT0S">—</time></dd>
+                            <dd><time id="landsnap-showcase-queue-estimate" datetime="PT0S">—</time></dd>
                         </div>
                     </dl>
-                    <p class="landsnap-showcase-queue-note">Estimated wait uses the five-minute maximum. Sessions can end early and advance the queue sooner.</p>
+                    <p class="landsnap-showcase-queue-note">Waits are based on the five-minute limit and may be shorter if a demo ends early.</p>
                 </div>
             </section>
         </section>

@@ -10,15 +10,15 @@ const LOOPBACK_HOSTS = new Set(["127.0.0.1", "localhost", "::1", "[::1]"]);
 
 const STATUS_COPY = Object.freeze({
     loading: Object.freeze({
-        label: "Secure host connection",
-        title: "Connecting to Showcase",
-        message: "The dedicated demo host is opening inside this page.",
+        label: "Interactive demo",
+        title: "Opening LandSnap Showcase",
+        message: "This may take a few seconds. You will choose when to start your session.",
         retry: false,
     }),
     unavailable: Object.freeze({
         label: "Connection problem",
-        title: "Showcase host unavailable",
-        message: "The secure browser connection did not complete. No demo request was sent.",
+        title: "Demo temporarily unavailable",
+        message: "We couldn’t open the demo here. No session was started.",
         retry: true,
     }),
 });

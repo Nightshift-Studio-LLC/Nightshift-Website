@@ -91,7 +91,7 @@ test("the product shell stays nonblank until an exact-origin child handshake arr
 
     assert.equal(controller.expectedOrigin, "https://showcase.ns-tx.com");
     assert.equal(status.dataset.state, "loading");
-    assert.equal(title.textContent, "Connecting to Showcase");
+    assert.equal(title.textContent, "Opening LandSnap Showcase");
     assert.equal(attributes.get("aria-busy"), "true");
 
     listeners.get("window:message")({
@@ -120,7 +120,7 @@ test("the product shell stays nonblank until an exact-origin child handshake arr
     assert.equal(cleared.has(timeoutIndex), false);
     timers[timeoutIndex].callback();
     assert.equal(status.dataset.state, "unavailable");
-    assert.equal(title.textContent, "Showcase host unavailable");
+    assert.equal(title.textContent, "Demo temporarily unavailable");
     assert.equal(retry.hidden, false);
 });
 

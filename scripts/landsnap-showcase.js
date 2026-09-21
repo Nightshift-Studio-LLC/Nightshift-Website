@@ -32,12 +32,12 @@ export const announceShowcaseShellReady = (windowRef) => {
 };
 
 export const SHOWCASE_CALIBRATION_PRESETS = Object.freeze({
-    "prepare-small-row": Object.freeze({ action: "prepare_small_row", label: "Prepare Small Row", outlinerLabel: "Small row fixtures" }),
-    "prepare-medium-row": Object.freeze({ action: "prepare_medium_row", label: "Prepare Medium Row", outlinerLabel: "Medium row fixtures" }),
-    "prepare-large-row": Object.freeze({ action: "prepare_large_row", label: "Prepare Large Row", outlinerLabel: "Large row fixtures" }),
-    "prepare-small-coverage": Object.freeze({ action: "prepare_small_coverage", label: "Prepare Small Coverage", outlinerLabel: "Small coverage fixtures" }),
-    "prepare-medium-coverage": Object.freeze({ action: "prepare_medium_coverage", label: "Prepare Medium Coverage", outlinerLabel: "Medium coverage fixtures" }),
-    "prepare-large-coverage": Object.freeze({ action: "prepare_large_coverage", label: "Prepare Large Coverage", outlinerLabel: "Large coverage fixtures" }),
+    "prepare-small-row": Object.freeze({ action: "prepare_small_row", label: "Prepare Small Row", outlinerLabel: "Small row objects" }),
+    "prepare-medium-row": Object.freeze({ action: "prepare_medium_row", label: "Prepare Medium Row", outlinerLabel: "Medium row objects" }),
+    "prepare-large-row": Object.freeze({ action: "prepare_large_row", label: "Prepare Large Row", outlinerLabel: "Large row objects" }),
+    "prepare-small-coverage": Object.freeze({ action: "prepare_small_coverage", label: "Prepare Small Coverage", outlinerLabel: "Small coverage objects" }),
+    "prepare-medium-coverage": Object.freeze({ action: "prepare_medium_coverage", label: "Prepare Medium Coverage", outlinerLabel: "Medium coverage objects" }),
+    "prepare-large-coverage": Object.freeze({ action: "prepare_large_coverage", label: "Prepare Large Coverage", outlinerLabel: "Large coverage objects" }),
 });
 
 export const SHOWCASE_COMMANDS = Object.freeze({
@@ -68,18 +68,18 @@ export const SHOWCASE_STREAMER_ID = "Editor";
 export const SHOWCASE_NOTIFICATION_CODES = Object.freeze({
     connecting: Object.freeze({
         level: "warning",
-        title: "Connecting to server",
-        message: "Starting the Showcase stream. Controls will unlock when the editor is ready.",
+        title: "Opening your demo",
+        message: "LandSnap is loading. The controls will unlock when the demo is ready.",
     }),
     server_offline: Object.freeze({
         level: "error",
-        title: "Server offline",
-        message: "The Showcase stream is unavailable. Controls will return when it reconnects.",
+        title: "Demo interrupted",
+        message: "The live demo disconnected. We’ll try to restore your place automatically.",
     }),
     session_expiring: Object.freeze({
         level: "warning",
-        title: "Session ending soon",
-        message: "Less than one minute remains in this Showcase session.",
+        title: "Demo ending soon",
+        message: "Less than one minute remains in your demo.",
     }),
 });
 
@@ -99,11 +99,11 @@ const RESULT_MESSAGES = Object.freeze({
     autosnap_enabled: "AutoSnap is enabled for the prepared showcase objects.",
     autosnap_disabled: "AutoSnap is disabled for the prepared showcase objects.",
     calibration_ready: "Calibration scene prepared with the selected size and layout.",
-    calibration_unavailable: "That calibration preset is unavailable in this Showcase session.",
-    scene_cleaned: "Prepared calibration fixtures were removed from the scene.",
-    fixture_selected: "A prepared showcase fixture is selected.",
-    fixture_focused: "The selected showcase fixture is focused in the viewport.",
-    fixture_unavailable: "Prepare a calibration scene before selecting a showcase fixture.",
+    calibration_unavailable: "That demo setup is unavailable right now.",
+    scene_cleaned: "The prepared demo objects were removed from the scene.",
+    fixture_selected: "A demo object is selected.",
+    fixture_focused: "The selected demo object is focused in the viewport.",
+    fixture_unavailable: "Prepare a demo scene before selecting an object.",
     operation_rejected: "That action is not available in the current showcase state.",
     operation_failed: "The showcase could not complete that action. Try again or reset the scene.",
 });
@@ -249,11 +249,13 @@ export const isShowcaseSessionExpiring = (lease, now = Date.now()) => hasReadyQu
 
 const getSurface = (documentRef) => ({
     mount: documentRef.getElementById("landsnap-showcase-stream-mount"),
+    connection: documentRef.getElementById("landsnap-showcase-connection-state"),
     operation: documentRef.getElementById("landsnap-showcase-operation-status"),
     scenario: documentRef.getElementById("landsnap-showcase-scenario-name"),
     calibrationSize: documentRef.getElementById("landsnap-showcase-calibration-size"),
     calibrationLayout: documentRef.getElementById("landsnap-showcase-calibration-layout"),
     calibrationPrepare: documentRef.getElementById("landsnap-showcase-prepare-fixtures"),
+    autoSnap: documentRef.getElementById("landsnap-showcase-toggle-autosnap"),
     outlinerTarget: documentRef.getElementById("landsnap-showcase-outliner-target"),
     notification: documentRef.getElementById("landsnap-showcase-notification"),
     notificationTitle: documentRef.getElementById("landsnap-showcase-notification-title"),
@@ -297,7 +299,7 @@ export const attachShowcaseSurface = (documentRef, transport, {
     };
 
     const renderNotification = () => {
-        const code = connectionState === "disconnected" || connectionState === "error"
+        const code = mountRequested && (connectionState === "disconnected" || connectionState === "error")
             ? "server_offline"
             : connectionState === "connecting" ? "connecting"
             : sessionExpiring ? "session_expiring" : null;
@@ -331,6 +333,17 @@ export const attachShowcaseSurface = (documentRef, transport, {
         });
         surface.mount.dataset.connectionState = connectionState;
         surface.mount.setAttribute("aria-busy", String(connectionState === "connecting"));
+        if (surface.connection) {
+            const connectionLabel = connectionState === "connecting"
+                ? "Opening demo"
+                : connectionState === "connected" && sessionReady
+                    ? "Demo ready"
+                    : connectionState === "connected"
+                        ? "Finishing setup"
+                        : mountRequested ? "Demo interrupted" : "Demo not started";
+            const label = surface.connection.querySelector("strong");
+            setText(label || surface.connection, connectionLabel);
+        }
         renderNotification();
         if (surface.scenario) {
             surface.scenario.textContent = connectionState === "connected" && sessionReady ? "Prepared scene" : "Awaiting stream";
@@ -350,11 +363,11 @@ export const attachShowcaseSurface = (documentRef, transport, {
         if (preset) {
             setText(surface.outlinerTarget, preset.outlinerLabel);
         } else if (response.action === "clean_scene") {
-            setText(surface.outlinerTarget, "No prepared fixtures");
+            setText(surface.outlinerTarget, "No demo objects prepared");
         } else if (response.action === "select_previous_fixture" || response.action === "select_next_fixture") {
-            setText(surface.outlinerTarget, "Selected showcase fixture");
+            setText(surface.outlinerTarget, "Selected demo object");
         } else if (response.action === "focus_selected_fixture") {
-            setText(surface.outlinerTarget, "Focused showcase fixture");
+            setText(surface.outlinerTarget, "Focused demo object");
         }
     };
 
@@ -364,6 +377,12 @@ export const attachShowcaseSurface = (documentRef, transport, {
 
         clearPending();
         displayOperation(response.message);
+        if (surface.autoSnap && (response.code === "autosnap_enabled" || response.code === "autosnap_disabled")) {
+            const enabled = response.code === "autosnap_enabled";
+            surface.autoSnap.setAttribute("aria-pressed", String(enabled));
+            const label = surface.autoSnap.querySelector("span:last-child");
+            if (label) label.textContent = `AutoSnap: ${enabled ? "On" : "Off"}`;
+        }
         updateOutliner(response);
         render();
     };
@@ -404,9 +423,9 @@ export const attachShowcaseSurface = (documentRef, transport, {
     };
 
     if (!isTransport(transport, brokerSession !== null)) {
-        setText(surface.mount, "A purpose-built Showcase transport is required before this local review page can connect.");
-        displayConnection("disconnected");
-        displayOperation("Review is unavailable until the Showcase stream connects.");
+        setText(surface.mount, "Start a demo session to load the interactive view.");
+        render();
+        displayOperation("Start the demo to enable these actions.");
         return null;
     }
 
