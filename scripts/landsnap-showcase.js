@@ -9,11 +9,26 @@
 
 export const SHOWCASE_PROTOCOL_VERSION = "landsnap-showcase-v1";
 export const SHOWCASE_EMBEDDED_CLASS = "landsnap-showcase-embedded";
+export const SHOWCASE_PARENT_ORIGIN = "https://ns-tx.com";
+export const SHOWCASE_SHELL_READY_MESSAGE = "landsnap-showcase-shell-ready";
+export const SHOWCASE_SHELL_READY_VERSION = 1;
 
 export const setShowcaseEmbeddedMode = (documentRef, windowRef) => {
     const embedded = Boolean(windowRef && windowRef.self !== windowRef.top);
     documentRef?.body?.classList?.toggle?.(SHOWCASE_EMBEDDED_CLASS, embedded);
     return embedded;
+};
+
+export const announceShowcaseShellReady = (windowRef) => {
+    if (!windowRef || windowRef.self === windowRef.top || typeof windowRef.parent?.postMessage !== "function") return false;
+    const targetOrigin = isLoopbackHost(windowRef.location?.hostname)
+        ? windowRef.location.origin
+        : SHOWCASE_PARENT_ORIGIN;
+    windowRef.parent.postMessage({
+        type: SHOWCASE_SHELL_READY_MESSAGE,
+        version: SHOWCASE_SHELL_READY_VERSION,
+    }, targetOrigin);
+    return true;
 };
 
 export const SHOWCASE_CALIBRATION_PRESETS = Object.freeze({
@@ -532,4 +547,5 @@ export const initializeShowcaseSurface = (documentRef, windowRef) => {
 if (typeof document !== "undefined") {
     setShowcaseEmbeddedMode(document, window);
     initializeShowcaseSurface(document, window);
+    announceShowcaseShellReady(window);
 }

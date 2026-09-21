@@ -1912,14 +1912,98 @@ body.landsnap-page {
 .landsnap-showcase-embed[open] .landsnap-showcase-embed-action-chevron { transform: rotate(180deg); }
 
 .landsnap-showcase-embed-body {
+    position: relative;
     padding: clamp(14px, 2.5vw, 26px);
     background: #1b1b1b;
+}
+
+.landsnap-showcase-host-status {
+    position: absolute;
+    z-index: 2;
+    inset: clamp(14px, 2.5vw, 26px);
+    display: grid;
+    place-items: center;
+    padding: clamp(18px, 4vw, 46px);
+    background: rgba(70, 77, 75, 0.92);
+    backdrop-filter: grayscale(1) blur(3px);
+}
+
+.landsnap-showcase-host-status[hidden] { display: none; }
+
+.landsnap-showcase-host-status-card {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 16px;
+    width: min(100%, 520px);
+    padding: clamp(22px, 4vw, 38px);
+    border: 1px solid #626966;
+    background: #171b19;
+    box-shadow: 0 24px 58px rgba(0, 0, 0, 0.34);
+}
+
+.landsnap-showcase-host-status-marker {
+    width: 10px;
+    height: 10px;
+    margin-top: 8px;
+    border-radius: 50%;
+    background: var(--landsnap-green);
+    box-shadow: 0 0 0 5px rgba(167, 230, 83, 0.12), 0 0 18px rgba(167, 230, 83, 0.42);
+    animation: landsnap-host-pulse 1.4s ease-in-out infinite;
+}
+
+.landsnap-showcase-host-status[data-state="unavailable"] .landsnap-showcase-host-status-marker {
+    background: #ff915c;
+    box-shadow: 0 0 0 5px rgba(255, 145, 92, 0.13);
+    animation: none;
+}
+
+.landsnap-showcase-host-status-card .eyebrow {
+    margin: 0 0 8px;
+    color: var(--landsnap-green);
+}
+
+.landsnap-showcase-host-status[data-state="unavailable"] .eyebrow { color: #ff915c; }
+
+.landsnap-showcase-host-status-card h2 {
+    margin: 0;
+    color: var(--text);
+    font-family: var(--heading);
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    font-weight: 500;
+}
+
+.landsnap-showcase-host-status-card p:not(.eyebrow) {
+    max-width: 48ch;
+    margin: 10px 0 0;
+    color: #c3cbc7;
+    font-size: 0.78rem;
+    line-height: 1.7;
+}
+
+.landsnap-showcase-host-retry {
+    margin-top: 18px;
+    padding: 11px 15px;
+    border: 1px solid #ff915c;
+    border-radius: 3px;
+    color: #151515;
+    font: 700 0.66rem/1 var(--body);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: #ff915c;
+    cursor: pointer;
+}
+
+.landsnap-showcase-host-retry:hover { background: #ffa477; }
+.landsnap-showcase-host-retry:focus-visible { outline: 3px solid var(--landsnap-green); outline-offset: 3px; }
+
+@keyframes landsnap-host-pulse {
+    50% { opacity: 0.55; transform: scale(0.82); }
 }
 
 .landsnap-showcase-embed-frame {
     display: block;
     width: 100%;
-    height: clamp(720px, 68vw, 900px);
+    height: clamp(680px, 64vw, 840px);
     border: 1px solid #3a3a3a;
     border-radius: 2px;
     background: #161d1a;
@@ -1955,7 +2039,7 @@ body.landsnap-page {
     .landsnap-showcase-embed-action { justify-self: start; }
 
     .landsnap-showcase-embed-frame {
-        height: clamp(620px, 82svh, 820px);
+        height: clamp(540px, 72svh, 680px);
     }
 }
 
@@ -1963,7 +2047,13 @@ body.landsnap-page {
     .landsnap-showcase-embed > summary { padding: 19px 18px; }
     .landsnap-showcase-embed-description { font-size: 0.8rem; }
     .landsnap-showcase-embed-body { padding: 10px; }
-    .landsnap-showcase-embed-frame { height: clamp(560px, 78svh, 720px); }
+    .landsnap-showcase-host-status { inset: 10px; padding: 14px; }
+    .landsnap-showcase-host-status-card { padding: 22px 18px; }
+    .landsnap-showcase-embed-frame { height: clamp(500px, 68svh, 620px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .landsnap-showcase-host-status-marker { animation: none; }
 }
 
 /* Reserved live demo; hidden also prevents layout space before launch. */

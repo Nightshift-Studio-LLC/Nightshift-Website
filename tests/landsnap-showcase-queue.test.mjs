@@ -93,6 +93,9 @@ test("queue presentation starts idle, keeps the gray gate through startup, and h
         showMetrics: false,
         showNote: false,
         showTryDemo: true,
+        showRetry: false,
+        showLeave: false,
+        showEndSession: false,
     });
     const starting = getQueuePresentation(startingLease(now), now);
     assert.equal(starting.visible, true);
@@ -100,7 +103,13 @@ test("queue presentation starts idle, keeps the gray gate through startup, and h
     assert.equal(starting.title, "Starting the LandSnap Showcase");
     assert.match(starting.message, /request was received/i);
     assert.equal(starting.showTryDemo, false);
-    assert.equal(getQueuePresentation(parseQueueLease(readyLease(now), now), now).visible, false);
+    assert.equal(starting.showLeave, true);
+    const ready = getQueuePresentation(parseQueueLease(readyLease(now), now), now);
+    assert.equal(ready.visible, false);
+    assert.equal(ready.showEndSession, true);
+    const unavailable = getQueuePresentation({ status: "unavailable" }, now);
+    assert.equal(unavailable.showRetry, true);
+    assert.equal(unavailable.showLeave, true);
 });
 
 test("Try Demo joins once, then uses status until ready and heartbeat only for a ready lease", async () => {

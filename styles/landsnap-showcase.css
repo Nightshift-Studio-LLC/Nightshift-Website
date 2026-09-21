@@ -362,6 +362,19 @@ body.landsnap-showcase-page.landsnap-showcase-embedded {
     text-transform: uppercase;
 }
 
+.landsnap-showcase-queue-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.landsnap-showcase-queue-actions .landsnap-showcase-queue-try,
+.landsnap-showcase-queue-actions .landsnap-showcase-queue-secondary {
+    margin-top: 0;
+}
+
 .landsnap-showcase-queue-try:hover,
 .landsnap-showcase-queue-try:focus-visible {
     background: #d6ff9d;
@@ -431,6 +444,40 @@ body.landsnap-showcase-page.landsnap-showcase-embedded {
     background: var(--landsnap-green);
     box-shadow: 0 0 0 3px rgba(182, 243, 106, 0.13);
 }
+
+.landsnap-showcase-stream-session {
+    display: grid;
+    justify-items: end;
+    gap: 10px;
+}
+
+.landsnap-showcase-session-end,
+.landsnap-showcase-queue-secondary {
+    padding: 10px 13px;
+    border: 1px solid rgba(241, 245, 238, 0.32);
+    border-radius: 2px;
+    color: #d8ddd7;
+    font: 700 0.61rem/1 "IBM Plex Mono", monospace;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: #252a27;
+    cursor: pointer;
+}
+
+.landsnap-showcase-session-end:hover,
+.landsnap-showcase-queue-secondary:hover {
+    border-color: #ff915c;
+    color: #ffbd9c;
+}
+
+.landsnap-showcase-session-end:focus-visible,
+.landsnap-showcase-queue-secondary:focus-visible {
+    outline: 3px solid var(--landsnap-green);
+    outline-offset: 3px;
+}
+
+.landsnap-showcase-session-end[hidden],
+.landsnap-showcase-queue-secondary[hidden] { display: none; }
 
 .landsnap-showcase-viewport-frame {
     position: relative;

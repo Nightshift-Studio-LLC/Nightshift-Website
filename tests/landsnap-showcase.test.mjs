@@ -3,7 +3,11 @@ import test from "node:test";
 import {
     SHOWCASE_COMMANDS,
     SHOWCASE_NOTIFICATION_CODES,
+    SHOWCASE_PARENT_ORIGIN,
     SHOWCASE_PROTOCOL_VERSION,
+    SHOWCASE_SHELL_READY_MESSAGE,
+    SHOWCASE_SHELL_READY_VERSION,
+    announceShowcaseShellReady,
     createShowcaseCommand,
     isShowcaseSessionExpiring,
     parseShowcaseResult,
@@ -26,6 +30,31 @@ test("the direct Showcase shell removes standalone chrome when framed", () => {
         ["landsnap-showcase-embedded", true],
         ["landsnap-showcase-embedded", false],
     ]);
+});
+
+test("the framed shell announces readiness only to its exact parent origin", () => {
+    const calls = [];
+    const parent = { postMessage(message, origin) { calls.push({ message, origin }); } };
+    const top = {};
+    assert.equal(announceShowcaseShellReady({
+        self: {},
+        top,
+        parent,
+        location: { hostname: "showcase.ns-tx.com", origin: "https://showcase.ns-tx.com" },
+    }), true);
+    assert.deepEqual(calls, [{
+        message: { type: SHOWCASE_SHELL_READY_MESSAGE, version: SHOWCASE_SHELL_READY_VERSION },
+        origin: SHOWCASE_PARENT_ORIGIN,
+    }]);
+
+    assert.equal(announceShowcaseShellReady({ self: top, top, parent, location: {} }), false);
+    assert.equal(announceShowcaseShellReady({
+        self: {},
+        top,
+        parent,
+        location: { hostname: "127.0.0.1", origin: "http://127.0.0.1:4174" },
+    }), true);
+    assert.equal(calls.at(-1).origin, "http://127.0.0.1:4174");
 });
 
 test("each public control has one fixed no-argument command envelope", () => {

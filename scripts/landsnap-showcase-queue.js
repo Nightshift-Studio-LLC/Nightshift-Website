@@ -356,6 +356,9 @@ const getQueueSurface = (documentRef) => ({
     title: documentRef.getElementById("landsnap-showcase-queue-title"),
     message: documentRef.getElementById("landsnap-showcase-queue-message"),
     tryDemo: documentRef.getElementById("landsnap-showcase-try-demo"),
+    retry: documentRef.getElementById("landsnap-showcase-retry"),
+    leave: documentRef.getElementById("landsnap-showcase-leave"),
+    endSession: documentRef.getElementById("landsnap-showcase-end-session"),
     position: documentRef.getElementById("landsnap-showcase-queue-position"),
     estimate: documentRef.getElementById("landsnap-showcase-queue-estimate"),
     countdown: documentRef.querySelector("#landsnap-showcase-queue-countdown time"),
@@ -384,6 +387,9 @@ export const getQueuePresentation = (lease, now = Date.now()) => {
             showMetrics: false,
             showNote: false,
             showTryDemo: true,
+            showRetry: false,
+            showLeave: false,
+            showEndSession: false,
         });
     }
 
@@ -401,6 +407,9 @@ export const getQueuePresentation = (lease, now = Date.now()) => {
             showMetrics: false,
             showNote: false,
             showTryDemo: false,
+            showRetry: false,
+            showLeave: true,
+            showEndSession: false,
         });
     }
 
@@ -418,6 +427,9 @@ export const getQueuePresentation = (lease, now = Date.now()) => {
             showMetrics: true,
             showNote: true,
             showTryDemo: false,
+            showRetry: false,
+            showLeave: true,
+            showEndSession: false,
         });
     }
 
@@ -434,6 +446,9 @@ export const getQueuePresentation = (lease, now = Date.now()) => {
         showMetrics: false,
         showNote: false,
         showTryDemo: false,
+        showRetry: !ready,
+        showLeave: !ready,
+        showEndSession: ready,
     });
 };
 
@@ -449,6 +464,18 @@ const renderQueueSurface = (surface, lease, now = Date.now()) => {
     if (surface.tryDemo) {
         surface.tryDemo.hidden = !presentation.showTryDemo;
         surface.tryDemo.disabled = !presentation.showTryDemo;
+    }
+    if (surface.retry) {
+        surface.retry.hidden = !presentation.showRetry;
+        surface.retry.disabled = !presentation.showRetry;
+    }
+    if (surface.leave) {
+        surface.leave.hidden = !presentation.showLeave;
+        surface.leave.disabled = !presentation.showLeave;
+    }
+    if (surface.endSession) {
+        surface.endSession.hidden = !presentation.showEndSession;
+        surface.endSession.disabled = !presentation.showEndSession;
     }
     if (surface.position) surface.position.textContent = presentation.position;
     if (surface.estimate) surface.estimate.textContent = presentation.estimate;
@@ -492,7 +519,12 @@ export const installShowcaseQueueGate = (windowRef = globalThis.window, document
     windowRef.LandSnapShowcaseQueue = controller;
     renderQueueSurface(surface, controller.getLease());
     const startQueue = () => void controller.start();
+    const retryQueue = () => void controller.recheck();
+    const leaveQueue = () => void controller.leave();
     if (surface.tryDemo) surface.tryDemo.addEventListener("click", startQueue);
+    if (surface.retry) surface.retry.addEventListener("click", retryQueue);
+    if (surface.leave) surface.leave.addEventListener("click", leaveQueue);
+    if (surface.endSession) surface.endSession.addEventListener("click", leaveQueue);
     if (expander) {
         expander.addEventListener("toggle", () => {
             if (!expander.open && controller.isStarted()) void controller.leave();

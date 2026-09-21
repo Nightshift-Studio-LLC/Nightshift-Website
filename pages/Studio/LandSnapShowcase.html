@@ -43,10 +43,13 @@
                         <p class="landsnap-showcase-section-label">Unreal level viewport</p>
                         <h2>Showcase viewport</h2>
                     </div>
-                    <p id="landsnap-showcase-connection-state" class="landsnap-showcase-connection" role="status" aria-live="polite">
-                        <span aria-hidden="true"></span>
-                        <strong>Waiting for stream</strong>
-                    </p>
+                    <div class="landsnap-showcase-stream-session">
+                        <p id="landsnap-showcase-connection-state" class="landsnap-showcase-connection" role="status" aria-live="polite">
+                            <span aria-hidden="true"></span>
+                            <strong>Waiting for stream</strong>
+                        </p>
+                        <button id="landsnap-showcase-end-session" class="landsnap-showcase-session-end" type="button" hidden>End session</button>
+                    </div>
                 </div>
 
                 <div class="landsnap-showcase-viewport-frame">
@@ -77,6 +80,7 @@
                     <small>Prepared scene</small>
                 </div>
 
+                <div class="landsnap-showcase-panel-primary">
                 <div class="landsnap-showcase-scenario-controls" aria-label="Scenario selection">
                     <span>Scene</span>
                     <div>
@@ -124,7 +128,9 @@
                     </div>
                     <button id="landsnap-showcase-clean-scene" class="landsnap-showcase-action landsnap-showcase-action-clean" type="button" data-command="clean-scene" disabled><span class="landsnap-showcase-action-glyph" aria-hidden="true">⌫</span>Clean Scene</button>
                 </div>
+                </div>
 
+                <div class="landsnap-showcase-panel-secondary">
                 <section class="landsnap-showcase-outliner" aria-labelledby="landsnap-showcase-outliner-label">
                     <div class="landsnap-showcase-native-row">
                         <span aria-hidden="true">▸</span>
@@ -159,14 +165,20 @@
                         </div>
                     </aside>
                 </div>
+                </div>
             </aside>
 
             <section id="landsnap-showcase-queue-overlay" class="landsnap-showcase-queue-overlay" aria-labelledby="landsnap-showcase-queue-title" aria-live="polite" hidden>
                 <div class="landsnap-showcase-queue-card">
                     <p class="landsnap-showcase-section-label">Exclusive demo queue</p>
+                    <p id="landsnap-showcase-queue-alert" class="landsnap-showcase-queue-alert" role="status"><span class="landsnap-showcase-queue-alert-icon" aria-hidden="true">⚠</span><span id="landsnap-showcase-queue-alert-text">Checking broker status</span></p>
                     <h2 id="landsnap-showcase-queue-title">Checking Showcase access</h2>
                     <p id="landsnap-showcase-queue-message">Try Demo asks the broker for a single isolated Unreal Editor session.</p>
-                    <button id="landsnap-showcase-try-demo" class="landsnap-showcase-queue-try" type="button">Try Demo</button>
+                    <div class="landsnap-showcase-queue-actions">
+                        <button id="landsnap-showcase-try-demo" class="landsnap-showcase-queue-try" type="button">Try Demo</button>
+                        <button id="landsnap-showcase-retry" class="landsnap-showcase-queue-secondary" type="button" hidden>Check again</button>
+                        <button id="landsnap-showcase-leave" class="landsnap-showcase-queue-secondary" type="button" hidden>Leave queue</button>
+                    </div>
                     <dl class="landsnap-showcase-queue-metrics">
                         <div>
                             <dt>Your queue position</dt>
