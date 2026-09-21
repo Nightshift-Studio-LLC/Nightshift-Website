@@ -13,6 +13,7 @@ import {
     isPublicShowcaseHost,
     isReadyQueueLease,
     parseQueueLease,
+    stabilizeQueueTiming,
 } from "../scripts/landsnap-showcase-queue.js";
 
 const opaqueId = "showcase-broker-lease-0001";
@@ -78,6 +79,20 @@ test("waiting estimates use the five-minute maximum while making early release a
     assert.match(presentation.message, /end early/i);
 });
 
+test("repeated status polls cannot reset a launch or queue countdown backward", () => {
+    const now = 1_700_000_000_000;
+    const firstStart = parseQueueLease(startingLease(now), now);
+    const laterStart = parseQueueLease({ ...startingLease(now), expectedReadyAt: now + 60_000 }, now);
+    assert.equal(stabilizeQueueTiming(firstStart, laterStart).expectedReadyAt, now + 30_000);
+
+    const firstWait = parseQueueLease(waitingLease(now, 1), now);
+    const laterWait = parseQueueLease({ ...waitingLease(now, 1), activeLeaseExpiresAt: now + 120_000 }, now);
+    assert.equal(stabilizeQueueTiming(firstWait, laterWait).activeLeaseExpiresAt, now + 80_000);
+
+    const promoted = parseQueueLease(waitingLease(now, 2), now);
+    assert.equal(stabilizeQueueTiming(firstWait, promoted).activeLeaseExpiresAt, now + 80_000);
+});
+
 test("queue presentation starts idle, keeps the gray gate through startup, and hides only once ready", () => {
     const now = 1_700_000_000_000;
     assert.deepEqual(getQueuePresentation({ status: "idle" }, now), {
@@ -92,6 +107,8 @@ test("queue presentation starts idle, keeps the gray gate through startup, and h
         countdownSeconds: 0,
         showMetrics: false,
         showNote: false,
+        showLaunchProgress: false,
+        note: "",
         showTryDemo: true,
         showRetry: false,
         showLeave: false,
@@ -102,8 +119,15 @@ test("queue presentation starts idle, keeps the gray gate through startup, and h
     assert.equal(starting.alert, "Demo initiated");
     assert.equal(starting.title, "Starting the LandSnap Showcase");
     assert.match(starting.message, /request was received/i);
+    assert.equal(starting.position, "Reserved");
+    assert.equal(starting.estimate, "00:30 estimated");
+    assert.equal(starting.showLaunchProgress, true);
     assert.equal(starting.showTryDemo, false);
     assert.equal(starting.showLeave, true);
+    const delayed = getQueuePresentation(startingLease(now), now + 31_000);
+    assert.equal(delayed.alert, "Still starting");
+    assert.equal(delayed.countdown, "00:00+");
+    assert.match(delayed.message, /taking longer/i);
     const ready = getQueuePresentation(parseQueueLease(readyLease(now), now), now);
     assert.equal(ready.visible, false);
     assert.equal(ready.showEndSession, true);

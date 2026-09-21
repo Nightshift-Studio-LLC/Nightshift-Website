@@ -150,6 +150,31 @@ export const formatQueueCountdown = (milliseconds) => {
     return `${String(minutes).padStart(2, "0")}:${String(seconds % 60).padStart(2, "0")}`;
 };
 
+/**
+ * A repeated status response must not make the visitor's displayed deadline
+ * move backward. The server remains authoritative about state and queue
+ * position; this only keeps the estimate monotonic for the same reservation.
+ */
+export const stabilizeQueueTiming = (previous, next) => {
+    if (previous?.status === "starting"
+        && next?.status === "starting"
+        && previous.leaseId === next.leaseId) {
+        return Object.freeze({
+            ...next,
+            expectedReadyAt: Math.min(previous.expectedReadyAt, next.expectedReadyAt),
+        });
+    }
+    if (previous?.status === "waiting"
+        && next?.status === "waiting"
+        && previous.position === next.position) {
+        return Object.freeze({
+            ...next,
+            activeLeaseExpiresAt: Math.min(previous.activeLeaseExpiresAt, next.activeLeaseExpiresAt),
+        });
+    }
+    return next;
+};
+
 const createRequestPayload = (operation) => {
     if (!QUEUE_OPERATIONS.has(operation)) throw new TypeError("Unknown Showcase queue operation.");
     return Object.freeze({
@@ -263,9 +288,9 @@ export const createQueueLeaseController = ({
             schedule(MAX_POLL_MS);
             return lease;
         }
-        lease = next;
+        lease = stabilizeQueueTiming(lease, next);
         publish();
-        scheduleForLease(next);
+        scheduleForLease(lease);
         return lease;
     };
     const nextOperation = () => lease.status === "ready" ? "heartbeat" : "status";
@@ -364,6 +389,7 @@ const getQueueSurface = (documentRef) => ({
     countdown: documentRef.querySelector("#landsnap-showcase-queue-countdown time"),
     metrics: documentRef.querySelector(".landsnap-showcase-queue-metrics"),
     note: documentRef.querySelector(".landsnap-showcase-queue-note"),
+    launchProgress: documentRef.getElementById("landsnap-showcase-launch-progress"),
 });
 
 export const getQueuePresentation = (lease, now = Date.now()) => {
@@ -372,6 +398,10 @@ export const getQueuePresentation = (lease, now = Date.now()) => {
     const ready = state === "ready";
     const starting = state === "starting";
     const delay = waiting ? calculateQueueWaitMs(lease, now) : 0;
+    const startupDelay = starting && Number.isSafeInteger(lease?.expectedReadyAt)
+        ? Math.max(0, lease.expectedReadyAt - now)
+        : 0;
+    const startupEstimatePassed = starting && Number.isSafeInteger(lease?.expectedReadyAt) && startupDelay === 0;
 
     if (state === "idle") {
         return Object.freeze({
@@ -386,6 +416,8 @@ export const getQueuePresentation = (lease, now = Date.now()) => {
             countdownSeconds: 0,
             showMetrics: false,
             showNote: false,
+            showLaunchProgress: false,
+            note: "",
             showTryDemo: true,
             showRetry: false,
             showLeave: false,
@@ -397,15 +429,21 @@ export const getQueuePresentation = (lease, now = Date.now()) => {
         return Object.freeze({
             visible: true,
             state,
-            alert: "Demo initiated",
+            alert: startupEstimatePassed ? "Still starting" : "Demo initiated",
             title: "Starting the LandSnap Showcase",
-            message: "Your request was received. The broker reserved the only demo slot and is starting a restricted Unreal Editor session. The player will unlock only after it is ready.",
-            position: "—",
-            estimate: "—",
-            countdown: "—",
-            countdownSeconds: 0,
-            showMetrics: false,
-            showNote: false,
+            message: startupEstimatePassed
+                ? "Startup is taking longer than the server estimate. Your reserved launch is still active, and this page will open the player automatically when the stream reports ready."
+                : "Your request was received and the only demo slot is reserved for you. Keep this page open; the player will unlock automatically when the stream reports ready.",
+            position: "Reserved",
+            estimate: startupEstimatePassed ? "Still working" : `${formatQueueCountdown(startupDelay)} estimated`,
+            countdown: startupEstimatePassed ? "00:00+" : formatQueueCountdown(startupDelay),
+            countdownSeconds: Math.ceil(startupDelay / 1_000),
+            showMetrics: true,
+            showNote: true,
+            showLaunchProgress: true,
+            note: startupEstimatePassed
+                ? "The estimate has passed, but the server has not reported a failure. You can leave the launch if you do not want to keep waiting."
+                : "This is the server's startup estimate, not a guaranteed completion time. The session opens only after the stream is actually ready.",
             showTryDemo: false,
             showRetry: false,
             showLeave: true,
@@ -426,6 +464,8 @@ export const getQueuePresentation = (lease, now = Date.now()) => {
             countdownSeconds: Math.ceil(delay / 1_000),
             showMetrics: true,
             showNote: true,
+            showLaunchProgress: false,
+            note: "Estimated wait uses the five-minute maximum. Sessions can end early and advance the queue sooner.",
             showTryDemo: false,
             showRetry: false,
             showLeave: true,
@@ -445,6 +485,8 @@ export const getQueuePresentation = (lease, now = Date.now()) => {
         countdownSeconds: 0,
         showMetrics: false,
         showNote: false,
+        showLaunchProgress: false,
+        note: "",
         showTryDemo: false,
         showRetry: !ready,
         showLeave: !ready,
@@ -484,7 +526,11 @@ const renderQueueSurface = (surface, lease, now = Date.now()) => {
         surface.countdown.dateTime = `PT${presentation.countdownSeconds}S`;
     }
     if (surface.metrics) surface.metrics.hidden = !presentation.showMetrics;
-    if (surface.note) surface.note.hidden = !presentation.showNote;
+    if (surface.note) {
+        surface.note.hidden = !presentation.showNote;
+        surface.note.textContent = presentation.note;
+    }
+    if (surface.launchProgress) surface.launchProgress.hidden = !presentation.showLaunchProgress;
     if (presentation.state === "starting" || presentation.state === "waiting" || presentation.state === "unavailable") {
         surface.overlay.setAttribute("aria-busy", "true");
     } else {
