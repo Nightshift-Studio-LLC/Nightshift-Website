@@ -177,30 +177,6 @@ body.landsnap-showcase-page {
     line-height: 1.8;
 }
 
-body.landsnap-showcase-page.landsnap-showcase-embedded {
-    min-height: 0;
-    background: #1b1b1b;
-}
-
-.landsnap-showcase-embedded .landsnap-showcase-noise,
-.landsnap-showcase-embedded .landsnap-showcase-skip-link,
-.landsnap-showcase-embedded .landsnap-showcase-topbar,
-.landsnap-showcase-embedded .landsnap-showcase-heading {
-    display: none;
-}
-
-.landsnap-showcase-embedded .landsnap-showcase-shell {
-    gap: 0;
-    width: 100%;
-    max-width: none;
-    padding: 0;
-}
-
-.landsnap-showcase-embedded .landsnap-showcase-workspace {
-    border: 0;
-    box-shadow: none;
-}
-
 .landsnap-showcase-workspace {
     position: relative;
     display: grid;
@@ -686,6 +662,11 @@ body.landsnap-showcase-page.landsnap-showcase-embedded {
     background: #242424;
 }
 
+.landsnap-showcase-panel-primary,
+.landsnap-showcase-panel-secondary {
+    display: contents;
+}
+
 .landsnap-showcase-panel-heading,
 .landsnap-showcase-scenario-controls,
 .landsnap-showcase-action-stack,
@@ -983,11 +964,6 @@ body.landsnap-showcase-page.landsnap-showcase-embedded {
         grid-template-columns: 1fr;
     }
 
-    .landsnap-showcase-queue-overlay {
-        align-items: start;
-        overflow: auto;
-    }
-
     .landsnap-showcase-panel {
         display: flex;
         border-top: 1px solid var(--landsnap-line);
@@ -997,6 +973,52 @@ body.landsnap-showcase-page.landsnap-showcase-embedded {
     .landsnap-showcase-scenario-controls,
     .landsnap-showcase-disclosure {
         border-left: 0;
+    }
+}
+
+@media (min-width: 641px) and (max-width: 960px) {
+    .landsnap-showcase-viewport-frame {
+        min-height: clamp(300px, 48vw, 420px);
+    }
+
+    .landsnap-showcase-panel {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        align-items: stretch;
+    }
+
+    .landsnap-showcase-panel-tab,
+    .landsnap-showcase-panel-heading {
+        min-width: 0;
+    }
+
+    .landsnap-showcase-panel-heading {
+        border-top: 0;
+        border-left: 1px solid #3a3a3a;
+    }
+
+    .landsnap-showcase-target-row {
+        grid-column: 1 / -1;
+    }
+
+    .landsnap-showcase-panel-primary,
+    .landsnap-showcase-panel-secondary {
+        display: flex;
+        min-width: 0;
+        flex-direction: column;
+    }
+
+    .landsnap-showcase-panel-secondary {
+        border-left: 1px solid #3a3a3a;
+    }
+
+    .landsnap-showcase-action-stack,
+    .landsnap-showcase-notification-slot {
+        flex: 1 1 auto;
+    }
+
+    .landsnap-showcase-notification-slot {
+        min-height: 74px;
     }
 }
 

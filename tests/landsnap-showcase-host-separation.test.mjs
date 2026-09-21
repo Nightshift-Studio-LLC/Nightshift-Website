@@ -10,18 +10,19 @@ import {
 
 const readSource = (path) => readFile(new URL(path, import.meta.url), "utf8");
 
-test("the product page embeds the fixed dedicated Showcase host without top-level navigation", async () => {
+test("the product page restores the inline Showcase workspace without redirecting visitors", async () => {
     const productPage = await readSource("../pages/Studio/Landsnap.html");
 
     assert.match(productPage, /data-landsnap-showcase-expander/);
-    assert.match(productPage, /data-landsnap-showcase-frame/);
-    assert.match(productPage, /src="https:\/\/showcase\.ns-tx\.com\/"/);
-    assert.match(productPage, /landsnap-showcase-embed\.js/);
+    assert.match(productPage, /landsnap-showcase-stream-mount/);
+    assert.match(productPage, /landsnap-showcase-queue\.js/);
+    assert.match(productPage, /landsnap-showcase-local\.js/);
+    assert.match(productPage, /landsnap-showcase\.js/);
+    assert.match(productPage, /landsnap-showcase\.css/);
+    assert.doesNotMatch(productPage, /data-landsnap-showcase-frame/);
+    assert.doesNotMatch(productPage, /landsnap-showcase-embed\.js/);
     assert.doesNotMatch(productPage, /href="https:\/\/showcase\.ns-tx\.com\/"/);
     assert.doesNotMatch(productPage, /(?:window|top)\.location|location\.(?:assign|replace)|target=["']_top["']/i);
-    assert.doesNotMatch(productPage, /landsnap-showcase-queue\.js/);
-    assert.doesNotMatch(productPage, /landsnap-showcase-local\.js/);
-    assert.doesNotMatch(productPage, /landsnap-showcase-stream-mount/);
 });
 
 test("the embedded frame has one fixed origin and releases its child shell when collapsed", () => {
