@@ -1,12 +1,44 @@
 // Keep the product-page frame on one allowlisted public origin. The framed
 // shell owns queue cookies, broker tickets, and the Pixel Streaming relay.
-export const SHOWCASE_EMBED_ORIGIN = "https://showcase.ns-tx.com/";
-export const SHOWCASE_LOCAL_PREVIEW_PATH = "./LandSnapShowcase.html";
+export const SHOWCASE_EMBED_ORIGIN = "https://showcase.ns-tx.com/?v=20260922-session-lifecycle";
+export const SHOWCASE_LOCAL_PREVIEW_PATH = "./LandSnapShowcase.html?v=20260922-session-lifecycle";
 export const SHOWCASE_SHELL_READY_MESSAGE = "landsnap-showcase-shell-ready";
 export const SHOWCASE_SHELL_READY_VERSION = 1;
+export const SHOWCASE_LIFECYCLE_MESSAGE = "landsnap-showcase-lifecycle";
+export const SHOWCASE_LIFECYCLE_VERSION = 1;
 export const SHOWCASE_CONNECTION_TIMEOUT_MS = 12000;
 
 const LOOPBACK_HOSTS = new Set(["127.0.0.1", "localhost", "::1", "[::1]"]);
+const SHOWCASE_LIFECYCLE_STATES = new Set([
+    "idle",
+    "queued",
+    "preparing",
+    "connecting",
+    "ready",
+    "cleanup",
+    "failure",
+]);
+const hasExactKeys = (value, expected) => {
+    if (!value || typeof value !== "object" || Array.isArray(value)) return false;
+    const keys = Object.keys(value).sort();
+    const sortedExpected = [...expected].sort();
+    return keys.length === sortedExpected.length && keys.every((key, index) => key === sortedExpected[index]);
+};
+
+export const parseEmbeddedShowcaseMessage = (data) => {
+    if (hasExactKeys(data, ["type", "version"])
+        && data.type === SHOWCASE_SHELL_READY_MESSAGE
+        && data.version === SHOWCASE_SHELL_READY_VERSION) {
+        return Object.freeze({ kind: "shell-ready" });
+    }
+    if (hasExactKeys(data, ["state", "type", "version"])
+        && data.type === SHOWCASE_LIFECYCLE_MESSAGE
+        && data.version === SHOWCASE_LIFECYCLE_VERSION
+        && SHOWCASE_LIFECYCLE_STATES.has(data.state)) {
+        return Object.freeze({ kind: "lifecycle", state: data.state });
+    }
+    return null;
+};
 
 const STATUS_COPY = Object.freeze({
     loading: Object.freeze({
@@ -111,6 +143,13 @@ export const installEmbeddedShowcase = (
         frame.setAttribute?.("aria-busy", "false");
     };
 
+    const mirrorLifecycle = (state) => {
+        showReady();
+        if (expander.dataset) expander.dataset.showcaseState = state;
+        if (frame.dataset) frame.dataset.showcaseState = state;
+        frame.setAttribute?.("aria-busy", String(["preparing", "connecting", "cleanup"].includes(state)));
+    };
+
     const syncFrame = () => {
         clearConnectionTimer();
         if (expander.open === true) {
@@ -124,8 +163,9 @@ export const installEmbeddedShowcase = (
 
     const handleShellMessage = (event) => {
         if (event?.source !== frame.contentWindow || event?.origin !== expectedOrigin) return;
-        if (event?.data?.type !== SHOWCASE_SHELL_READY_MESSAGE || event?.data?.version !== SHOWCASE_SHELL_READY_VERSION) return;
-        showReady();
+        const message = parseEmbeddedShowcaseMessage(event?.data);
+        if (message?.kind === "shell-ready") showReady();
+        if (message?.kind === "lifecycle") mirrorLifecycle(message.state);
     };
 
     const handleFrameError = () => setEmbeddedShowcaseStatus(surface, "unavailable");
@@ -157,6 +197,7 @@ export const installEmbeddedShowcase = (
     return Object.freeze({
         activeSource,
         expectedOrigin,
+        getLifecycleState: () => frame.dataset?.showcaseState || "",
         syncFrame,
         retryConnection,
         destroy() {

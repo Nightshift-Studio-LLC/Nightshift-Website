@@ -12,6 +12,18 @@ export const SHOWCASE_EMBEDDED_CLASS = "landsnap-showcase-embedded";
 export const SHOWCASE_PARENT_ORIGIN = "https://ns-tx.com";
 export const SHOWCASE_SHELL_READY_MESSAGE = "landsnap-showcase-shell-ready";
 export const SHOWCASE_SHELL_READY_VERSION = 1;
+export const SHOWCASE_LIFECYCLE_MESSAGE = "landsnap-showcase-lifecycle";
+export const SHOWCASE_LIFECYCLE_VERSION = 1;
+export const SHOWCASE_LIFECYCLE_STATES = Object.freeze([
+    "idle",
+    "queued",
+    "preparing",
+    "connecting",
+    "ready",
+    "cleanup",
+    "failure",
+]);
+const SHOWCASE_LIFECYCLE_STATE_SET = new Set(SHOWCASE_LIFECYCLE_STATES);
 
 export const setShowcaseEmbeddedMode = (documentRef, windowRef) => {
     const embedded = Boolean(windowRef && windowRef.self !== windowRef.top);
@@ -29,6 +41,31 @@ export const announceShowcaseShellReady = (windowRef) => {
         version: SHOWCASE_SHELL_READY_VERSION,
     }, targetOrigin);
     return true;
+};
+
+export const announceShowcaseLifecycle = (windowRef, state) => {
+    if (!SHOWCASE_LIFECYCLE_STATE_SET.has(state)
+        || !windowRef
+        || windowRef.self === windowRef.top
+        || typeof windowRef.parent?.postMessage !== "function") return false;
+    const targetOrigin = isLoopbackHost(windowRef.location?.hostname)
+        ? windowRef.location.origin
+        : SHOWCASE_PARENT_ORIGIN;
+    windowRef.parent.postMessage({
+        type: SHOWCASE_LIFECYCLE_MESSAGE,
+        version: SHOWCASE_LIFECYCLE_VERSION,
+        state,
+    }, targetOrigin);
+    return true;
+};
+
+export const getShowcaseLifecycleFromLease = (lease) => {
+    if (lease?.status === "waiting") return "queued";
+    if (lease?.status === "starting") return "preparing";
+    if (lease?.status === "ready") return "connecting";
+    if (lease?.status === "cleanup" || lease?.status === "expired") return "cleanup";
+    if (lease?.status === "unavailable") return "failure";
+    return "idle";
 };
 
 export const SHOWCASE_CALIBRATION_PRESETS = Object.freeze({
@@ -68,8 +105,8 @@ export const SHOWCASE_STREAMER_ID = "Editor";
 export const SHOWCASE_NOTIFICATION_CODES = Object.freeze({
     connecting: Object.freeze({
         level: "warning",
-        title: "Opening your demo",
-        message: "LandSnap is loading. The controls will unlock when the demo is ready.",
+        title: "Connecting to stream",
+        message: "Your Unreal session is ready. We’re connecting the browser stream now.",
     }),
     server_offline: Object.freeze({
         level: "error",
@@ -275,6 +312,7 @@ const setText = (element, value) => {
 export const attachShowcaseSurface = (documentRef, transport, {
     brokerSession = null,
     onStreamLoss = () => {},
+    onLifecycleChange = () => {},
 } = {}) => {
     const surface = getSurface(documentRef);
     if (!surface.mount || !surface.operation || !surface.controls.length) return null;
@@ -287,6 +325,7 @@ export const attachShowcaseSurface = (documentRef, transport, {
     let streamLossReported = false;
     let detached = false;
     let mountRequested = false;
+    let lastLifecycleState = null;
 
     const syncCalibrationCommand = () => {
         if (!surface.calibrationSize || !surface.calibrationLayout || !surface.calibrationPrepare) return;
@@ -335,9 +374,9 @@ export const attachShowcaseSurface = (documentRef, transport, {
         surface.mount.setAttribute("aria-busy", String(connectionState === "connecting"));
         if (surface.connection) {
             const connectionLabel = connectionState === "connecting"
-                ? "Opening demo"
+                ? "Connecting to stream"
                 : connectionState === "connected" && sessionReady
-                    ? "Demo ready"
+                    ? "Session ready"
                     : connectionState === "connected"
                         ? "Finishing setup"
                         : mountRequested ? "Demo interrupted" : "Demo not started";
@@ -347,6 +386,17 @@ export const attachShowcaseSurface = (documentRef, transport, {
         renderNotification();
         if (surface.scenario) {
             surface.scenario.textContent = connectionState === "connected" && sessionReady ? "Prepared scene" : "Awaiting stream";
+        }
+        const lifecycleState = ready
+            ? "ready"
+            : connectionState === "connecting" || (connectionState === "connected" && !sessionReady)
+                ? "connecting"
+                : mountRequested && (connectionState === "disconnected" || connectionState === "error")
+                    ? "failure"
+                    : null;
+        if (lifecycleState && lifecycleState !== lastLifecycleState) {
+            lastLifecycleState = lifecycleState;
+            onLifecycleChange(lifecycleState);
         }
     };
 
@@ -519,6 +569,10 @@ export const initializeShowcaseSurface = (documentRef, windowRef) => {
         });
     };
 
+    const publishLeaseLifecycle = () => {
+        announceShowcaseLifecycle(windowRef, getShowcaseLifecycleFromLease(windowRef.LandSnapShowcaseQueueLease));
+    };
+
     const renderTransportBoundary = () => {
         if (expander && !expander.open) {
             if (attached) attached.detach();
@@ -543,19 +597,25 @@ export const initializeShowcaseSurface = (documentRef, windowRef) => {
         attached = attachShowcaseSurface(documentRef, transport, {
             brokerSession: authorization?.session || null,
             onStreamLoss: () => { void windowRef.LandSnapShowcaseQueue?.recheck?.(); },
+            onLifecycleChange: (state) => announceShowcaseLifecycle(windowRef, state),
         });
         authorizationKey = authorization?.key || null;
         attached?.setSessionExpiryWarning(windowRef.LandSnapShowcaseQueueLease);
     };
 
     renderTransportBoundary();
+    publishLeaseLifecycle();
     windowRef.addEventListener("landsnap-showcase-transport-ready", renderTransportBoundary);
-    windowRef.addEventListener("landsnap-showcase-lease-change", renderTransportBoundary);
+    const handleLeaseChange = () => {
+        renderTransportBoundary();
+        publishLeaseLifecycle();
+    };
+    windowRef.addEventListener("landsnap-showcase-lease-change", handleLeaseChange);
     if (expander) expander.addEventListener("toggle", renderTransportBoundary);
     return Object.freeze({
         detach() {
             windowRef.removeEventListener("landsnap-showcase-transport-ready", renderTransportBoundary);
-            windowRef.removeEventListener("landsnap-showcase-lease-change", renderTransportBoundary);
+            windowRef.removeEventListener("landsnap-showcase-lease-change", handleLeaseChange);
             if (expander) expander.removeEventListener("toggle", renderTransportBoundary);
             if (attached) attached.detach();
             if (attachedTransport && typeof attachedTransport.disconnect === "function") attachedTransport.disconnect();
@@ -565,6 +625,6 @@ export const initializeShowcaseSurface = (documentRef, windowRef) => {
 
 if (typeof document !== "undefined") {
     setShowcaseEmbeddedMode(document, window);
-    initializeShowcaseSurface(document, window);
     announceShowcaseShellReady(window);
+    initializeShowcaseSurface(document, window);
 }

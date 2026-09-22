@@ -117,16 +117,17 @@ test("queue presentation starts idle, keeps the gray gate through startup, and h
     });
     const starting = getQueuePresentation(startingLease(now), now);
     assert.equal(starting.visible, true);
-    assert.equal(starting.alert, "Your demo is reserved");
-    assert.equal(starting.title, "Starting your demo");
-    assert.match(starting.message, /start automatically/i);
-    assert.equal(starting.position, "Reserved");
-    assert.equal(starting.estimate, "00:30 estimated");
+    assert.equal(starting.alert, "Preparing your demo");
+    assert.equal(starting.title, "Preparing your demo");
+    assert.match(starting.message, /Unreal Editor/i);
+    assert.equal(starting.showMetrics, false);
+    assert.equal(starting.showPreparation, true);
+    assert.equal(starting.preparation, "Estimated startup: 00:30");
     assert.equal(starting.showLaunchProgress, true);
     assert.equal(starting.showTryDemo, false);
     assert.equal(starting.showLeave, true);
     const delayed = getQueuePresentation(startingLease(now), now + 31_000);
-    assert.equal(delayed.alert, "Taking a little longer");
+    assert.equal(delayed.alert, "Still preparing");
     assert.equal(delayed.countdown, "00:00+");
     assert.match(delayed.message, /little longer/i);
     const ready = getQueuePresentation(parseQueueLease(readyLease(now), now), now);
@@ -171,7 +172,7 @@ test("Try Demo joins once, then uses status until ready and heartbeat only for a
     assert.deepEqual(operations, ["join", "status", "heartbeat"]);
 });
 
-test("stream loss and ticket expiry clear the local lease before a fixed broker status check", async () => {
+test("stream loss uses status, refreshes an expired ticket, and expires only at the lease deadline", async () => {
     let now = 1_700_000_000_000;
     const operations = [];
     const service = {
@@ -195,7 +196,84 @@ test("stream loss and ticket expiry clear the local lease before a fixed broker 
     assert.equal(controller.getLease().status, "starting");
     controller.receive(JSON.stringify(readyLease(now)));
     now += 90_000;
-    assert.equal(controller.tick().status, "unavailable");
+    assert.equal(controller.tick().status, "ready");
+    await Promise.resolve();
+    assert.deepEqual(operations, ["join", "status", "status"]);
+    controller.receive(JSON.stringify(readyLease(now)));
+    now += SHOWCASE_LEASE_DURATION_MS;
+    assert.equal(controller.tick().status, "expired");
+});
+
+test("backgrounding suspends the same visitor and resume rehydrates with status without resetting the wait", async () => {
+    let now = 1_700_000_000_000;
+    const operations = [];
+    const sources = [];
+    const timers = [];
+    const firstDeadline = now + 80_000;
+    const service = {
+        async request(operation) {
+            operations.push(operation);
+            if (operation === "join") return waitingLease(now, 2);
+            return { ...waitingLease(now, 2), activeLeaseExpiresAt: now + 120_000 };
+        },
+        subscribe() {
+            const source = { closed: false, close() { this.closed = true; } };
+            sources.push(source);
+            return source;
+        },
+        releaseWithBeacon() { throw new Error("backgrounding must not leave"); },
+    };
+    const controller = createQueueLeaseController({
+        service,
+        now: () => now,
+        setTimer(callback, delay) {
+            timers.push({ callback, delay });
+            return timers.length;
+        },
+        clearTimer() {},
+    });
+
+    await controller.start();
+    assert.equal(controller.getLease().activeLeaseExpiresAt, firstDeadline);
+    controller.suspend();
+    assert.equal(controller.isStarted(), true);
+    assert.equal(controller.isSuspended(), true);
+    assert.equal(sources[0].closed, true);
+
+    now += 5_000;
+    await controller.resume();
+    assert.deepEqual(operations, ["join", "status"]);
+    assert.equal(controller.isSuspended(), false);
+    assert.equal(sources.length, 2);
+    assert.equal(controller.getLease().position, 2);
+    assert.equal(controller.getLease().activeLeaseExpiresAt, firstDeadline);
+});
+
+test("a transient reconnect failure preserves the broker lease and its ticket", async () => {
+    const now = 1_700_000_000_000;
+    const operations = [];
+    const service = {
+        async request(operation) {
+            operations.push(operation);
+            if (operation === "join") return readyLease(now);
+            throw new Error("briefly offline");
+        },
+        subscribe() { return { close() {} }; },
+    };
+    const controller = createQueueLeaseController({
+        service,
+        now: () => now,
+        setTimer() { return 1; },
+        clearTimer() {},
+    });
+
+    await controller.start();
+    const ticket = controller.getLease().session.token;
+    controller.suspend();
+    await controller.resume();
+    assert.deepEqual(operations, ["join", "status"]);
+    assert.equal(controller.getLease().status, "ready");
+    assert.equal(controller.getLease().session.token, ticket);
 });
 
 test("only the dedicated Showcase host can use the fixed same-origin broker paths", async () => {

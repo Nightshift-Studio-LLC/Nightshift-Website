@@ -3,12 +3,16 @@ import test from "node:test";
 import {
     SHOWCASE_COMMANDS,
     SHOWCASE_NOTIFICATION_CODES,
+    SHOWCASE_LIFECYCLE_MESSAGE,
+    SHOWCASE_LIFECYCLE_VERSION,
     SHOWCASE_PARENT_ORIGIN,
     SHOWCASE_PROTOCOL_VERSION,
     SHOWCASE_SHELL_READY_MESSAGE,
     SHOWCASE_SHELL_READY_VERSION,
+    announceShowcaseLifecycle,
     announceShowcaseShellReady,
     createShowcaseCommand,
+    getShowcaseLifecycleFromLease,
     isShowcaseSessionExpiring,
     parseShowcaseResult,
     setShowcaseEmbeddedMode,
@@ -55,6 +59,37 @@ test("the framed shell announces readiness only to its exact parent origin", () 
         location: { hostname: "127.0.0.1", origin: "http://127.0.0.1:4174" },
     }), true);
     assert.equal(calls.at(-1).origin, "http://127.0.0.1:4174");
+});
+
+test("the framed shell sends only fixed lifecycle states to the exact parent origin", () => {
+    const calls = [];
+    const parent = { postMessage(message, origin) { calls.push({ message, origin }); } };
+    const top = {};
+    const windowRef = {
+        self: {},
+        top,
+        parent,
+        location: { hostname: "showcase.ns-tx.com", origin: "https://showcase.ns-tx.com" },
+    };
+
+    assert.equal(announceShowcaseLifecycle(windowRef, "queued"), true);
+    assert.deepEqual(calls, [{
+        message: {
+            type: SHOWCASE_LIFECYCLE_MESSAGE,
+            version: SHOWCASE_LIFECYCLE_VERSION,
+            state: "queued",
+        },
+        origin: SHOWCASE_PARENT_ORIGIN,
+    }]);
+    assert.equal(announceShowcaseLifecycle(windowRef, "waiting"), false);
+    assert.equal(calls.length, 1);
+
+    assert.equal(getShowcaseLifecycleFromLease({ status: "idle" }), "idle");
+    assert.equal(getShowcaseLifecycleFromLease({ status: "waiting" }), "queued");
+    assert.equal(getShowcaseLifecycleFromLease({ status: "starting" }), "preparing");
+    assert.equal(getShowcaseLifecycleFromLease({ status: "ready" }), "connecting");
+    assert.equal(getShowcaseLifecycleFromLease({ status: "expired" }), "cleanup");
+    assert.equal(getShowcaseLifecycleFromLease({ status: "unavailable" }), "failure");
 });
 
 test("each public control has one fixed no-argument command envelope", () => {
@@ -196,8 +231,8 @@ test("viewport notifications use fixed copy for connecting, stream failures, and
 
     assert.deepEqual(SHOWCASE_NOTIFICATION_CODES.connecting, {
         level: "warning",
-        title: "Opening your demo",
-        message: "LandSnap is loading. The controls will unlock when the demo is ready.",
+        title: "Connecting to stream",
+        message: "Your Unreal session is ready. We’re connecting the browser stream now.",
     });
     assert.deepEqual(SHOWCASE_NOTIFICATION_CODES.server_offline, {
         level: "error",

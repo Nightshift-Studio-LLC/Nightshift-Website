@@ -319,6 +319,20 @@ body.landsnap-showcase-page.landsnap-showcase-embedded {
     display: none;
 }
 
+.landsnap-showcase-preparation-estimate {
+    margin: 18px 0 0;
+    padding: 12px 14px;
+    border-left: 2px solid #e7d077;
+    background: rgba(231, 208, 119, 0.08);
+    color: #fff1b3;
+    font: 600 0.68rem/1.5 "IBM Plex Mono", monospace;
+    letter-spacing: 0.04em;
+}
+
+.landsnap-showcase-preparation-estimate[hidden] {
+    display: none;
+}
+
 .landsnap-showcase-launch-progress li {
     position: relative;
     min-height: 22px;
@@ -452,6 +466,7 @@ body.landsnap-showcase-page.landsnap-showcase-embedded {
 }
 
 .landsnap-showcase-queue-metrics[hidden],
+.landsnap-showcase-preparation-estimate[hidden],
 .landsnap-showcase-queue-card .landsnap-showcase-queue-note[hidden],
 .landsnap-showcase-launch-progress[hidden] {
     display: none;

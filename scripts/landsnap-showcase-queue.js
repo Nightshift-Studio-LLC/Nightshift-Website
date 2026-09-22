@@ -44,6 +44,8 @@ const isSafeTimestamp = (value) => Number.isSafeInteger(value) && value > 0;
 const clamp = (value, minimum, maximum) => Math.min(Math.max(value, minimum), maximum);
 const createIdleLease = () => Object.freeze({ status: "idle" });
 const createUnavailableLease = () => Object.freeze({ status: "unavailable" });
+const createExpiredLease = () => Object.freeze({ status: "expired" });
+const createCleanupLease = () => Object.freeze({ status: "cleanup" });
 const isBrokerSessionUrl = (value) => typeof value === "string"
     && value.startsWith(SESSION_URL_PREFIX)
     && !value.includes("?")
@@ -257,6 +259,7 @@ export const createQueueLeaseController = ({
     let timer = null;
     let eventSource = null;
     let started = false;
+    let suspended = false;
 
     const publish = () => {
         onUpdate(lease);
@@ -268,7 +271,7 @@ export const createQueueLeaseController = ({
     };
     const schedule = (delay) => {
         stopTimer();
-        if (!started || typeof setTimer !== "function") return;
+        if (!started || suspended || typeof setTimer !== "function") return;
         timer = setTimer(() => { void refresh(); }, delay);
     };
     const scheduleForLease = (next) => {
@@ -295,18 +298,24 @@ export const createQueueLeaseController = ({
     };
     const nextOperation = () => lease.status === "ready" ? "heartbeat" : "status";
     const refresh = async (operation = nextOperation()) => {
-        if (!started) return lease;
+        if (!started || suspended) return lease;
         try {
             return apply(await service.request(operation));
         } catch {
-            lease = createUnavailableLease();
-            publish();
+            // Preserve the last broker-owned timing while a backgrounded phone
+            // or a brief network interruption reconnects. Replacing a waiting
+            // lease here would allow the next status response to reset its
+            // displayed deadline.
+            if (!["waiting", "starting", "ready"].includes(lease.status)) {
+                lease = createUnavailableLease();
+                publish();
+            }
             schedule(MAX_POLL_MS);
             return lease;
         }
     };
     const handleEvent = (raw) => {
-        if (!started || typeof raw !== "string" || raw.length > 1_024) return lease;
+        if (!started || suspended || typeof raw !== "string" || raw.length > 1_024) return lease;
         try {
             return apply(JSON.parse(raw));
         } catch {
@@ -317,27 +326,50 @@ export const createQueueLeaseController = ({
         if (eventSource && typeof eventSource.close === "function") eventSource.close();
         eventSource = null;
     };
+    const openEventSource = () => {
+        closeEventSource();
+        if (!started || suspended || typeof service.subscribe !== "function") return;
+        try {
+            eventSource = service.subscribe(handleEvent);
+        } catch {
+            eventSource = null;
+        }
+    };
+    const suspend = () => {
+        if (!started || suspended) return lease;
+        suspended = true;
+        stopTimer();
+        closeEventSource();
+        return lease;
+    };
+    const resume = async () => {
+        if (!started || !suspended) return lease;
+        suspended = false;
+        openEventSource();
+        return refresh("status");
+    };
 
     return Object.freeze({
         async start() {
             if (started) return lease;
             started = true;
-            lease = Object.freeze({ status: "starting" });
+            suspended = false;
+            lease = Object.freeze({ status: "requesting" });
             publish();
-            if (typeof service.subscribe === "function") {
-                try {
-                    eventSource = service.subscribe(handleEvent);
-                } catch {
-                    eventSource = null;
-                }
-            }
+            openEventSource();
             return refresh("join");
         },
         tick() {
-            if (lease.status === "ready" && !isReadyQueueLease(lease, now())) {
-                lease = createUnavailableLease();
+            const timestamp = now();
+            if (lease.status === "ready" && lease.expiresAt <= timestamp) {
+                lease = createExpiredLease();
                 publish();
                 schedule(MIN_POLL_MS);
+            } else if (lease.status === "ready" && lease.session.expiresAt <= timestamp) {
+                // The short-lived connection ticket can expire while the
+                // five-minute visitor lease is still valid. Rehydrate it from
+                // the broker instead of presenting the visitor as expired.
+                void refresh("status");
             }
             return lease;
         },
@@ -347,12 +379,13 @@ export const createQueueLeaseController = ({
         async recheck() {
             if (!started) return lease;
             stopTimer();
-            lease = createUnavailableLease();
-            publish();
             return refresh("status");
         },
         async leave() {
+            lease = createCleanupLease();
+            publish();
             started = false;
+            suspended = false;
             stopTimer();
             closeEventSource();
             try {
@@ -363,14 +396,10 @@ export const createQueueLeaseController = ({
             lease = createIdleLease();
             return publish();
         },
-        releaseOnPageHide() {
-            started = false;
-            stopTimer();
-            closeEventSource();
-            if (typeof service.releaseWithBeacon === "function") service.releaseWithBeacon();
-            lease = createIdleLease();
-            return publish();
-        },
+        suspend,
+        resume,
+        isSuspended: () => suspended,
+        releaseOnPageHide: suspend,
     });
 };
 
@@ -378,6 +407,7 @@ const getQueueSurface = (documentRef) => ({
     document: documentRef,
     overlay: documentRef.getElementById("landsnap-showcase-queue-overlay"),
     alert: documentRef.getElementById("landsnap-showcase-queue-alert"),
+    alertIcon: documentRef.querySelector(".landsnap-showcase-queue-alert-icon"),
     alertText: documentRef.getElementById("landsnap-showcase-queue-alert-text"),
     title: documentRef.getElementById("landsnap-showcase-queue-title"),
     message: documentRef.getElementById("landsnap-showcase-queue-message"),
@@ -389,6 +419,7 @@ const getQueueSurface = (documentRef) => ({
     estimate: documentRef.getElementById("landsnap-showcase-queue-estimate"),
     metrics: documentRef.querySelector(".landsnap-showcase-queue-metrics"),
     note: documentRef.querySelector(".landsnap-showcase-queue-note"),
+    preparation: documentRef.getElementById("landsnap-showcase-preparation-estimate"),
     launchProgress: documentRef.getElementById("landsnap-showcase-launch-progress"),
     backgrounds: typeof documentRef.querySelectorAll === "function"
         ? [...documentRef.querySelectorAll(".landsnap-showcase-topbar, .landsnap-showcase-heading, .landsnap-showcase-stream-column, .landsnap-showcase-panel")]
@@ -430,25 +461,53 @@ export const getQueuePresentation = (lease, now = Date.now()) => {
         });
     }
 
+    if (state === "requesting") {
+        return Object.freeze({
+            visible: true,
+            state,
+            alert: "Checking availability",
+            title: "Requesting your demo",
+            message: "We’re checking the live demo and will keep your place on this browser.",
+            position: "—",
+            estimate: "—",
+            countdown: "—",
+            countdownSeconds: 0,
+            showMetrics: false,
+            showPreparation: false,
+            preparation: "",
+            showNote: false,
+            showLaunchProgress: false,
+            note: "",
+            showTryDemo: false,
+            showRetry: false,
+            showLeave: true,
+            showEndSession: false,
+        });
+    }
+
     if (starting) {
         return Object.freeze({
             visible: true,
             state,
-            alert: startupEstimatePassed ? "Taking a little longer" : "Your demo is reserved",
-            title: "Starting your demo",
+            alert: startupEstimatePassed ? "Still preparing" : "Preparing your demo",
+            title: "Preparing your demo",
             message: startupEstimatePassed
-                ? "This is taking a little longer than expected. Keep this page open; your demo will start automatically when it is ready."
-                : "Keep this page open. Your demo will start automatically as soon as it is ready.",
-            position: "Reserved",
-            estimate: startupEstimatePassed ? "Still working" : `${formatQueueCountdown(startupDelay)} estimated`,
+                ? "Unreal Editor is taking a little longer than expected. Your session is still reserved and will open automatically."
+                : "Unreal Editor and the stream are starting for you. Your session will open automatically when they are ready.",
+            position: "—",
+            estimate: "—",
             countdown: startupEstimatePassed ? "00:00+" : formatQueueCountdown(startupDelay),
             countdownSeconds: Math.ceil(startupDelay / 1_000),
-            showMetrics: true,
+            showMetrics: false,
+            showPreparation: true,
+            preparation: startupEstimatePassed
+                ? "Startup is taking longer than estimated"
+                : `Estimated startup: ${formatQueueCountdown(startupDelay)}`,
             showNote: true,
             showLaunchProgress: true,
             note: startupEstimatePassed
-                ? "The demo is still preparing. You can leave if you do not want to keep waiting."
-                : "Startup time is an estimate and may vary.",
+                ? "You can leave if you do not want to keep waiting."
+                : "Cold-start time is an estimate and may vary.",
             showTryDemo: false,
             showRetry: false,
             showLeave: true,
@@ -468,12 +527,40 @@ export const getQueuePresentation = (lease, now = Date.now()) => {
             countdown: formatQueueCountdown(delay),
             countdownSeconds: Math.ceil(delay / 1_000),
             showMetrics: true,
+            showPreparation: false,
+            preparation: "",
             showNote: true,
             showLaunchProgress: false,
             note: "Waits are based on the five-minute limit and may be shorter if a demo ends early.",
             showTryDemo: false,
             showRetry: false,
             showLeave: true,
+            showEndSession: false,
+        });
+    }
+
+    if (state === "cleanup" || state === "expired") {
+        return Object.freeze({
+            visible: true,
+            state,
+            alert: state === "expired" ? "Session ended" : "Ending session",
+            title: state === "expired" ? "Your demo time has ended" : "Cleaning up your demo",
+            message: state === "expired"
+                ? "The five-minute session has ended. You can request another demo when cleanup is complete."
+                : "We’re releasing the stream and clearing the prepared scene.",
+            position: "—",
+            estimate: "—",
+            countdown: "—",
+            countdownSeconds: 0,
+            showMetrics: false,
+            showPreparation: false,
+            preparation: "",
+            showNote: false,
+            showLaunchProgress: false,
+            note: "",
+            showTryDemo: false,
+            showRetry: state === "expired",
+            showLeave: false,
             showEndSession: false,
         });
     }
@@ -489,6 +576,8 @@ export const getQueuePresentation = (lease, now = Date.now()) => {
         countdown: "—",
         countdownSeconds: 0,
         showMetrics: false,
+        showPreparation: false,
+        preparation: "",
         showNote: false,
         showLaunchProgress: false,
         note: "",
@@ -507,6 +596,17 @@ const renderQueueSurface = (surface, lease, now = Date.now()) => {
     surface.overlay.hidden = !presentation.visible;
     surface.overlay.dataset.queueState = presentation.state;
     if (surface.alert) surface.alert.hidden = !presentation.visible;
+    if (surface.alertIcon) {
+        surface.alertIcon.textContent = ({
+            idle: "●",
+            requesting: "…",
+            starting: "◷",
+            waiting: "◷",
+            cleanup: "◷",
+            expired: "⚠",
+            unavailable: "⚠",
+        })[presentation.state] || "●";
+    }
     if (surface.alertText) surface.alertText.textContent = presentation.alert;
     if (surface.title) surface.title.textContent = presentation.title;
     if (surface.message) surface.message.textContent = presentation.message;
@@ -532,12 +632,16 @@ const renderQueueSurface = (surface, lease, now = Date.now()) => {
         surface.estimate.dateTime = `PT${presentation.countdownSeconds}S`;
     }
     if (surface.metrics) surface.metrics.hidden = !presentation.showMetrics;
+    if (surface.preparation) {
+        surface.preparation.hidden = !presentation.showPreparation;
+        surface.preparation.textContent = presentation.preparation || "";
+    }
     if (surface.note) {
         surface.note.hidden = !presentation.showNote;
         surface.note.textContent = presentation.note;
     }
     if (surface.launchProgress) surface.launchProgress.hidden = !presentation.showLaunchProgress;
-    if (presentation.state === "starting" || presentation.state === "waiting" || presentation.state === "unavailable") {
+    if (["requesting", "starting", "waiting", "cleanup", "expired", "unavailable"].includes(presentation.state)) {
         surface.overlay.setAttribute("aria-busy", "true");
     } else {
         surface.overlay.removeAttribute("aria-busy");
@@ -610,10 +714,14 @@ export const installShowcaseQueueGate = (windowRef = globalThis.window, document
         const lease = controller.tick();
         renderQueueSurface(surface, lease);
     }, 1_000);
-    windowRef.addEventListener("pagehide", () => {
-        windowRef.clearInterval(clock);
-        controller.releaseOnPageHide();
-    }, { once: true });
+    const suspendQueue = () => controller.suspend();
+    const resumeQueue = () => { void controller.resume(); };
+    documentRef.addEventListener?.("visibilitychange", () => {
+        if (documentRef.visibilityState === "hidden") suspendQueue();
+        else resumeQueue();
+    });
+    windowRef.addEventListener("pagehide", suspendQueue);
+    windowRef.addEventListener("pageshow", resumeQueue);
     return controller;
 };
 

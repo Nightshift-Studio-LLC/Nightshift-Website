@@ -3,10 +3,13 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 import {
     SHOWCASE_EMBED_ORIGIN,
+    SHOWCASE_LIFECYCLE_MESSAGE,
+    SHOWCASE_LIFECYCLE_VERSION,
     SHOWCASE_LOCAL_PREVIEW_PATH,
     SHOWCASE_SHELL_READY_MESSAGE,
     SHOWCASE_SHELL_READY_VERSION,
     installEmbeddedShowcase,
+    parseEmbeddedShowcaseMessage,
     resolveEmbeddedShowcaseOrigin,
     resolveEmbeddedShowcaseSource,
 } from "../scripts/landsnap-showcase-embed.js";
@@ -20,7 +23,7 @@ test("the product page embeds the fixed dedicated Showcase host without top-leve
     assert.match(productPage, /data-landsnap-showcase-frame/);
     assert.match(productPage, /data-landsnap-showcase-status/);
     assert.match(productPage, /data-landsnap-showcase-retry/);
-    assert.match(productPage, /src="https:\/\/showcase\.ns-tx\.com\/"/);
+    assert.match(productPage, /src="https:\/\/showcase\.ns-tx\.com\/\?v=20260922-session-lifecycle"/);
     assert.match(productPage, /landsnap-showcase-embed\.js/);
     assert.match(productPage, /allow="autoplay; fullscreen; clipboard-read; clipboard-write"/);
     assert.match(productPage, /sandbox="allow-scripts allow-same-origin allow-forms allow-pointer-lock allow-presentation"/);
@@ -50,11 +53,13 @@ test("the product shell stays nonblank until an exact-origin child handshake arr
     };
     const expander = {
         open: true,
+        dataset: {},
         addEventListener(type, listener) { listeners.set(`details:${type}`, listener); },
         removeEventListener() {},
     };
     const frame = {
         contentWindow: childWindow,
+        dataset: {},
         getAttribute(name) { return attributes.get(name) ?? null; },
         setAttribute(name, value) { attributes.set(name, value); },
         addEventListener(type, listener) { listeners.set(`frame:${type}`, listener); },
@@ -109,6 +114,15 @@ test("the product shell stays nonblank until an exact-origin child handshake arr
     assert.equal(status.hidden, true);
     assert.equal(attributes.get("aria-busy"), "false");
 
+    listeners.get("window:message")({
+        source: childWindow,
+        origin: "https://showcase.ns-tx.com",
+        data: { type: SHOWCASE_LIFECYCLE_MESSAGE, version: SHOWCASE_LIFECYCLE_VERSION, state: "idle" },
+    });
+    assert.equal(status.hidden, true);
+    assert.equal(frame.dataset.showcaseState, "idle");
+    assert.equal(expander.dataset.showcaseState, "idle");
+
     retryListeners.get("click")();
     assert.equal(status.dataset.state, "loading");
     assert.equal(attributes.get("src"), "about:blank");
@@ -122,6 +136,29 @@ test("the product shell stays nonblank until an exact-origin child handshake arr
     assert.equal(status.dataset.state, "unavailable");
     assert.equal(title.textContent, "Demo temporarily unavailable");
     assert.equal(retry.hidden, false);
+});
+
+test("the parent mirrors only exact child lifecycle messages without treating idle as unavailable", () => {
+    assert.deepEqual(parseEmbeddedShowcaseMessage({
+        type: SHOWCASE_LIFECYCLE_MESSAGE,
+        version: SHOWCASE_LIFECYCLE_VERSION,
+        state: "queued",
+    }), { kind: "lifecycle", state: "queued" });
+    assert.deepEqual(parseEmbeddedShowcaseMessage({
+        type: SHOWCASE_SHELL_READY_MESSAGE,
+        version: SHOWCASE_SHELL_READY_VERSION,
+    }), { kind: "shell-ready" });
+    assert.equal(parseEmbeddedShowcaseMessage({
+        type: SHOWCASE_LIFECYCLE_MESSAGE,
+        version: SHOWCASE_LIFECYCLE_VERSION,
+        state: "waiting",
+    }), null);
+    assert.equal(parseEmbeddedShowcaseMessage({
+        type: SHOWCASE_LIFECYCLE_MESSAGE,
+        version: SHOWCASE_LIFECYCLE_VERSION,
+        state: "idle",
+        message: "forged",
+    }), null);
 });
 
 test("the initial frame reload starts only after the parent handshake listener is installed", () => {
