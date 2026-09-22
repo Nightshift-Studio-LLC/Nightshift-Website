@@ -17,15 +17,19 @@ export const SHOWCASE_QUEUE_EVENTS_PATH = "/api/landsnap-showcase/queue/v1/event
 const PUBLIC_SHOWCASE_HOSTS = new Set(["showcase.ns-tx.com"]);
 const LOCAL_SHOWCASE_HOSTS = new Set(["127.0.0.1", "localhost", "[::1]"]);
 const RESPONSE_KEYS = Object.freeze({
-    starting: Object.freeze(["expectedReadyAt", "leaseId", "pollAfterMs", "protocol", "status"]),
-    waiting: Object.freeze(["activeLeaseExpiresAt", "pollAfterMs", "position", "protocol", "status"]),
-    ready: Object.freeze(["expiresAt", "heartbeatAfterMs", "leaseId", "protocol", "sessionExpiresAt", "sessionToken", "sessionUrl", "status"]),
+    waiting: Object.freeze(["activeLeaseDeadline", "estimatedWaitMs", "pollAfterMs", "position", "protocol", "status"]),
+    starting: Object.freeze(["expectedReadyAt", "leaseId", "phase", "pollAfterMs", "preparationExpiresAt", "preparationOverdue", "preparationRemainingMs", "protocol", "status"]),
+    ready: Object.freeze(["heartbeatAfterMs", "leaseId", "phase", "protocol", "readyClaimExpiresAt", "sessionToken", "sessionTokenExpiresAt", "sessionUrl", "status"]),
+    active: Object.freeze(["heartbeatAfterMs", "leaseId", "phase", "protocol", "sessionExpiresAt", "status"]),
+    ended: Object.freeze(["endedAt", "pollAfterMs", "protocol", "reason", "status"]),
+    idle: Object.freeze(["pollAfterMs", "protocol", "status"]),
 });
 const MIN_POLL_MS = 1_000;
 const MAX_POLL_MS = 5_000;
 const MIN_HEARTBEAT_MS = 5_000;
 const MAX_HEARTBEAT_MS = 60_000;
 const MAX_SESSION_TICKET_MS = 2 * 60 * 1000;
+const MAX_PUBLIC_WAIT_MS = 12 * 60 * 60 * 1000;
 const QUEUE_OPERATIONS = new Set(["join", "status", "heartbeat", "leave"]);
 const OPAQUE_ID_PATTERN = /^[A-Za-z0-9_-]{16,128}$/;
 const SESSION_TOKEN_PATTERN = /^[A-Za-z0-9._~-]{24,512}$/;
@@ -61,17 +65,34 @@ export const isPublicShowcaseHost = (hostname) =>
 export const parseQueueLease = (raw, now = Date.now()) => {
     if (!isPlainRecord(raw) || raw.protocol !== SHOWCASE_QUEUE_PROTOCOL_VERSION) return null;
 
+    if (raw.status === "idle") {
+        if (!hasExactKeys(raw, RESPONSE_KEYS.idle) || !Number.isSafeInteger(raw.pollAfterMs)) return null;
+        return Object.freeze({
+            status: "idle",
+            pollAfterMs: clamp(raw.pollAfterMs, MIN_POLL_MS, MAX_POLL_MS),
+        });
+    }
+
     if (raw.status === "starting") {
         if (!hasExactKeys(raw, RESPONSE_KEYS.starting)
+            || raw.phase !== "preparing"
             || typeof raw.leaseId !== "string"
             || !OPAQUE_ID_PATTERN.test(raw.leaseId)
+            || !isSafeTimestamp(raw.preparationExpiresAt)
             || !isSafeTimestamp(raw.expectedReadyAt)
+            || raw.expectedReadyAt !== raw.preparationExpiresAt
+            || !Number.isSafeInteger(raw.preparationRemainingMs)
+            || raw.preparationRemainingMs < 0
+            || typeof raw.preparationOverdue !== "boolean"
             || !Number.isSafeInteger(raw.pollAfterMs)) return null;
 
         return Object.freeze({
             status: "starting",
             leaseId: raw.leaseId,
-            expectedReadyAt: Math.max(raw.expectedReadyAt, now),
+            preparationExpiresAt: raw.preparationExpiresAt,
+            expectedReadyAt: raw.expectedReadyAt,
+            preparationRemainingMs: raw.preparationRemainingMs,
+            preparationOverdue: raw.preparationOverdue,
             pollAfterMs: clamp(raw.pollAfterMs, MIN_POLL_MS, MAX_POLL_MS),
         });
     }
@@ -81,41 +102,80 @@ export const parseQueueLease = (raw, now = Date.now()) => {
             || !Number.isSafeInteger(raw.position)
             || raw.position < 1
             || raw.position > 100
-            || !isSafeTimestamp(raw.activeLeaseExpiresAt)
+            || !Number.isSafeInteger(raw.estimatedWaitMs)
+            || raw.estimatedWaitMs < 0
+            || raw.estimatedWaitMs > MAX_PUBLIC_WAIT_MS
+            || !(raw.activeLeaseDeadline === null || isSafeTimestamp(raw.activeLeaseDeadline))
             || !Number.isSafeInteger(raw.pollAfterMs)) return null;
 
+        const estimatedWaitEndsAt = now + raw.estimatedWaitMs;
         return Object.freeze({
             status: "waiting",
             position: raw.position,
-            activeLeaseExpiresAt: Math.max(raw.activeLeaseExpiresAt, now),
+            estimatedWaitMs: raw.estimatedWaitMs,
+            estimatedWaitEndsAt,
+            activeLeaseDeadline: raw.activeLeaseDeadline,
             pollAfterMs: clamp(raw.pollAfterMs, MIN_POLL_MS, MAX_POLL_MS),
         });
     }
 
     if (raw.status === "ready") {
         if (!hasExactKeys(raw, RESPONSE_KEYS.ready)
+            || raw.phase !== "ready"
             || typeof raw.leaseId !== "string"
             || !OPAQUE_ID_PATTERN.test(raw.leaseId)
-            || !isSafeTimestamp(raw.expiresAt)
+            || !isSafeTimestamp(raw.readyClaimExpiresAt)
             || !Number.isSafeInteger(raw.heartbeatAfterMs)
             || !isBrokerSessionUrl(raw.sessionUrl)
             || typeof raw.sessionToken !== "string"
             || !SESSION_TOKEN_PATTERN.test(raw.sessionToken)
-            || !isSafeTimestamp(raw.sessionExpiresAt)) return null;
+            || !isSafeTimestamp(raw.sessionTokenExpiresAt)) return null;
 
-        const expiresAt = Math.min(raw.expiresAt, now + SHOWCASE_LEASE_DURATION_MS);
-        const sessionExpiresAt = Math.min(raw.sessionExpiresAt, expiresAt, now + MAX_SESSION_TICKET_MS);
-        if (expiresAt <= now || sessionExpiresAt <= now) return null;
+        const readyClaimExpiresAt = raw.readyClaimExpiresAt;
+        const sessionTokenExpiresAt = Math.min(raw.sessionTokenExpiresAt, readyClaimExpiresAt, now + MAX_SESSION_TICKET_MS);
+        if (readyClaimExpiresAt <= now || sessionTokenExpiresAt <= now) return null;
         return Object.freeze({
             status: "ready",
             leaseId: raw.leaseId,
-            expiresAt,
+            readyClaimExpiresAt,
             heartbeatAfterMs: clamp(raw.heartbeatAfterMs, MIN_HEARTBEAT_MS, MAX_HEARTBEAT_MS),
             session: Object.freeze({
                 url: raw.sessionUrl,
                 token: raw.sessionToken,
-                expiresAt: sessionExpiresAt,
+                expiresAt: sessionTokenExpiresAt,
             }),
+        });
+    }
+
+    if (raw.status === "active") {
+        if (!hasExactKeys(raw, RESPONSE_KEYS.active)
+            || raw.phase !== "active"
+            || typeof raw.leaseId !== "string"
+            || !OPAQUE_ID_PATTERN.test(raw.leaseId)
+            || !isSafeTimestamp(raw.sessionExpiresAt)
+            || raw.sessionExpiresAt <= now
+            || !Number.isSafeInteger(raw.heartbeatAfterMs)) return null;
+
+        return Object.freeze({
+            status: "active",
+            leaseId: raw.leaseId,
+            sessionExpiresAt: raw.sessionExpiresAt,
+            heartbeatAfterMs: clamp(raw.heartbeatAfterMs, MIN_HEARTBEAT_MS, MAX_HEARTBEAT_MS),
+        });
+    }
+
+    if (raw.status === "ended") {
+        if (!hasExactKeys(raw, RESPONSE_KEYS.ended)
+            || typeof raw.reason !== "string"
+            || !/^[a-z0-9_-]{1,64}$/.test(raw.reason)
+            || !isSafeTimestamp(raw.endedAt)
+            || !Number.isSafeInteger(raw.pollAfterMs)) return null;
+
+        return Object.freeze({
+            status: "ended",
+            reason: raw.reason,
+            endedAt: raw.endedAt,
+            pollAfterMs: clamp(raw.pollAfterMs, MIN_POLL_MS, MAX_POLL_MS),
         });
     }
 
@@ -126,8 +186,8 @@ export const isReadyQueueLease = (lease, now = Date.now()) =>
     isPlainRecord(lease)
     && lease.status === "ready"
     && typeof lease.leaseId === "string"
-    && isSafeTimestamp(lease.expiresAt)
-    && lease.expiresAt > now
+    && isSafeTimestamp(lease.readyClaimExpiresAt)
+    && lease.readyClaimExpiresAt > now
     && isPlainRecord(lease.session)
     && isBrokerSessionUrl(lease.session.url)
     && typeof lease.session.token === "string"
@@ -141,8 +201,7 @@ export const isReadyQueueLease = (lease, now = Date.now()) =>
  */
 export const calculateQueueWaitMs = (lease, now = Date.now()) => {
     if (!lease || lease.status !== "waiting") return 0;
-    const activeRemaining = Math.max(0, lease.activeLeaseExpiresAt - now);
-    return activeRemaining + SHOWCASE_LEASE_DURATION_MS * Math.max(0, lease.position - 1);
+    return Math.max(0, lease.estimatedWaitEndsAt - now);
 };
 
 export const formatQueueCountdown = (milliseconds) => {
@@ -163,6 +222,7 @@ export const stabilizeQueueTiming = (previous, next) => {
         && previous.leaseId === next.leaseId) {
         return Object.freeze({
             ...next,
+            preparationExpiresAt: Math.min(previous.preparationExpiresAt, next.preparationExpiresAt),
             expectedReadyAt: Math.min(previous.expectedReadyAt, next.expectedReadyAt),
         });
     }
@@ -171,7 +231,7 @@ export const stabilizeQueueTiming = (previous, next) => {
         && previous.position === next.position) {
         return Object.freeze({
             ...next,
-            activeLeaseExpiresAt: Math.min(previous.activeLeaseExpiresAt, next.activeLeaseExpiresAt),
+            estimatedWaitEndsAt: Math.min(previous.estimatedWaitEndsAt, next.estimatedWaitEndsAt),
         });
     }
     return next;
@@ -234,12 +294,13 @@ export const createLocalQueueFixture = ({ now = Date.now } = {}) => Object.freez
         return Object.freeze({
             protocol: SHOWCASE_QUEUE_PROTOCOL_VERSION,
             status: "ready",
+            phase: "ready",
             leaseId: "local-showcase-fixture-lease",
-            expiresAt: now() + SHOWCASE_LEASE_DURATION_MS,
+            readyClaimExpiresAt: now() + MAX_SESSION_TICKET_MS,
             heartbeatAfterMs: 15_000,
             sessionUrl: "/api/landsnap-showcase/session/v1/player/local-showcase-fixture",
             sessionToken: "local-showcase-session-ticket-0001",
-            sessionExpiresAt: now() + MAX_SESSION_TICKET_MS,
+            sessionTokenExpiresAt: now() + MAX_SESSION_TICKET_MS,
         });
     },
     subscribe() { return null; },
@@ -276,11 +337,16 @@ export const createQueueLeaseController = ({
     };
     const scheduleForLease = (next) => {
         if (next.status === "ready") {
-            schedule(Math.min(next.heartbeatAfterMs, Math.max(MIN_POLL_MS, next.session.expiresAt - now() - 1_000)));
+            const refreshAt = Math.min(next.readyClaimExpiresAt, next.session.expiresAt);
+            schedule(Math.min(next.heartbeatAfterMs, Math.max(MIN_POLL_MS, refreshAt - now() - 1_000)));
+        } else if (next.status === "active") {
+            schedule(Math.min(next.heartbeatAfterMs, Math.max(MIN_POLL_MS, next.sessionExpiresAt - now() - 1_000)));
         } else if (next.status === "starting" || next.status === "waiting") {
             schedule(next.pollAfterMs);
+        } else if (next.status === "ended") {
+            schedule(next.pollAfterMs);
         } else {
-            schedule(MAX_POLL_MS);
+            stopTimer();
         }
     };
     const apply = (raw) => {
@@ -293,10 +359,17 @@ export const createQueueLeaseController = ({
         }
         lease = stabilizeQueueTiming(lease, next);
         publish();
+        if (lease.status === "idle") {
+            started = false;
+            suspended = false;
+            stopTimer();
+            closeEventSource();
+            return lease;
+        }
         scheduleForLease(lease);
         return lease;
     };
-    const nextOperation = () => lease.status === "ready" ? "heartbeat" : "status";
+    const nextOperation = () => ["ready", "active"].includes(lease.status) ? "heartbeat" : "status";
     const refresh = async (operation = nextOperation()) => {
         if (!started || suspended) return lease;
         try {
@@ -306,7 +379,7 @@ export const createQueueLeaseController = ({
             // or a brief network interruption reconnects. Replacing a waiting
             // lease here would allow the next status response to reset its
             // displayed deadline.
-            if (!["waiting", "starting", "ready"].includes(lease.status)) {
+            if (!["waiting", "starting", "ready", "active"].includes(lease.status)) {
                 lease = createUnavailableLease();
                 publish();
             }
@@ -359,16 +432,26 @@ export const createQueueLeaseController = ({
             openEventSource();
             return refresh("join");
         },
+        async restart() {
+            started = true;
+            suspended = false;
+            stopTimer();
+            closeEventSource();
+            lease = Object.freeze({ status: "requesting" });
+            publish();
+            openEventSource();
+            return refresh("join");
+        },
         tick() {
             const timestamp = now();
-            if (lease.status === "ready" && lease.expiresAt <= timestamp) {
+            if (lease.status === "active" && lease.sessionExpiresAt <= timestamp) {
                 lease = createExpiredLease();
                 publish();
                 schedule(MIN_POLL_MS);
-            } else if (lease.status === "ready" && lease.session.expiresAt <= timestamp) {
-                // The short-lived connection ticket can expire while the
-                // five-minute visitor lease is still valid. Rehydrate it from
-                // the broker instead of presenting the visitor as expired.
+            } else if (lease.status === "ready"
+                && (lease.readyClaimExpiresAt <= timestamp || lease.session.expiresAt <= timestamp)) {
+                // Ready contains only a short-lived claim/ticket deadline. It
+                // is never the customer's five-minute usable-session clock.
                 void refresh("status");
             }
             return lease;
@@ -417,6 +500,7 @@ const getQueueSurface = (documentRef) => ({
     endSession: documentRef.getElementById("landsnap-showcase-end-session"),
     position: documentRef.getElementById("landsnap-showcase-queue-position"),
     estimate: documentRef.getElementById("landsnap-showcase-queue-estimate"),
+    sessionCountdown: documentRef.getElementById("landsnap-showcase-session-countdown"),
     metrics: documentRef.querySelector(".landsnap-showcase-queue-metrics"),
     note: documentRef.querySelector(".landsnap-showcase-queue-note"),
     preparation: documentRef.getElementById("landsnap-showcase-preparation-estimate"),
@@ -432,12 +516,13 @@ export const getQueuePresentation = (lease, now = Date.now()) => {
     const state = lease?.status || "idle";
     const waiting = state === "waiting";
     const ready = state === "ready";
+    const active = state === "active";
     const starting = state === "starting";
     const delay = waiting ? calculateQueueWaitMs(lease, now) : 0;
-    const startupDelay = starting && Number.isSafeInteger(lease?.expectedReadyAt)
-        ? Math.max(0, lease.expectedReadyAt - now)
+    const startupEstimatePassed = starting && lease.preparationOverdue === true;
+    const activeDelay = active && Number.isSafeInteger(lease?.sessionExpiresAt)
+        ? Math.max(0, lease.sessionExpiresAt - now)
         : 0;
-    const startupEstimatePassed = starting && Number.isSafeInteger(lease?.expectedReadyAt) && startupDelay === 0;
 
     if (state === "idle") {
         return Object.freeze({
@@ -496,18 +581,18 @@ export const getQueuePresentation = (lease, now = Date.now()) => {
                 : "Unreal Editor and the stream are starting for you. Your session will open automatically when they are ready.",
             position: "—",
             estimate: "—",
-            countdown: startupEstimatePassed ? "00:00+" : formatQueueCountdown(startupDelay),
-            countdownSeconds: Math.ceil(startupDelay / 1_000),
+            countdown: "—",
+            countdownSeconds: 0,
             showMetrics: false,
             showPreparation: true,
             preparation: startupEstimatePassed
-                ? "Startup is taking longer than estimated"
-                : `Estimated startup: ${formatQueueCountdown(startupDelay)}`,
+                ? "Taking longer than estimated"
+                : "Usually ready in about 6–7 minutes",
             showNote: true,
             showLaunchProgress: true,
             note: startupEstimatePassed
-                ? "You can leave if you do not want to keep waiting."
-                : "Cold-start time is an estimate and may vary.",
+                ? "Your demo is still reserved and preparing. You can leave at any time."
+                : "Cold-start time can vary; your five-minute demo has not started yet.",
             showTryDemo: false,
             showRetry: false,
             showLeave: true,
@@ -531,7 +616,7 @@ export const getQueuePresentation = (lease, now = Date.now()) => {
             preparation: "",
             showNote: true,
             showLaunchProgress: false,
-            note: "Waits are based on the five-minute limit and may be shorter if a demo ends early.",
+            note: "This estimate updates as the current demo progresses and may become shorter.",
             showTryDemo: false,
             showRetry: false,
             showLeave: true,
@@ -539,14 +624,41 @@ export const getQueuePresentation = (lease, now = Date.now()) => {
         });
     }
 
-    if (state === "cleanup" || state === "expired") {
+    if (active) {
+        return Object.freeze({
+            visible: false,
+            state,
+            alert: "Demo active",
+            title: "Your demo is ready",
+            message: "Your five-minute interactive session is in progress.",
+            position: "—",
+            estimate: "—",
+            countdown: formatQueueCountdown(activeDelay),
+            countdownSeconds: Math.ceil(activeDelay / 1_000),
+            showMetrics: false,
+            showPreparation: false,
+            preparation: "",
+            showNote: false,
+            showLaunchProgress: false,
+            note: "",
+            showTryDemo: false,
+            showRetry: false,
+            showLeave: false,
+            showEndSession: true,
+            showSessionCountdown: true,
+            sessionCountdown: `${formatQueueCountdown(activeDelay)} remaining`,
+        });
+    }
+
+    if (state === "cleanup" || state === "expired" || state === "ended") {
+        const terminal = state === "expired" || state === "ended";
         return Object.freeze({
             visible: true,
             state,
-            alert: state === "expired" ? "Session ended" : "Ending session",
-            title: state === "expired" ? "Your demo time has ended" : "Cleaning up your demo",
-            message: state === "expired"
-                ? "The five-minute session has ended. You can request another demo when cleanup is complete."
+            alert: terminal ? "Session ended" : "Ending session",
+            title: terminal ? "Your demo has ended" : "Cleaning up your demo",
+            message: terminal
+                ? "The demo is closed and its temporary scene is being cleared. You can request another session."
                 : "We’re releasing the stream and clearing the prepared scene.",
             position: "—",
             estimate: "—",
@@ -559,7 +671,7 @@ export const getQueuePresentation = (lease, now = Date.now()) => {
             showLaunchProgress: false,
             note: "",
             showTryDemo: false,
-            showRetry: state === "expired",
+            showRetry: terminal,
             showLeave: false,
             showEndSession: false,
         });
@@ -585,6 +697,8 @@ export const getQueuePresentation = (lease, now = Date.now()) => {
         showRetry: !ready,
         showLeave: !ready,
         showEndSession: ready,
+        showSessionCountdown: false,
+        sessionCountdown: "",
     });
 };
 
@@ -626,6 +740,11 @@ const renderQueueSurface = (surface, lease, now = Date.now()) => {
         surface.endSession.hidden = !presentation.showEndSession;
         surface.endSession.disabled = !presentation.showEndSession;
     }
+    if (surface.sessionCountdown) {
+        surface.sessionCountdown.hidden = presentation.showSessionCountdown !== true;
+        surface.sessionCountdown.textContent = presentation.sessionCountdown || "";
+        surface.sessionCountdown.dateTime = `PT${presentation.countdownSeconds || 0}S`;
+    }
     if (surface.position) surface.position.textContent = presentation.position;
     if (surface.estimate) {
         surface.estimate.textContent = presentation.estimate;
@@ -641,7 +760,7 @@ const renderQueueSurface = (surface, lease, now = Date.now()) => {
         surface.note.textContent = presentation.note;
     }
     if (surface.launchProgress) surface.launchProgress.hidden = !presentation.showLaunchProgress;
-    if (["requesting", "starting", "waiting", "cleanup", "expired", "unavailable"].includes(presentation.state)) {
+    if (["requesting", "starting", "waiting", "cleanup", "expired", "ended", "unavailable"].includes(presentation.state)) {
         surface.overlay.setAttribute("aria-busy", "true");
     } else {
         surface.overlay.removeAttribute("aria-busy");
@@ -685,7 +804,9 @@ export const installShowcaseQueueGate = (windowRef = globalThis.window, document
     windowRef.LandSnapShowcaseQueue = controller;
     renderQueueSurface(surface, controller.getLease());
     const startQueue = () => void controller.start();
-    const retryQueue = () => void controller.recheck();
+    const retryQueue = () => void (controller.getLease().status === "ended"
+        ? controller.restart()
+        : controller.recheck());
     const leaveQueue = () => void controller.leave();
     if (surface.tryDemo) surface.tryDemo.addEventListener("click", startQueue);
     if (surface.retry) surface.retry.addEventListener("click", retryQueue);
@@ -713,6 +834,9 @@ export const installShowcaseQueueGate = (windowRef = globalThis.window, document
     const clock = windowRef.setInterval(() => {
         const lease = controller.tick();
         renderQueueSurface(surface, lease);
+        if (lease.status === "active") {
+            windowRef.dispatchEvent(new windowRef.CustomEvent("landsnap-showcase-lease-tick", { detail: lease }));
+        }
     }, 1_000);
     const suspendQueue = () => controller.suspend();
     const resumeQueue = () => { void controller.resume(); };

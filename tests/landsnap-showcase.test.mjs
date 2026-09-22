@@ -88,7 +88,9 @@ test("the framed shell sends only fixed lifecycle states to the exact parent ori
     assert.equal(getShowcaseLifecycleFromLease({ status: "waiting" }), "queued");
     assert.equal(getShowcaseLifecycleFromLease({ status: "starting" }), "preparing");
     assert.equal(getShowcaseLifecycleFromLease({ status: "ready" }), "connecting");
+    assert.equal(getShowcaseLifecycleFromLease({ status: "active" }), "ready");
     assert.equal(getShowcaseLifecycleFromLease({ status: "expired" }), "cleanup");
+    assert.equal(getShowcaseLifecycleFromLease({ status: "ended" }), "cleanup");
     assert.equal(getShowcaseLifecycleFromLease({ status: "unavailable" }), "failure");
 });
 
@@ -218,15 +220,10 @@ test("AutoSnap, calibration, cleanup, and outliner messages stay inside the fixe
 
 test("viewport notifications use fixed copy for connecting, stream failures, and expiring sessions", () => {
     const now = 1_700_000_000_000;
-    const readyLease = {
-        status: "ready",
-        leaseId: "ready-showcase-lease-1234",
-        expiresAt: now + 60_000,
-        session: {
-            url: "/api/landsnap-showcase/session/v1/player/showcase-player-ticket-001",
-            token: "signed-session-ticket-for-showcase-0001",
-            expiresAt: now + 60_000,
-        },
+    const activeLease = {
+        status: "active",
+        leaseId: "active-showcase-lease-1234",
+        sessionExpiresAt: now + 60_000,
     };
 
     assert.deepEqual(SHOWCASE_NOTIFICATION_CODES.connecting, {
@@ -240,7 +237,8 @@ test("viewport notifications use fixed copy for connecting, stream failures, and
         message: "The live demo disconnected. We’ll try to restore your place automatically.",
     });
     assert.equal(SHOWCASE_NOTIFICATION_CODES.session_expiring.level, "warning");
-    assert.equal(isShowcaseSessionExpiring(readyLease, now), true);
-    assert.equal(isShowcaseSessionExpiring({ ...readyLease, expiresAt: now + 60_001 }, now), false);
+    assert.equal(isShowcaseSessionExpiring(activeLease, now), true);
+    assert.equal(isShowcaseSessionExpiring({ ...activeLease, sessionExpiresAt: now + 60_001 }, now), false);
+    assert.equal(isShowcaseSessionExpiring({ status: "ready", readyClaimExpiresAt: now + 60_000 }, now), false);
     assert.equal(isShowcaseSessionExpiring({ status: "waiting" }, now), false);
 });

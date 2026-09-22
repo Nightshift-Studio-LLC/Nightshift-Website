@@ -23,7 +23,7 @@ test("the product page embeds the fixed dedicated Showcase host without top-leve
     assert.match(productPage, /data-landsnap-showcase-frame/);
     assert.match(productPage, /data-landsnap-showcase-status/);
     assert.match(productPage, /data-landsnap-showcase-retry/);
-    assert.match(productPage, /src="https:\/\/showcase\.ns-tx\.com\/\?v=20260922-session-lifecycle"/);
+    assert.match(productPage, /src="https:\/\/showcase\.ns-tx\.com\/\?v=20260922-active-session-clock"/);
     assert.match(productPage, /landsnap-showcase-embed\.js/);
     assert.match(productPage, /allow="autoplay; fullscreen; clipboard-read; clipboard-write"/);
     assert.match(productPage, /sandbox="allow-scripts allow-same-origin allow-forms allow-pointer-lock allow-presentation"/);

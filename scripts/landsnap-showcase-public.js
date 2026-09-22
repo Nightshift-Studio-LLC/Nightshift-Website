@@ -2,7 +2,7 @@
  * Installs the dedicated-host Pixel Streaming transport only after a valid
  * broker lease arrives. Public product pages never import the frontend.
  */
-import { isPublicShowcaseHost } from "./landsnap-showcase-queue.js?v=20260922-session-lifecycle";
+import { isPublicShowcaseHost } from "./landsnap-showcase-queue.js?v=20260922-active-session-clock";
 
 const SESSION_URL_PATTERN = /^\/api\/landsnap-showcase\/session\/v1\/player\/[A-Za-z0-9_-]{16,128}$/;
 const SESSION_TOKEN_PATTERN = /^[A-Za-z0-9._~-]{24,512}$/;
@@ -19,8 +19,8 @@ export const hasReadyPublicShowcaseLease = (lease, now = Date.now()) => lease
     && lease.status === "ready"
     && typeof lease.leaseId === "string"
     && OPAQUE_ID_PATTERN.test(lease.leaseId)
-    && Number.isSafeInteger(lease.expiresAt)
-    && lease.expiresAt > now
+    && Number.isSafeInteger(lease.readyClaimExpiresAt)
+    && lease.readyClaimExpiresAt > now
     && lease.session
     && typeof lease.session.url === "string"
     && SESSION_URL_PATTERN.test(lease.session.url)
@@ -28,6 +28,13 @@ export const hasReadyPublicShowcaseLease = (lease, now = Date.now()) => lease
     && SESSION_TOKEN_PATTERN.test(lease.session.token)
     && Number.isSafeInteger(lease.session.expiresAt)
     && lease.session.expiresAt > now;
+
+export const hasActivePublicShowcaseLease = (lease, now = Date.now()) => lease
+    && lease.status === "active"
+    && typeof lease.leaseId === "string"
+    && OPAQUE_ID_PATTERN.test(lease.leaseId)
+    && Number.isSafeInteger(lease.sessionExpiresAt)
+    && lease.sessionExpiresAt > now;
 
 const dispatchReady = (windowRef, transport) => {
     windowRef.dispatchEvent(new windowRef.CustomEvent("landsnap-showcase-transport-ready", {
@@ -49,6 +56,7 @@ export const installPublicShowcaseBootstrap = async (
     }
 
     let activeKey = null;
+    let activeLeaseId = null;
     let activeTransport = null;
     let loading = null;
 
@@ -58,10 +66,14 @@ export const installPublicShowcaseBootstrap = async (
             delete windowRef.LandSnapShowcasePixelStreaming;
         }
         activeKey = null;
+        activeLeaseId = null;
         activeTransport = null;
     };
     const installForLease = async () => {
         const lease = windowRef.LandSnapShowcaseQueueLease;
+        if (hasActivePublicShowcaseLease(lease)
+            && activeLeaseId === lease.leaseId
+            && isTransport(activeTransport)) return activeTransport;
         if (!hasReadyPublicShowcaseLease(lease)) {
             clearActive();
             return null;
@@ -78,6 +90,7 @@ export const installPublicShowcaseBootstrap = async (
                 return null;
             }
             activeKey = key;
+            activeLeaseId = lease.leaseId;
             activeTransport = transport;
             windowRef.LandSnapShowcasePixelStreaming = transport;
             dispatchReady(windowRef, transport);

@@ -529,6 +529,15 @@ body.landsnap-showcase-page.landsnap-showcase-embedded {
     gap: 10px;
 }
 
+.landsnap-showcase-session-countdown {
+    color: var(--landsnap-green);
+    font: 700 0.68rem/1 "IBM Plex Mono", monospace;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.landsnap-showcase-session-countdown[hidden] { display: none; }
+
 .landsnap-showcase-session-end,
 .landsnap-showcase-queue-secondary {
     padding: 10px 13px;

@@ -20,37 +20,52 @@ const opaqueId = "showcase-broker-lease-0001";
 const readyLease = (now) => ({
     protocol: SHOWCASE_QUEUE_PROTOCOL_VERSION,
     status: "ready",
+    phase: "ready",
     leaseId: opaqueId,
-    expiresAt: now + SHOWCASE_LEASE_DURATION_MS,
+    readyClaimExpiresAt: now + 90_000,
     heartbeatAfterMs: 15_000,
     sessionUrl: "/api/landsnap-showcase/session/v1/player/showcase-player-ticket-001",
     sessionToken: "signed-session-ticket-for-showcase-0001",
-    sessionExpiresAt: now + 90_000,
+    sessionTokenExpiresAt: now + 90_000,
 });
 
-const startingLease = (now) => ({
+const activeLease = (now) => ({
+    protocol: SHOWCASE_QUEUE_PROTOCOL_VERSION,
+    status: "active",
+    phase: "active",
+    leaseId: opaqueId,
+    sessionExpiresAt: now + SHOWCASE_LEASE_DURATION_MS,
+    heartbeatAfterMs: 15_000,
+});
+
+const startingLease = (now, { overdue = false, remainingMs = 10 * 60_000 } = {}) => ({
     protocol: SHOWCASE_QUEUE_PROTOCOL_VERSION,
     status: "starting",
+    phase: "preparing",
     leaseId: opaqueId,
-    expectedReadyAt: now + 30_000,
+    preparationExpiresAt: now + remainingMs,
+    expectedReadyAt: now + remainingMs,
+    preparationRemainingMs: remainingMs,
+    preparationOverdue: overdue,
     pollAfterMs: 1_000,
 });
 
-const waitingLease = (now, position = 1) => ({
+const waitingLease = (now, position = 1, estimatedWaitMs = 80_000) => ({
     protocol: SHOWCASE_QUEUE_PROTOCOL_VERSION,
     status: "waiting",
     position,
-    activeLeaseExpiresAt: now + 80_000,
+    estimatedWaitMs,
+    activeLeaseDeadline: now + estimatedWaitMs,
     pollAfterMs: 1_000,
 });
 
-test("queue parser accepts only broker-issued starting, waiting, or ready records", () => {
+test("queue parser accepts only the exact separated broker lifecycle records", () => {
     const now = 1_700_000_000_000;
     const parsedReady = parseQueueLease(readyLease(now), now);
     assert.deepEqual(parsedReady, {
         status: "ready",
         leaseId: opaqueId,
-        expiresAt: now + SHOWCASE_LEASE_DURATION_MS,
+        readyClaimExpiresAt: now + 90_000,
         heartbeatAfterMs: 15_000,
         session: {
             url: "/api/landsnap-showcase/session/v1/player/showcase-player-ticket-001",
@@ -61,37 +76,55 @@ test("queue parser accepts only broker-issued starting, waiting, or ready record
     assert.equal(isReadyQueueLease(parsedReady, now), true);
     assert.equal(parseQueueLease({ ...readyLease(now), endpoint: "wss://visitor.invalid" }, now), null);
     assert.equal(parseQueueLease({ ...readyLease(now), sessionUrl: "https://visitor.invalid/player" }, now), null);
-    assert.equal(parseQueueLease({ ...readyLease(now), sessionExpiresAt: now - 1 }, now), null);
+    assert.equal(parseQueueLease({ ...readyLease(now), sessionTokenExpiresAt: now - 1 }, now), null);
+    assert.equal(parseQueueLease({ ...readyLease(now), expiresAt: now + SHOWCASE_LEASE_DURATION_MS }, now), null);
     assert.equal(parseQueueLease({ ...waitingLease(now), position: 0 }, now), null);
     assert.equal(parseQueueLease({ protocol: SHOWCASE_QUEUE_PROTOCOL_VERSION, status: "ready" }, now), null);
+    assert.deepEqual(parseQueueLease(activeLease(now), now), {
+        status: "active",
+        leaseId: opaqueId,
+        sessionExpiresAt: now + SHOWCASE_LEASE_DURATION_MS,
+        heartbeatAfterMs: 15_000,
+    });
+    assert.deepEqual(parseQueueLease({
+        protocol: SHOWCASE_QUEUE_PROTOCOL_VERSION,
+        status: "ended",
+        reason: "visitor_left",
+        endedAt: now,
+        pollAfterMs: 1_000,
+    }, now), { status: "ended", reason: "visitor_left", endedAt: now, pollAfterMs: 1_000 });
+    assert.deepEqual(parseQueueLease({
+        protocol: SHOWCASE_QUEUE_PROTOCOL_VERSION,
+        status: "idle",
+        pollAfterMs: 1_000,
+    }, now), { status: "idle", pollAfterMs: 1_000 });
 });
 
-test("waiting estimates use the five-minute maximum while making early release an explicit possibility", () => {
+test("waiting renders only the broker estimate for a real second visitor", () => {
     const now = 1_700_000_000_000;
     const next = parseQueueLease(waitingLease(now, 1), now);
-    const third = parseQueueLease(waitingLease(now, 3), now);
+    const third = parseQueueLease(waitingLease(now, 3, 680_000), now);
     assert.equal(calculateQueueWaitMs(next, now), 80_000);
-    assert.equal(calculateQueueWaitMs(third, now), 80_000 + 2 * SHOWCASE_LEASE_DURATION_MS);
+    assert.equal(calculateQueueWaitMs(third, now), 680_000);
     assert.equal(formatQueueCountdown(80_000), "01:20");
     const presentation = getQueuePresentation(third, now);
     assert.equal(presentation.estimate, "11:20 estimated");
     assert.match(presentation.message, /number 3 in line/i);
-    assert.match(presentation.note, /five-minute limit/i);
-    assert.match(presentation.note, /ends early/i);
+    assert.match(presentation.note, /updates/i);
 });
 
 test("repeated status polls cannot reset a launch or queue countdown backward", () => {
     const now = 1_700_000_000_000;
     const firstStart = parseQueueLease(startingLease(now), now);
-    const laterStart = parseQueueLease({ ...startingLease(now), expectedReadyAt: now + 60_000 }, now);
-    assert.equal(stabilizeQueueTiming(firstStart, laterStart).expectedReadyAt, now + 30_000);
+    const laterStart = parseQueueLease(startingLease(now, { remainingMs: 12 * 60_000 }), now);
+    assert.equal(stabilizeQueueTiming(firstStart, laterStart).preparationExpiresAt, now + 10 * 60_000);
 
     const firstWait = parseQueueLease(waitingLease(now, 1), now);
-    const laterWait = parseQueueLease({ ...waitingLease(now, 1), activeLeaseExpiresAt: now + 120_000 }, now);
-    assert.equal(stabilizeQueueTiming(firstWait, laterWait).activeLeaseExpiresAt, now + 80_000);
+    const laterWait = parseQueueLease(waitingLease(now, 1, 120_000), now);
+    assert.equal(stabilizeQueueTiming(firstWait, laterWait).estimatedWaitEndsAt, now + 80_000);
 
     const promoted = parseQueueLease(waitingLease(now, 2), now);
-    assert.equal(stabilizeQueueTiming(firstWait, promoted).activeLeaseExpiresAt, now + 80_000);
+    assert.equal(stabilizeQueueTiming(firstWait, promoted).estimatedWaitEndsAt, now + 80_000);
 });
 
 test("queue presentation starts idle, keeps the gray gate through startup, and hides only once ready", () => {
@@ -122,17 +155,23 @@ test("queue presentation starts idle, keeps the gray gate through startup, and h
     assert.match(starting.message, /Unreal Editor/i);
     assert.equal(starting.showMetrics, false);
     assert.equal(starting.showPreparation, true);
-    assert.equal(starting.preparation, "Estimated startup: 00:30");
+    assert.equal(starting.preparation, "Usually ready in about 6–7 minutes");
     assert.equal(starting.showLaunchProgress, true);
     assert.equal(starting.showTryDemo, false);
     assert.equal(starting.showLeave, true);
-    const delayed = getQueuePresentation(startingLease(now), now + 31_000);
+    const delayed = getQueuePresentation(startingLease(now, { overdue: true, remainingMs: 3 * 60_000 }), now);
     assert.equal(delayed.alert, "Still preparing");
-    assert.equal(delayed.countdown, "00:00+");
+    assert.equal(delayed.countdown, "—");
     assert.match(delayed.message, /little longer/i);
     const ready = getQueuePresentation(parseQueueLease(readyLease(now), now), now);
     assert.equal(ready.visible, false);
     assert.equal(ready.showEndSession, true);
+    assert.equal(ready.showSessionCountdown, false);
+    const active = getQueuePresentation(parseQueueLease(activeLease(now), now), now);
+    assert.equal(active.visible, false);
+    assert.equal(active.showEndSession, true);
+    assert.equal(active.showSessionCountdown, true);
+    assert.equal(active.sessionCountdown, "05:00 remaining");
     const unavailable = getQueuePresentation({ status: "unavailable" }, now);
     assert.equal(unavailable.showRetry, true);
     assert.equal(unavailable.showLeave, true);
@@ -172,7 +211,7 @@ test("Try Demo joins once, then uses status until ready and heartbeat only for a
     assert.deepEqual(operations, ["join", "status", "heartbeat"]);
 });
 
-test("stream loss uses status, refreshes an expired ticket, and expires only at the lease deadline", async () => {
+test("ticket refresh never starts the clock and only active session expiry ends the demo", async () => {
     let now = 1_700_000_000_000;
     const operations = [];
     const service = {
@@ -199,7 +238,8 @@ test("stream loss uses status, refreshes an expired ticket, and expires only at 
     assert.equal(controller.tick().status, "ready");
     await Promise.resolve();
     assert.deepEqual(operations, ["join", "status", "status"]);
-    controller.receive(JSON.stringify(readyLease(now)));
+    controller.receive(JSON.stringify(activeLease(now)));
+    assert.equal(controller.getLease().status, "active");
     now += SHOWCASE_LEASE_DURATION_MS;
     assert.equal(controller.tick().status, "expired");
 });
@@ -214,7 +254,7 @@ test("backgrounding suspends the same visitor and resume rehydrates with status 
         async request(operation) {
             operations.push(operation);
             if (operation === "join") return waitingLease(now, 2);
-            return { ...waitingLease(now, 2), activeLeaseExpiresAt: now + 120_000 };
+            return waitingLease(now, 2, 120_000);
         },
         subscribe() {
             const source = { closed: false, close() { this.closed = true; } };
@@ -234,7 +274,7 @@ test("backgrounding suspends the same visitor and resume rehydrates with status 
     });
 
     await controller.start();
-    assert.equal(controller.getLease().activeLeaseExpiresAt, firstDeadline);
+    assert.equal(controller.getLease().estimatedWaitEndsAt, firstDeadline);
     controller.suspend();
     assert.equal(controller.isStarted(), true);
     assert.equal(controller.isSuspended(), true);
@@ -246,7 +286,7 @@ test("backgrounding suspends the same visitor and resume rehydrates with status 
     assert.equal(controller.isSuspended(), false);
     assert.equal(sources.length, 2);
     assert.equal(controller.getLease().position, 2);
-    assert.equal(controller.getLease().activeLeaseExpiresAt, firstDeadline);
+    assert.equal(controller.getLease().estimatedWaitEndsAt, firstDeadline);
 });
 
 test("a transient reconnect failure preserves the broker lease and its ticket", async () => {

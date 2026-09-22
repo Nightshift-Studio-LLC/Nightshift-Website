@@ -11,11 +11,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="../../images/icons/nightshift.ico">
-    <link rel="stylesheet" href="../../styles/landsnap-showcase.css?v=20260922-session-lifecycle">
-    <script type="module" src="../../scripts/landsnap-showcase-queue.js?v=20260922-session-lifecycle"></script>
-    <script type="module" src="../../scripts/landsnap-showcase-local.js?v=20260922-session-lifecycle"></script>
-    <script type="module" src="../../scripts/landsnap-showcase-public.js?v=20260922-session-lifecycle"></script>
-    <script type="module" src="../../scripts/landsnap-showcase.js?v=20260922-session-lifecycle"></script>
+    <link rel="stylesheet" href="../../styles/landsnap-showcase.css?v=20260922-active-session-clock">
+    <script type="module" src="../../scripts/landsnap-showcase-queue.js?v=20260922-active-session-clock"></script>
+    <script type="module" src="../../scripts/landsnap-showcase-local.js?v=20260922-active-session-clock"></script>
+    <script type="module" src="../../scripts/landsnap-showcase-public.js?v=20260922-active-session-clock"></script>
+    <script type="module" src="../../scripts/landsnap-showcase.js?v=20260922-active-session-clock"></script>
 </head>
 <body class="landsnap-showcase-page">
     <a class="landsnap-showcase-skip-link" href="#showcase-main">Skip to showcase controls</a>
@@ -48,6 +48,7 @@
                             <span aria-hidden="true"></span>
                             <strong>Demo not started</strong>
                         </p>
+                        <time id="landsnap-showcase-session-countdown" class="landsnap-showcase-session-countdown" datetime="PT0S" aria-live="off" hidden></time>
                         <button id="landsnap-showcase-end-session" class="landsnap-showcase-session-end" type="button" hidden>End session</button>
                     </div>
                 </div>

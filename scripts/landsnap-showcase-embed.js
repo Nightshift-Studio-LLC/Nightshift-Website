@@ -1,7 +1,7 @@
 // Keep the product-page frame on one allowlisted public origin. The framed
 // shell owns queue cookies, broker tickets, and the Pixel Streaming relay.
-export const SHOWCASE_EMBED_ORIGIN = "https://showcase.ns-tx.com/?v=20260922-session-lifecycle";
-export const SHOWCASE_LOCAL_PREVIEW_PATH = "./LandSnapShowcase.html?v=20260922-session-lifecycle";
+export const SHOWCASE_EMBED_ORIGIN = "https://showcase.ns-tx.com/?v=20260922-active-session-clock";
+export const SHOWCASE_LOCAL_PREVIEW_PATH = "./LandSnapShowcase.html?v=20260922-active-session-clock";
 export const SHOWCASE_SHELL_READY_MESSAGE = "landsnap-showcase-shell-ready";
 export const SHOWCASE_SHELL_READY_VERSION = 1;
 export const SHOWCASE_LIFECYCLE_MESSAGE = "landsnap-showcase-lifecycle";

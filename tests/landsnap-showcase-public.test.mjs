@@ -10,6 +10,7 @@ import {
     isPublicBrokerSession,
 } from "../tools/landsnap/landsnap-showcase-ps2-public-entry.js";
 import {
+    hasActivePublicShowcaseLease,
     hasReadyPublicShowcaseLease,
     installPublicShowcaseBootstrap,
 } from "../scripts/landsnap-showcase-public.js";
@@ -28,7 +29,7 @@ const brokerSession = Object.freeze({
 const readyLease = Object.freeze({
     status: "ready",
     leaseId: "ready-showcase-lease-1234",
-    expiresAt: now + 300_000,
+    readyClaimExpiresAt: now + 90_000,
     session: brokerSession,
 });
 const mouseOnlyInput = Object.freeze({ mouse: true, keyboard: false, touch: false, gamepad: false, xr: false });
@@ -218,7 +219,7 @@ test("public bootstrap imports only for an exact-host, complete ready lease", as
     const liveNow = Date.now();
     const liveLease = {
         ...readyLease,
-        expiresAt: liveNow + 300_000,
+        readyClaimExpiresAt: liveNow + 90_000,
         session: { ...brokerSession, expiresAt: liveNow + 90_000 },
     };
     const listeners = new Map();
@@ -259,6 +260,17 @@ test("public bootstrap imports only for an exact-host, complete ready lease", as
     assert.equal(dispatched.at(-1).type, "landsnap-showcase-transport-ready");
     assert.equal(hasReadyPublicShowcaseLease(liveLease, liveNow), true);
     assert.equal(hasReadyPublicShowcaseLease({ ...liveLease, leaseId: "short" }, liveNow), false);
+
+    const activeLease = {
+        status: "active",
+        leaseId: liveLease.leaseId,
+        sessionExpiresAt: liveNow + 300_000,
+    };
+    assert.equal(hasActivePublicShowcaseLease(activeLease, liveNow), true);
+    windowRef.LandSnapShowcaseQueueLease = activeLease;
+    listeners.get("landsnap-showcase-lease-change")?.();
+    assert.equal(windowRef.LandSnapShowcasePixelStreaming, transport);
+    assert.equal(transport.disconnected, undefined);
 
     let nonHostLoads = 0;
     const noHostResult = await installPublicShowcaseBootstrap({
