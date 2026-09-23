@@ -127,14 +127,14 @@ test("repeated status polls cannot reset a launch or queue countdown backward", 
     assert.equal(stabilizeQueueTiming(firstWait, promoted).estimatedWaitEndsAt, now + 80_000);
 });
 
-test("queue presentation starts idle, keeps the gray gate through startup, and hides only once ready", () => {
+test("queue presentation follows the supervised warm-editor lifecycle without technical copy", () => {
     const now = 1_700_000_000_000;
     assert.deepEqual(getQueuePresentation({ status: "idle" }, now), {
         visible: true,
         state: "idle",
-        alert: "Ready when you are",
-        title: "Start your demo",
-        message: "If someone else is using it, we’ll show your place in line and an estimated wait.",
+        alert: "Demo ready",
+        title: "Start when you’re ready",
+        message: "Your five-minute session starts after the stream connects. If the demo is busy, we’ll show your place in line.",
         position: "—",
         estimate: "—",
         countdown: "—",
@@ -150,21 +150,23 @@ test("queue presentation starts idle, keeps the gray gate through startup, and h
     });
     const starting = getQueuePresentation(startingLease(now), now);
     assert.equal(starting.visible, true);
-    assert.equal(starting.alert, "Preparing your demo");
+    assert.equal(starting.alert, "Preparing");
     assert.equal(starting.title, "Preparing your demo");
-    assert.match(starting.message, /Unreal Editor/i);
+    assert.match(starting.message, /restarting/i);
+    assert.doesNotMatch(starting.message, /Unreal|server|supervisor/i);
     assert.equal(starting.showMetrics, false);
     assert.equal(starting.showPreparation, true);
-    assert.equal(starting.preparation, "Usually ready in about 6–7 minutes");
-    assert.equal(starting.showLaunchProgress, true);
+    assert.equal(starting.preparation, "This should only take a moment");
+    assert.equal(starting.showLaunchProgress, false);
     assert.equal(starting.showTryDemo, false);
     assert.equal(starting.showLeave, true);
     const delayed = getQueuePresentation(startingLease(now, { overdue: true, remainingMs: 3 * 60_000 }), now);
-    assert.equal(delayed.alert, "Still preparing");
+    assert.equal(delayed.alert, "Preparing");
     assert.equal(delayed.countdown, "—");
-    assert.match(delayed.message, /little longer/i);
+    assert.match(delayed.message, /longer than expected/i);
     const ready = getQueuePresentation(parseQueueLease(readyLease(now), now), now);
     assert.equal(ready.visible, false);
+    assert.equal(ready.title, "Connecting to stream");
     assert.equal(ready.showEndSession, true);
     assert.equal(ready.showSessionCountdown, false);
     const active = getQueuePresentation(parseQueueLease(activeLease(now), now), now);
@@ -172,9 +174,13 @@ test("queue presentation starts idle, keeps the gray gate through startup, and h
     assert.equal(active.showEndSession, true);
     assert.equal(active.showSessionCountdown, true);
     assert.equal(active.sessionCountdown, "05:00 remaining");
+    const ended = getQueuePresentation({ status: "ended" }, now);
+    assert.equal(ended.title, "Resetting the demo");
+    assert.equal(ended.showRetry, false);
     const unavailable = getQueuePresentation({ status: "unavailable" }, now);
+    assert.equal(unavailable.message, "Please try again.");
     assert.equal(unavailable.showRetry, true);
-    assert.equal(unavailable.showLeave, true);
+    assert.equal(unavailable.showLeave, false);
 });
 
 test("Try Demo joins once, then uses status until ready and heartbeat only for a ready lease", async () => {

@@ -4,7 +4,7 @@
  * The browser can request, check, heartbeat, or release a cookie-bound demo
  * lease. It cannot launch Unreal, select a streamer, receive a signalling
  * endpoint, or issue a host-control action. A broker issues a short-lived
- * session ticket only after its isolated Unreal session reports ready.
+ * session ticket only after the supervised warm editor reports ready.
  */
 
 export const SHOWCASE_QUEUE_PROTOCOL_VERSION = "landsnap-showcase-queue-v2";
@@ -528,9 +528,9 @@ export const getQueuePresentation = (lease, now = Date.now()) => {
         return Object.freeze({
             visible: true,
             state,
-            alert: "Ready when you are",
-            title: "Start your demo",
-            message: "If someone else is using it, we’ll show your place in line and an estimated wait.",
+            alert: "Demo ready",
+            title: "Start when you’re ready",
+            message: "Your five-minute session starts after the stream connects. If the demo is busy, we’ll show your place in line.",
             position: "—",
             estimate: "—",
             countdown: "—",
@@ -551,8 +551,8 @@ export const getQueuePresentation = (lease, now = Date.now()) => {
             visible: true,
             state,
             alert: "Checking availability",
-            title: "Requesting your demo",
-            message: "We’re checking the live demo and will keep your place on this browser.",
+            title: "One moment",
+            message: "We’re checking the demo.",
             position: "—",
             estimate: "—",
             countdown: "—",
@@ -574,11 +574,11 @@ export const getQueuePresentation = (lease, now = Date.now()) => {
         return Object.freeze({
             visible: true,
             state,
-            alert: startupEstimatePassed ? "Still preparing" : "Preparing your demo",
+            alert: "Preparing",
             title: "Preparing your demo",
             message: startupEstimatePassed
-                ? "Unreal Editor is taking a little longer than expected. Your session is still reserved and will open automatically."
-                : "Unreal Editor and the stream are starting for you. Your session will open automatically when they are ready.",
+                ? "The demo is taking longer than expected. It will open automatically when ready."
+                : "The demo is restarting and will open automatically when ready.",
             position: "—",
             estimate: "—",
             countdown: "—",
@@ -587,12 +587,10 @@ export const getQueuePresentation = (lease, now = Date.now()) => {
             showPreparation: true,
             preparation: startupEstimatePassed
                 ? "Taking longer than estimated"
-                : "Usually ready in about 6–7 minutes",
+                : "This should only take a moment",
             showNote: true,
-            showLaunchProgress: true,
-            note: startupEstimatePassed
-                ? "Your demo is still reserved and preparing. You can leave at any time."
-                : "Cold-start time can vary; your five-minute demo has not started yet.",
+            showLaunchProgress: false,
+            note: "Your five-minute session has not started yet.",
             showTryDemo: false,
             showRetry: false,
             showLeave: true,
@@ -604,9 +602,9 @@ export const getQueuePresentation = (lease, now = Date.now()) => {
         return Object.freeze({
             visible: true,
             state,
-            alert: "You’re in line",
-            title: "Another demo is in progress",
-            message: `You are number ${lease.position} in line. We’ll start your demo automatically when it’s your turn.`,
+            alert: "In line",
+            title: "Another session is active",
+            message: `You’re number ${lease.position} in line. Your demo will start automatically when it’s ready.`,
             position: String(lease.position),
             estimate: `${formatQueueCountdown(delay)} estimated`,
             countdown: formatQueueCountdown(delay),
@@ -616,7 +614,7 @@ export const getQueuePresentation = (lease, now = Date.now()) => {
             preparation: "",
             showNote: true,
             showLaunchProgress: false,
-            note: "This estimate updates as the current demo progresses and may become shorter.",
+            note: "The estimate updates automatically and may become shorter.",
             showTryDemo: false,
             showRetry: false,
             showLeave: true,
@@ -650,16 +648,13 @@ export const getQueuePresentation = (lease, now = Date.now()) => {
         });
     }
 
-    if (state === "cleanup" || state === "expired" || state === "ended") {
-        const terminal = state === "expired" || state === "ended";
+    if (ready) {
         return Object.freeze({
-            visible: true,
+            visible: false,
             state,
-            alert: terminal ? "Session ended" : "Ending session",
-            title: terminal ? "Your demo has ended" : "Cleaning up your demo",
-            message: terminal
-                ? "The demo is closed and its temporary scene is being cleared. You can request another session."
-                : "We’re releasing the stream and clearing the prepared scene.",
+            alert: "Connecting",
+            title: "Connecting to stream",
+            message: "Your demo is ready. The five-minute session starts after the stream connects.",
             position: "—",
             estimate: "—",
             countdown: "—",
@@ -671,18 +666,44 @@ export const getQueuePresentation = (lease, now = Date.now()) => {
             showLaunchProgress: false,
             note: "",
             showTryDemo: false,
-            showRetry: terminal,
+            showRetry: false,
+            showLeave: false,
+            showEndSession: true,
+            showSessionCountdown: false,
+            sessionCountdown: "",
+        });
+    }
+
+    if (state === "cleanup" || state === "expired" || state === "ended") {
+        return Object.freeze({
+            visible: true,
+            state,
+            alert: "Resetting",
+            title: "Resetting the demo",
+            message: "Your session has ended. The demo will be ready again shortly.",
+            position: "—",
+            estimate: "—",
+            countdown: "—",
+            countdownSeconds: 0,
+            showMetrics: false,
+            showPreparation: false,
+            preparation: "",
+            showNote: false,
+            showLaunchProgress: false,
+            note: "",
+            showTryDemo: false,
+            showRetry: false,
             showLeave: false,
             showEndSession: false,
         });
     }
 
     return Object.freeze({
-        visible: !ready,
-        state: ready ? "ready" : "unavailable",
-        alert: "Connection problem",
-        title: "Demo temporarily unavailable",
-        message: "We couldn’t reach the demo. We’ll keep trying while your request is active.",
+        visible: true,
+        state: "unavailable",
+        alert: "Demo unavailable",
+        title: "Can’t connect right now",
+        message: "Please try again.",
         position: "—",
         estimate: "—",
         countdown: "—",
@@ -694,9 +715,9 @@ export const getQueuePresentation = (lease, now = Date.now()) => {
         showLaunchProgress: false,
         note: "",
         showTryDemo: false,
-        showRetry: !ready,
-        showLeave: !ready,
-        showEndSession: ready,
+        showRetry: true,
+        showLeave: false,
+        showEndSession: false,
         showSessionCountdown: false,
         sessionCountdown: "",
     });
