@@ -26,7 +26,7 @@ export const OBSERVER_INPUT_POLICY = Object.freeze({
     xr: false,
 });
 
-const SESSION_KEYS = Object.freeze(["sessionToken", "sessionTokenExpiresAt", "sessionUrl", "status"]);
+const SESSION_KEYS = Object.freeze(["protocol", "sessionToken", "sessionTokenExpiresAt", "sessionUrl", "status"]);
 const TOKEN_PATTERN = /^[A-Za-z0-9._~-]{24,512}$/;
 const MAX_TICKET_LIFETIME_MS = 30 * 1000;
 
@@ -66,6 +66,7 @@ export const parseObserverTicket = (raw, {
 } = {}) => {
     if (!isPlainRecord(raw)
         || !hasExactKeys(raw, SESSION_KEYS)
+        || raw.protocol !== OBSERVER_PROTOCOL_VERSION
         || raw.status !== "ready"
         || !isObserverSessionUrl(raw.sessionUrl, locationRef)
         || typeof raw.sessionToken !== "string"
@@ -73,6 +74,7 @@ export const parseObserverTicket = (raw, {
         || !isSafeFutureTimestamp(raw.sessionTokenExpiresAt, now)) return null;
 
     return Object.freeze({
+        protocol: OBSERVER_PROTOCOL_VERSION,
         status: "ready",
         sessionUrl: raw.sessionUrl,
         sessionToken: raw.sessionToken,

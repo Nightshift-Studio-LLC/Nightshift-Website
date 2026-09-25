@@ -25,6 +25,7 @@ const locationRef = {
 };
 const now = 1_700_000_000_000;
 const ticket = {
+    protocol: OBSERVER_PROTOCOL_VERSION,
     status: "ready",
     sessionUrl: "/api/landsnap-showcase/session/v1/observer/observer-ticket-0001",
     sessionToken: "signed-observer-session-ticket-0001",
@@ -35,6 +36,7 @@ test("observer ticket parsing is strict and keeps the endpoint same-origin", () 
     assert.equal(isObserverSessionUrl(ticket.sessionUrl, locationRef), true);
     assert.equal(isObserverSessionUrl("/api/landsnap-showcase/session/v1/player/presenter-0001", locationRef), false);
     assert.deepEqual(parseObserverTicket(ticket, { now, locationRef }), ticket);
+    assert.equal(parseObserverTicket({ ...ticket, protocol: "landsnap-showcase-observer-v2" }, { now, locationRef }), null);
     assert.equal(parseObserverTicket({ ...ticket, extra: true }, { now, locationRef }), null);
     assert.equal(parseObserverTicket({ ...ticket, sessionUrl: "https://elsewhere.invalid/observer" }, { now, locationRef }), null);
     assert.equal(parseObserverTicket({ ...ticket, sessionTokenExpiresAt: now - 1 }, { now, locationRef }), null);
