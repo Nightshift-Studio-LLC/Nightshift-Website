@@ -31,6 +31,7 @@ const MAX_HEARTBEAT_MS = 60_000;
 const MAX_SESSION_TICKET_MS = 2 * 60 * 1000;
 const MAX_PUBLIC_WAIT_MS = 12 * 60 * 60 * 1000;
 const QUEUE_OPERATIONS = new Set(["join", "status", "heartbeat", "leave"]);
+const SUBSCRIBABLE_LEASE_STATES = new Set(["starting", "waiting", "ready", "active"]);
 const OPAQUE_ID_PATTERN = /^[A-Za-z0-9_-]{16,128}$/;
 const SESSION_TOKEN_PATTERN = /^[A-Za-z0-9._~-]{24,512}$/;
 const SESSION_URL_PREFIX = "/api/landsnap-showcase/session/v1/player/";
@@ -319,6 +320,7 @@ export const createQueueLeaseController = ({
     let lease = createIdleLease();
     let timer = null;
     let eventSource = null;
+    let eventSourceGeneration = 0;
     let started = false;
     let suspended = false;
 
@@ -387,23 +389,36 @@ export const createQueueLeaseController = ({
             return lease;
         }
     };
-    const handleEvent = (raw) => {
+    const handleEvent = (raw, guard = null) => {
+        if (guard && guard.generation !== eventSourceGeneration) return lease;
         if (!started || suspended || typeof raw !== "string" || raw.length > 1_024) return lease;
         try {
-            return apply(JSON.parse(raw));
+            const candidate = JSON.parse(raw);
+            if (guard?.leaseId
+                && typeof candidate?.leaseId === "string"
+                && candidate.leaseId !== guard.leaseId) return lease;
+            return apply(candidate);
         } catch {
             return lease;
         }
     };
     const closeEventSource = () => {
+        eventSourceGeneration += 1;
         if (eventSource && typeof eventSource.close === "function") eventSource.close();
         eventSource = null;
     };
     const openEventSource = () => {
         closeEventSource();
         if (!started || suspended || typeof service.subscribe !== "function") return;
+        const generation = eventSourceGeneration;
+        const leaseId = typeof lease?.leaseId === "string" ? lease.leaseId : null;
         try {
-            eventSource = service.subscribe(handleEvent);
+            const source = service.subscribe((raw) => handleEvent(raw, { generation, leaseId }));
+            if (generation !== eventSourceGeneration || !started || suspended) {
+                if (source && typeof source.close === "function") source.close();
+                return;
+            }
+            eventSource = source;
         } catch {
             eventSource = null;
         }
@@ -425,22 +440,25 @@ export const createQueueLeaseController = ({
     return Object.freeze({
         async start() {
             if (started) return lease;
+            closeEventSource();
             started = true;
             suspended = false;
             lease = Object.freeze({ status: "requesting" });
             publish();
-            openEventSource();
-            return refresh("join");
+            const joined = await refresh("join");
+            if (started && !suspended && SUBSCRIBABLE_LEASE_STATES.has(joined.status)) openEventSource();
+            return joined;
         },
         async restart() {
-            started = true;
-            suspended = false;
             stopTimer();
             closeEventSource();
+            started = true;
+            suspended = false;
             lease = Object.freeze({ status: "requesting" });
             publish();
-            openEventSource();
-            return refresh("join");
+            const joined = await refresh("join");
+            if (started && !suspended && SUBSCRIBABLE_LEASE_STATES.has(joined.status)) openEventSource();
+            return joined;
         },
         tick() {
             const timestamp = now();

@@ -217,6 +217,73 @@ test("Try Demo joins once, then uses status until ready and heartbeat only for a
     assert.deepEqual(operations, ["join", "status", "heartbeat"]);
 });
 
+test("SSE starts after join and stale subscription events cannot overwrite a newer ready lease", async () => {
+    const now = 1_700_000_000_000;
+    const secondLeaseId = "showcase-broker-lease-0002";
+    const sources = [];
+    let joinCount = 0;
+    let resolveSecondJoin;
+    const secondJoin = new Promise((resolve) => { resolveSecondJoin = resolve; });
+    const service = {
+        async request(operation) {
+            assert.equal(operation, "join");
+            joinCount += 1;
+            return joinCount === 1 ? readyLease(now) : secondJoin;
+        },
+        subscribe(onMessage) {
+            const source = {
+                closed: false,
+                onMessage,
+                close() { this.closed = true; },
+            };
+            sources.push(source);
+            return source;
+        },
+    };
+    const controller = createQueueLeaseController({
+        service,
+        now: () => now,
+        setTimer() { return 1; },
+        clearTimer() {},
+    });
+
+    await controller.start();
+    assert.equal(controller.getLease().status, "ready");
+    assert.equal(sources.length, 1);
+
+    const restart = controller.restart();
+    assert.equal(controller.getLease().status, "requesting");
+    assert.equal(sources[0].closed, true);
+    assert.equal(sources.length, 1, "restart must not subscribe before its join response");
+
+    sources[0].onMessage(JSON.stringify({
+        protocol: SHOWCASE_QUEUE_PROTOCOL_VERSION,
+        status: "idle",
+        pollAfterMs: 1_000,
+    }));
+    assert.equal(controller.getLease().status, "requesting");
+
+    resolveSecondJoin({ ...readyLease(now), leaseId: secondLeaseId });
+    await restart;
+    assert.equal(controller.getLease().status, "ready");
+    assert.equal(controller.getLease().leaseId, secondLeaseId);
+    assert.equal(sources.length, 2);
+
+    sources[0].onMessage(JSON.stringify({
+        protocol: SHOWCASE_QUEUE_PROTOCOL_VERSION,
+        status: "idle",
+        pollAfterMs: 1_000,
+    }));
+    assert.equal(controller.getLease().status, "ready");
+    assert.equal(controller.getLease().leaseId, secondLeaseId);
+
+    sources[1].onMessage(JSON.stringify(activeLease(now)));
+    assert.equal(controller.getLease().status, "ready", "a different lease id must not replace the subscribed lease");
+    sources[1].onMessage(JSON.stringify({ ...activeLease(now), leaseId: secondLeaseId }));
+    assert.equal(controller.getLease().status, "active");
+    assert.equal(controller.getLease().leaseId, secondLeaseId);
+});
+
 test("ticket refresh never starts the clock and only active session expiry ends the demo", async () => {
     let now = 1_700_000_000_000;
     const operations = [];
