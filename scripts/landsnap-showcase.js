@@ -121,13 +121,16 @@ export const SHOWCASE_NOTIFICATION_CODES = Object.freeze({
     }),
 });
 
-const ACTIONS = new Set(Object.values(SHOWCASE_COMMANDS).map(({ action }) => action));
+// The lifecycle acknowledgement uses the same bounded response gate but is
+// internal and never becomes a visitor-facing control.
+const ACTIONS = new Set([...Object.values(SHOWCASE_COMMANDS).map(({ action }) => action), "session_ready"]);
 const CONNECTION_STATES = new Set(["connecting", "connected", "disconnected", "error"]);
 const SHOWCASE_SESSION_WARNING_MS = 60_000;
 const RESULT_TYPES = new Set(["success", "rejected", "error"]);
 const CALIBRATION_ACTIONS = new Set(Object.values(SHOWCASE_CALIBRATION_PRESETS).map(({ action }) => action));
 const CALIBRATION_PRESET_BY_ACTION = new Map(Object.values(SHOWCASE_CALIBRATION_PRESETS).map((preset) => [preset.action, preset]));
 const RESULT_MESSAGES = Object.freeze({
+    session_ready: "The showcase session is ready.",
     completed: "The showcase action completed.",
     no_selection: "Select one of the prepared objects before running LandSnap.",
     nothing_to_undo: "There is no showcase action to undo.",
@@ -146,6 +149,7 @@ const RESULT_MESSAGES = Object.freeze({
     operation_failed: "The showcase could not complete that action. Try again or reset the scene.",
 });
 const RESULT_CODES_BY_ACTION = Object.freeze({
+    session_ready: new Set(["session_ready"]),
     snap_selected: new Set(["completed", "no_selection", "operation_rejected", "operation_failed"]),
     undo: new Set(["completed", "nothing_to_undo", "operation_rejected", "operation_failed"]),
     redo: new Set(["completed", "nothing_to_redo", "operation_rejected", "operation_failed"]),
@@ -160,6 +164,7 @@ const RESULT_CODES_BY_ACTION = Object.freeze({
     focus_selected_fixture: new Set(["fixture_focused", "fixture_unavailable", "operation_rejected", "operation_failed"]),
 });
 const RESULT_TYPE_BY_CODE = Object.freeze({
+    session_ready: "success",
     completed: "success",
     no_selection: "rejected",
     nothing_to_undo: "rejected",

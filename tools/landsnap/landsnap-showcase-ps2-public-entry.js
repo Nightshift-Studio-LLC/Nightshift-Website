@@ -7,6 +7,7 @@ import {
     Config,
     Flags,
     NumericParameters,
+    OptionParameters,
     PixelStreaming,
     TextParameters,
 } from "@epicgames-ps/lib-pixelstreamingfrontend-ue5.8";
@@ -14,11 +15,15 @@ import {
 export const PUBLIC_SHOWCASE_HOST = "showcase.ns-tx.com";
 export const SHOWCASE_RESPONSE_LISTENER = "landsnap-showcase-response";
 export const SHOWCASE_PLAYER_PATH = /^\/api\/landsnap-showcase\/session\/v1\/player\/[A-Za-z0-9_-]{16,128}$/;
+export const SESSION_READY_ACTION = "session_ready";
+export const SESSION_READY_MAX_ATTEMPTS = 3;
+export const SESSION_READY_RETRY_DELAY_MS = 1_000;
 
 const INPUT_KEYS = Object.freeze(["gamepad", "keyboard", "mouse", "touch", "xr"]);
 const BRIDGE_KEYS = Object.freeze(["action", "requestId", "type", "version"]);
 const SESSION_KEYS = Object.freeze(["expiresAt", "token", "url"]);
 const COMMAND_ACTIONS = new Set([
+    SESSION_READY_ACTION,
     "snap_selected",
     "undo",
     "redo",
@@ -40,6 +45,8 @@ const COMMAND_ACTIONS = new Set([
 const REQUEST_ID_PATTERN = /^[A-Za-z0-9_-]{8,64}$/;
 const SESSION_TOKEN_PATTERN = /^[A-Za-z0-9._~-]{24,512}$/;
 const PROTOCOL_VERSION = "landsnap-showcase-v1";
+const RESPONSE_KEYS = Object.freeze(["action", "code", "requestId", "result", "type", "version"]);
+let sessionReadyRequestSequence = 0;
 
 const own = (record, key) => Object.prototype.hasOwnProperty.call(record, key);
 
@@ -73,6 +80,27 @@ export const isAllowlistedShowcasePayload = (payload) => isPlainRecord(payload)
     && COMMAND_ACTIONS.has(payload.action)
     && typeof payload.requestId === "string"
     && REQUEST_ID_PATTERN.test(payload.requestId);
+
+const parseSessionReadyResponse = (raw) => {
+    if (typeof raw !== "string" || raw.length === 0 || raw.length > 384) return false;
+    let candidate;
+    try {
+        candidate = JSON.parse(raw);
+    } catch {
+        return false;
+    }
+    return isPlainRecord(candidate)
+        && hasExactKeys(candidate, RESPONSE_KEYS)
+        && candidate.version === PROTOCOL_VERSION
+        && candidate.type === "operation-result"
+        && candidate.action === SESSION_READY_ACTION
+        && typeof candidate.requestId === "string"
+        && REQUEST_ID_PATTERN.test(candidate.requestId)
+        && ((candidate.result === "success" && candidate.code === SESSION_READY_ACTION)
+            || (candidate.result === "rejected" && candidate.code === "session_initializing"))
+        ? candidate
+        : null;
+};
 
 export const isPublicBrokerSession = (session, locationRef = globalThis.location, now = Date.now()) => {
     if (!isPlainRecord(session)
@@ -115,10 +143,13 @@ export const createPublicSessionEndpoints = (session, locationRef = globalThis.l
 export const createPublicShowcaseSettings = ({
     Flags: localFlags,
     NumericParameters: localNumbers,
+    OptionParameters: localOptions,
     TextParameters: localText,
     signallingUrl,
 }) => Object.freeze({
     [localText.SignallingServerUrl]: signallingUrl,
+    // This dedicated host has proven stable VP8 decode support; prefer it over the SDK's H264 default.
+    [localOptions.PreferredCodec]: "VP8",
     [localFlags.AutoConnect]: false,
     [localFlags.AutoPlayVideo]: true,
     [localFlags.MouseInput]: true,
@@ -171,11 +202,13 @@ export const createPublicShowcaseTransportWithDependencies = (
     locationRef = globalThis.location,
     fetchImpl = globalThis.fetch,
     now = Date.now,
+    timers = globalThis,
 ) => {
     const {
         Config: LocalConfig,
         Flags: LocalFlags,
         NumericParameters: LocalNumbers,
+        OptionParameters: LocalOptions,
         PixelStreaming: LocalPixelStreaming,
         TextParameters: LocalText,
     } = dependencies;
@@ -192,6 +225,9 @@ export const createPublicShowcaseTransportWithDependencies = (
     let stream = null;
     let mounted = false;
     let sessionReady = false;
+    let sessionReadyRequestId = null;
+    let sessionReadyAttempt = 0;
+    let sessionReadyRetryTimer = null;
 
     const reportState = (nextState) => {
         connectionState = nextState;
@@ -199,8 +235,44 @@ export const createPublicShowcaseTransportWithDependencies = (
     };
     const reportSessionReady = () => {
         if (sessionReady) return;
+        clearSessionReadyRetry();
+        sessionReadyRequestId = null;
         sessionReady = true;
         sessionReadyListeners.forEach((listener) => listener());
+    };
+    const clearSessionReadyRetry = () => {
+        if (sessionReadyRetryTimer !== null && typeof timers.clearTimeout === "function") {
+            timers.clearTimeout(sessionReadyRetryTimer);
+        }
+        sessionReadyRetryTimer = null;
+    };
+    const sendSessionReady = () => {
+        if (!stream || sessionReady || sessionReadyAttempt >= SESSION_READY_MAX_ATTEMPTS) return;
+        sessionReadyAttempt += 1;
+        sessionReadyRequestId = `session_ready_${++sessionReadyRequestSequence}`;
+        const accepted = stream.emitUIInteraction({
+            version: PROTOCOL_VERSION,
+            type: "command",
+            action: SESSION_READY_ACTION,
+            requestId: sessionReadyRequestId,
+        });
+        if (accepted !== true) reportState("error");
+    };
+    const failSessionReady = () => {
+        clearSessionReadyRetry();
+        sessionReadyRequestId = null;
+        reportState("error");
+    };
+    const scheduleSessionReadyRetry = () => {
+        clearSessionReadyRetry();
+        if (sessionReadyAttempt >= SESSION_READY_MAX_ATTEMPTS || typeof timers.setTimeout !== "function") {
+            failSessionReady();
+            return;
+        }
+        sessionReadyRetryTimer = timers.setTimeout(() => {
+            sessionReadyRetryTimer = null;
+            sendSessionReady();
+        }, SESSION_READY_RETRY_DELAY_MS);
     };
 
     return Object.freeze({
@@ -220,6 +292,7 @@ export const createPublicShowcaseTransportWithDependencies = (
                     initialSettings: createPublicShowcaseSettings({
                         Flags: LocalFlags,
                         NumericParameters: LocalNumbers,
+                        OptionParameters: LocalOptions,
                         TextParameters: LocalText,
                         signallingUrl,
                     }),
@@ -227,10 +300,29 @@ export const createPublicShowcaseTransportWithDependencies = (
                 stream = new LocalPixelStreaming(config, { videoElementParent: mountElement });
                 stream.addEventListener("webRtcConnecting", () => reportState("connecting"));
                 stream.addEventListener("webRtcConnected", () => reportState("connected"));
-                stream.addEventListener("webRtcDisconnected", () => reportState("disconnected"));
                 stream.addEventListener("webRtcFailed", () => reportState("error"));
-                stream.addEventListener("dataChannelOpen", reportSessionReady);
+                // dataChannelOpen means the transport exists, while the editor may
+                // still be finishing reset_ready/encoder setup. The broker promotes
+                // ready to active only after Unreal confirms session_ready.
+                stream.addEventListener("dataChannelOpen", () => {
+                    if (sessionReady || sessionReadyRequestId || sessionReadyRetryTimer !== null) return;
+                    sendSessionReady();
+                });
+                stream.addEventListener("webRtcDisconnected", () => {
+                    // A missing acknowledgement is bounded by the broker's
+                    // ready-claim expiry; never retry without a correlated response.
+                    clearSessionReadyRetry();
+                    sessionReadyRequestId = null;
+                    sessionReadyAttempt = 0;
+                    sessionReady = false;
+                    reportState("disconnected");
+                });
                 stream.addResponseEventListener(SHOWCASE_RESPONSE_LISTENER, (response) => {
+                    const candidate = parseSessionReadyResponse(response);
+                    if (candidate && candidate.requestId === sessionReadyRequestId) {
+                        if (candidate.result === "success") reportSessionReady();
+                        else scheduleSessionReadyRetry();
+                    }
                     responseListeners.forEach((listener) => listener(response));
                 });
                 stream.connect();
@@ -240,10 +332,13 @@ export const createPublicShowcaseTransportWithDependencies = (
             }
         },
         emitUIInteraction(payload) {
-            if (!stream || !isAllowlistedShowcasePayload(payload)) return false;
+            // session_ready is reserved for the transport lifecycle handshake.
+            if (!stream || !isAllowlistedShowcasePayload(payload) || payload.action === SESSION_READY_ACTION) return false;
             return stream.emitUIInteraction(payload) === true;
         },
         disconnect() {
+            clearSessionReadyRetry();
+            sessionReadyRequestId = null;
             if (stream && typeof stream.disconnect === "function") stream.disconnect();
         },
         onConnectionState(listener) {
@@ -266,6 +361,7 @@ export const createPublicShowcaseTransport = () => createPublicShowcaseTransport
     Config,
     Flags,
     NumericParameters,
+    OptionParameters,
     PixelStreaming,
     TextParameters,
 });

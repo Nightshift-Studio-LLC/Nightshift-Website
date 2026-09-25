@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import {
     PUBLIC_SHOWCASE_HOST,
+    SESSION_READY_ACTION,
     SHOWCASE_RESPONSE_LISTENER,
     createPublicSessionEndpoints,
     createPublicShowcaseTransportWithDependencies,
@@ -49,6 +50,7 @@ const FakeFlags = Object.freeze({
     AutoEnterVR: "AutoEnterVR",
     SuppressBrowserKeys: "SuppressBrowserKeys",
 });
+const FakeOptions = Object.freeze({ PreferredCodec: "PreferredCodec" });
 const FakeText = Object.freeze({ SignallingServerUrl: "ss" });
 const FakeNumbers = Object.freeze({ MaxReconnectAttempts: "MaxReconnectAttempts" });
 
@@ -94,9 +96,35 @@ const dependencies = Object.freeze({
     Config: FakeConfig,
     Flags: FakeFlags,
     NumericParameters: FakeNumbers,
+    OptionParameters: FakeOptions,
     PixelStreaming: FakePixelStreaming,
     TextParameters: FakeText,
 });
+
+const createFakeTimers = () => {
+    let nextId = 0;
+    const pending = new Map();
+    return {
+        setTimeout(callback, delay) {
+            const id = ++nextId;
+            pending.set(id, { callback, delay });
+            return id;
+        },
+        clearTimeout(id) {
+            pending.delete(id);
+        },
+        get pendingCount() {
+            return pending.size;
+        },
+        flush() {
+            const [id, timer] = pending.entries().next().value || [];
+            if (id === undefined) return false;
+            pending.delete(id);
+            timer.callback();
+            return true;
+        },
+    };
+};
 
 test("public player derives ticket and WSS paths only from the fixed same-origin broker session", () => {
     const endpoints = createPublicSessionEndpoints(brokerSession, publicLocation, now);
@@ -152,6 +180,7 @@ test("public transport primes the exact player path, uses no streamer selection,
     assert.equal(stream.config.options.useUrlParams, false);
     assert.deepEqual(stream.config.options.initialSettings, {
         ss: `wss://${PUBLIC_SHOWCASE_HOST}${brokerSession.url}`,
+        PreferredCodec: "VP8",
         AutoConnect: false,
         AutoPlayVideo: true,
         MouseInput: true,
@@ -171,6 +200,34 @@ test("public transport primes the exact player path, uses no streamer selection,
     assert.deepEqual(states, ["disconnected", "connecting"]);
     stream.events.get("webRtcConnected")();
     stream.events.get("dataChannelOpen")();
+    stream.events.get("dataChannelOpen")();
+    assert.equal(sessionReady, 0);
+    assert.equal(stream.sent.length, 1);
+    const sessionReadyRequest = stream.sent[0];
+    assert.deepEqual(sessionReadyRequest, {
+        version: "landsnap-showcase-v1",
+        type: "command",
+        action: SESSION_READY_ACTION,
+        requestId: sessionReadyRequest.requestId,
+    });
+    assert.equal(transport.emitUIInteraction(sessionReadyRequest), false);
+    stream.responses.get(SHOWCASE_RESPONSE_LISTENER)(JSON.stringify({
+        version: "landsnap-showcase-v1",
+        type: "operation-result",
+        action: SESSION_READY_ACTION,
+        requestId: "wrong_request",
+        result: "success",
+        code: SESSION_READY_ACTION,
+    }));
+    assert.equal(sessionReady, 0);
+    stream.responses.get(SHOWCASE_RESPONSE_LISTENER)(JSON.stringify({
+        version: "landsnap-showcase-v1",
+        type: "operation-result",
+        action: SESSION_READY_ACTION,
+        requestId: sessionReadyRequest.requestId,
+        result: "success",
+        code: SESSION_READY_ACTION,
+    }));
     assert.equal(sessionReady, 1);
 
     const valid = Object.freeze({
@@ -185,7 +242,7 @@ test("public transport primes the exact player path, uses no streamer selection,
     assert.equal(isAllowlistedShowcasePayload({ ...valid, action: "console_command" }), false);
     assert.equal(transport.emitUIInteraction(valid), true);
     assert.equal(transport.emitUIInteraction({ ...valid, action: "console_command" }), false);
-    assert.deepEqual(stream.sent, [valid]);
+    assert.deepEqual(stream.sent, [sessionReadyRequest, valid]);
 
     const responses = [];
     transport.onResponse((response) => responses.push(response));
@@ -213,6 +270,105 @@ test("public transport rejects hostile session records, ticket failures, and eve
         transport.mount({ replaceChildren() {} }, { session: brokerSession, input: mouseOnlyInput }),
         /rejected the player ticket/,
     );
+});
+
+test("public session_ready retries session_initializing and exposes readiness after correlated success", async () => {
+    const timers = createFakeTimers();
+    const transport = createPublicShowcaseTransportWithDependencies(
+        dependencies,
+        publicLocation,
+        async () => ({ status: 204 }),
+        () => now,
+        timers,
+    );
+    let ready = 0;
+    transport.onSessionReady(() => { ready += 1; });
+    await transport.mount({ replaceChildren() {} }, { session: brokerSession, input: mouseOnlyInput });
+    const stream = FakePixelStreaming.latest;
+    stream.events.get("dataChannelOpen")();
+    const first = stream.sent[0];
+    stream.responses.get(SHOWCASE_RESPONSE_LISTENER)(JSON.stringify({
+        version: "landsnap-showcase-v1",
+        type: "operation-result",
+        action: SESSION_READY_ACTION,
+        requestId: first.requestId,
+        result: "rejected",
+        code: "session_initializing",
+    }));
+    assert.equal(ready, 0);
+    assert.equal(timers.pendingCount, 1);
+    assert.equal(timers.flush(), true);
+    const second = stream.sent[1];
+    assert.notEqual(second.requestId, first.requestId);
+    assert.equal(timers.pendingCount, 0);
+    stream.responses.get(SHOWCASE_RESPONSE_LISTENER)(JSON.stringify({
+        version: "landsnap-showcase-v1",
+        type: "operation-result",
+        action: SESSION_READY_ACTION,
+        requestId: second.requestId,
+        result: "success",
+        code: SESSION_READY_ACTION,
+    }));
+    assert.equal(ready, 1);
+});
+
+test("public session_ready stops after three correlated initializing responses", async () => {
+    const timers = createFakeTimers();
+    const states = [];
+    const transport = createPublicShowcaseTransportWithDependencies(
+        dependencies,
+        publicLocation,
+        async () => ({ status: 204 }),
+        () => now,
+        timers,
+    );
+    transport.onConnectionState((state) => states.push(state));
+    await transport.mount({ replaceChildren() {} }, { session: brokerSession, input: mouseOnlyInput });
+    const stream = FakePixelStreaming.latest;
+    stream.events.get("dataChannelOpen")();
+    for (let attempt = 0; attempt < 3; attempt += 1) {
+        const request = stream.sent.at(-1);
+        stream.responses.get(SHOWCASE_RESPONSE_LISTENER)(JSON.stringify({
+            version: "landsnap-showcase-v1",
+            type: "operation-result",
+            action: SESSION_READY_ACTION,
+            requestId: request.requestId,
+            result: "rejected",
+            code: "session_initializing",
+        }));
+        if (attempt < 2) assert.equal(timers.flush(), true);
+    }
+    assert.equal(stream.sent.length, 3);
+    assert.equal(timers.pendingCount, 0);
+    assert.equal(states.at(-1), "error");
+});
+
+test("public session_ready retry timer is cleared when the stream disconnects", async () => {
+    const timers = createFakeTimers();
+    const transport = createPublicShowcaseTransportWithDependencies(
+        dependencies,
+        publicLocation,
+        async () => ({ status: 204 }),
+        () => now,
+        timers,
+    );
+    await transport.mount({ replaceChildren() {} }, { session: brokerSession, input: mouseOnlyInput });
+    const stream = FakePixelStreaming.latest;
+    stream.events.get("dataChannelOpen")();
+    const request = stream.sent[0];
+    stream.responses.get(SHOWCASE_RESPONSE_LISTENER)(JSON.stringify({
+        version: "landsnap-showcase-v1",
+        type: "operation-result",
+        action: SESSION_READY_ACTION,
+        requestId: request.requestId,
+        result: "rejected",
+        code: "session_initializing",
+    }));
+    assert.equal(timers.pendingCount, 1);
+    stream.events.get("webRtcDisconnected")();
+    assert.equal(timers.pendingCount, 0);
+    assert.equal(timers.flush(), false);
+    assert.equal(stream.sent.length, 1);
 });
 
 test("public bootstrap imports only for an exact-host, complete ready lease", async () => {

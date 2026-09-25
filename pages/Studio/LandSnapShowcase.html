@@ -64,6 +64,20 @@
                 </div>
 
                 <p class="landsnap-showcase-pointer-guidance"><strong>How to try it:</strong> use Demo objects to select an object, then choose an action.</p>
+
+                <section class="landsnap-showcase-observer" aria-labelledby="landsnap-showcase-observer-title" hidden>
+                    <div class="landsnap-showcase-observer-heading">
+                        <div>
+                            <p class="landsnap-showcase-section-label">Waiting room</p>
+                            <h2 id="landsnap-showcase-observer-title">Watch while waiting</h2>
+                        </div>
+                        <button id="landsnap-showcase-observer-action" class="landsnap-showcase-observer-action" type="button" disabled aria-disabled="true" data-observer-capability="unavailable" aria-describedby="landsnap-showcase-observer-status">Watch while waiting</button>
+                    </div>
+                    <div id="landsnap-showcase-observer-mount" class="landsnap-showcase-observer-video" role="region" aria-label="Read-only waiting room observer video" aria-live="polite" aria-busy="false" data-observer-capability="unavailable">
+                        <span class="landsnap-showcase-observer-grid" aria-hidden="true"></span>
+                        <p id="landsnap-showcase-observer-status" class="landsnap-showcase-observer-status" role="status">Waiting for a live session.</p>
+                    </div>
+                </section>
             </div>
 
             <aside class="landsnap-showcase-panel" aria-labelledby="landsnap-showcase-controls-title">

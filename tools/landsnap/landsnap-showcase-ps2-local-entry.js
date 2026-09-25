@@ -15,11 +15,15 @@ import {
 export const LOCAL_SIGNALING_ENDPOINT = "ws://127.0.0.1";
 export const LOCAL_STREAMER_ID = "Editor";
 export const SHOWCASE_RESPONSE_LISTENER = "landsnap-showcase-response";
+export const SESSION_READY_ACTION = "session_ready";
+export const SESSION_READY_MAX_ATTEMPTS = 3;
+export const SESSION_READY_RETRY_DELAY_MS = 1_000;
 
 const LOCAL_HOSTS = Object.freeze(["127.0.0.1", "localhost", "[::1]"]);
 const INPUT_KEYS = Object.freeze(["gamepad", "keyboard", "mouse", "touch", "xr"]);
 const BRIDGE_KEYS = Object.freeze(["action", "requestId", "type", "version"]);
 const COMMAND_ACTIONS = new Set([
+    SESSION_READY_ACTION,
     "snap_selected",
     "undo",
     "redo",
@@ -40,6 +44,8 @@ const COMMAND_ACTIONS = new Set([
 ]);
 const REQUEST_ID_PATTERN = /^[A-Za-z0-9_-]{8,64}$/;
 const PROTOCOL_VERSION = "landsnap-showcase-v1";
+const RESPONSE_KEYS = Object.freeze(["action", "code", "requestId", "result", "type", "version"]);
+let sessionReadyRequestSequence = 0;
 
 const own = (record, key) => Object.prototype.hasOwnProperty.call(record, key);
 
@@ -73,6 +79,27 @@ export const isAllowlistedShowcasePayload = (payload) => isPlainRecord(payload)
     && COMMAND_ACTIONS.has(payload.action)
     && typeof payload.requestId === "string"
     && REQUEST_ID_PATTERN.test(payload.requestId);
+
+const parseSessionReadyResponse = (raw) => {
+    if (typeof raw !== "string" || raw.length === 0 || raw.length > 384) return false;
+    let candidate;
+    try {
+        candidate = JSON.parse(raw);
+    } catch {
+        return false;
+    }
+    return isPlainRecord(candidate)
+        && hasExactKeys(candidate, RESPONSE_KEYS)
+        && candidate.version === PROTOCOL_VERSION
+        && candidate.type === "operation-result"
+        && candidate.action === SESSION_READY_ACTION
+        && typeof candidate.requestId === "string"
+        && REQUEST_ID_PATTERN.test(candidate.requestId)
+        && ((candidate.result === "success" && candidate.code === SESSION_READY_ACTION)
+            || (candidate.result === "rejected" && candidate.code === "session_initializing"))
+        ? candidate
+        : null;
+};
 
 export const createLocalShowcaseSettings = ({
     Flags: localFlags,
@@ -110,6 +137,7 @@ const assertMountOptions = (options) => {
 export const createLocalShowcaseTransportWithDependencies = (
     dependencies,
     hostname = globalThis.location?.hostname,
+    timers = globalThis,
 ) => {
     const {
         Config: LocalConfig,
@@ -130,10 +158,48 @@ export const createLocalShowcaseTransportWithDependencies = (
     let connectionState = "disconnected";
     let stream = null;
     let mounted = false;
+    let sessionReady = false;
+    let sessionReadyRequestId = null;
+    let sessionReadyAttempt = 0;
+    let sessionReadyRetryTimer = null;
+    const sessionReadyListeners = new Set();
 
     const reportState = (nextState) => {
         connectionState = nextState;
         listeners.forEach((listener) => listener(nextState));
+    };
+    const clearSessionReadyRetry = () => {
+        if (sessionReadyRetryTimer !== null && typeof timers.clearTimeout === "function") {
+            timers.clearTimeout(sessionReadyRetryTimer);
+        }
+        sessionReadyRetryTimer = null;
+    };
+    const sendSessionReady = () => {
+        if (!stream || sessionReady || sessionReadyAttempt >= SESSION_READY_MAX_ATTEMPTS) return;
+        sessionReadyAttempt += 1;
+        sessionReadyRequestId = `session_ready_${++sessionReadyRequestSequence}`;
+        if (stream.emitUIInteraction({
+            version: PROTOCOL_VERSION,
+            type: "command",
+            action: SESSION_READY_ACTION,
+            requestId: sessionReadyRequestId,
+        }) !== true) reportState("error");
+    };
+    const failSessionReady = () => {
+        clearSessionReadyRetry();
+        sessionReadyRequestId = null;
+        reportState("error");
+    };
+    const scheduleSessionReadyRetry = () => {
+        clearSessionReadyRetry();
+        if (sessionReadyAttempt >= SESSION_READY_MAX_ATTEMPTS || typeof timers.setTimeout !== "function") {
+            failSessionReady();
+            return;
+        }
+        sessionReadyRetryTimer = timers.setTimeout(() => {
+            sessionReadyRetryTimer = null;
+            sendSessionReady();
+        }, SESSION_READY_RETRY_DELAY_MS);
     };
 
     const mount = (mountElement, options) => {
@@ -156,9 +222,32 @@ export const createLocalShowcaseTransportWithDependencies = (
         stream = new LocalPixelStreaming(config, { videoElementParent: mountElement });
         stream.addEventListener("webRtcConnecting", () => reportState("connecting"));
         stream.addEventListener("webRtcConnected", () => reportState("connected"));
-        stream.addEventListener("webRtcDisconnected", () => reportState("disconnected"));
         stream.addEventListener("webRtcFailed", () => reportState("error"));
+        // dataChannelOpen can precede reset_ready/encoder setup, so local
+        // acceptance follows the production acknowledgement and retry contract.
+        stream.addEventListener("dataChannelOpen", () => {
+            if (sessionReady || sessionReadyRequestId || sessionReadyRetryTimer !== null) return;
+            sendSessionReady();
+        });
+        stream.addEventListener("webRtcDisconnected", () => {
+            // A missing acknowledgement is bounded by the supervised local
+            // session lifecycle; never retry without a correlated response.
+            clearSessionReadyRetry();
+            sessionReadyRequestId = null;
+            sessionReadyAttempt = 0;
+            sessionReady = false;
+            reportState("disconnected");
+        });
         stream.addResponseEventListener(SHOWCASE_RESPONSE_LISTENER, (response) => {
+            const candidate = parseSessionReadyResponse(response);
+            if (candidate && candidate.requestId === sessionReadyRequestId) {
+                if (candidate.result === "success") {
+                    clearSessionReadyRetry();
+                    sessionReadyRequestId = null;
+                    sessionReady = true;
+                    sessionReadyListeners.forEach((listener) => listener());
+                } else scheduleSessionReadyRetry();
+            }
             responseListeners.forEach((listener) => listener(response));
         });
         reportState("connecting");
@@ -168,10 +257,12 @@ export const createLocalShowcaseTransportWithDependencies = (
     return Object.freeze({
         mount,
         emitUIInteraction(payload) {
-            if (!stream || !isAllowlistedShowcasePayload(payload)) return false;
+            if (!stream || !isAllowlistedShowcasePayload(payload) || payload.action === SESSION_READY_ACTION) return false;
             return stream.emitUIInteraction(payload) === true;
         },
         disconnect() {
+            clearSessionReadyRetry();
+            sessionReadyRequestId = null;
             if (stream && typeof stream.disconnect === "function") stream.disconnect();
         },
         onConnectionState(listener) {
@@ -181,6 +272,11 @@ export const createLocalShowcaseTransportWithDependencies = (
         },
         onResponse(listener) {
             if (typeof listener === "function") responseListeners.add(listener);
+        },
+        onSessionReady(listener) {
+            if (typeof listener !== "function") return;
+            sessionReadyListeners.add(listener);
+            if (sessionReady) listener();
         },
     });
 };

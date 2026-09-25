@@ -3,6 +3,7 @@ import test from "node:test";
 import {
     LOCAL_SIGNALING_ENDPOINT,
     LOCAL_STREAMER_ID,
+    SESSION_READY_ACTION,
     SHOWCASE_RESPONSE_LISTENER,
     createLocalShowcaseTransportWithDependencies,
     isAllowlistedShowcasePayload,
@@ -123,8 +124,26 @@ test("local transport forwards only allowlisted UI interactions and raw UE Respo
     const transport = createLocalShowcaseTransportWithDependencies(dependencies, "localhost");
     const mount = { replaceChildren() {} };
     const responses = [];
+    let sessionReady = 0;
     transport.onResponse((response) => responses.push(response));
+    transport.onSessionReady(() => { sessionReady += 1; });
     transport.mount(mount, { streamerId: "Editor", input: mouseOnlyInput });
+    const stream = FakePixelStreaming.latest;
+    stream.events.get("dataChannelOpen")();
+    stream.events.get("dataChannelOpen")();
+    assert.equal(sessionReady, 0);
+    const sessionReadyRequest = stream.sent[0];
+    assert.equal(sessionReadyRequest.action, SESSION_READY_ACTION);
+    assert.equal(transport.emitUIInteraction(sessionReadyRequest), false);
+    stream.responses.get(SHOWCASE_RESPONSE_LISTENER)(JSON.stringify({
+        version: "landsnap-showcase-v1",
+        type: "operation-result",
+        action: SESSION_READY_ACTION,
+        requestId: sessionReadyRequest.requestId,
+        result: "success",
+        code: SESSION_READY_ACTION,
+    }));
+    assert.equal(sessionReady, 1);
 
     const valid = Object.freeze({
         version: "landsnap-showcase-v1",
@@ -140,10 +159,17 @@ test("local transport forwards only allowlisted UI interactions and raw UE Respo
     assert.equal(isAllowlistedShowcasePayload({ ...valid, action: "prepare_calibration" }), false);
     assert.equal(transport.emitUIInteraction(valid), true);
     assert.equal(transport.emitUIInteraction({ ...valid, action: "console_command" }), false);
-    assert.deepEqual(FakePixelStreaming.latest.sent, [valid]);
+    assert.deepEqual(FakePixelStreaming.latest.sent, [sessionReadyRequest, valid]);
 
     FakePixelStreaming.latest.responses.get(SHOWCASE_RESPONSE_LISTENER)("{\"response\":\"raw\"}");
-    assert.deepEqual(responses, ["{\"response\":\"raw\"}"]);
+    assert.deepEqual(responses, [JSON.stringify({
+        version: "landsnap-showcase-v1",
+        type: "operation-result",
+        action: SESSION_READY_ACTION,
+        requestId: sessionReadyRequest.requestId,
+        result: "success",
+        code: SESSION_READY_ACTION,
+    }), "{\"response\":\"raw\"}"]);
 });
 
 test("bootstrap never loads or attaches a transport for the public site", async () => {

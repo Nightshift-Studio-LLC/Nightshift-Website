@@ -731,6 +731,84 @@ body.landsnap-showcase-page.landsnap-showcase-embedded {
     font-weight: 600;
 }
 
+.landsnap-showcase-observer {
+    display: grid;
+    gap: 11px;
+    margin-top: 22px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(214, 255, 157, 0.16);
+}
+
+.landsnap-showcase-observer[hidden] {
+    display: none;
+}
+
+.landsnap-showcase-observer-heading {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.landsnap-showcase-observer-heading h2 {
+    margin: 3px 0 0;
+    color: #e1e8df;
+    font-family: "Chakra Petch", sans-serif;
+    font-size: 1rem;
+    letter-spacing: -0.025em;
+}
+
+.landsnap-showcase-observer-action {
+    flex: 0 0 auto;
+    padding: 9px 11px;
+    border: 1px solid rgba(214, 255, 157, 0.24);
+    border-radius: 2px;
+    background: #182019;
+    color: #7f957f;
+    font: 700 0.58rem/1 "IBM Plex Mono", monospace;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.landsnap-showcase-observer-action:disabled {
+    cursor: not-allowed;
+    opacity: 1;
+}
+
+.landsnap-showcase-observer-video {
+    position: relative;
+    display: grid;
+    min-height: 112px;
+    overflow: hidden;
+    place-items: center;
+    border: 1px solid rgba(214, 255, 157, 0.15);
+    background: #070d09;
+    isolation: isolate;
+}
+
+.landsnap-showcase-observer-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(182, 243, 106, 0.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(182, 243, 106, 0.045) 1px, transparent 1px);
+    background-size: 28px 28px;
+    opacity: 0.8;
+}
+
+.landsnap-showcase-observer-status {
+    z-index: 1;
+    max-width: 34rem;
+    margin: 0;
+    padding: 8px 11px;
+    border: 1px solid rgba(214, 255, 157, 0.14);
+    background: rgba(7, 16, 11, 0.86);
+    color: var(--landsnap-muted);
+    font-size: 0.62rem;
+    line-height: 1.55;
+    text-align: center;
+}
+
 /* Placement Studio borrows the compact, neutral hierarchy of an Unreal Editor details panel. */
 .landsnap-showcase-workspace {
     grid-template-columns: minmax(0, 1fr) clamp(390px, 30vw, 500px);

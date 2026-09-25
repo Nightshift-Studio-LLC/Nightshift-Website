@@ -163,6 +163,30 @@ test("only an exact, correlated bridge result is accepted", () => {
     assert.equal(parseShowcaseResult(JSON.stringify({ type: "operation-result" })), null);
 });
 
+test("session_ready acknowledgement stays inside the bounded lifecycle response gate", () => {
+    assert.deepEqual(parseShowcaseResult(JSON.stringify({
+        version: SHOWCASE_PROTOCOL_VERSION,
+        type: "operation-result",
+        action: "session_ready",
+        requestId: "request_123",
+        result: "success",
+        code: "session_ready",
+    })), {
+        requestId: "request_123",
+        action: "session_ready",
+        result: "success",
+        message: "The showcase session is ready.",
+    });
+    assert.equal(parseShowcaseResult(JSON.stringify({
+        version: SHOWCASE_PROTOCOL_VERSION,
+        type: "operation-result",
+        action: "session_ready",
+        requestId: "request_123",
+        result: "error",
+        code: "session_ready",
+    })), null);
+});
+
 test("AutoSnap, calibration, cleanup, and outliner messages stay inside the fixed protocol", () => {
     const autosnap = JSON.stringify({
         version: SHOWCASE_PROTOCOL_VERSION,
