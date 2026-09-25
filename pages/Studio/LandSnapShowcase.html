@@ -11,8 +11,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="../../images/icons/nightshift.ico">
-    <link rel="stylesheet" href="../../styles/landsnap-showcase.css?v=20260923-warm-editor-lifecycle">
+    <link rel="stylesheet" href="../../styles/landsnap-showcase.css?v=20260925-observer-transport">
     <script type="module" src="../../scripts/landsnap-showcase-queue.js?v=20260923-warm-editor-lifecycle"></script>
+    <script type="module" src="../../scripts/landsnap-showcase-observer.js?v=20260925-observer-transport"></script>
     <script type="module" src="../../scripts/landsnap-showcase-local.js?v=20260923-warm-editor-lifecycle"></script>
     <script type="module" src="../../scripts/landsnap-showcase-public.js?v=20260923-warm-editor-lifecycle"></script>
     <script type="module" src="../../scripts/landsnap-showcase.js?v=20260923-warm-editor-lifecycle"></script>
@@ -65,7 +66,7 @@
 
                 <p class="landsnap-showcase-pointer-guidance"><strong>How to try it:</strong> use Demo objects to select an object, then choose an action.</p>
 
-                <section class="landsnap-showcase-observer" aria-labelledby="landsnap-showcase-observer-title" hidden>
+                <section id="landsnap-showcase-observer" class="landsnap-showcase-observer" aria-labelledby="landsnap-showcase-observer-title" hidden>
                     <div class="landsnap-showcase-observer-heading">
                         <div>
                             <p class="landsnap-showcase-section-label">Waiting room</p>
@@ -75,6 +76,7 @@
                     </div>
                     <div id="landsnap-showcase-observer-mount" class="landsnap-showcase-observer-video" role="region" aria-label="Read-only waiting room observer video" aria-live="polite" aria-busy="false" data-observer-capability="unavailable">
                         <span class="landsnap-showcase-observer-grid" aria-hidden="true"></span>
+                        <div id="landsnap-showcase-observer-player" class="landsnap-showcase-observer-player"></div>
                         <p id="landsnap-showcase-observer-status" class="landsnap-showcase-observer-status" role="status">Waiting for a live session.</p>
                     </div>
                 </section>

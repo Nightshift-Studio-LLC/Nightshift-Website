@@ -775,6 +775,12 @@ body.landsnap-showcase-page.landsnap-showcase-embedded {
     opacity: 1;
 }
 
+.landsnap-showcase-observer-action:not(:disabled) {
+    cursor: pointer;
+    border-color: rgba(214, 255, 157, 0.55);
+    color: #d6ff9d;
+}
+
 .landsnap-showcase-observer-video {
     position: relative;
     display: grid;
@@ -794,6 +800,25 @@ body.landsnap-showcase-page.landsnap-showcase-embedded {
         linear-gradient(90deg, rgba(182, 243, 106, 0.045) 1px, transparent 1px);
     background-size: 28px 28px;
     opacity: 0.8;
+}
+
+.landsnap-showcase-observer-player {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    min-height: 112px;
+}
+
+.landsnap-showcase-observer-player video {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+.landsnap-showcase-observer-video[data-observer-state="watching"] .landsnap-showcase-observer-grid,
+.landsnap-showcase-observer-video[data-observer-state="watching"] .landsnap-showcase-observer-status {
+    display: none;
 }
 
 .landsnap-showcase-observer-status {
