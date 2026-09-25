@@ -261,6 +261,16 @@ test("public bootstrap imports only for an exact-host, complete ready lease", as
     assert.equal(hasReadyPublicShowcaseLease(liveLease, liveNow), true);
     assert.equal(hasReadyPublicShowcaseLease({ ...liveLease, leaseId: "short" }, liveNow), false);
 
+    windowRef.LandSnapShowcaseQueueLease = {
+        ...liveLease,
+        session: { ...liveLease.session, token: "signed-session-ticket-for-showcase-0002" },
+    };
+    listeners.get("landsnap-showcase-lease-change")?.();
+    await Promise.resolve();
+    assert.equal(loads, 1, "a refreshed ticket must not load a second transport");
+    assert.equal(transport.disconnected, undefined, "a refreshed ticket must not disconnect the same lease");
+    assert.equal(windowRef.LandSnapShowcasePixelStreaming, transport);
+
     const activeLease = {
         status: "active",
         leaseId: liveLease.leaseId,

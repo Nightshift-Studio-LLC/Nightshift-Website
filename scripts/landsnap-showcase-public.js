@@ -57,6 +57,7 @@ export const installPublicShowcaseBootstrap = async (
 
     let activeKey = null;
     let activeLeaseId = null;
+    let activeSessionUrl = null;
     let activeTransport = null;
     let loading = null;
 
@@ -67,6 +68,7 @@ export const installPublicShowcaseBootstrap = async (
         }
         activeKey = null;
         activeLeaseId = null;
+        activeSessionUrl = null;
         activeTransport = null;
     };
     const installForLease = async () => {
@@ -79,6 +81,12 @@ export const installPublicShowcaseBootstrap = async (
             return null;
         }
         const key = `${lease.leaseId}:${lease.session.url}:${lease.session.token}`;
+        // A ready heartbeat may refresh the short-lived ticket while the same
+        // lease is already mounted. The ticket authorized the existing relay;
+        // rotating it must not tear down that transport mid-stream.
+        if (activeLeaseId === lease.leaseId
+            && activeSessionUrl === lease.session.url
+            && isTransport(activeTransport)) return activeTransport;
         if (activeKey === key && isTransport(activeTransport)) return activeTransport;
         if (loading?.key === key) return loading.promise;
 
@@ -91,6 +99,7 @@ export const installPublicShowcaseBootstrap = async (
             }
             activeKey = key;
             activeLeaseId = lease.leaseId;
+            activeSessionUrl = lease.session.url;
             activeTransport = transport;
             windowRef.LandSnapShowcasePixelStreaming = transport;
             dispatchReady(windowRef, transport);

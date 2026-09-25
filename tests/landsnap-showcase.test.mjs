@@ -13,6 +13,7 @@ import {
     announceShowcaseShellReady,
     createShowcaseCommand,
     getShowcaseLifecycleFromLease,
+    initializeShowcaseSurface,
     isShowcaseSessionExpiring,
     parseShowcaseResult,
     setShowcaseEmbeddedMode,
@@ -241,4 +242,104 @@ test("viewport notifications use fixed copy for connecting, stream failures, and
     assert.equal(isShowcaseSessionExpiring({ ...activeLease, sessionExpiresAt: now + 60_001 }, now), false);
     assert.equal(isShowcaseSessionExpiring({ status: "ready", readyClaimExpiresAt: now + 60_000 }, now), false);
     assert.equal(isShowcaseSessionExpiring({ status: "waiting" }, now), false);
+});
+
+test("surface keeps the mounted transport across a same-lease ready ticket refresh", async () => {
+    const now = Date.now();
+    const session = {
+        url: "/api/landsnap-showcase/session/v1/player/showcase-player-ticket-001",
+        token: "signed-session-ticket-for-showcase-0001",
+        expiresAt: now + 90_000,
+    };
+    const windowRef = {
+        self: null,
+        top: null,
+        parent: { postMessage() {} },
+        location: { hostname: "showcase.ns-tx.com", origin: "https://showcase.ns-tx.com", protocol: "https:" },
+        LandSnapShowcaseQueueLease: {
+            status: "ready",
+            leaseId: "ready-showcase-lease-1234",
+            readyClaimExpiresAt: now + 90_000,
+            session,
+        },
+        LandSnapShowcaseQueue: { recheck() {} },
+        LandSnapShowcasePixelStreaming: null,
+        addEventListener(type, listener) { this.listeners ??= new Map(); this.listeners.set(type, listener); },
+        dispatchEvent() {},
+    };
+    windowRef.self = windowRef;
+    windowRef.top = windowRef;
+
+    const mount = {
+        replaceChildren() {},
+        setAttribute() {},
+        dataset: {},
+    };
+    const connection = { querySelector() { return null; }, setAttribute() {}, textContent: "" };
+    const operation = { textContent: "" };
+    const control = {
+        disabled: true,
+        dataset: { command: "snap-selected" },
+        setAttribute() {},
+        addEventListener() {},
+        removeEventListener() {},
+    };
+    const expander = { open: true, addEventListener() {}, removeEventListener() {} };
+    const documentRef = {
+        getElementById(id) {
+            return {
+                "landsnap-showcase-stream-mount": mount,
+                "landsnap-showcase-connection-state": connection,
+                "landsnap-showcase-operation-status": operation,
+            }[id] || null;
+        },
+        querySelector(selector) { return selector === "[data-landsnap-showcase-expander]" ? expander : null; },
+        querySelectorAll() { return [control]; },
+    };
+    let mounts = 0;
+    let disconnects = 0;
+    const transport = {
+        mount() { mounts += 1; },
+        emitUIInteraction() { return false; },
+        onConnectionState(listener) { listener("connected"); },
+        onResponse() {},
+        onSessionReady() {},
+        disconnect() { disconnects += 1; },
+    };
+    windowRef.LandSnapShowcasePixelStreaming = transport;
+
+    initializeShowcaseSurface(documentRef, windowRef);
+    await Promise.resolve();
+    windowRef.LandSnapShowcaseQueueLease = {
+        ...windowRef.LandSnapShowcaseQueueLease,
+        session: { ...session, token: "signed-session-ticket-for-showcase-0002" },
+    };
+    windowRef.listeners.get("landsnap-showcase-lease-change")();
+    await Promise.resolve();
+
+    assert.equal(mounts, 1);
+    assert.equal(disconnects, 0);
+
+    let replacementMounts = 0;
+    const replacementTransport = {
+        mount() { replacementMounts += 1; },
+        emitUIInteraction() { return false; },
+        onConnectionState(listener) { listener("connected"); },
+        onResponse() {},
+        onSessionReady() {},
+        disconnect() {},
+    };
+    windowRef.LandSnapShowcasePixelStreaming = replacementTransport;
+    windowRef.LandSnapShowcaseQueueLease = {
+        ...windowRef.LandSnapShowcaseQueueLease,
+        session: {
+            ...session,
+            url: "/api/landsnap-showcase/session/v1/player/showcase-player-ticket-002",
+            token: "signed-session-ticket-for-showcase-0003",
+        },
+    };
+    windowRef.listeners.get("landsnap-showcase-lease-change")();
+    await Promise.resolve();
+    assert.equal(disconnects, 1, "a changed player URL must retire the old transport");
+    assert.equal(replacementMounts, 1, "a changed player URL must attach the replacement transport");
 });

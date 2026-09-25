@@ -562,6 +562,7 @@ export const initializeShowcaseSurface = (documentRef, windowRef) => {
     let attachedTransport = null;
     let authorizationKey = null;
     let authorizationLeaseId = null;
+    let authorizationSessionUrl = null;
     const expander = typeof documentRef.querySelector === "function"
         ? documentRef.querySelector("[data-landsnap-showcase-expander]")
         : null;
@@ -591,6 +592,7 @@ export const initializeShowcaseSurface = (documentRef, windowRef) => {
             attachedTransport = null;
             authorizationKey = null;
             authorizationLeaseId = null;
+            authorizationSessionUrl = null;
             return;
         }
         const lease = windowRef.LandSnapShowcaseQueueLease;
@@ -602,6 +604,14 @@ export const initializeShowcaseSurface = (documentRef, windowRef) => {
         }
         const authorization = getAuthorization();
         const transport = authorization ? windowRef.LandSnapShowcasePixelStreaming : null;
+        if (authorization
+            && attached
+            && attachedTransport === transport
+            && authorizationLeaseId === lease?.leaseId
+            && authorizationSessionUrl === authorization?.session?.url) {
+            attached.setSessionExpiryWarning(lease);
+            return;
+        }
         if (authorizationKey === authorization?.key && attachedTransport === transport) {
             attached?.setSessionExpiryWarning(windowRef.LandSnapShowcaseQueueLease);
             return;
@@ -620,6 +630,7 @@ export const initializeShowcaseSurface = (documentRef, windowRef) => {
         });
         authorizationKey = authorization?.key || null;
         authorizationLeaseId = hasReadyQueueLease(lease) ? lease.leaseId : null;
+        authorizationSessionUrl = hasReadyQueueLease(lease) ? authorization.session.url : null;
         attached?.setSessionExpiryWarning(windowRef.LandSnapShowcaseQueueLease);
     };
 
@@ -642,6 +653,11 @@ export const initializeShowcaseSurface = (documentRef, windowRef) => {
             if (expander) expander.removeEventListener("toggle", renderTransportBoundary);
             if (attached) attached.detach();
             if (attachedTransport && typeof attachedTransport.disconnect === "function") attachedTransport.disconnect();
+            attached = null;
+            attachedTransport = null;
+            authorizationKey = null;
+            authorizationLeaseId = null;
+            authorizationSessionUrl = null;
         },
     });
 };
