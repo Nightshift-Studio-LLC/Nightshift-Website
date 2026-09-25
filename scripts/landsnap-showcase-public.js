@@ -80,6 +80,7 @@ export const installPublicShowcaseBootstrap = async (
             clearActive();
             return null;
         }
+        const identity = `${lease.leaseId}:${lease.session.url}`;
         const key = `${lease.leaseId}:${lease.session.url}:${lease.session.token}`;
         // A ready heartbeat may refresh the short-lived ticket while the same
         // lease is already mounted. The ticket authorized the existing relay;
@@ -88,12 +89,15 @@ export const installPublicShowcaseBootstrap = async (
             && activeSessionUrl === lease.session.url
             && isTransport(activeTransport)) return activeTransport;
         if (activeKey === key && isTransport(activeTransport)) return activeTransport;
-        if (loading?.key === key) return loading.promise;
+        if (loading?.identity === identity) return loading.promise;
 
         clearActive();
         const promise = Promise.resolve(loadTransport()).then((transport) => {
             if (!isTransport(transport)) throw new TypeError("The dedicated Showcase transport is unavailable.");
-            if (!hasReadyPublicShowcaseLease(windowRef.LandSnapShowcaseQueueLease)) {
+            const currentLease = windowRef.LandSnapShowcaseQueueLease;
+            if (!hasReadyPublicShowcaseLease(currentLease)
+                || currentLease.leaseId !== lease.leaseId
+                || currentLease.session.url !== lease.session.url) {
                 if (typeof transport.disconnect === "function") transport.disconnect();
                 return null;
             }
@@ -105,9 +109,9 @@ export const installPublicShowcaseBootstrap = async (
             dispatchReady(windowRef, transport);
             return transport;
         }).finally(() => {
-            if (loading?.key === key) loading = null;
+            if (loading?.identity === identity) loading = null;
         });
-        loading = { key, promise };
+        loading = { identity, promise };
         return promise;
     };
 

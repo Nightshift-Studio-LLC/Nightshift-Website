@@ -290,3 +290,86 @@ test("public bootstrap imports only for an exact-host, complete ready lease", as
     assert.equal(noHostResult, null);
     assert.equal(nonHostLoads, 0);
 });
+
+test("public bootstrap deduplicates pending ticket refreshes and rejects stale lease loads", async () => {
+    const liveNow = Date.now();
+    const makeLease = (leaseId, sessionUrl, token) => ({
+        ...readyLease,
+        leaseId,
+        readyClaimExpiresAt: liveNow + 90_000,
+        session: { ...brokerSession, url: sessionUrl, token, expiresAt: liveNow + 90_000 },
+    });
+    const makeWindow = (lease) => {
+        const listeners = new Map();
+        const dispatched = [];
+        return {
+            windowRef: {
+                location: publicLocation,
+                LandSnapShowcaseQueueLease: lease,
+                CustomEvent: class {
+                    constructor(type, init) { this.type = type; this.detail = init?.detail; }
+                },
+                addEventListener(type, listener) { listeners.set(type, listener); },
+                dispatchEvent(event) { dispatched.push(event); listeners.get(event.type)?.(event); },
+            },
+            listeners,
+            dispatched,
+        };
+    };
+    const transportOne = {
+        mount() {}, emitUIInteraction() {}, onConnectionState() {}, onResponse() {}, onSessionReady() {},
+        disconnect() { this.disconnected = true; },
+    };
+    let resolveFirst;
+    const firstLoad = new Promise((resolve) => { resolveFirst = resolve; });
+    const sameLease = makeWindow(makeLease("ready-showcase-lease-1234", brokerSession.url, "signed-session-ticket-for-showcase-0001"));
+    let sameLeaseLoads = 0;
+    const sameLeaseInstall = installPublicShowcaseBootstrap(sameLease.windowRef, () => {
+        sameLeaseLoads += 1;
+        return firstLoad;
+    });
+    sameLease.windowRef.LandSnapShowcaseQueueLease = makeLease(
+        "ready-showcase-lease-1234",
+        brokerSession.url,
+        "signed-session-ticket-for-showcase-0002",
+    );
+    sameLease.listeners.get("landsnap-showcase-lease-change")?.();
+    await Promise.resolve();
+    assert.equal(sameLeaseLoads, 1, "token rotation must reuse the pending load");
+    resolveFirst(transportOne);
+    assert.equal(await sameLeaseInstall, transportOne);
+    await Promise.resolve();
+    assert.equal(sameLease.dispatched.length, 1);
+    assert.equal(transportOne.disconnected, undefined);
+
+    const transportTwo = {
+        mount() {}, emitUIInteraction() {}, onConnectionState() {}, onResponse() {}, onSessionReady() {},
+        disconnect() { this.disconnected = true; },
+    };
+    const stale = makeWindow(makeLease("ready-showcase-lease-1234", brokerSession.url, "signed-session-ticket-for-showcase-0003"));
+    const resolvers = [];
+    let staleLoads = 0;
+    const staleInstall = installPublicShowcaseBootstrap(stale.windowRef, () => {
+        staleLoads += 1;
+        return new Promise((resolve) => resolvers.push(resolve));
+    });
+    stale.windowRef.LandSnapShowcaseQueueLease = makeLease(
+        "ready-showcase-lease-5678",
+        "/api/landsnap-showcase/session/v1/player/showcase-player-ticket-002",
+        "signed-session-ticket-for-showcase-0004",
+    );
+    stale.listeners.get("landsnap-showcase-lease-change")?.();
+    await Promise.resolve();
+    assert.equal(staleLoads, 2, "a new lease identity may start its own load");
+    resolvers[0](transportOne);
+    await Promise.resolve();
+    await Promise.resolve();
+    assert.equal(transportOne.disconnected, true, "the stale lease load must be closed");
+    assert.equal(stale.dispatched.length, 0, "the stale load must not publish a transport");
+    resolvers[1](transportTwo);
+    await Promise.resolve();
+    await Promise.resolve();
+    assert.equal(await staleInstall, null);
+    assert.equal(stale.dispatched.length, 1);
+    assert.equal(stale.windowRef.LandSnapShowcasePixelStreaming, transportTwo);
+});
