@@ -67,20 +67,6 @@
 
                 <p class="landsnap-showcase-pointer-guidance"><strong>How to try it:</strong> use Demo objects to select an object, then choose an action.</p>
 
-                <section id="landsnap-showcase-observer" class="landsnap-showcase-observer" aria-labelledby="landsnap-showcase-observer-title" hidden>
-                    <div class="landsnap-showcase-observer-heading">
-                        <div>
-                            <p class="landsnap-showcase-section-label">Waiting room</p>
-                            <h2 id="landsnap-showcase-observer-title">Watch while waiting</h2>
-                        </div>
-                        <button id="landsnap-showcase-observer-action" class="landsnap-showcase-observer-action" type="button" disabled aria-disabled="true" data-observer-capability="unavailable" aria-describedby="landsnap-showcase-observer-status">Watch while waiting</button>
-                    </div>
-                    <div id="landsnap-showcase-observer-mount" class="landsnap-showcase-observer-video" role="region" aria-label="Read-only waiting room observer video" aria-live="polite" aria-busy="false" data-observer-capability="unavailable">
-                        <span class="landsnap-showcase-observer-grid" aria-hidden="true"></span>
-                        <div id="landsnap-showcase-observer-player" class="landsnap-showcase-observer-player"></div>
-                        <p id="landsnap-showcase-observer-status" class="landsnap-showcase-observer-status" role="status">Waiting for a live session.</p>
-                    </div>
-                </section>
             </div>
 
             <aside class="landsnap-showcase-panel" aria-labelledby="landsnap-showcase-controls-title">
@@ -198,6 +184,20 @@
                         <button id="landsnap-showcase-retry" class="landsnap-showcase-queue-secondary" type="button" hidden>Check again</button>
                         <button id="landsnap-showcase-leave" class="landsnap-showcase-queue-secondary" type="button" hidden>Leave queue</button>
                     </div>
+                    <section id="landsnap-showcase-observer" class="landsnap-showcase-observer" aria-labelledby="landsnap-showcase-observer-title" hidden>
+                        <div class="landsnap-showcase-observer-heading">
+                            <div>
+                                <p class="landsnap-showcase-section-label">Waiting room</p>
+                                <h2 id="landsnap-showcase-observer-title">Watch while waiting</h2>
+                            </div>
+                            <button id="landsnap-showcase-observer-action" class="landsnap-showcase-observer-action" type="button" disabled aria-disabled="true" data-observer-capability="unavailable" aria-describedby="landsnap-showcase-observer-status">Watch while waiting</button>
+                        </div>
+                        <div id="landsnap-showcase-observer-mount" class="landsnap-showcase-observer-video" role="region" aria-label="Read-only waiting room observer video" aria-live="polite" aria-busy="false" data-observer-capability="unavailable">
+                            <span class="landsnap-showcase-observer-grid" aria-hidden="true"></span>
+                            <div id="landsnap-showcase-observer-player" class="landsnap-showcase-observer-player"></div>
+                            <p id="landsnap-showcase-observer-status" class="landsnap-showcase-observer-status" role="status">Waiting for a live session.</p>
+                        </div>
+                    </section>
                     <dl class="landsnap-showcase-queue-metrics">
                         <div>
                             <dt>Place in line</dt>
