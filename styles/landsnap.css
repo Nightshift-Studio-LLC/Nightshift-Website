@@ -1911,6 +1911,53 @@ body.landsnap-page {
 .landsnap-showcase-embed[open] .landsnap-showcase-embed-action-opened { display: inline; }
 .landsnap-showcase-embed[open] .landsnap-showcase-embed-action-chevron { transform: rotate(180deg); }
 
+.landsnap-showcase-coming-soon {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 14px;
+    align-items: start;
+    margin: clamp(14px, 2.5vw, 26px) clamp(14px, 2.5vw, 26px) 0;
+    padding: 16px 18px;
+    border: 1px solid rgba(91, 216, 226, 0.34);
+    border-left: 3px solid #61d8e1;
+    background:
+        linear-gradient(105deg, rgba(71, 199, 214, 0.08), transparent 58%),
+        #172126;
+    box-shadow: inset 0 1px rgba(255, 255, 255, 0.025);
+}
+
+.landsnap-showcase-coming-soon-marker {
+    width: 16px;
+    height: 4px;
+    margin-top: 7px;
+    background: #61d8e1;
+    box-shadow: 0 0 0 1px rgba(97, 216, 225, 0.18), 0 0 12px rgba(97, 216, 225, 0.2);
+}
+
+.landsnap-showcase-coming-soon .eyebrow {
+    margin: 0 0 5px;
+    color: #76e2e9;
+    font-size: 0.56rem;
+}
+
+.landsnap-showcase-coming-soon h2 {
+    margin: 0;
+    color: var(--text);
+    font-family: var(--heading);
+    font-size: clamp(1.05rem, 1.7vw, 1.35rem);
+    font-weight: 500;
+    letter-spacing: -0.025em;
+    line-height: 1.2;
+}
+
+.landsnap-showcase-coming-soon p:not(.eyebrow) {
+    max-width: 72ch;
+    margin: 7px 0 0;
+    color: #c4cecd;
+    font-size: 0.78rem;
+    line-height: 1.6;
+}
+
 .landsnap-showcase-embed-body {
     position: relative;
     padding: clamp(14px, 2.5vw, 26px);
@@ -2046,6 +2093,12 @@ body.landsnap-page {
 @media (max-width: 560px) {
     .landsnap-showcase-embed > summary { padding: 19px 18px; }
     .landsnap-showcase-embed-description { font-size: 0.8rem; }
+    .landsnap-showcase-coming-soon {
+        gap: 10px;
+        margin: 10px 10px 0;
+        padding: 14px;
+    }
+    .landsnap-showcase-coming-soon p:not(.eyebrow) { font-size: 0.74rem; }
     .landsnap-showcase-embed-body { padding: 10px; }
     .landsnap-showcase-host-status { inset: 10px; padding: 14px; }
     .landsnap-showcase-host-status-card { padding: 22px 18px; }
