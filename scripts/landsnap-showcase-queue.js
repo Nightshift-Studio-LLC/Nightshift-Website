@@ -571,9 +571,9 @@ export const getQueuePresentation = (lease, now = Date.now(), { launchRequested 
         return Object.freeze({
             visible: true,
             state,
-            alert: "Checking availability",
-            title: "One moment",
-            message: "We’re checking the demo.",
+            alert: "Demo initiated",
+            title: "Request received",
+            message: "We’re checking demo availability.",
             position: "—",
             estimate: "—",
             countdown: "—",
