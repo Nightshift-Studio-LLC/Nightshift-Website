@@ -9,6 +9,7 @@ import {
     SHOWCASE_PROTOCOL_VERSION,
     SHOWCASE_SHELL_READY_MESSAGE,
     SHOWCASE_SHELL_READY_VERSION,
+    SHOWCASE_START_REQUEST_EVENT,
     announceShowcaseLifecycle,
     announceShowcaseShellReady,
     createShowcaseCommand,
@@ -88,7 +89,7 @@ test("the framed shell sends only fixed lifecycle states to the exact parent ori
     assert.equal(getShowcaseLifecycleFromLease({ status: "idle" }), "idle");
     assert.equal(getShowcaseLifecycleFromLease({ status: "waiting" }), "queued");
     assert.equal(getShowcaseLifecycleFromLease({ status: "starting" }), "preparing");
-    assert.equal(getShowcaseLifecycleFromLease({ status: "ready" }), "connecting");
+    assert.equal(getShowcaseLifecycleFromLease({ status: "ready" }), "idle");
     assert.equal(getShowcaseLifecycleFromLease({ status: "active" }), "ready");
     assert.equal(getShowcaseLifecycleFromLease({ status: "expired" }), "cleanup");
     assert.equal(getShowcaseLifecycleFromLease({ status: "ended" }), "cleanup");
@@ -268,7 +269,7 @@ test("viewport notifications use fixed copy for connecting, stream failures, and
     assert.equal(isShowcaseSessionExpiring({ status: "waiting" }, now), false);
 });
 
-test("surface keeps the mounted transport across a same-lease ready ticket refresh", async () => {
+test("surface waits for Start Demo, then keeps the mounted transport across a same-lease ready ticket refresh", async () => {
     const now = Date.now();
     const session = {
         url: "/api/landsnap-showcase/session/v1/player/showcase-player-ticket-001",
@@ -334,6 +335,10 @@ test("surface keeps the mounted transport across a same-lease ready ticket refre
 
     initializeShowcaseSurface(documentRef, windowRef);
     await Promise.resolve();
+    assert.equal(mounts, 0, "a ready lease alone must not mount the transport");
+    windowRef.listeners.get(SHOWCASE_START_REQUEST_EVENT)();
+    await Promise.resolve();
+    assert.equal(mounts, 1, "Start Demo mounts the authorized transport exactly once");
     windowRef.LandSnapShowcaseQueueLease = {
         ...windowRef.LandSnapShowcaseQueueLease,
         session: { ...session, token: "signed-session-ticket-for-showcase-0002" },
@@ -365,5 +370,28 @@ test("surface keeps the mounted transport across a same-lease ready ticket refre
     windowRef.listeners.get("landsnap-showcase-lease-change")();
     await Promise.resolve();
     assert.equal(disconnects, 1, "a changed player URL must retire the old transport");
-    assert.equal(replacementMounts, 1, "a changed player URL must attach the replacement transport");
+    assert.equal(replacementMounts, 0, "a changed player URL must wait for a new Start Demo click");
+    windowRef.listeners.get(SHOWCASE_START_REQUEST_EVENT)();
+    await Promise.resolve();
+    assert.equal(replacementMounts, 1, "Start Demo may attach the newly authorized transport");
+
+    mounts = 0;
+    disconnects = 0;
+    const loopbackWindowRef = {
+        ...windowRef,
+        location: { hostname: "127.0.0.1", origin: "http://127.0.0.1:4173", protocol: "http:" },
+        LandSnapShowcasePixelStreaming: transport,
+        listeners: new Map(),
+        addEventListener(type, listener) { this.listeners.set(type, listener); },
+    };
+    loopbackWindowRef.self = loopbackWindowRef;
+    loopbackWindowRef.top = loopbackWindowRef;
+
+    initializeShowcaseSurface(documentRef, loopbackWindowRef);
+    assert.equal(mounts, 0, "the loopback ready lease also waits for Start Demo");
+    assert.doesNotThrow(() => loopbackWindowRef.listeners.get(SHOWCASE_START_REQUEST_EVENT)());
+    await Promise.resolve();
+    assert.equal(mounts, 1, "loopback Start Demo mounts without requiring a broker session URL");
+    loopbackWindowRef.listeners.get("landsnap-showcase-lease-change")();
+    assert.equal(mounts, 1, "the same loopback lease does not remount after authorization");
 });

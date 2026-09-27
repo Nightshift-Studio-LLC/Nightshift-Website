@@ -14,6 +14,7 @@ export const SHOWCASE_SHELL_READY_MESSAGE = "landsnap-showcase-shell-ready";
 export const SHOWCASE_SHELL_READY_VERSION = 1;
 export const SHOWCASE_LIFECYCLE_MESSAGE = "landsnap-showcase-lifecycle";
 export const SHOWCASE_LIFECYCLE_VERSION = 1;
+export const SHOWCASE_START_REQUEST_EVENT = "landsnap-showcase-start-requested";
 export const SHOWCASE_LIFECYCLE_STATES = Object.freeze([
     "idle",
     "queued",
@@ -62,7 +63,7 @@ export const announceShowcaseLifecycle = (windowRef, state) => {
 export const getShowcaseLifecycleFromLease = (lease) => {
     if (lease?.status === "waiting") return "queued";
     if (lease?.status === "starting") return "preparing";
-    if (lease?.status === "ready") return "connecting";
+    if (lease?.status === "ready") return "idle";
     if (lease?.status === "active") return "ready";
     if (["cleanup", "expired", "ended"].includes(lease?.status)) return "cleanup";
     if (lease?.status === "unavailable") return "failure";
@@ -568,16 +569,19 @@ export const initializeShowcaseSurface = (documentRef, windowRef) => {
     let authorizationKey = null;
     let authorizationLeaseId = null;
     let authorizationSessionUrl = null;
+    let launchIdentity = null;
     const expander = typeof documentRef.querySelector === "function"
         ? documentRef.querySelector("[data-landsnap-showcase-expander]")
         : null;
 
     const getAuthorization = () => {
-        if (isLoopbackHost(windowRef.location?.hostname)) {
-            return Object.freeze({ kind: "loopback", session: null, key: "loopback" });
-        }
         const lease = windowRef.LandSnapShowcaseQueueLease;
         if (!hasReadyQueueLease(lease)) return null;
+        const identity = `${lease.leaseId}:${lease.session.url}`;
+        if (launchIdentity !== identity) return null;
+        if (isLoopbackHost(windowRef.location?.hostname)) {
+            return Object.freeze({ kind: "loopback", session: null, key: identity });
+        }
         return Object.freeze({
             kind: "broker",
             session: lease.session,
@@ -609,11 +613,12 @@ export const initializeShowcaseSurface = (documentRef, windowRef) => {
         }
         const authorization = getAuthorization();
         const transport = authorization ? windowRef.LandSnapShowcasePixelStreaming : null;
+        const authorizedSessionUrl = authorization?.session?.url || null;
         if (authorization
             && attached
             && attachedTransport === transport
             && authorizationLeaseId === lease?.leaseId
-            && authorizationSessionUrl === authorization?.session?.url) {
+            && authorizationSessionUrl === authorizedSessionUrl) {
             attached.setSessionExpiryWarning(lease);
             return;
         }
@@ -626,6 +631,14 @@ export const initializeShowcaseSurface = (documentRef, windowRef) => {
         if (attachedTransport && typeof attachedTransport.disconnect === "function") {
             attachedTransport.disconnect();
         }
+        if (!authorization || !transport) {
+            attached = null;
+            attachedTransport = null;
+            authorizationKey = null;
+            authorizationLeaseId = null;
+            authorizationSessionUrl = null;
+            return;
+        }
         attachedTransport = transport || null;
         attached = attachShowcaseSurface(documentRef, transport, {
             brokerSession: authorization?.session || null,
@@ -635,16 +648,27 @@ export const initializeShowcaseSurface = (documentRef, windowRef) => {
         });
         authorizationKey = authorization?.key || null;
         authorizationLeaseId = hasReadyQueueLease(lease) ? lease.leaseId : null;
-        authorizationSessionUrl = hasReadyQueueLease(lease) ? authorization.session.url : null;
+        authorizationSessionUrl = hasReadyQueueLease(lease) ? authorizedSessionUrl : null;
         attached?.setSessionExpiryWarning(windowRef.LandSnapShowcaseQueueLease);
     };
 
     renderTransportBoundary();
     publishLeaseLifecycle();
     windowRef.addEventListener("landsnap-showcase-transport-ready", renderTransportBoundary);
+    const handleStartRequest = () => {
+        const lease = windowRef.LandSnapShowcaseQueueLease;
+        if (!hasReadyQueueLease(lease)) return;
+        launchIdentity = `${lease.leaseId}:${lease.session.url}`;
+        announceShowcaseLifecycle(windowRef, "connecting");
+        renderTransportBoundary();
+    };
+    windowRef.addEventListener(SHOWCASE_START_REQUEST_EVENT, handleStartRequest);
     const handleLeaseTick = (event) => attached?.setSessionExpiryWarning(event?.detail);
     windowRef.addEventListener("landsnap-showcase-lease-tick", handleLeaseTick);
     const handleLeaseChange = () => {
+        const lease = windowRef.LandSnapShowcaseQueueLease;
+        const readyIdentity = hasReadyQueueLease(lease) ? `${lease.leaseId}:${lease.session.url}` : null;
+        if (lease?.status !== "active" && launchIdentity !== readyIdentity) launchIdentity = null;
         renderTransportBoundary();
         publishLeaseLifecycle();
     };
@@ -653,6 +677,7 @@ export const initializeShowcaseSurface = (documentRef, windowRef) => {
     return Object.freeze({
         detach() {
             windowRef.removeEventListener("landsnap-showcase-transport-ready", renderTransportBoundary);
+            windowRef.removeEventListener(SHOWCASE_START_REQUEST_EVENT, handleStartRequest);
             windowRef.removeEventListener("landsnap-showcase-lease-tick", handleLeaseTick);
             windowRef.removeEventListener("landsnap-showcase-lease-change", handleLeaseChange);
             if (expander) expander.removeEventListener("toggle", renderTransportBoundary);

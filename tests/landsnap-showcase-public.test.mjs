@@ -15,6 +15,7 @@ import {
     hasReadyPublicShowcaseLease,
     installPublicShowcaseBootstrap,
 } from "../scripts/landsnap-showcase-public.js";
+import { SHOWCASE_START_REQUEST_EVENT } from "../scripts/landsnap-showcase-queue.js";
 
 const now = 1_700_000_000_000;
 const publicLocation = Object.freeze({
@@ -371,7 +372,7 @@ test("public session_ready retry timer is cleared when the stream disconnects", 
     assert.equal(stream.sent.length, 1);
 });
 
-test("public bootstrap imports only for an exact-host, complete ready lease", async () => {
+test("public bootstrap imports only after Start Demo for an exact-host, complete ready lease", async () => {
     const liveNow = Date.now();
     const liveLease = {
         ...readyLease,
@@ -410,7 +411,12 @@ test("public bootstrap imports only for an exact-host, complete ready lease", as
         loads += 1;
         return transport;
     });
-    assert.equal(installed, transport);
+    assert.equal(installed, null);
+    assert.equal(windowRef.LandSnapShowcasePixelStreaming, undefined);
+    assert.equal(loads, 0, "a ready lease must not import the player before Start Demo");
+    listeners.get(SHOWCASE_START_REQUEST_EVENT)?.();
+    await Promise.resolve();
+    await Promise.resolve();
     assert.equal(windowRef.LandSnapShowcasePixelStreaming, transport);
     assert.equal(loads, 1);
     assert.equal(dispatched.at(-1).type, "landsnap-showcase-transport-ready");
@@ -484,6 +490,11 @@ test("public bootstrap deduplicates pending ticket refreshes and rejects stale l
         sameLeaseLoads += 1;
         return firstLoad;
     });
+    assert.equal(await sameLeaseInstall, null);
+    assert.equal(sameLeaseLoads, 0);
+    sameLease.listeners.get(SHOWCASE_START_REQUEST_EVENT)?.();
+    await Promise.resolve();
+    assert.equal(sameLeaseLoads, 1);
     sameLease.windowRef.LandSnapShowcaseQueueLease = makeLease(
         "ready-showcase-lease-1234",
         brokerSession.url,
@@ -493,7 +504,6 @@ test("public bootstrap deduplicates pending ticket refreshes and rejects stale l
     await Promise.resolve();
     assert.equal(sameLeaseLoads, 1, "token rotation must reuse the pending load");
     resolveFirst(transportOne);
-    assert.equal(await sameLeaseInstall, transportOne);
     await Promise.resolve();
     assert.equal(sameLease.dispatched.length, 1);
     assert.equal(transportOne.disconnected, undefined);
@@ -509,6 +519,10 @@ test("public bootstrap deduplicates pending ticket refreshes and rejects stale l
         staleLoads += 1;
         return new Promise((resolve) => resolvers.push(resolve));
     });
+    assert.equal(await staleInstall, null);
+    stale.listeners.get(SHOWCASE_START_REQUEST_EVENT)?.();
+    await Promise.resolve();
+    assert.equal(staleLoads, 1);
     stale.windowRef.LandSnapShowcaseQueueLease = makeLease(
         "ready-showcase-lease-5678",
         "/api/landsnap-showcase/session/v1/player/showcase-player-ticket-002",
@@ -516,16 +530,18 @@ test("public bootstrap deduplicates pending ticket refreshes and rejects stale l
     );
     stale.listeners.get("landsnap-showcase-lease-change")?.();
     await Promise.resolve();
-    assert.equal(staleLoads, 2, "a new lease identity may start its own load");
+    assert.equal(staleLoads, 1, "a new lease identity must wait for its own Start Demo click");
     resolvers[0](transportOne);
     await Promise.resolve();
     await Promise.resolve();
     assert.equal(transportOne.disconnected, true, "the stale lease load must be closed");
     assert.equal(stale.dispatched.length, 0, "the stale load must not publish a transport");
+    stale.listeners.get(SHOWCASE_START_REQUEST_EVENT)?.();
+    await Promise.resolve();
+    assert.equal(staleLoads, 2);
     resolvers[1](transportTwo);
     await Promise.resolve();
     await Promise.resolve();
-    assert.equal(await staleInstall, null);
     assert.equal(stale.dispatched.length, 1);
     assert.equal(stale.windowRef.LandSnapShowcasePixelStreaming, transportTwo);
 });

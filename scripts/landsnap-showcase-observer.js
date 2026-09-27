@@ -12,7 +12,7 @@
  * half-configured waiting-room control.
  */
 
-import { isPublicShowcaseHost } from "./landsnap-showcase-queue.js?v=20260923-warm-editor-lifecycle";
+import { isPublicShowcaseHost } from "./landsnap-showcase-queue.js?v=20260926-arcade-ready-v5";
 
 export const OBSERVER_PROTOCOL_VERSION = "landsnap-showcase-observer-v1";
 export const OBSERVER_SESSION_PATH = "/api/landsnap-showcase/observer/v1/session";

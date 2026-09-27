@@ -2,7 +2,10 @@
  * Installs the dedicated-host Pixel Streaming transport only after a valid
  * broker lease arrives. Public product pages never import the frontend.
  */
-import { isPublicShowcaseHost } from "./landsnap-showcase-queue.js?v=20260923-warm-editor-lifecycle";
+import {
+    SHOWCASE_START_REQUEST_EVENT,
+    isPublicShowcaseHost,
+} from "./landsnap-showcase-queue.js?v=20260926-arcade-ready-v5";
 
 const SESSION_URL_PATTERN = /^\/api\/landsnap-showcase\/session\/v1\/player\/[A-Za-z0-9_-]{16,128}$/;
 const SESSION_TOKEN_PATTERN = /^[A-Za-z0-9._~-]{24,512}$/;
@@ -60,6 +63,7 @@ export const installPublicShowcaseBootstrap = async (
     let activeSessionUrl = null;
     let activeTransport = null;
     let loading = null;
+    let launchIdentity = null;
 
     const clearActive = () => {
         if (activeTransport && typeof activeTransport.disconnect === "function") activeTransport.disconnect();
@@ -77,10 +81,15 @@ export const installPublicShowcaseBootstrap = async (
             && activeLeaseId === lease.leaseId
             && isTransport(activeTransport)) return activeTransport;
         if (!hasReadyPublicShowcaseLease(lease)) {
+            if (!hasActivePublicShowcaseLease(lease)) launchIdentity = null;
             clearActive();
             return null;
         }
         const identity = `${lease.leaseId}:${lease.session.url}`;
+        if (launchIdentity !== identity) {
+            clearActive();
+            return null;
+        }
         const key = `${lease.leaseId}:${lease.session.url}:${lease.session.token}`;
         // A ready heartbeat may refresh the short-lived ticket while the same
         // lease is already mounted. The ticket authorized the existing relay;
@@ -115,6 +124,13 @@ export const installPublicShowcaseBootstrap = async (
         return promise;
     };
 
+    const requestStart = () => {
+        const lease = windowRef.LandSnapShowcaseQueueLease;
+        if (!hasReadyPublicShowcaseLease(lease)) return;
+        launchIdentity = `${lease.leaseId}:${lease.session.url}`;
+        void installForLease();
+    };
+    windowRef.addEventListener(SHOWCASE_START_REQUEST_EVENT, requestStart);
     windowRef.addEventListener("landsnap-showcase-lease-change", () => { void installForLease(); });
     return installForLease();
 };

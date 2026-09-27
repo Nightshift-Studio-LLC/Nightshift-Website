@@ -13,6 +13,7 @@ import {
     isPublicShowcaseHost,
     isReadyQueueLease,
     parseQueueLease,
+    renderQueueSurface,
     stabilizeQueueTiming,
 } from "../scripts/landsnap-showcase-queue.js";
 
@@ -57,6 +58,76 @@ const waitingLease = (now, position = 1, estimatedWaitMs = 80_000) => ({
     estimatedWaitMs,
     activeLeaseDeadline: now + estimatedWaitMs,
     pollAfterMs: 1_000,
+});
+
+test("queue state changes focus controls without scrolling the embedded shell past the card", () => {
+    const now = 1_700_000_000_000;
+    const scrollingElement = { scrollTop: 358, scrollLeft: 9 };
+    const bodyClasses = new Map();
+    const rootClasses = new Map();
+    const focusCalls = [];
+    const control = () => ({
+        hidden: true,
+        disabled: true,
+        focus(options) { focusCalls.push(options); },
+    });
+    const surface = {
+        document: {
+            activeElement: null,
+            scrollingElement,
+            documentElement: {
+                classList: {
+                    toggle(name, enabled) { rootClasses.set(name, enabled); },
+                },
+            },
+            body: {
+                classList: {
+                    toggle(name, enabled) { bodyClasses.set(name, enabled); },
+                    contains(name) { return name === "landsnap-showcase-embedded"; },
+                },
+            },
+        },
+        overlay: {
+            hidden: true,
+            dataset: {},
+            setAttribute() {},
+            removeAttribute() {},
+        },
+        alert: null,
+        alertIcon: null,
+        alertText: null,
+        title: null,
+        message: null,
+        tryDemo: control(),
+        startDemo: control(),
+        retry: control(),
+        leave: control(),
+        endSession: null,
+        sessionCountdown: null,
+        position: null,
+        estimate: null,
+        metrics: null,
+        preparation: null,
+        note: null,
+        launchProgress: null,
+        backgrounds: [],
+        wasVisible: false,
+        queueState: null,
+        returnFocus: null,
+    };
+
+    renderQueueSurface(surface, { status: "idle" }, now);
+    assert.equal(scrollingElement.scrollTop, 0);
+    assert.equal(scrollingElement.scrollLeft, 0);
+    assert.deepEqual(focusCalls.at(-1), { preventScroll: true });
+    assert.equal(bodyClasses.get("landsnap-showcase-queue-open"), true);
+    assert.equal(rootClasses.get("landsnap-showcase-queue-open"), true);
+
+    scrollingElement.scrollTop = 333;
+    renderQueueSurface(surface, parseQueueLease(readyLease(now), now), now);
+    assert.equal(scrollingElement.scrollTop, 0);
+    assert.deepEqual(focusCalls.at(-1), { preventScroll: true });
+    assert.equal(surface.startDemo.hidden, false);
 });
 
 test("queue parser accepts only the exact separated broker lifecycle records", () => {
@@ -165,10 +236,21 @@ test("queue presentation follows the supervised warm-editor lifecycle without te
     assert.equal(delayed.countdown, "—");
     assert.match(delayed.message, /longer than expected/i);
     const ready = getQueuePresentation(parseQueueLease(readyLease(now), now), now);
-    assert.equal(ready.visible, false);
-    assert.equal(ready.title, "Connecting to stream");
-    assert.equal(ready.showEndSession, true);
+    assert.equal(ready.visible, true);
+    assert.equal(ready.alert, "Demo ready");
+    assert.equal(ready.title, "Your demo is ready");
+    assert.match(ready.message, /choose Start Demo/i);
+    assert.match(ready.message, /will not begin until the stream connects/i);
+    assert.equal(ready.showStartDemo, true);
+    assert.equal(ready.showLeave, true);
+    assert.equal(ready.showEndSession, false);
     assert.equal(ready.showSessionCountdown, false);
+    const connecting = getQueuePresentation(parseQueueLease(readyLease(now), now), now, { launchRequested: true });
+    assert.equal(connecting.visible, true);
+    assert.equal(connecting.state, "connecting");
+    assert.equal(connecting.title, "Opening LandSnap Showcase");
+    assert.equal(connecting.showStartDemo, false);
+    assert.equal(connecting.showEndSession, false);
     const active = getQueuePresentation(parseQueueLease(activeLease(now), now), now);
     assert.equal(active.visible, false);
     assert.equal(active.showEndSession, true);

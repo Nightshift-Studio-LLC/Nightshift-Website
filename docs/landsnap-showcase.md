@@ -25,7 +25,7 @@ The broker identifies the visitor with a secure, HttpOnly, SameSite cookie scope
 {"protocol":"landsnap-showcase-queue-v2","operation":"join|status|heartbeat|leave"}
 ```
 
-`join` is sent only by **Try Demo**. Afterward the page uses `status` while the editor is warming, while the visitor is queued, and whenever the page resumes or reconnects. It uses `heartbeat` only for an issued ready or active lease. Hiding or backgrounding the page suspends polling, SSE, and local timers without releasing the lease; returning calls `status` and never sends a second `join`. `leave` is reserved for an explicit visitor exit or a verified terminal cleanup path. All broker responses and SSE messages use `Cache-Control: no-store` and one exact state-specific JSON shape:
+`join` is sent only by **Try Demo**. Afterward the page uses `status` while the editor is warming, while the visitor is queued, and whenever the page resumes or reconnects. It uses `heartbeat` only for an issued ready or active lease. A `ready` response opens a separate **Start Demo** gate; it does not import, mount, or connect the player. Only that explicit second click may begin the player handoff. Hiding or backgrounding the page suspends polling, SSE, and local timers without releasing the lease; returning calls `status` and never sends a second `join`. `leave` is reserved for an explicit visitor exit or a verified terminal cleanup path. All broker responses and SSE messages use `Cache-Control: no-store` and one exact state-specific JSON shape:
 
 ```json
 {"protocol":"landsnap-showcase-queue-v2","status":"idle","pollAfterMs":1000}
@@ -46,7 +46,7 @@ The broker owns the atomic state transition:
 2. If a visitor arrives while the host is not reset-ready, reserve the slot and return `starting`/`preparing` while the supervisor warms or restarts the editor. A warm reset-ready editor does not cold-start per lease.
 3. If another visitor owns the claimed or active slot, enqueue later visitors and return `waiting` with their real one-based position and server estimate. The first admitted visitor is never shown as waiting.
 4. Only after the fixed `Editor` streamer is registered and the editor reports `reset_ready` may the broker return `ready` with a signed, short-lived player ticket.
-5. `ready` means the browser may connect; it does not start the five-minute clock. The broker returns `active` and creates the usable-session deadline only after WebRTC/data-channel readiness and the editor's `session_ready` milestone agree.
+5. `ready` means the visitor’s slot is prepared and held at a **Start Demo** gate; the browser still may not import, mount, or connect the player. The visitor’s explicit **Start Demo** click authorizes that handoff. The broker returns `active` and creates the usable-session deadline only after that click, WebRTC/data-channel readiness, and the editor's `session_ready` milestone agree.
 6. Disconnect, expiry, explicit leave, or failure ends the visitor lease transactionally, resets the prepared scene, and returns the same supervised editor to reset-ready `idle`. The supervisor restarts the editor only when recovery requires it, then promotes the queue.
 
 The browser waits behind a neutral gray overlay for both `starting` and `waiting`. `starting` is presented as warming/preparing, never as a queue position. The displayed **Estimated wait** for `waiting` is based on the active session’s remaining five-minute maximum plus a maximum lease for each visitor ahead. It is explicitly an estimate: a visitor may leave early, so the actual wait can be shorter.
@@ -68,7 +68,7 @@ window.LandSnapShowcasePixelStreaming = {
 };
 ```
 
-The page imports the public player only for an exact `showcase.ns-tx.com` ready lease. It mounts only with the broker-provided session ticket, has no configured streamer ID, and keeps controls disabled until both the transport is connected and Pixel Streaming reports its data channel open. A disconnect, player error, ticket expiry, or lease expiry clears the local stream UI, disconnects the transport, and re-requests broker `status`. The browser does not attempt to restart Unreal.
+The page imports the public player only after the visitor presses **Start Demo** for the current exact `showcase.ns-tx.com` ready lease. The click authorization is bound to that lease ID and player path, so a replacement lease requires a new click. The player mounts only with the broker-provided session ticket, has no configured streamer ID, and keeps controls disabled until both the transport is connected and Pixel Streaming reports its data channel open. A disconnect, player error, ticket expiry, or lease expiry clears the local stream UI, disconnects the transport, and re-requests broker `status`. The browser does not attempt to restart Unreal.
 
 Loopback acceptance retains its fixed local transport shape:
 
@@ -102,9 +102,9 @@ The bridge independently validates the exact object shape, action, session state
 ## Validation
 
 1. Run `npm run build:landsnap-showcase`, serve this repository on loopback, and open `http://127.0.0.1:4173/pages/Studio/LandSnapShowcase.html` for the deterministic local fixture. Confirm `pages/Studio/Landsnap.html#showcase` keeps its top-level URL and embeds only `https://showcase.ns-tx.com/`.
-2. On the dedicated host, confirm the initial gray panel shows **Try Demo** only when the supervised editor is reset-ready, and no admission request is made until it is pressed. Confirm a host that is genuinely warming reports `starting`/`preparing`, not a fake queue position.
-3. With broker fixtures, verify `idle`, `starting`, real queued position, explicitly-estimated wait, early-release promotion, `ready`, `active`, `ended`, ticket expiry, malformed records, offline broker behavior, and stream loss. Confirm only `active` exposes the five-minute countdown and no raw signalling URL or server-control field is accepted.
-4. Confirm the public adapter cannot import or mount until a valid ready ticket arrives. Verify its one ticket-exchange POST returns `204`, the WebSocket uses the same player path without a query token, controls remain disabled until the data channel opens, and `active` is observed only after `session_ready`.
+2. On the dedicated host, confirm the initial gray panel shows **Try Demo**, and no admission request is made until it is pressed. When the broker returns `ready`, confirm the separate **Your demo is ready** panel holds the slot without importing or mounting the player until **Start Demo** is pressed. Confirm a host that is genuinely warming reports `starting`/`preparing`, not a fake queue position.
+3. With broker fixtures, verify `idle`, `starting`, real queued position, explicitly-estimated wait, early-release promotion, gated `ready`, user-started connection, `active`, `ended`, ticket expiry, malformed records, offline broker behavior, and stream loss. Confirm only `active` exposes the five-minute countdown and no raw signalling URL or server-control field is accepted.
+4. Confirm the public adapter cannot import or mount from a valid ready ticket alone, and that **Start Demo** authorizes only the current lease ID and player path. Verify its one ticket-exchange POST returns `204`, the WebSocket uses the same player path without a query token, controls remain disabled until the data channel opens, and `active` is observed only after `session_ready`.
 5. For loopback only, start **Stream Level Editor**, not Full Editor, and verify keyboard input generates no Pixel Streaming messages while the fixed mouse-only path works.
 6. Run `npm run test:landsnap-showcase` and `npm run security:payloads`. Check desktop and a 320px-wide viewport: queue text remains readable, controls stack, focus is visible, and no horizontal overflow appears.
 
