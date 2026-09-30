@@ -68,7 +68,11 @@ window.LandSnapShowcasePixelStreaming = {
 };
 ```
 
-The page imports the public player only after the visitor presses **Start Demo** for the current exact `showcase.ns-tx.com` ready lease. The click authorization is bound to that lease ID and player path, so a replacement lease requires a new click. The player mounts only with the broker-provided session ticket, has no configured streamer ID, and keeps controls disabled until both the transport is connected and Pixel Streaming reports its data channel open. A disconnect, player error, ticket expiry, or lease expiry clears the local stream UI, disconnects the transport, and re-requests broker `status`. The browser does not attempt to restart Unreal.
+The page imports the public player only after the visitor presses **Start Demo** for the current exact `showcase.ns-tx.com` ready lease. The click authorization is bound to that lease ID and player path, so a replacement lease requires a new click. The player mounts only with the broker-provided session ticket and has no configured streamer ID. Controls require both a connected transport and the correlated Unreal `session_ready` acknowledgement.
+
+A healthy mounted peer survives ticket rotation. The ticket expires as admission authorization; after exchange, the current broker-issued ready-claim deadline bounds the readiness handshake. The bootstrap renews that deadline only from valid ready records for the same lease and player path. Correlated `session_initializing` replies are progress and may retry while that claim is live; three unanswered requests still fail, and terminal rejections fail immediately. No six-minute browser timer or server deadline extension is introduced.
+
+Stream loss rechecks broker `status` without sending `leave`. A recovered peer remains mounted. A closed or failed peer can be replaced only when the broker supplies a fresh valid ready ticket for the same started lease and path; the consumed ticket is never replayed and SDK auto-reconnect remains disabled. An active response alone cannot authorize a new player connection. Terminal outcomes revoke the Start Demo authorization and show a deliberate availability retry. Explicit exit and lease expiry still retire the transport, and delayed imports, ticket exchanges, or status responses cannot restore a retired session. The browser does not attempt to restart Unreal.
 
 Loopback acceptance retains its fixed local transport shape:
 

@@ -26,7 +26,7 @@ test("the product page embeds the fixed dedicated Showcase host without top-leve
     assert.match(productPage, /class="landsnap-showcase-coming-soon"/);
     assert.match(productPage, /Public Showcase launch coming soon/);
     assert.match(productPage, /this preview remains available during rollout/);
-    assert.match(productPage, /src="https:\/\/showcase\.ns-tx\.com\/\?v=20260926-gradient-cta-v13"/);
+    assert.match(productPage, /src="https:\/\/showcase\.ns-tx\.com\/\?v=20260930-session-recovery-v2"/);
     assert.match(productPage, /landsnap-showcase-embed\.js/);
     assert.match(productPage, /allow="autoplay; fullscreen; clipboard-read; clipboard-write"/);
     assert.match(productPage, /sandbox="allow-scripts allow-same-origin allow-forms allow-pointer-lock allow-presentation"/);

@@ -5,7 +5,7 @@
 import {
     SHOWCASE_START_REQUEST_EVENT,
     isPublicShowcaseHost,
-} from "./landsnap-showcase-queue.js?v=20260926-arcade-ready-v5";
+} from "./landsnap-showcase-queue.js?v=20260930-session-recovery-v2";
 
 const SESSION_URL_PATTERN = /^\/api\/landsnap-showcase\/session\/v1\/player\/[A-Za-z0-9_-]{16,128}$/;
 const SESSION_TOKEN_PATTERN = /^[A-Za-z0-9._~-]{24,512}$/;
@@ -51,7 +51,7 @@ const dispatchReady = (windowRef, transport) => {
  */
 export const installPublicShowcaseBootstrap = async (
     windowRef = globalThis.window,
-    loadTransport = () => import("./vendor/landsnap-showcase-ps2-public.js")
+    loadTransport = () => import("./vendor/landsnap-showcase-ps2-public.js?v=20260930-session-recovery-v2")
         .then(({ createPublicShowcaseTransport }) => createPublicShowcaseTransport()),
 ) => {
     if (!windowRef || !isPublicShowcaseHost(windowRef.location?.hostname) || windowRef.location?.protocol !== "https:") {
@@ -64,9 +64,10 @@ export const installPublicShowcaseBootstrap = async (
     let activeTransport = null;
     let loading = null;
     let launchIdentity = null;
+    let transportFailed = false;
 
     const clearActive = () => {
-        if (activeTransport && typeof activeTransport.disconnect === "function") activeTransport.disconnect();
+        const previousTransport = activeTransport;
         if (windowRef.LandSnapShowcasePixelStreaming === activeTransport) {
             delete windowRef.LandSnapShowcasePixelStreaming;
         }
@@ -74,6 +75,8 @@ export const installPublicShowcaseBootstrap = async (
         activeLeaseId = null;
         activeSessionUrl = null;
         activeTransport = null;
+        transportFailed = false;
+        if (previousTransport && typeof previousTransport.disconnect === "function") previousTransport.disconnect();
     };
     const installForLease = async () => {
         const lease = windowRef.LandSnapShowcaseQueueLease;
@@ -82,11 +85,13 @@ export const installPublicShowcaseBootstrap = async (
             && isTransport(activeTransport)) return activeTransport;
         if (!hasReadyPublicShowcaseLease(lease)) {
             if (!hasActivePublicShowcaseLease(lease)) launchIdentity = null;
+            loading = null;
             clearActive();
             return null;
         }
         const identity = `${lease.leaseId}:${lease.session.url}`;
         if (launchIdentity !== identity) {
+            loading = null;
             clearActive();
             return null;
         }
@@ -96,7 +101,11 @@ export const installPublicShowcaseBootstrap = async (
         // rotating it must not tear down that transport mid-stream.
         if (activeLeaseId === lease.leaseId
             && activeSessionUrl === lease.session.url
-            && isTransport(activeTransport)) return activeTransport;
+            && isTransport(activeTransport)
+            && (!transportFailed || activeKey === key)) {
+            if (!transportFailed) activeTransport.updateReadyLease?.(lease);
+            return activeTransport;
+        }
         if (activeKey === key && isTransport(activeTransport)) return activeTransport;
         if (loading?.identity === identity) return loading.promise;
 
@@ -105,20 +114,36 @@ export const installPublicShowcaseBootstrap = async (
             if (!isTransport(transport)) throw new TypeError("The dedicated Showcase transport is unavailable.");
             const currentLease = windowRef.LandSnapShowcaseQueueLease;
             if (!hasReadyPublicShowcaseLease(currentLease)
+                || loading?.promise !== promise
+                || launchIdentity !== identity
                 || currentLease.leaseId !== lease.leaseId
                 || currentLease.session.url !== lease.session.url) {
                 if (typeof transport.disconnect === "function") transport.disconnect();
                 return null;
             }
-            activeKey = key;
+            activeKey = `${currentLease.leaseId}:${currentLease.session.url}:${currentLease.session.token}`;
             activeLeaseId = lease.leaseId;
             activeSessionUrl = lease.session.url;
             activeTransport = transport;
+            transportFailed = false;
+            transport.updateReadyLease?.(currentLease);
+            let connectionAttempted = false;
+            transport.onConnectionState((state) => {
+                if (activeTransport !== transport) return;
+                if (state === "connecting" || state === "connected") {
+                    connectionAttempted = true;
+                    transportFailed = false;
+                } else if (connectionAttempted && (state === "disconnected" || state === "error")) {
+                    // No SDK auto-reconnect or replay of a consumed ticket.
+                    // A subsequent broker-issued ready ticket may replace it.
+                    transportFailed = true;
+                }
+            });
             windowRef.LandSnapShowcasePixelStreaming = transport;
             dispatchReady(windowRef, transport);
             return transport;
         }).finally(() => {
-            if (loading?.identity === identity) loading = null;
+            if (loading?.promise === promise) loading = null;
         });
         loading = { identity, promise };
         return promise;

@@ -257,8 +257,10 @@ test("queue presentation follows the supervised warm-editor lifecycle without te
     assert.equal(active.showSessionCountdown, true);
     assert.equal(active.sessionCountdown, "05:00 remaining");
     const ended = getQueuePresentation({ status: "ended" }, now);
-    assert.equal(ended.title, "Resetting the demo");
-    assert.equal(ended.showRetry, false);
+    assert.equal(ended.title, "Your demo has ended");
+    assert.equal(ended.showRetry, true);
+    assert.equal(getQueuePresentation({ status: "expired" }, now).showRetry, true);
+    assert.equal(getQueuePresentation({ status: "cleanup" }, now).showRetry, false);
     const unavailable = getQueuePresentation({ status: "unavailable" }, now);
     assert.equal(unavailable.message, "Please try again.");
     assert.equal(unavailable.showRetry, true);

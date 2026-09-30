@@ -301,7 +301,7 @@ test("public session_ready retries session_initializing and exposes readiness af
     assert.equal(timers.flush(), true);
     const second = stream.sent[1];
     assert.notEqual(second.requestId, first.requestId);
-    assert.equal(timers.pendingCount, 0);
+    assert.equal(timers.pendingCount, 1);
     stream.responses.get(SHOWCASE_RESPONSE_LISTENER)(JSON.stringify({
         version: "landsnap-showcase-v1",
         type: "operation-result",
@@ -313,14 +313,15 @@ test("public session_ready retries session_initializing and exposes readiness af
     assert.equal(ready, 1);
 });
 
-test("public session_ready stops after three correlated initializing responses", async () => {
+test("public session_ready initializing remains bounded by the unrenewed broker claim", async () => {
     const timers = createFakeTimers();
     const states = [];
+    let timestamp = now;
     const transport = createPublicShowcaseTransportWithDependencies(
         dependencies,
         publicLocation,
         async () => ({ status: 204 }),
-        () => now,
+        () => timestamp,
         timers,
     );
     transport.onConnectionState((state) => states.push(state));
@@ -329,6 +330,7 @@ test("public session_ready stops after three correlated initializing responses",
     stream.events.get("dataChannelOpen")();
     for (let attempt = 0; attempt < 3; attempt += 1) {
         const request = stream.sent.at(-1);
+        if (attempt === 2) timestamp = brokerSession.expiresAt;
         stream.responses.get(SHOWCASE_RESPONSE_LISTENER)(JSON.stringify({
             version: "landsnap-showcase-v1",
             type: "operation-result",
@@ -342,6 +344,38 @@ test("public session_ready stops after three correlated initializing responses",
     assert.equal(stream.sent.length, 3);
     assert.equal(timers.pendingCount, 0);
     assert.equal(states.at(-1), "error");
+});
+
+test("public session_ready retries silence, ignores late replies, and stops at its attempt limit", async () => {
+    const timers = createFakeTimers();
+    const states = [];
+    let ready = 0;
+    const transport = createPublicShowcaseTransportWithDependencies(
+        dependencies, publicLocation, async () => ({ status: 204 }), () => now, timers,
+    );
+    transport.onConnectionState((state) => states.push(state));
+    transport.onSessionReady(() => { ready += 1; });
+    await transport.mount({ replaceChildren() {} }, { session: brokerSession, input: mouseOnlyInput });
+    const stream = FakePixelStreaming.latest;
+    assert.equal(timers.pendingCount, 0, "no readiness retry before the channel opens");
+    stream.events.get("dataChannelOpen")();
+    const first = stream.sent[0];
+    timers.flush(); // response timeout
+    timers.flush(); // retry delay
+    assert.equal(stream.sent.length, 2);
+    stream.responses.get(SHOWCASE_RESPONSE_LISTENER)(JSON.stringify({
+        version: "landsnap-showcase-v1", type: "operation-result", action: SESSION_READY_ACTION,
+        requestId: first.requestId, result: "success", code: SESSION_READY_ACTION,
+    }));
+    assert.equal(ready, 0, "an old attempt cannot activate the current one");
+    timers.flush();
+    timers.flush();
+    assert.equal(stream.sent.length, 3);
+    timers.flush();
+    assert.equal(timers.pendingCount, 0);
+    assert.equal(states.at(-1), "error");
+    transport.disconnect();
+    assert.equal(timers.flush(), false);
 });
 
 test("public session_ready retry timer is cleared when the stream disconnects", async () => {
