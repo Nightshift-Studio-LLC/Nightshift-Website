@@ -24,6 +24,9 @@ const INPUT_KEYS = Object.freeze(["gamepad", "keyboard", "mouse", "touch", "xr"]
 const BRIDGE_KEYS = Object.freeze(["action", "requestId", "type", "version"]);
 const COMMAND_ACTIONS = new Set([
     SESSION_READY_ACTION,
+    "compare_unreal_snap",
+    "compare_landsnap",
+    "reset_comparison",
     "snap_selected",
     "undo",
     "redo",

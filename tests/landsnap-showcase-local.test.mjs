@@ -154,6 +154,10 @@ test("local transport forwards only allowlisted UI interactions and raw UE Respo
     assert.equal(isMouseOnlyInput(mouseOnlyInput), true);
     assert.equal(isMouseOnlyInput({ ...mouseOnlyInput, keyboard: true }), false);
     assert.equal(isAllowlistedShowcasePayload(valid), true);
+    for (const action of ["compare_unreal_snap", "compare_landsnap", "reset_comparison"]) {
+        assert.equal(isAllowlistedShowcasePayload({ ...valid, action }), true);
+        assert.equal(isAllowlistedShowcasePayload({ ...valid, action, args: {} }), false);
+    }
     assert.equal(isAllowlistedShowcasePayload({ ...valid, action: "prepare_large_coverage" }), true);
     assert.equal(isAllowlistedShowcasePayload({ ...valid, action: "focus_selected_fixture" }), true);
     assert.equal(isAllowlistedShowcasePayload({ ...valid, action: "prepare_calibration" }), false);

@@ -11,13 +11,13 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="../../images/icons/nightshift.ico">
-    <link rel="stylesheet" href="../../styles/landsnap-showcase.css?v=20260930-session-recovery-v2">
-    <script src="../../scripts/landsnap-showcase-capabilities.js?v=20260930-session-recovery-v2"></script>
-    <script type="module" src="../../scripts/landsnap-showcase-queue.js?v=20260930-session-recovery-v2"></script>
-    <script type="module" src="../../scripts/landsnap-showcase-observer.js?v=20260930-session-recovery-v2"></script>
-    <script type="module" src="../../scripts/landsnap-showcase-local.js?v=20260930-session-recovery-v2"></script>
-    <script type="module" src="../../scripts/landsnap-showcase-public.js?v=20260930-session-recovery-v2"></script>
-    <script type="module" src="../../scripts/landsnap-showcase.js?v=20260930-session-recovery-v2"></script>
+    <link rel="stylesheet" href="../../styles/landsnap-showcase.css?v=20261001-native-comparison-v1">
+    <script src="../../scripts/landsnap-showcase-capabilities.js?v=20261001-native-comparison-v1"></script>
+    <script type="module" src="../../scripts/landsnap-showcase-queue.js?v=20261001-native-comparison-v1"></script>
+    <script type="module" src="../../scripts/landsnap-showcase-observer.js?v=20261001-native-comparison-v1"></script>
+    <script type="module" src="../../scripts/landsnap-showcase-local.js?v=20261001-native-comparison-v1"></script>
+    <script type="module" src="../../scripts/landsnap-showcase-public.js?v=20261001-native-comparison-v1"></script>
+    <script type="module" src="../../scripts/landsnap-showcase.js?v=20261001-native-comparison-v1"></script>
 </head>
 <body class="landsnap-showcase-page">
     <a class="landsnap-showcase-skip-link" href="#showcase-main">Skip to showcase controls</a>
@@ -65,7 +65,7 @@
                     </div>
                 </div>
 
-                <p class="landsnap-showcase-pointer-guidance"><strong>How to try it:</strong> use Demo objects to select an object, then choose an action.</p>
+                <p class="landsnap-showcase-pointer-guidance"><strong>Ready to compare:</strong> every demo starts with a fresh full-coverage example and all objects selected. Each comparison uses the same starting positions, rotation and scale.</p>
 
             </div>
 
@@ -75,16 +75,37 @@
                     <span>LandSnap</span>
                 </div>
                 <div class="landsnap-showcase-panel-heading">
-                    <h2 id="landsnap-showcase-controls-title"><span aria-hidden="true">▾</span> Placement Studio</h2>
+                    <h2 id="landsnap-showcase-controls-title">Compare placement</h2>
                 </div>
 
                 <div class="landsnap-showcase-native-row landsnap-showcase-target-row" aria-label="Snap Targets prepared scene">
                     <span aria-hidden="true">▸</span>
                     <strong>Snap Targets</strong>
-                    <small>Prepared scene</small>
+                    <small>Fresh full coverage</small>
                 </div>
 
                 <div class="landsnap-showcase-panel-primary">
+                <section class="landsnap-showcase-comparison" aria-labelledby="landsnap-showcase-comparison-title">
+                    <h3 id="landsnap-showcase-comparison-title">Same objects. Same starting point.</h3>
+                    <ol class="landsnap-showcase-comparison-steps">
+                        <li>Try Unreal's native Snap to Floor.</li>
+                        <li>Try LandSnap on the same starting transforms.</li>
+                        <li>Reset to inspect the original angles and repeat.</li>
+                    </ol>
+                    <div class="landsnap-showcase-comparison-actions">
+                        <button id="landsnap-showcase-compare-unreal" class="landsnap-showcase-action landsnap-showcase-action-unreal" type="button" data-command="compare-unreal" aria-describedby="landsnap-showcase-native-description" disabled>Unreal: Snap to Floor (End)</button>
+                        <button id="landsnap-showcase-compare-landsnap" class="landsnap-showcase-action landsnap-showcase-action-primary" type="button" data-command="compare-landsnap" disabled>
+                            <img class="landsnap-showcase-action-icon" src="../../images/landsnap/Icon40.png" alt="" aria-hidden="true">
+                            <span>LandSnap: Compare placement</span>
+                        </button>
+                        <button id="landsnap-showcase-reset-comparison" class="landsnap-showcase-action landsnap-showcase-action-reset" type="button" data-command="reset-comparison" disabled>Reset Comparison</button>
+                    </div>
+                    <p id="landsnap-showcase-native-description" class="landsnap-showcase-comparison-note">Native End drops objects to the floor while preserving rotation. Each comparison restores the same starting transforms and turns AutoSnap off.</p>
+                </section>
+
+                <details class="landsnap-showcase-advanced">
+                <summary>Advanced controls</summary>
+                <p class="landsnap-showcase-advanced-note">Explore individual objects, prepare another size or layout, or use AutoSnap. Preparing a new example replaces the current objects and sets a new comparison starting point. Removing objects or resetting the scene requires preparing a new example.</p>
                 <div class="landsnap-showcase-scenario-controls" aria-label="Scenario selection">
                     <span>Scene</span>
                     <div>
@@ -99,7 +120,7 @@
                 </div>
 
                 <div class="landsnap-showcase-action-stack" aria-label="Scene actions">
-                    <button id="landsnap-showcase-snap-selected" class="landsnap-showcase-action landsnap-showcase-action-primary" type="button" data-command="snap-selected" disabled>
+                    <button id="landsnap-showcase-snap-selected" class="landsnap-showcase-action" type="button" data-command="snap-selected" disabled>
                         <img class="landsnap-showcase-action-icon" src="../../images/landsnap/Icon40.png" alt="" aria-hidden="true">
                         <span>Snap Selected</span>
                     </button>
@@ -107,14 +128,14 @@
                         <button id="landsnap-showcase-undo" class="landsnap-showcase-action" type="button" data-command="undo" disabled><span class="landsnap-showcase-action-glyph" aria-hidden="true">↶</span>Undo</button>
                         <button id="landsnap-showcase-redo" class="landsnap-showcase-action" type="button" data-command="redo" disabled><span class="landsnap-showcase-action-glyph" aria-hidden="true">↷</span>Redo</button>
                     </div>
-                    <button id="landsnap-showcase-reset-scene" class="landsnap-showcase-action landsnap-showcase-action-reset" type="button" data-command="reset-scene" disabled><span class="landsnap-showcase-action-glyph" aria-hidden="true">↺</span>Reset Object Positions</button>
+                    <button id="landsnap-showcase-reset-scene" class="landsnap-showcase-action landsnap-showcase-action-reset" type="button" data-command="reset-scene" disabled><span class="landsnap-showcase-action-glyph" aria-hidden="true">↺</span>Reset Showcase Scene</button>
                     <button id="landsnap-showcase-toggle-autosnap" class="landsnap-showcase-action" type="button" data-command="toggle-autosnap" aria-pressed="false" disabled>
                         <img class="landsnap-showcase-action-icon" src="../../images/landsnap/Icon40-Auto.png" alt="" aria-hidden="true">
                         <span>AutoSnap: Off</span>
                     </button>
                     <div class="landsnap-showcase-calibration" aria-label="Demo scene setup">
                         <div class="landsnap-showcase-calibration-fields">
-                            <label for="landsnap-showcase-calibration-size">Size
+                            <label for="landsnap-showcase-calibration-size">Mesh size
                                 <select id="landsnap-showcase-calibration-size" data-showcase-calibration-size disabled>
                                     <option value="small">Small</option>
                                     <option value="medium" selected>Medium</option>
@@ -123,15 +144,16 @@
                             </label>
                             <label for="landsnap-showcase-calibration-layout">Layout
                                 <select id="landsnap-showcase-calibration-layout" data-showcase-calibration-layout disabled>
-                                    <option value="row" selected>Row</option>
-                                    <option value="coverage">Across the map</option>
+                                    <option value="row">Row</option>
+                                    <option value="coverage" selected>Full coverage</option>
                                 </select>
                             </label>
                         </div>
-                        <button id="landsnap-showcase-prepare-fixtures" class="landsnap-showcase-action" type="button" data-command="prepare-medium-row" disabled><span class="landsnap-showcase-action-glyph" aria-hidden="true">▦</span><span>Prepare Medium Row</span></button>
+                        <button id="landsnap-showcase-prepare-fixtures" class="landsnap-showcase-action" type="button" data-command="prepare-medium-coverage" disabled><span class="landsnap-showcase-action-glyph" aria-hidden="true">▦</span><span>Prepare Medium Coverage</span></button>
                     </div>
                     <button id="landsnap-showcase-clean-scene" class="landsnap-showcase-action landsnap-showcase-action-clean" type="button" data-command="clean-scene" disabled><span class="landsnap-showcase-action-glyph" aria-hidden="true">⌫</span>Remove Demo Objects</button>
                 </div>
+                </details>
                 </div>
 
                 <div class="landsnap-showcase-panel-secondary">
@@ -153,7 +175,7 @@
 
                 <section class="landsnap-showcase-operation" aria-labelledby="landsnap-showcase-operation-label">
                     <p id="landsnap-showcase-operation-label" class="landsnap-showcase-section-label">Review</p>
-                    <p id="landsnap-showcase-operation-status" role="status" aria-live="polite">Start the demo, then choose an action to see the result here.</p>
+                    <p id="landsnap-showcase-operation-status" role="status" aria-live="polite">Start the demo to compare the fresh, selected full-coverage example.</p>
                 </section>
 
                 <details class="landsnap-showcase-disclosure">

@@ -240,6 +240,10 @@ test("public transport primes the exact player path, uses no streamer selection,
     assert.equal(isMouseOnlyInput(mouseOnlyInput), true);
     assert.equal(isMouseOnlyInput({ ...mouseOnlyInput, keyboard: true }), false);
     assert.equal(isAllowlistedShowcasePayload(valid), true);
+    for (const action of ["compare_unreal_snap", "compare_landsnap", "reset_comparison"]) {
+        assert.equal(isAllowlistedShowcasePayload({ ...valid, action }), true);
+        assert.equal(isAllowlistedShowcasePayload({ ...valid, action, args: {} }), false);
+    }
     assert.equal(isAllowlistedShowcasePayload({ ...valid, action: "console_command" }), false);
     assert.equal(transport.emitUIInteraction(valid), true);
     assert.equal(transport.emitUIInteraction({ ...valid, action: "console_command" }), false);

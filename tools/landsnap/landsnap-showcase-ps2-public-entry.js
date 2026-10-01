@@ -25,6 +25,9 @@ const BRIDGE_KEYS = Object.freeze(["action", "requestId", "type", "version"]);
 const SESSION_KEYS = Object.freeze(["expiresAt", "token", "url"]);
 const COMMAND_ACTIONS = new Set([
     SESSION_READY_ACTION,
+    "compare_unreal_snap",
+    "compare_landsnap",
+    "reset_comparison",
     "snap_selected",
     "undo",
     "redo",

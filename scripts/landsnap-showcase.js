@@ -80,6 +80,9 @@ export const SHOWCASE_CALIBRATION_PRESETS = Object.freeze({
 });
 
 export const SHOWCASE_COMMANDS = Object.freeze({
+    "compare-unreal": Object.freeze({ action: "compare_unreal_snap" }),
+    "compare-landsnap": Object.freeze({ action: "compare_landsnap" }),
+    "reset-comparison": Object.freeze({ action: "reset_comparison" }),
     "snap-selected": Object.freeze({ action: "snap_selected" }),
     undo: Object.freeze({ action: "undo" }),
     redo: Object.freeze({ action: "redo" }),
@@ -130,19 +133,27 @@ const SHOWCASE_SESSION_WARNING_MS = 60_000;
 const RESULT_TYPES = new Set(["success", "rejected", "error"]);
 const CALIBRATION_ACTIONS = new Set(Object.values(SHOWCASE_CALIBRATION_PRESETS).map(({ action }) => action));
 const CALIBRATION_PRESET_BY_ACTION = new Map(Object.values(SHOWCASE_CALIBRATION_PRESETS).map((preset) => [preset.action, preset]));
+const COMPARISON_ACTIONS = new Set(["compare_unreal_snap", "compare_landsnap", "reset_comparison"]);
+const COMPARISON_READY_MESSAGE = "Fresh full-coverage objects are selected. Try Unreal Snap to Floor, then LandSnap to compare the same starting transforms.";
+const COMPLETED_MESSAGES_BY_ACTION = Object.freeze({
+    compare_unreal_snap: "Unreal's native End / Snap to Floor completed from the shared starting transforms. Object rotation is preserved.",
+    compare_landsnap: "LandSnap completed from the same starting transforms. Inspect the terrain contact and angles, or reset to compare again.",
+});
 const RESULT_MESSAGES = Object.freeze({
     session_ready: "The showcase session is ready.",
     completed: "The showcase action completed.",
+    comparison_reset: "The comparison objects are back at their starting positions, rotation and scale, with all objects selected and AutoSnap off.",
+    comparison_unavailable: "Prepare a demo example in Advanced controls to restore the comparison buttons.",
     no_selection: "Select one of the prepared objects before running LandSnap.",
     nothing_to_undo: "There is no showcase action to undo.",
     nothing_to_redo: "There is no showcase action to redo.",
     scenario_changed: "The showcase scenario changed.",
-    scene_reset: "The showcase scene was reset.",
+    scene_reset: "The showcase scene was reset. Prepare another example in Advanced controls to compare again.",
     autosnap_enabled: "AutoSnap is enabled for the prepared showcase objects.",
     autosnap_disabled: "AutoSnap is disabled for the prepared showcase objects.",
     calibration_ready: "Calibration scene prepared with the selected size and layout.",
     calibration_unavailable: "That demo setup is unavailable right now.",
-    scene_cleaned: "The prepared demo objects were removed from the scene.",
+    scene_cleaned: "The prepared demo objects were removed from the scene. Prepare another example in Advanced controls to compare again.",
     fixture_selected: "A demo object is selected.",
     fixture_focused: "The selected demo object is focused in the viewport.",
     fixture_unavailable: "Prepare a demo scene before selecting an object.",
@@ -151,6 +162,9 @@ const RESULT_MESSAGES = Object.freeze({
 });
 const RESULT_CODES_BY_ACTION = Object.freeze({
     session_ready: new Set(["session_ready"]),
+    compare_unreal_snap: new Set(["completed", "comparison_unavailable", "operation_rejected", "operation_failed"]),
+    compare_landsnap: new Set(["completed", "comparison_unavailable", "operation_rejected", "operation_failed"]),
+    reset_comparison: new Set(["comparison_reset", "comparison_unavailable", "operation_rejected", "operation_failed"]),
     snap_selected: new Set(["completed", "no_selection", "operation_rejected", "operation_failed"]),
     undo: new Set(["completed", "nothing_to_undo", "operation_rejected", "operation_failed"]),
     redo: new Set(["completed", "nothing_to_redo", "operation_rejected", "operation_failed"]),
@@ -167,6 +181,8 @@ const RESULT_CODES_BY_ACTION = Object.freeze({
 const RESULT_TYPE_BY_CODE = Object.freeze({
     session_ready: "success",
     completed: "success",
+    comparison_reset: "success",
+    comparison_unavailable: "rejected",
     no_selection: "rejected",
     nothing_to_undo: "rejected",
     nothing_to_redo: "rejected",
@@ -261,7 +277,10 @@ export const parseShowcaseResult = (raw) => {
         requestId: candidate.requestId,
         action: candidate.action,
         result: candidate.result,
-        message: RESULT_MESSAGES[candidate.code],
+        code: candidate.code,
+        message: candidate.code === "completed" && own(COMPLETED_MESSAGES_BY_ACTION, candidate.action)
+            ? COMPLETED_MESSAGES_BY_ACTION[candidate.action]
+            : RESULT_MESSAGES[candidate.code],
     });
 };
 
@@ -336,6 +355,7 @@ export const attachShowcaseSurface = (documentRef, transport, {
     let pendingTimer = null;
     let sessionExpiring = false;
     let sessionReady = brokerSession === null;
+    let comparisonPrepared = false;
     let streamLossReported = false;
     let detached = false;
     let mountRequested = false;
@@ -376,8 +396,10 @@ export const attachShowcaseSurface = (documentRef, transport, {
     const render = () => {
         const ready = connectionState === "connected" && sessionReady && pendingRequest === null;
         surface.controls.forEach((control) => {
-            control.disabled = !ready;
-            control.setAttribute("aria-disabled", String(!ready));
+            const action = SHOWCASE_COMMANDS[control.dataset.command]?.action;
+            const enabled = ready && (!COMPARISON_ACTIONS.has(action) || comparisonPrepared);
+            control.disabled = !enabled;
+            control.setAttribute("aria-disabled", String(!enabled));
         });
         [surface.calibrationSize, surface.calibrationLayout].forEach((control) => {
             if (!control) return;
@@ -421,13 +443,37 @@ export const attachShowcaseSurface = (documentRef, transport, {
 
     const displayOperation = (message) => setText(surface.operation, message);
 
+    const showAutoSnapDisabled = () => {
+        if (!surface.autoSnap) return;
+        surface.autoSnap.setAttribute("aria-pressed", "false");
+        const label = surface.autoSnap.querySelector("span:last-child");
+        setText(label, "AutoSnap: Off");
+    };
+
+    const showFreshSessionExample = () => {
+        comparisonPrepared = true;
+        if (surface.calibrationSize) surface.calibrationSize.value = "medium";
+        if (surface.calibrationLayout) surface.calibrationLayout.value = "coverage";
+        syncCalibrationCommand();
+        setText(surface.outlinerTarget, "All full-coverage objects selected");
+        showAutoSnapDisabled();
+        displayOperation(COMPARISON_READY_MESSAGE);
+    };
+
     const updateOutliner = (response) => {
-        if (!surface.outlinerTarget || response.result !== "success") return;
+        if (response.result !== "success") return;
         const preset = CALIBRATION_PRESET_BY_ACTION.get(response.action);
         if (preset) {
-            setText(surface.outlinerTarget, preset.outlinerLabel);
-        } else if (response.action === "clean_scene") {
+            comparisonPrepared = true;
+            setText(surface.outlinerTarget, `${preset.outlinerLabel} - all selected`);
+            showAutoSnapDisabled();
+        } else if (response.action === "clean_scene" || response.action === "reset_scene") {
+            comparisonPrepared = false;
             setText(surface.outlinerTarget, "No demo objects prepared");
+            if (response.action === "reset_scene") showAutoSnapDisabled();
+        } else if (COMPARISON_ACTIONS.has(response.action)) {
+            setText(surface.outlinerTarget, "All comparison objects selected");
+            showAutoSnapDisabled();
         } else if (response.action === "select_previous_fixture" || response.action === "select_next_fixture") {
             setText(surface.outlinerTarget, "Selected demo object");
         } else if (response.action === "focus_selected_fixture") {
@@ -437,7 +483,8 @@ export const attachShowcaseSurface = (documentRef, transport, {
 
     const handleResponse = (raw) => {
         const response = parseShowcaseResult(raw);
-        if (!response || !pendingRequest || response.requestId !== pendingRequest.requestId) return;
+        if (!response || !pendingRequest || response.requestId !== pendingRequest.requestId
+            || response.action !== pendingRequest.action) return;
 
         clearPending();
         displayOperation(response.message);
@@ -448,12 +495,14 @@ export const attachShowcaseSurface = (documentRef, transport, {
             if (label) label.textContent = `AutoSnap: ${enabled ? "On" : "Off"}`;
         }
         updateOutliner(response);
+        if (response.code === "comparison_unavailable") comparisonPrepared = false;
         render();
     };
 
     const handleControl = (event) => {
         const control = event.currentTarget;
-        if (connectionState !== "connected" || !sessionReady || pendingRequest || !(control instanceof HTMLButtonElement)) return;
+        if (connectionState !== "connected" || !sessionReady || pendingRequest
+            || !(control instanceof HTMLButtonElement) || control.disabled) return;
 
         let request;
         try {
@@ -506,7 +555,10 @@ export const attachShowcaseSurface = (documentRef, transport, {
         if (nextState !== "connected") clearPending();
         if (nextState === "connected") {
             streamLossReported = false;
-            if (brokerSession === null) sessionReady = true;
+            if (brokerSession === null) {
+                sessionReady = true;
+                showFreshSessionExample();
+            }
         } else if (brokerSession !== null
             && mountRequested
             && (wasConnected || nextState === "disconnected" || nextState === "error")
@@ -521,13 +573,14 @@ export const attachShowcaseSurface = (documentRef, transport, {
         transport.onSessionReady(() => {
             if (detached) return;
             sessionReady = true;
+            showFreshSessionExample();
             render();
             onSessionReady();
         });
     }
     transport.onResponse(handleResponse);
     displayConnection("connecting");
-    displayOperation("Review results will appear here after a LandSnap action.");
+    displayOperation("Your fresh comparison example is being prepared.");
 
     const mountOptions = brokerSession === null
         ? Object.freeze({ streamerId: SHOWCASE_STREAMER_ID, input: STREAM_INPUT_POLICY })
