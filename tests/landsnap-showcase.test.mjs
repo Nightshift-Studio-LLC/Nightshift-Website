@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import test from "node:test";
 import { readFile } from "node:fs/promises";
 import {
@@ -298,7 +299,7 @@ test("comparison results name the actual action and reject mismatched success co
 test("the child shell starts with medium mesh size, full coverage layout and an honest native comparator", async () => {
     const html = await readFile(new URL("../pages/Studio/LandSnapShowcase.html", import.meta.url), "utf8");
     const capabilities = await readFile(new URL("../scripts/landsnap-showcase-capabilities.js", import.meta.url), "utf8");
-    assert.match(capabilities, /Object\.freeze\(\{ observer: false \}\)/, "comparison release leaves observer UI disabled");
+    assert.match(capabilities, /Object\.freeze\(\{ observer: true \}\)/, "comparison release preserves live observer UI capability");
     assert.match(html, /option value="medium" selected>Medium/);
     assert.match(html, /option value="coverage" selected>Full coverage/);
     assert.doesNotMatch(html, /option value="row" selected/);
@@ -314,6 +315,19 @@ test("the child shell starts with medium mesh size, full coverage layout and an 
         assert.ok(advanced.includes(`data-command="${command}"`), `${command} stays accessible in Advanced controls`);
     }
     assert.match(html, /data-command="focus-selected-fixture"/);
+});
+
+test("comparison release preserves the verified live observer capability and transport bytes", async () => {
+    // Immutable d8934c9 assets verified on the live host on 2026-09-30.
+    const liveObserverHashes = {
+        "scripts/landsnap-showcase-capabilities.js": "24673cfd696ade5e26cbff15af3a11b98dbe3254c54ee18ffcd27a99a99d0ea4",
+        "scripts/landsnap-showcase-observer.js": "d741a2bca8ecabcaca72023efab0193917e934997c8a0022dcb73ef8c7e40eb6",
+        "scripts/vendor/landsnap-showcase-ps2-observer.js": "3d51d2bce30f2aaf6d42c38cf02a4c05f84c6bc7b5649ee1c243b18096ec530d",
+    };
+    for (const [path, expectedHash] of Object.entries(liveObserverHashes)) {
+        const bytes = await readFile(new URL(`../${path}`, import.meta.url));
+        assert.equal(createHash("sha256").update(bytes).digest("hex"), expectedHash, path);
+    }
 });
 
 test("comparison controls wait for prepared-session acknowledgement, correlate actions, and recover after a new preset", () => {
