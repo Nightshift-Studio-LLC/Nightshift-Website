@@ -26,7 +26,7 @@ test("the product page embeds the fixed dedicated Showcase host without top-leve
     assert.match(productPage, /data-landsnap-showcase-rollout/);
     assert.match(productPage, /Demo in progress/);
     assert.match(productPage, /Bugs and interruptions may occur/);
-    assert.match(productPage, /src="https:\/\/showcase\.ns-tx\.com\/\?v=20260930-session-recovery-v1"/);
+    assert.match(productPage, /src="https:\/\/showcase\.ns-tx\.com\/\?v=20261002-guided-reconciled-v1"/);
     assert.match(productPage, /landsnap-showcase-embed\.js/);
     assert.match(productPage, /allow="autoplay; fullscreen; clipboard-read; clipboard-write"/);
     assert.match(productPage, /sandbox="allow-scripts allow-same-origin allow-forms allow-pointer-lock allow-presentation"/);
@@ -286,4 +286,31 @@ test("the direct shell identifies the dedicated host without accepting a visitor
     assert.match(directShell, /id="landsnap-showcase-leave"/);
     assert.match(directShell, /id="landsnap-showcase-end-session"/);
     assert.doesNotMatch(directShell, /signalling|signaling|wss?:\/\//i);
+});
+
+test("reconciled showcase retains original icons and Select All alongside the guide", async () => {
+    const child = await readSource("../pages/Studio/LandSnapShowcase.html");
+    assert.match(child, /id="landsnap-showcase-guide"/);
+    assert.match(child, /Skip to Sandbox/);
+    assert.match(child, /Replay Tutorial/);
+    assert.match(child, /data-command="select-all-fixtures"/);
+    assert.match(child, /id="landsnap-showcase-undo"[^\n]*<svg/);
+    assert.match(child, /id="landsnap-showcase-redo"[^\n]*<svg/);
+    assert.match(child, /id="landsnap-showcase-prepare-fixtures"[^\n]*data-command="prepare-medium-coverage"[^\n]*<svg/);
+    assert.match(child, /Watch the active visitor use LandSnap while you wait/);
+    assert.match(child, /id="landsnap-showcase-observer-guide"/);
+    assert.match(child, /id="landsnap-showcase-observer-action"/);
+    assert.doesNotMatch(child, /^<<<<<<<|^=======|^>>>>>>>/m);
+});
+
+test("reconciled embed and child imports share a fixed local release version", async () => {
+    const child = await readSource("../pages/Studio/LandSnapShowcase.html");
+    const product = await readSource("../pages/Studio/Landsnap.html");
+    const release = "20261002-guided-reconciled-v1";
+    assert.equal(SHOWCASE_EMBED_ORIGIN, `https://showcase.ns-tx.com/?v=${release}`);
+    assert.equal(SHOWCASE_LOCAL_PREVIEW_PATH, `./LandSnapShowcase.html?v=${release}`);
+    assert.ok(product.includes(`src="${SHOWCASE_EMBED_ORIGIN}"`));
+    for (const match of child.matchAll(/(?:href|src)="[^"\n]*landsnap-showcase[^"\n]*\?v=([^"\n]+)"/g)) {
+        assert.equal(match[1], release);
+    }
 });

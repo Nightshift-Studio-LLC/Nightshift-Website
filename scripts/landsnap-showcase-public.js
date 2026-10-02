@@ -5,7 +5,7 @@
 import {
     SHOWCASE_START_REQUEST_EVENT,
     isPublicShowcaseHost,
-} from "./landsnap-showcase-queue.js?v=20260930-session-recovery-v1";
+} from "./landsnap-showcase-queue.js?v=20261002-guided-reconciled-v1";
 
 const SESSION_URL_PATTERN = /^\/api\/landsnap-showcase\/session\/v1\/player\/[A-Za-z0-9_-]{16,128}$/;
 const SESSION_TOKEN_PATTERN = /^[A-Za-z0-9._~-]{24,512}$/;
@@ -51,7 +51,7 @@ const dispatchReady = (windowRef, transport) => {
  */
 export const installPublicShowcaseBootstrap = async (
     windowRef = globalThis.window,
-    loadTransport = () => import("./vendor/landsnap-showcase-ps2-public.js?v=20260930-session-recovery-v1")
+    loadTransport = () => import("./vendor/landsnap-showcase-ps2-public.js?v=20261002-guided-reconciled-v1")
         .then(({ createPublicShowcaseTransport }) => createPublicShowcaseTransport()),
 ) => {
     if (!windowRef || !isPublicShowcaseHost(windowRef.location?.hostname) || windowRef.location?.protocol !== "https:") {

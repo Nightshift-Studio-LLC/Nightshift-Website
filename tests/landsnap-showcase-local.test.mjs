@@ -154,6 +154,10 @@ test("local transport forwards only allowlisted UI interactions and raw UE Respo
     assert.equal(isMouseOnlyInput(mouseOnlyInput), true);
     assert.equal(isMouseOnlyInput({ ...mouseOnlyInput, keyboard: true }), false);
     assert.equal(isAllowlistedShowcasePayload(valid), true);
+    for (const action of ["compare_unreal_snap", "compare_landsnap", "reset_comparison"]) {
+        assert.equal(isAllowlistedShowcasePayload({ ...valid, action }), true);
+        assert.equal(isAllowlistedShowcasePayload({ ...valid, action, args: {} }), false);
+    }
     assert.equal(isAllowlistedShowcasePayload({ ...valid, action: "prepare_large_coverage" }), true);
     assert.equal(isAllowlistedShowcasePayload({ ...valid, action: "focus_selected_fixture" }), true);
     assert.equal(isAllowlistedShowcasePayload({ ...valid, action: "prepare_calibration" }), false);
@@ -185,4 +189,15 @@ test("bootstrap never loads or attaches a transport for the public site", async 
     });
     assert.equal(result, null);
     assert.equal(loaderCalls, 0);
+});
+
+test("local adapter accepts every bounded guided action and rejects supplied arguments", () => {
+    const actions = ['guide_start', 'guide_next', 'guide_back', 'guide_skip', 'guide_replay', 'guide_unreal_floor', 'guide_unreal_align', 'guide_unreal_pivot', 'guide_unreal_pivot_align', 'guide_unreal_bounds', 'guide_unreal_bounds_align', 'guide_prop_basketball', 'guide_prop_house', 'guide_prop_shed', 'guide_autosnap_on', 'guide_autosnap_off'];
+    for (const action of actions) {
+        const payload = { version: "landsnap-showcase-v1", type: "command", requestId: "guide_request", action };
+        assert.equal(isAllowlistedShowcasePayload(payload), true, action);
+        assert.equal(isAllowlistedShowcasePayload({ ...payload, args: {} }), false, action);
+        assert.equal(isAllowlistedShowcasePayload({ ...payload, method: "console" }), false, action);
+    }
+    assert.equal(isAllowlistedShowcasePayload({ version: "landsnap-showcase-v1", type: "command", requestId: "guide_request", action: "guide_exec" }), false);
 });

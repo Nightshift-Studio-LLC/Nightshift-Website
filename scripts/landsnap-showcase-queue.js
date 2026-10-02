@@ -444,10 +444,18 @@ export const createQueueLeaseController = ({
         return lease;
     };
     const resume = async () => {
-        if (!started || !suspended) return lease;
+        if (started && !suspended) return lease;
+        if (!started) {
+            closeEventSource();
+            started = true;
+            lease = Object.freeze({ status: "requesting" });
+            publish();
+        }
         suspended = false;
-        openEventSource();
-        return refresh("status");
+        // Restore the cookie-bound status before opening one current subscription.
+        const resumed = await refresh("status");
+        if (started && !suspended && SUBSCRIBABLE_LEASE_STATES.has(resumed.status)) openEventSource();
+        return resumed;
     };
 
     return Object.freeze({
@@ -970,6 +978,7 @@ export const installShowcaseQueueGate = (windowRef = globalThis.window, document
     });
     windowRef.addEventListener("pagehide", suspendQueue);
     windowRef.addEventListener("pageshow", resumeQueue);
+    if (!local) resumeQueue();
     return controller;
 };
 

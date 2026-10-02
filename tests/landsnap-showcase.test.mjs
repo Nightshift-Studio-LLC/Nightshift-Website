@@ -1,7 +1,10 @@
+import { parseTutorialState, getTutorialCopy } from "../scripts/landsnap-showcase-guide.js";
 import assert from "node:assert/strict";
 import test from "node:test";
+import { readFile } from "node:fs/promises";
 import {
     SHOWCASE_COMMANDS,
+    SHOWCASE_GUIDE_COMMANDS,
     SHOWCASE_NOTIFICATION_CODES,
     SHOWCASE_LIFECYCLE_MESSAGE,
     SHOWCASE_LIFECYCLE_VERSION,
@@ -12,6 +15,7 @@ import {
     SHOWCASE_START_REQUEST_EVENT,
     announceShowcaseLifecycle,
     announceShowcaseShellReady,
+    attachShowcaseSurface,
     createShowcaseCommand,
     getShowcaseLifecycleFromLease,
     initializeShowcaseSurface,
@@ -98,6 +102,10 @@ test("the framed shell sends only fixed lifecycle states to the exact parent ori
 
 test("each public control has one fixed no-argument command envelope", () => {
     const expected = {
+        ...Object.fromEntries(["start", "next", "back", "skip", "replay", "unreal_floor", "unreal_align", "unreal_pivot", "unreal_pivot_align", "unreal_bounds", "unreal_bounds_align", "prop_basketball", "prop_house", "prop_shed", "autosnap_on", "autosnap_off"].map((name) => [`guide-${name.replaceAll("_", "-")}`, `guide_${name}`])),
+        "compare-unreal": "compare_unreal_snap",
+        "compare-landsnap": "compare_landsnap",
+        "reset-comparison": "reset_comparison",
         "snap-selected": "snap_selected",
         undo: "undo",
         redo: "redo",
@@ -148,6 +156,7 @@ test("only an exact, correlated bridge result is accepted", () => {
         requestId: "request_123",
         action: "snap_selected",
         result: "success",
+        code: "completed",
         message: "The showcase action completed.",
     });
 
@@ -177,6 +186,7 @@ test("session_ready acknowledgement stays inside the bounded lifecycle response 
         requestId: "request_123",
         action: "session_ready",
         result: "success",
+        code: "session_ready",
         message: "The showcase session is ready.",
     });
     assert.equal(parseShowcaseResult(JSON.stringify({
@@ -241,7 +251,7 @@ test("AutoSnap, calibration, cleanup, and outliner messages stay inside the fixe
         result: "success",
         code: "fixture_focused",
     });
-    assert.equal(parseShowcaseResult(cleanup)?.message, "The prepared demo objects were removed from the scene.");
+    assert.equal(parseShowcaseResult(cleanup)?.message, "The prepared demo objects were removed from the scene. Prepare another example in Advanced controls to compare again.");
     assert.equal(parseShowcaseResult(outliner)?.message, "The selected demo object is focused in the viewport.");
 });
 
@@ -268,6 +278,197 @@ test("viewport notifications use fixed copy for connecting, stream failures, and
     assert.equal(isShowcaseSessionExpiring({ ...activeLease, sessionExpiresAt: now + 60_001 }, now), false);
     assert.equal(isShowcaseSessionExpiring({ status: "ready", readyClaimExpiresAt: now + 60_000 }, now), false);
     assert.equal(isShowcaseSessionExpiring({ status: "waiting" }, now), false);
+});
+
+test("comparison results name the actual action and reject mismatched success codes", () => {
+    const result = (action, code = "completed", type = "success") => JSON.stringify({
+        version: SHOWCASE_PROTOCOL_VERSION,
+        type: "operation-result",
+        action,
+        requestId: "request_123",
+        result: type,
+        code,
+    });
+    assert.match(parseShowcaseResult(result("compare_unreal_snap")).message, /native End \/ Snap to Floor.*rotation is preserved/);
+    assert.match(parseShowcaseResult(result("compare_landsnap")).message, /LandSnap.*same starting transforms/);
+    assert.match(parseShowcaseResult(result("reset_comparison", "comparison_reset")).message, /starting positions, rotation and scale/);
+    assert.equal(parseShowcaseResult(result("reset_comparison")), null);
+    assert.equal(parseShowcaseResult(result("compare_unreal_snap", "comparison_reset")), null);
+    assert.equal(parseShowcaseResult(result("snap_selected", "comparison_reset")), null);
+    assert.equal(parseShowcaseResult(result("compare_unreal_snap", "comparison_unavailable", "rejected"))?.code, "comparison_unavailable");
+    assert.equal(parseShowcaseResult(result("compare_unreal_snap", "comparison_unavailable", "success")), null);
+});
+
+test("the child shell starts with medium mesh size, full coverage layout and an honest native comparator", async () => {
+    const html = await readFile(new URL("../pages/Studio/LandSnapShowcase.html", import.meta.url), "utf8");
+    const capabilities = await readFile(new URL("../scripts/landsnap-showcase-capabilities.js", import.meta.url), "utf8");
+    assert.match(capabilities, /Object\.freeze\(\{ observer: true \}\)/, "comparison release preserves live observer UI capability");
+    assert.match(html, /option value="medium" selected>Medium/);
+    assert.match(html, /option value="coverage" selected>Full coverage/);
+    assert.doesNotMatch(html, /option value="row" selected/);
+    assert.match(html, /data-command="prepare-medium-coverage"/);
+    assert.match(html, /Unreal: Snap to Floor \(End\)/);
+    assert.match(html, /Native End drops objects to the floor while preserving rotation/);
+    assert.match(html, /compare actual saved props with native Unreal commands and LandSnap/);
+    assert.match(html, /Skip to Sandbox/);
+    assert.match(html, /Replay Tutorial/);
+    for (const command of ["compare-unreal", "compare-landsnap", "reset-comparison"]) {
+        assert.match(html, new RegExp(`data-command="${command}"[^>]*disabled`));
+    }
+    const advanced = html.slice(html.indexOf('<details class="landsnap-showcase-advanced">'), html.indexOf("</details>", html.indexOf('<details class="landsnap-showcase-advanced">')));
+    for (const command of ["snap-selected", "undo", "redo", "toggle-autosnap", "clean-scene", "reset-scene"]) {
+        assert.ok(advanced.includes(`data-command="${command}"`), `${command} stays accessible in Advanced controls`);
+    }
+    assert.match(html, /data-command="focus-selected-fixture"/);
+});
+
+test("guided release preserves live observers and their read-only input boundary", async () => {
+    const capabilities = await readFile(new URL("../scripts/landsnap-showcase-capabilities.js", import.meta.url), "utf8");
+    assert.match(capabilities, /Object\.freeze\(\{ observer: true \}\)/);
+    const adapter = await readFile(new URL("../tools/landsnap/landsnap-showcase-ps2-observer-entry.js", import.meta.url), "utf8");
+    assert.match(adapter, /MouseInput\]: false/);
+    assert.match(adapter, /KeyboardInput\]: false/);
+    assert.match(adapter, /TouchInput\]: false/);
+    assert.match(adapter, /emitUIInteraction\(\)\s*\{\s*return false;/);
+});
+
+test("comparison controls wait for prepared-session acknowledgement, correlate actions, and recover after a new preset", () => {
+    const priorWindow = globalThis.window;
+    const priorButton = globalThis.HTMLButtonElement;
+    class FakeButton {
+        constructor(command) {
+            this.dataset = { command };
+            this.disabled = true;
+            this.attributes = new Map();
+            this.listeners = new Map();
+            this.label = { textContent: "" };
+        }
+        setAttribute(name, value) { this.attributes.set(name, value); }
+        querySelector() { return this.label; }
+        addEventListener(name, listener) { this.listeners.set(name, listener); }
+        removeEventListener(name) { this.listeners.delete(name); }
+        click() { this.listeners.get("click")?.({ currentTarget: this }); }
+    }
+    globalThis.HTMLButtonElement = FakeButton;
+    globalThis.window = { setTimeout() { return 1; }, clearTimeout() {} };
+    const buttons = Object.fromEntries([
+        "compare-unreal", "compare-landsnap", "reset-comparison", "snap-selected",
+        "clean-scene", "reset-scene", "prepare-medium-coverage", "toggle-autosnap",
+    ].map((command) => [command, new FakeButton(command)]));
+    const operation = { textContent: "" };
+    const outliner = { textContent: "" };
+    const size = { value: "small", setAttribute() {}, addEventListener() {}, removeEventListener() {} };
+    const layout = { value: "row", setAttribute() {}, addEventListener() {}, removeEventListener() {} };
+    const elements = {
+        "landsnap-showcase-stream-mount": { dataset: {}, setAttribute() {} },
+        "landsnap-showcase-operation-status": operation,
+        "landsnap-showcase-outliner-target": outliner,
+        "landsnap-showcase-calibration-size": size,
+        "landsnap-showcase-calibration-layout": layout,
+        "landsnap-showcase-prepare-fixtures": buttons["prepare-medium-coverage"],
+        "landsnap-showcase-toggle-autosnap": buttons["toggle-autosnap"],
+    };
+    let stateListener;
+    let readyListener;
+    let responseListener;
+    const sent = [];
+    const transport = {
+        mount() {},
+        emitUIInteraction(payload) { sent.push(payload); return true; },
+        onConnectionState(listener) { stateListener = listener; },
+        onSessionReady(listener) { readyListener = listener; },
+        onResponse(listener) { responseListener = listener; },
+    };
+    const documentRef = {
+        getElementById(id) { return elements[id] || null; },
+        querySelectorAll() { return Object.values(buttons); },
+    };
+    const respond = (action, code, result = "success") => responseListener(JSON.stringify({
+        version: SHOWCASE_PROTOCOL_VERSION,
+        type: "operation-result",
+        action,
+        requestId: sent.at(-1).requestId,
+        result,
+        code,
+    }));
+    let surface;
+    try {
+        surface = attachShowcaseSurface(documentRef, transport, { brokerSession: {} });
+        stateListener("connected");
+        assert.equal(buttons["compare-unreal"].disabled, true, "connection alone does not prove fixtures are ready");
+        readyListener();
+        assert.equal(buttons["compare-unreal"].disabled, false);
+        assert.equal(size.value, "medium");
+        assert.equal(layout.value, "coverage");
+        assert.equal(outliner.textContent, "All full-coverage objects selected");
+        assert.match(operation.textContent, /Fresh full-coverage objects are selected/);
+
+        for (const [button, action] of [["prepare-medium-coverage", "prepare_medium_coverage"], ["clean-scene", "clean_scene"]]) {
+            buttons[button].click();
+            respond(action, "authored_setup_locked", "rejected");
+            assert.match(operation.textContent, /saved opening.*Prepare and Remove Demo Objects.*Reset Comparison/);
+            assert.equal(buttons["compare-unreal"].disabled, false, "rejected destructive setup keeps comparison available");
+            assert.equal(buttons["snap-selected"].disabled, false, "authored setup lock preserves advanced placement");
+        }
+
+        buttons["reset-scene"].click();
+        respond("reset_scene", "authored_scene_reset");
+        assert.match(operation.textContent, /saved opening, camera and full selection/);
+        assert.equal(buttons["compare-unreal"].disabled, false, "authored scene reset keeps comparison ready");
+        assert.equal(outliner.textContent, "All full-coverage objects selected");
+
+        buttons["compare-unreal"].click();
+        assert.equal(sent.at(-1).action, "compare_unreal_snap");
+        assert.equal(Object.hasOwn(sent.at(-1), "args"), false);
+        respond("snap_selected", "completed");
+        assert.equal(buttons["compare-unreal"].disabled, true, "a same-id response for another action cannot finish comparison");
+        respond("compare_unreal_snap", "completed");
+        assert.match(operation.textContent, /rotation is preserved/);
+        assert.equal(buttons["compare-landsnap"].disabled, false);
+
+        buttons["toggle-autosnap"].click();
+        respond("toggle_autosnap", "autosnap_enabled");
+        assert.equal(buttons["toggle-autosnap"].attributes.get("aria-pressed"), "true");
+        buttons["compare-landsnap"].click();
+        respond("compare_landsnap", "completed");
+        assert.match(operation.textContent, /same starting transforms/);
+        assert.equal(buttons["toggle-autosnap"].attributes.get("aria-pressed"), "false");
+
+        for (const [command, action, code] of [
+            ["clean-scene", "clean_scene", "scene_cleaned"],
+            ["reset-scene", "reset_scene", "scene_reset"],
+        ]) {
+            buttons["toggle-autosnap"].click();
+            respond("toggle_autosnap", "autosnap_enabled");
+            buttons[command].click();
+            respond(action, code);
+            assert.equal(buttons["compare-unreal"].disabled, true);
+            assert.equal(buttons["reset-comparison"].disabled, true);
+            assert.equal(buttons["snap-selected"].disabled, false, "advanced controls remain available");
+            assert.equal(buttons["toggle-autosnap"].attributes.get("aria-pressed"), action === "reset_scene" ? "false" : "true");
+            assert.match(operation.textContent, /Prepare another example in Advanced controls/);
+            const count = sent.length;
+            buttons["compare-unreal"].click();
+            assert.equal(sent.length, count, "disabled comparison cannot emit a request");
+            buttons["prepare-medium-coverage"].click();
+            respond("prepare_medium_coverage", "calibration_ready");
+            assert.equal(buttons["compare-unreal"].disabled, false);
+        }
+        buttons["reset-comparison"].click();
+        respond("reset_comparison", "comparison_reset");
+        assert.equal(buttons["compare-unreal"].disabled, false, "reset retains the prepared example");
+        assert.match(operation.textContent, /starting positions, rotation and scale/);
+        buttons["compare-unreal"].click();
+        respond("compare_unreal_snap", "comparison_unavailable", "rejected");
+        assert.equal(buttons["compare-unreal"].disabled, true);
+        assert.match(operation.textContent, /Advanced controls/);
+    } finally {
+        surface?.detach();
+        if (priorWindow === undefined) delete globalThis.window;
+        else globalThis.window = priorWindow;
+        if (priorButton === undefined) delete globalThis.HTMLButtonElement;
+        else globalThis.HTMLButtonElement = priorButton;
+    }
 });
 
 test("surface waits for Start Demo, then keeps the mounted transport across a same-lease ready ticket refresh", async () => {
@@ -444,14 +645,18 @@ test("Select All confirmation requires both the pending action and request ID", 
             querySelectorAll() { return [button]; },
         };
         attached = attachShowcaseSurface(documentRef, transport);
+        const readySelection = outliner.textContent;
         button.click({ currentTarget: button });
         assert.equal(button.disabled, true);
-        assert.equal(outliner.textContent, "Prepared objects", "no optimistic selection confirmation");
+        assert.equal(outliner.textContent, readySelection, "no optimistic selection confirmation");
         const reply = { version: SHOWCASE_PROTOCOL_VERSION, type: "operation-result", action: "select_next_fixture",
             requestId: sent.requestId, result: "success", code: "fixture_selected" };
         response(JSON.stringify(reply));
         assert.equal(button.disabled, true, "a different action cannot clear the pending command");
-        assert.equal(outliner.textContent, "Prepared objects");
+        assert.equal(outliner.textContent, readySelection);
+        response(JSON.stringify({ ...reply, action: "select_all_fixtures", requestId: "unrelated_request" }));
+        assert.equal(button.disabled, true, "a different request ID cannot clear the pending command");
+        assert.equal(outliner.textContent, readySelection, "uncorrelated success cannot confirm selection");
         response(JSON.stringify({ ...reply, action: "select_all_fixtures" }));
         assert.equal(button.disabled, false);
         assert.equal(outliner.textContent, "All demo objects selected");
@@ -459,5 +664,145 @@ test("Select All confirmation requires both the pending action and request ID", 
         attached?.detach();
         if (previousWindow === undefined) delete globalThis.window; else globalThis.window = previousWindow;
         if (previousButton === undefined) delete globalThis.HTMLButtonElement; else globalThis.HTMLButtonElement = previousButton;
+    }
+});
+
+test("authored setup lock is bounded to destructive setup actions", () => {
+    const response = (action, result = "rejected") => JSON.stringify({
+        version: SHOWCASE_PROTOCOL_VERSION, type: "operation-result", action,
+        requestId: "authored_123", result, code: "authored_setup_locked",
+    });
+    for (const action of ["clean_scene", "prepare_small_row", "prepare_medium_coverage", "prepare_large_coverage"]) {
+        assert.match(parseShowcaseResult(response(action)).message, /Reset Comparison/);
+        assert.equal(parseShowcaseResult(response(action, "success")), null);
+    }
+    for (const action of ["compare_unreal_snap", "compare_landsnap", "reset_comparison", "undo", "redo"]) {
+        assert.equal(parseShowcaseResult(response(action)), null);
+    }
+});
+
+
+const tutorial = (overrides = {}) => ({ type: "tutorial-state", version: "landsnap-guide-v1", revision: 1, step: "intro", method: "none", phase: "ready", outcome: "none", autoSnap: false, prop: "house", ...overrides });
+test("tutorial state accepts only bounded enums and never remote UI copy", () => {
+    assert.equal(parseTutorialState(JSON.stringify(tutorial())).step, "intro");
+    for (const state of [tutorial({ revision: -1 }), tutorial({ revision: 1.5 }), tutorial({ method: "exec" }), tutorial({ prop: "arbitrary" }), tutorial({ title: "<script>" }), tutorial({ autoSnap: 1 }), tutorial({ step: "finished" }), tutorial({ phase: "success" })]) {
+        assert.equal(parseTutorialState(state), null);
+    }
+    assert.equal(parseTutorialState(" ".repeat(513)), null);
+    assert.match(getTutorialCopy(tutorial({ step: "floor", method: "pivot" })).description, /shared selection pivot/);
+    assert.equal(getTutorialCopy(tutorial({ step: "floor", method: "bounds_align" })).method, "Align Bottom Center Bounds to Floor");
+    assert.match(getTutorialCopy(tutorial({ step: "floor", method: "bounds_align" })).description, /change yaw/);
+});
+
+test("guide responses are correlated bounded commands, not placement quality claims", () => {
+    for (const { action } of Object.values(SHOWCASE_GUIDE_COMMANDS)) {
+        const result = { type: "operation-result", version: SHOWCASE_PROTOCOL_VERSION, requestId: "guide_request", action, result: "success", code: "guided_completed" };
+        assert.match(parseShowcaseResult(JSON.stringify(result)).message, /does not certify terrain contact/);
+        assert.equal(parseShowcaseResult(JSON.stringify({ ...result, code: "completed" })), null);
+        assert.equal(parseShowcaseResult(JSON.stringify({ ...result, result: "rejected", code: "guide_unavailable" })).code, "guide_unavailable");
+    }
+});
+
+test("local guided surface waits for editor ready, retains real pending work and rejects stale state", () => {
+    const priorWindow = globalThis.window;
+    const priorButton = globalThis.HTMLButtonElement;
+    class Button {
+        constructor(command) { this.dataset = { command }; this.disabled = true; this.hidden = false; this.listeners = new Map(); this.attributes = new Map(); }
+        setAttribute(key, value) { this.attributes.set(key, value); }
+        addEventListener(key, fn) { this.listeners.set(key, fn); }
+        removeEventListener(key) { this.listeners.delete(key); }
+        click() { this.listeners.get("click")?.({ currentTarget: this }); }
+    }
+    globalThis.HTMLButtonElement = Button;
+    const timers = [];
+    const cleared = [];
+    globalThis.window = { setTimeout(fn, delay) { timers.push({ fn, delay }); return timers.length; }, clearTimeout(id) { cleared.push(id); } };
+    const commands = ["guide-start", "guide-next", "guide-back", "guide-skip", "guide-replay", "guide-prop-house", "guide-autosnap-on"];
+    const buttons = Object.fromEntries(commands.map((command) => [command, new Button(command)]));
+    const elements = {
+        "landsnap-showcase-guide": {},
+        "landsnap-showcase-guide-title": {},
+        "landsnap-showcase-guide-method": {},
+        "landsnap-showcase-guide-description": {},
+        "landsnap-showcase-guide-look-for": {},
+        "landsnap-showcase-guide-state": {},
+        "landsnap-showcase-operation-status": {},
+        "landsnap-showcase-stream-mount": { dataset: {}, setAttribute() {} },
+    };
+    const sent = [];
+    let connected, ready, response;
+    const transport = {
+        mount() {}, emitUIInteraction(command) { sent.push(command); return true; },
+        onConnectionState(fn) { connected = fn; }, onSessionReady(fn) { ready = fn; }, onResponse(fn) { response = fn; },
+    };
+    const documentRef = { getElementById(id) { return elements[id] || null; }, querySelectorAll() { return Object.values(buttons); } };
+    const finish = (action = sent.at(-1).action) => response(JSON.stringify({ type: "operation-result", version: SHOWCASE_PROTOCOL_VERSION, requestId: sent.at(-1).requestId, action, result: "success", code: "guided_completed" }));
+    let surface;
+    try {
+        surface = attachShowcaseSurface(documentRef, transport);
+        connected("connected");
+        assert.equal(sent.length, 0);
+        assert.equal(buttons["guide-skip"].disabled, true);
+        ready();
+        assert.equal(sent.length, 0, "readiness acknowledgement must not immediately consume the rate limit");
+        assert.equal(timers[0].delay, 200);
+        assert.equal(buttons["guide-skip"].disabled, true, "controls wait through the startup interval");
+        timers[0].fn();
+        assert.equal(sent[0].action, "guide_start");
+        response(JSON.stringify(tutorial()));
+        assert.equal(buttons["guide-next"].disabled, true, "state event cannot finish a pending command");
+        finish("guide_next");
+        assert.equal(buttons["guide-next"].disabled, true, "wrong-action response is ignored");
+        finish();
+        assert.equal(buttons["guide-next"].disabled, false);
+        assert.equal(buttons["guide-back"].disabled, true);
+        assert.equal(buttons["guide-skip"].hidden, false);
+        buttons["guide-next"].click();
+        assert.equal(sent.at(-1).action, "guide_next");
+        assert.equal(timers.length, 1, "real guide operations add no expiry timer beyond startup delay");
+        response(JSON.stringify(tutorial({ revision: 2, phase: "running" })));
+        finish();
+        assert.equal(buttons["guide-next"].disabled, true, "running authoritative state still blocks mutation");
+        response(JSON.stringify(tutorial({ revision: 3, step: "floor", method: "floor", outcome: "executed" })));
+        assert.equal(buttons["guide-next"].disabled, false);
+        response(JSON.stringify(tutorial({ revision: 2, step: "intro" })));
+        assert.match(elements["landsnap-showcase-guide-title"].textContent, /Unreal floor/);
+        buttons["guide-skip"].click();
+        response(JSON.stringify(tutorial({ revision: 4, step: "sandbox", method: "autosnap", autoSnap: true })));
+        finish();
+        assert.equal(buttons["guide-next"].hidden, true);
+        assert.equal(buttons["guide-replay"].hidden, false);
+        assert.equal(buttons["guide-prop-house"].hidden, false);
+        buttons["guide-replay"].click();
+        assert.equal(sent.at(-1).action, "guide_replay");
+        connected("disconnected");
+        assert.equal(buttons["guide-replay"].disabled, true);
+        connected("connected");
+        assert.equal(sent.at(-1).action, "guide_replay", "reconnect alone is not editor readiness");
+        ready();
+        assert.equal(sent.at(-1).action, "guide_replay");
+        const beforeDisconnect = sent.length;
+        connected("disconnected");
+        assert.ok(cleared.includes(2), "disconnect cancels scheduled auto start");
+        timers[1].fn();
+        assert.equal(sent.length, beforeDisconnect, "even an already queued callback cannot start after disconnect");
+        connected("connected");
+        ready();
+        timers[1].fn();
+        assert.equal(sent.length, beforeDisconnect, "stale connection callback cannot steal a newly scheduled start");
+        timers[2].fn();
+        assert.equal(sent.at(-1).action, "guide_start");
+        connected("disconnected");
+        connected("connected");
+        ready();
+        const beforeDetach = sent.length;
+        surface.detach();
+        assert.ok(cleared.includes(4), "detach cancels scheduled auto start");
+        timers[3].fn();
+        assert.equal(sent.length, beforeDetach);
+    } finally {
+        surface?.detach();
+        if (priorWindow === undefined) delete globalThis.window; else globalThis.window = priorWindow;
+        if (priorButton === undefined) delete globalThis.HTMLButtonElement; else globalThis.HTMLButtonElement = priorButton;
     }
 });

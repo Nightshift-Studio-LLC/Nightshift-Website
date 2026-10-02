@@ -513,3 +513,48 @@ test("only the dedicated Showcase host can use the fixed same-origin broker path
     });
     assert.equal((await controller.start()).status, "unavailable");
 });
+
+test("fresh cookie-bound controller restores waiting/preparing/ready with status and no admission join", async () => {
+    const now = 1_700_000_000_000;
+    for (const record of [waitingLease(now, 2), startingLease(now), readyLease(now)]) {
+        const operations = [];
+        let subscriptions = 0;
+        const controller = createQueueLeaseController({
+            service: {
+                async request(operation) { operations.push(operation); return record; },
+                subscribe() { subscriptions += 1; return { close() {} }; },
+            },
+            now: () => now, setTimer: () => 1, clearTimer() {},
+        });
+        const restored = await controller.resume();
+        assert.equal(restored.status, record.status);
+        assert.deepEqual(operations, ["status"], "reload must never implicitly join or start a player");
+        assert.equal(subscriptions, 1, "one current subscription after status restoration");
+        await controller.resume();
+        assert.deepEqual(operations, ["status"], "duplicate pageshow/resume does not issue another request");
+        controller.suspend();
+    }
+});
+
+test("fresh status restore cannot revive a controller retired by explicit exit", async () => {
+    const now = 1_700_000_000_000;
+    let resolveStatus;
+    const pending = new Promise((resolve) => { resolveStatus = resolve; });
+    const operations = [];
+    let subscriptions = 0;
+    const controller = createQueueLeaseController({
+        service: {
+            async request(operation) { operations.push(operation); return operation === "status" ? pending : null; },
+            subscribe() { subscriptions += 1; return { close() {} }; },
+        },
+        now: () => now, setTimer: () => 1, clearTimer() {},
+    });
+    const restoring = controller.resume();
+    await controller.leave();
+    resolveStatus(readyLease(now));
+    await restoring;
+    assert.deepEqual(operations, ["status", "leave"]);
+    assert.equal(controller.getLease().status, "idle");
+    assert.equal(controller.isStarted(), false);
+    assert.equal(subscriptions, 0, "retired restoration cannot open a current subscription");
+});

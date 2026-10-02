@@ -1190,6 +1190,67 @@ body.landsnap-showcase-page.landsnap-showcase-embedded.landsnap-showcase-queue-o
     background: #242424;
 }
 
+.landsnap-showcase-comparison {
+    padding: 16px 14px;
+    border-top: 1px solid #3a3a3a;
+    background: #202620;
+}
+
+.landsnap-showcase-comparison h3 {
+    margin: 0 0 12px;
+    color: #edf5e9;
+    font-size: 0.95rem;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.landsnap-showcase-comparison-steps {
+    display: grid;
+    gap: 7px;
+    margin: 0 0 15px;
+    padding-left: 21px;
+    color: #c9d0c6;
+    font-size: 0.79rem;
+    line-height: 1.5;
+}
+
+.landsnap-showcase-comparison-actions {
+    display: grid;
+    gap: 8px;
+}
+
+.landsnap-showcase-comparison-note,
+.landsnap-showcase-advanced-note {
+    margin: 13px 0 0;
+    color: #b1bbae;
+    font-size: 0.74rem;
+    line-height: 1.55;
+}
+
+.landsnap-showcase-advanced {
+    min-width: 0;
+    border-top: 1px solid #3a3a3a;
+    background: #242424;
+}
+
+.landsnap-showcase-advanced > summary {
+    padding: 14px;
+    color: #e0e0e0;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.landsnap-showcase-advanced > summary:focus-visible {
+    outline: 3px solid var(--landsnap-green-bright);
+    outline-offset: -3px;
+}
+
+.landsnap-showcase-advanced-note {
+    margin: 0;
+    padding: 0 14px 14px;
+}
+
 .landsnap-showcase-calibration {
     display: grid;
     gap: 6px;
@@ -1273,6 +1334,23 @@ body.landsnap-showcase-page.landsnap-showcase-embedded.landsnap-showcase-queue-o
     border-color: #111;
     background: linear-gradient(#454545, #393939);
     color: #f2f2f2;
+}
+
+.landsnap-showcase-comparison-actions .landsnap-showcase-action {
+    min-height: 42px;
+    font-size: 0.81rem;
+    font-weight: 600;
+}
+
+.landsnap-showcase-comparison-actions .landsnap-showcase-action-unreal {
+    border-color: #42667d;
+    background: linear-gradient(#354e5d, #293c48);
+}
+
+.landsnap-showcase-comparison-actions .landsnap-showcase-action-primary {
+    border-color: #6c9648;
+    background: linear-gradient(#526d38, #3c5128);
+    color: #f0ffe4;
 }
 
 .landsnap-showcase-action-reset {
@@ -1706,3 +1784,16 @@ body.landsnap-showcase-page.landsnap-showcase-embedded.landsnap-showcase-queue-o
         transform: none;
     }
 }
+
+/* Guided controls share the existing phosphor panel and collapse on mobile. */
+.landsnap-showcase-guide { display: grid; gap: .65rem; padding: 1rem; border: 1px solid var(--showcase-border, #284a37); background: #0b1510; }
+.landsnap-showcase-guide h3, .landsnap-showcase-guide p { margin: 0; }
+.landsnap-showcase-guide p { font-size: .75rem; line-height: 1.6; }
+.landsnap-showcase-guide-actions { display: flex; flex-wrap: wrap; gap: .5rem; }
+.landsnap-showcase-guide-actions .landsnap-showcase-action { flex: 1 1 8rem; min-width: 0; }
+.landsnap-showcase-guide [hidden] { display: none; }
+.landsnap-showcase-guide-options, .landsnap-showcase-manual-comparison { margin-top: .5rem; }
+.landsnap-showcase-guide-options summary, .landsnap-showcase-manual-comparison summary { cursor: pointer; font-size: .8rem; }
+#landsnap-showcase-guide-state { color: #b0d7bd; }
+.landsnap-showcase-observer-guide { margin-top: .75rem; }
+@media (max-width: 600px) { .landsnap-showcase-guide { padding: .75rem; } .landsnap-showcase-guide-actions .landsnap-showcase-action { flex-basis: 100%; } }
