@@ -12,6 +12,7 @@
  * half-configured waiting-room control.
  */
 
+import { parseTutorialState, getTutorialCopy } from "./landsnap-showcase-guide.js?v=20261002-guided-v1";
 import { isPublicShowcaseHost } from "./landsnap-showcase-queue.js?v=20260930-session-recovery-v2";
 
 export const OBSERVER_PROTOCOL_VERSION = "landsnap-showcase-observer-v1";
@@ -167,6 +168,7 @@ export const createObserverController = ({
     now = Date.now,
     onState = () => {},
     onPromote = () => {},
+    onTutorialState = () => {},
 } = {}) => {
     if (!service || typeof service.requestTicket !== "function" || typeof service.claim !== "function") {
         throw new TypeError("A Showcase observer service is required.");
@@ -177,6 +179,8 @@ export const createObserverController = ({
     let ticket = null;
     let stopped = false;
     let generation = 0;
+    let tutorialState = null;
+    let unsubscribeTutorial = null;
 
     const publish = (next) => {
         state = next;
@@ -187,6 +191,10 @@ export const createObserverController = ({
     const stop = () => {
         stopped = true;
         generation += 1;
+        unsubscribeTutorial?.();
+        unsubscribeTutorial = null;
+        tutorialState = null;
+        onTutorialState(null);
         if (transport && typeof transport.disconnect === "function") transport.disconnect();
         transport = null;
         ticket = null;
@@ -223,6 +231,15 @@ export const createObserverController = ({
                 throw new TypeError("Showcase observer transport is unavailable.");
             }
             publish("connecting");
+            if (typeof transport.onTutorialState === "function") {
+                unsubscribeTutorial = transport.onTutorialState((raw) => {
+                    if (stopped || generation !== currentGeneration) return;
+                    const candidate = parseTutorialState(raw);
+                    if (!candidate || (tutorialState && candidate.revision <= tutorialState.revision)) return;
+                    tutorialState = candidate;
+                    onTutorialState(candidate);
+                });
+            }
             await transport.mount(mountElement, {
                 input: OBSERVER_INPUT_POLICY,
                 session: ticket,
@@ -232,6 +249,10 @@ export const createObserverController = ({
             return state;
         } catch (error) {
             if (!stopped && generation === currentGeneration) {
+                unsubscribeTutorial?.();
+                unsubscribeTutorial = null;
+                tutorialState = null;
+                onTutorialState(null);
                 if (transport && typeof transport.disconnect === "function") transport.disconnect();
                 transport = null;
                 ticket = null;
@@ -261,7 +282,7 @@ export const createObserverController = ({
  * fetched only after a visitor explicitly chooses the read-only watch action.
  */
 export const createLazyObserverTransportFactory = () => async () => {
-    const { createObserverShowcaseTransport } = await import("./vendor/landsnap-showcase-ps2-observer.js?v=20260930-session-recovery-v2");
+    const { createObserverShowcaseTransport } = await import("./vendor/landsnap-showcase-ps2-observer.js?v=20261002-guided-v1");
     return createObserverShowcaseTransport();
 };
 
@@ -283,6 +304,36 @@ const installObserverSurface = (
     const mount = documentRef.getElementById("landsnap-showcase-observer-mount");
     const player = documentRef.getElementById("landsnap-showcase-observer-player");
     const status = documentRef.getElementById("landsnap-showcase-observer-status");
+    const guide = documentRef.getElementById("landsnap-showcase-observer-guide");
+    const guideFields = Object.fromEntries(["title", "method", "description", "look-for", "state"].map((key) =>
+        [key, documentRef.getElementById(`landsnap-showcase-observer-guide-${key}`)]));
+    let currentTutorial = null;
+    const renderTutorial = () => {
+        if (!guide) return;
+        guide.hidden = controller.getState() !== "watching";
+        const copy = currentTutorial ? getTutorialCopy(currentTutorial) : null;
+        const values = copy ? {
+            title: copy.title,
+            method: copy.method,
+            description: currentTutorial.step === "sandbox"
+                ? "The presenter can explore the selected prop. You are watching; editor controls remain with the active presenter." : copy.description,
+            "look-for": currentTutorial.step === "sandbox"
+                ? "Watch terrain contact and orientation as the presenter moves the prop. Keep your queue place to try it yourself." : copy.lookFor,
+            state: currentTutorial.phase === "running" ? "The editor is applying this step."
+                : currentTutorial.phase === "failed" ? "The editor did not complete this step. The presenter can retry or restart."
+                    : currentTutorial.step === "sandbox" ? `Free play · AutoSnap ${currentTutorial.autoSnap ? "on" : "off"}.`
+                        : currentTutorial.outcome === "executed" ? "The editor executed this step. Inspect the live result." : "Ready for the next editor action.",
+        } : {
+            title: "Waiting for the current demo step",
+            method: "Live editor view",
+            description: "You are watching. The active presenter controls this demo.",
+            "look-for": "The current method and inspection guidance will appear when Unreal confirms its state.",
+            state: "Tutorial context has not arrived yet.",
+        };
+        for (const [key, value] of Object.entries(values)) {
+            if (guideFields[key]) guideFields[key].textContent = value;
+        }
+    };
     if (!section || !action || !mount || !player || !status || typeof action.addEventListener !== "function") return null;
     action.dataset.observerCapability = "available";
     mount.dataset.observerCapability = "available";
@@ -293,6 +344,7 @@ const installObserverSurface = (
             action.setAttribute("aria-disabled", String(action.disabled));
             mount.dataset.observerState = next;
             mount.setAttribute("aria-busy", String(["requesting", "claiming", "connecting"].includes(next)));
+            renderTutorial();
             status.textContent = next === "watching"
                 ? "Watching the active demo in read-only mode."
                 : next === "error"
@@ -302,6 +354,7 @@ const installObserverSurface = (
                 : "Waiting for a live session.";
         },
         onPromote: () => { void windowRef.LandSnapShowcaseQueue?.recheck?.(); },
+        onTutorialState: (next) => { currentTutorial = next; renderTutorial(); },
     });
     const sync = () => {
         const lease = windowRef.LandSnapShowcaseQueueLease;

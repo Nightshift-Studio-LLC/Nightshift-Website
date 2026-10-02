@@ -231,6 +231,7 @@ test("observer transport waits for video and disconnects only its PS2 peer", asy
             streams.push(this);
         }
         addEventListener(name, listener) { this.listeners.set(name, listener); }
+        addResponseEventListener(name, listener) { this.responseListener = listener; }
         connect() { this.connected += 1; }
         disconnect() { this.disconnected += 1; }
         fire(name) { this.listeners.get(name)?.(); }
@@ -263,4 +264,75 @@ test("observer transport waits for video and disconnects only its PS2 peer", asy
     await mounted;
     transport.disconnect();
     assert.equal(streams[0].disconnected, 1);
+});
+
+const tutorial = (overrides = {}) => ({
+    type: "tutorial-state", version: "landsnap-guide-v1", revision: 1,
+    step: "floor", method: "floor", phase: "ready", outcome: "executed", autoSnap: false, prop: "basketball",
+    ...overrides,
+});
+
+test("observer receives sanitized tutorial snapshots and ignores stale, malformed and disconnected messages", async () => {
+    const streams = [];
+    const received = [];
+    class FakeConfig { constructor() {} }
+    class FakePixelStreaming {
+        constructor() { this.listeners = new Map(); streams.push(this); }
+        addEventListener(name, fn) { this.listeners.set(name, fn); }
+        addResponseEventListener(name, fn) { this.response = fn; }
+        connect() {}
+        disconnect() {}
+    }
+    const transport = createObserverShowcaseTransportWithDependencies({
+        Config: FakeConfig, PixelStreaming: FakePixelStreaming,
+        Flags: {}, NumericParameters: {}, OptionParameters: {}, TextParameters: {},
+        locationRef, timers: { setTimeout, clearTimeout },
+    });
+    const unsubscribe = transport.onTutorialState((state) => received.push(state));
+    const options = { input: OBSERVER_INPUT_SETTINGS,
+        session: { signallingUrl: "wss://showcase.ns-tx.com/api/landsnap-showcase/session/v1/observer/observer-ticket-0001" } };
+    const mounted = transport.mount({ replaceChildren() {} }, options);
+    streams[0].response(JSON.stringify(tutorial()));
+    streams[0].response(JSON.stringify(tutorial({ revision: 0, step: "align" })));
+    streams[0].response(JSON.stringify(tutorial({ revision: 2, arbitraryCommand: "delete" })));
+    streams[0].response(JSON.stringify(tutorial({ revision: 2, step: "imaginary-mode" })));
+    streams[0].response(JSON.stringify(tutorial({ revision: 2, autoSnap: "true" })));
+    streams[0].response(JSON.stringify(tutorial({ revision: 2, step: "align", method: "align", phase: "running", outcome: "none" })));
+    streams[0].listeners.get("videoInitialized")();
+    await mounted;
+    assert.deepEqual(received.map(({ revision }) => revision), [1, 2]);
+    assert.equal(transport.emitUIInteraction({ action: "guide_next" }), false);
+    const late = [];
+    const unsubscribeLate = transport.onTutorialState((state) => late.push(state));
+    assert.equal(late[0].revision, 2);
+    unsubscribe(); unsubscribeLate();
+    transport.disconnect();
+    streams[0].response(JSON.stringify(tutorial({ revision: 3 })));
+    assert.equal(received.length, 2);
+});
+
+test("observer tutorial context resets on stop and rejects old peers after reconnect", async () => {
+    const callbacks = [];
+    const received = [];
+    let unsubscribed = 0;
+    const controller = createObserverController({
+        service: { async requestTicket() { return ticket; }, async claim(value) { return { ...value, signallingUrl: createObserverSignallingUrl(value, locationRef, now) }; } },
+        transportFactory: async () => ({
+            async mount() {}, disconnect() {},
+            onTutorialState(fn) { callbacks.push(fn); return () => { unsubscribed += 1; }; },
+        }),
+        onTutorialState: (state) => received.push(state),
+    });
+    await controller.start({});
+    callbacks[0](tutorial({ revision: 10 }));
+    callbacks[0](tutorial({ revision: 9 }));
+    callbacks[0]({ ...tutorial({ revision: 11 }), text: "<script>" });
+    controller.stop();
+    callbacks[0](tutorial({ revision: 11 }));
+    await controller.start({});
+    callbacks[1](tutorial({ revision: 0, step: "intro", method: "none", outcome: "none" }));
+    callbacks[0](tutorial({ revision: 12 }));
+    assert.deepEqual(received.map((state) => state?.revision ?? null), [10, null, 0]);
+    controller.stop();
+    assert.equal(unsubscribed, 2);
 });

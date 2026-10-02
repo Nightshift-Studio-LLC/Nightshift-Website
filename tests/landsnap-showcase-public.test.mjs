@@ -583,3 +583,14 @@ test("public bootstrap deduplicates pending ticket refreshes and rejects stale l
     assert.equal(stale.dispatched.length, 1);
     assert.equal(stale.windowRef.LandSnapShowcasePixelStreaming, transportTwo);
 });
+
+test("public adapter accepts every bounded guided action and rejects supplied arguments", () => {
+    const actions = ['guide_start', 'guide_next', 'guide_back', 'guide_skip', 'guide_replay', 'guide_unreal_floor', 'guide_unreal_align', 'guide_unreal_pivot', 'guide_unreal_pivot_align', 'guide_unreal_bounds', 'guide_unreal_bounds_align', 'guide_prop_basketball', 'guide_prop_house', 'guide_prop_shed', 'guide_autosnap_on', 'guide_autosnap_off'];
+    for (const action of actions) {
+        const payload = { version: "landsnap-showcase-v1", type: "command", requestId: "guide_request", action };
+        assert.equal(isAllowlistedShowcasePayload(payload), true, action);
+        assert.equal(isAllowlistedShowcasePayload({ ...payload, args: {} }), false, action);
+        assert.equal(isAllowlistedShowcasePayload({ ...payload, method: "console" }), false, action);
+    }
+    assert.equal(isAllowlistedShowcasePayload({ version: "landsnap-showcase-v1", type: "command", requestId: "guide_request", action: "guide_exec" }), false);
+});

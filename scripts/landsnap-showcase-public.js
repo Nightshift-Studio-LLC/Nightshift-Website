@@ -51,7 +51,7 @@ const dispatchReady = (windowRef, transport) => {
  */
 export const installPublicShowcaseBootstrap = async (
     windowRef = globalThis.window,
-    loadTransport = () => import("./vendor/landsnap-showcase-ps2-public.js?v=20261001-native-comparison-v1")
+    loadTransport = () => import("./vendor/landsnap-showcase-ps2-public.js?v=20261002-guided-v1")
         .then(({ createPublicShowcaseTransport }) => createPublicShowcaseTransport()),
 ) => {
     if (!windowRef || !isPublicShowcaseHost(windowRef.location?.hostname) || windowRef.location?.protocol !== "https:") {

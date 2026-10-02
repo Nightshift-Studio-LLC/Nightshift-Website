@@ -20,6 +20,8 @@ import {
     TextParameters,
 } from "@epicgames-ps/lib-pixelstreamingfrontend-ue5.8";
 
+import { parseTutorialState } from "../../scripts/landsnap-showcase-guide.js";
+
 export const OBSERVER_SHOWCASE_HOST = "showcase.ns-tx.com";
 export const OBSERVER_SESSION_PATH = /^\/api\/landsnap-showcase\/session\/v1\/observer\/[A-Za-z0-9_-]{16,128}$/;
 export const OBSERVER_INPUT_SETTINGS = Object.freeze({
@@ -112,6 +114,8 @@ export const createObserverShowcaseTransportWithDependencies = ({
     }
 
     let stream = null;
+    let tutorialState = null;
+    const tutorialListeners = new Set();
     let mounted = false;
     let settled = false;
     let timeoutHandle = null;
@@ -155,6 +159,16 @@ export const createObserverShowcaseTransportWithDependencies = ({
                 }),
             });
             stream = new LocalPixelStreaming(config, { videoElementParent: mountElement });
+            const mountedStream = stream;
+            tutorialState = null;
+            // Receive bounded editor state; observers never request or execute steps.
+            stream.addResponseEventListener("landsnap-showcase-observer-guide", (raw) => {
+                if (!mounted || stream !== mountedStream) return;
+                const candidate = parseTutorialState(raw);
+                if (!candidate || (tutorialState && candidate.revision <= tutorialState.revision)) return;
+                tutorialState = candidate;
+                tutorialListeners.forEach((listener) => listener(candidate));
+            });
 
             return new Promise((resolve, reject) => {
                 resolveMount = resolve;
@@ -174,6 +188,12 @@ export const createObserverShowcaseTransportWithDependencies = ({
                 }
             });
         },
+        onTutorialState(listener) {
+            if (typeof listener !== "function") return () => {};
+            tutorialListeners.add(listener);
+            if (tutorialState) listener(tutorialState);
+            return () => tutorialListeners.delete(listener);
+        },
         emitUIInteraction() {
             return false;
         },
@@ -183,6 +203,7 @@ export const createObserverShowcaseTransportWithDependencies = ({
             if (stream && typeof stream.disconnect === "function") stream.disconnect();
             stream = null;
             mounted = false;
+            tutorialState = null;
         },
     });
 };

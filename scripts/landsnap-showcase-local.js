@@ -26,7 +26,7 @@ const dispatchReady = (windowRef, transport) => {
  */
 export const installLocalShowcaseBootstrap = async (
     windowRef = globalThis.window,
-    loadTransport = () => import("./vendor/landsnap-showcase-ps2-local.js?v=20261001-native-comparison-v1")
+    loadTransport = () => import("./vendor/landsnap-showcase-ps2-local.js?v=20261002-guided-v1")
         .then(({ createLocalShowcaseTransport }) => createLocalShowcaseTransport()),
 ) => {
     if (!windowRef || !isLocalShowcaseHost(windowRef.location?.hostname)) return null;

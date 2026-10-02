@@ -1742,3 +1742,16 @@ body.landsnap-showcase-page.landsnap-showcase-embedded.landsnap-showcase-queue-o
         transform: none;
     }
 }
+
+/* Guided controls share the existing phosphor panel and collapse on mobile. */
+.landsnap-showcase-guide { display: grid; gap: .65rem; padding: 1rem; border: 1px solid var(--showcase-border, #284a37); background: #0b1510; }
+.landsnap-showcase-guide h3, .landsnap-showcase-guide p { margin: 0; }
+.landsnap-showcase-guide p { font-size: .75rem; line-height: 1.6; }
+.landsnap-showcase-guide-actions { display: flex; flex-wrap: wrap; gap: .5rem; }
+.landsnap-showcase-guide-actions .landsnap-showcase-action { flex: 1 1 8rem; min-width: 0; }
+.landsnap-showcase-guide [hidden] { display: none; }
+.landsnap-showcase-guide-options, .landsnap-showcase-manual-comparison { margin-top: .5rem; }
+.landsnap-showcase-guide-options summary, .landsnap-showcase-manual-comparison summary { cursor: pointer; font-size: .8rem; }
+#landsnap-showcase-guide-state { color: #b0d7bd; }
+.landsnap-showcase-observer-guide { margin-top: .75rem; }
+@media (max-width: 600px) { .landsnap-showcase-guide { padding: .75rem; } .landsnap-showcase-guide-actions .landsnap-showcase-action { flex-basis: 100%; } }

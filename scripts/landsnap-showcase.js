@@ -1,3 +1,5 @@
+import { parseTutorialState, getTutorialCopy } from "./landsnap-showcase-guide.js";
+
 /*
  * Browser-side control surface for the LandSnap Showcase.
  *
@@ -79,7 +81,28 @@ export const SHOWCASE_CALIBRATION_PRESETS = Object.freeze({
     "prepare-large-coverage": Object.freeze({ action: "prepare_large_coverage", label: "Prepare Large Coverage", outlinerLabel: "Large coverage objects" }),
 });
 
+export const SHOWCASE_GUIDE_COMMANDS = Object.freeze({
+    "guide-start": Object.freeze({ action: "guide_start" }),
+    "guide-next": Object.freeze({ action: "guide_next" }),
+    "guide-back": Object.freeze({ action: "guide_back" }),
+    "guide-skip": Object.freeze({ action: "guide_skip" }),
+    "guide-replay": Object.freeze({ action: "guide_replay" }),
+    "guide-unreal-floor": Object.freeze({ action: "guide_unreal_floor" }),
+    "guide-unreal-align": Object.freeze({ action: "guide_unreal_align" }),
+    "guide-unreal-pivot": Object.freeze({ action: "guide_unreal_pivot" }),
+    "guide-unreal-pivot-align": Object.freeze({ action: "guide_unreal_pivot_align" }),
+    "guide-unreal-bounds": Object.freeze({ action: "guide_unreal_bounds" }),
+    "guide-unreal-bounds-align": Object.freeze({ action: "guide_unreal_bounds_align" }),
+    "guide-prop-basketball": Object.freeze({ action: "guide_prop_basketball" }),
+    "guide-prop-house": Object.freeze({ action: "guide_prop_house" }),
+    "guide-prop-shed": Object.freeze({ action: "guide_prop_shed" }),
+    "guide-autosnap-on": Object.freeze({ action: "guide_autosnap_on" }),
+    "guide-autosnap-off": Object.freeze({ action: "guide_autosnap_off" }),
+});
+const GUIDE_ACTIONS = new Set(Object.values(SHOWCASE_GUIDE_COMMANDS).map(({ action }) => action));
+
 export const SHOWCASE_COMMANDS = Object.freeze({
+    ...SHOWCASE_GUIDE_COMMANDS,
     "compare-unreal": Object.freeze({ action: "compare_unreal_snap" }),
     "compare-landsnap": Object.freeze({ action: "compare_landsnap" }),
     "reset-comparison": Object.freeze({ action: "reset_comparison" }),
@@ -140,6 +163,8 @@ const COMPLETED_MESSAGES_BY_ACTION = Object.freeze({
     compare_landsnap: "LandSnap completed from the same starting transforms. Inspect the terrain contact and angles, or reset to compare again.",
 });
 const RESULT_MESSAGES = Object.freeze({
+    guided_completed: "The editor completed this guided action. Inspect the live placement; completion does not certify terrain contact.",
+    guide_unavailable: "The saved guide props or camera are unavailable. Use the existing comparison controls, or retry after the scene is ready.",
     session_ready: "The showcase session is ready.",
     completed: "The showcase action completed.",
     comparison_reset: "The comparison objects are back at their starting positions, rotation and scale, with all objects selected and AutoSnap off.",
@@ -157,10 +182,13 @@ const RESULT_MESSAGES = Object.freeze({
     fixture_selected: "A demo object is selected.",
     fixture_focused: "The selected demo object is focused in the viewport.",
     fixture_unavailable: "Prepare a demo scene before selecting an object.",
+    authored_scene_reset: "The saved opening, camera and full selection have been restored. Both comparisons are ready.",
+    authored_setup_locked: "This demo uses the saved opening. Prepare and Remove Demo Objects are unavailable. Use Reset Comparison to restore the opening.",
     operation_rejected: "That action is not available in the current showcase state.",
     operation_failed: "The showcase could not complete that action. Try again or reset the scene.",
 });
 const RESULT_CODES_BY_ACTION = Object.freeze({
+    ...Object.fromEntries([...GUIDE_ACTIONS].map((action) => [action, new Set(["guided_completed", "guide_unavailable", "operation_rejected", "operation_failed"])])),
     session_ready: new Set(["session_ready"]),
     compare_unreal_snap: new Set(["completed", "comparison_unavailable", "operation_rejected", "operation_failed"]),
     compare_landsnap: new Set(["completed", "comparison_unavailable", "operation_rejected", "operation_failed"]),
@@ -168,17 +196,19 @@ const RESULT_CODES_BY_ACTION = Object.freeze({
     snap_selected: new Set(["completed", "no_selection", "operation_rejected", "operation_failed"]),
     undo: new Set(["completed", "nothing_to_undo", "operation_rejected", "operation_failed"]),
     redo: new Set(["completed", "nothing_to_redo", "operation_rejected", "operation_failed"]),
-    reset_scene: new Set(["scene_reset", "operation_rejected", "operation_failed"]),
+    reset_scene: new Set(["scene_reset", "authored_scene_reset", "operation_rejected", "operation_failed"]),
     previous_scenario: new Set(["scenario_changed", "operation_rejected", "operation_failed"]),
     next_scenario: new Set(["scenario_changed", "operation_rejected", "operation_failed"]),
     toggle_autosnap: new Set(["autosnap_enabled", "autosnap_disabled", "operation_rejected", "operation_failed"]),
-    ...Object.fromEntries([...CALIBRATION_ACTIONS].map((action) => [action, new Set(["calibration_ready", "calibration_unavailable", "operation_rejected", "operation_failed"])])),
-    clean_scene: new Set(["scene_cleaned", "operation_rejected", "operation_failed"]),
+    ...Object.fromEntries([...CALIBRATION_ACTIONS].map((action) => [action, new Set(["calibration_ready", "calibration_unavailable", "authored_setup_locked", "operation_rejected", "operation_failed"])])),
+    clean_scene: new Set(["scene_cleaned", "authored_setup_locked", "operation_rejected", "operation_failed"]),
     select_previous_fixture: new Set(["fixture_selected", "fixture_unavailable", "operation_rejected", "operation_failed"]),
     select_next_fixture: new Set(["fixture_selected", "fixture_unavailable", "operation_rejected", "operation_failed"]),
     focus_selected_fixture: new Set(["fixture_focused", "fixture_unavailable", "operation_rejected", "operation_failed"]),
 });
 const RESULT_TYPE_BY_CODE = Object.freeze({
+    guided_completed: "success",
+    guide_unavailable: "rejected",
     session_ready: "success",
     completed: "success",
     comparison_reset: "success",
@@ -196,6 +226,8 @@ const RESULT_TYPE_BY_CODE = Object.freeze({
     fixture_selected: "success",
     fixture_focused: "success",
     fixture_unavailable: "rejected",
+    authored_scene_reset: "success",
+    authored_setup_locked: "rejected",
     operation_rejected: "rejected",
     operation_failed: "error",
 });
@@ -317,6 +349,12 @@ export const isShowcaseSessionExpiring = (lease, now = Date.now()) => hasActiveQ
     && lease.sessionExpiresAt - now <= SHOWCASE_SESSION_WARNING_MS;
 
 const getSurface = (documentRef) => ({
+    guide: documentRef.getElementById("landsnap-showcase-guide"),
+    guideTitle: documentRef.getElementById("landsnap-showcase-guide-title"),
+    guideMethod: documentRef.getElementById("landsnap-showcase-guide-method"),
+    guideDescription: documentRef.getElementById("landsnap-showcase-guide-description"),
+    guideLookFor: documentRef.getElementById("landsnap-showcase-guide-look-for"),
+    guideState: documentRef.getElementById("landsnap-showcase-guide-state"),
     mount: documentRef.getElementById("landsnap-showcase-stream-mount"),
     connection: documentRef.getElementById("landsnap-showcase-connection-state"),
     operation: documentRef.getElementById("landsnap-showcase-operation-status"),
@@ -354,7 +392,11 @@ export const attachShowcaseSurface = (documentRef, transport, {
     let pendingRequest = null;
     let pendingTimer = null;
     let sessionExpiring = false;
-    let sessionReady = brokerSession === null;
+    let sessionReady = brokerSession === null && !surface.guide;
+    let tutorialState = null;
+    let guideStartSent = false;
+    let guideStartTimer = null;
+    let guideStartGeneration = 0;
     let comparisonPrepared = false;
     let streamLossReported = false;
     let detached = false;
@@ -387,6 +429,12 @@ export const attachShowcaseSurface = (documentRef, transport, {
         }
     };
 
+    const clearGuideStart = () => {
+        if (guideStartTimer !== null) window.clearTimeout(guideStartTimer);
+        guideStartTimer = null;
+        guideStartGeneration += 1;
+    };
+
     const clearPending = () => {
         if (pendingTimer !== null) window.clearTimeout(pendingTimer);
         pendingTimer = null;
@@ -394,10 +442,26 @@ export const attachShowcaseSurface = (documentRef, transport, {
     };
 
     const render = () => {
-        const ready = connectionState === "connected" && sessionReady && pendingRequest === null;
+        const ready = connectionState === "connected" && sessionReady && pendingRequest === null && guideStartTimer === null;
         surface.controls.forEach((control) => {
             const action = SHOWCASE_COMMANDS[control.dataset.command]?.action;
-            const enabled = ready && (!COMPARISON_ACTIONS.has(action) || comparisonPrepared);
+            const guideAction = GUIDE_ACTIONS.has(action);
+            const guideReady = tutorialState?.phase !== "running";
+            const step = tutorialState?.step;
+            if (guideAction) {
+                control.hidden = (action === "guide_replay" && step !== "sandbox")
+                    || (action === "guide_skip" && step === "sandbox")
+                    || (action.startsWith("guide_prop_") && step !== "sandbox")
+                    || (action.startsWith("guide_autosnap_") && step !== "sandbox");
+                if (action === "guide_next") control.textContent = step === "landsnap" ? "Try it yourself" : "Next";
+                if (action.startsWith("guide_prop_")) control.setAttribute("aria-pressed", String(action === `guide_prop_${tutorialState?.prop}`));
+                if (action.startsWith("guide_autosnap_")) control.setAttribute("aria-pressed", String(action === (tutorialState?.autoSnap ? "guide_autosnap_on" : "guide_autosnap_off")));
+            }
+            const enabled = ready && guideReady && (!COMPARISON_ACTIONS.has(action) || comparisonPrepared)
+                && (!guideAction || ((tutorialState !== null || action === "guide_start" || action === "guide_skip")
+                    && !(action === "guide_back" && step === "intro")
+                    && !(action === "guide_next" && step === "sandbox")));
+            if (guideAction && action === "guide_next") control.hidden = step === "sandbox";
             control.disabled = !enabled;
             control.setAttribute("aria-disabled", String(!enabled));
         });
@@ -406,6 +470,19 @@ export const attachShowcaseSurface = (documentRef, transport, {
             control.disabled = !ready;
             control.setAttribute("aria-disabled", String(!ready));
         });
+        if (surface.guide) {
+            const copy = getTutorialCopy(tutorialState);
+            setText(surface.guideTitle, copy.title);
+            setText(surface.guideMethod, copy.method);
+            setText(surface.guideDescription, copy.description);
+            setText(surface.guideLookFor, copy.lookFor);
+            setText(surface.guideState, pendingRequest || tutorialState?.phase === "running"
+                ? "Editor operation running — waiting for its real result."
+                : tutorialState?.phase === "failed" ? "This step could not complete. Retry or skip to the sandbox."
+                : !sessionReady ? "Waiting for the editor to be ready."
+                : tutorialState ? `Confirmed editor state · AutoSnap ${tutorialState.autoSnap ? "on" : "off"}`
+                : "Waiting for the saved guide setup. Use Start guide to retry.");
+        }
         surface.mount.dataset.connectionState = connectionState;
         surface.mount.setAttribute("aria-busy", String(connectionState === "connecting"));
         if (surface.connection) {
@@ -457,7 +534,7 @@ export const attachShowcaseSurface = (documentRef, transport, {
         syncCalibrationCommand();
         setText(surface.outlinerTarget, "All full-coverage objects selected");
         showAutoSnapDisabled();
-        displayOperation(COMPARISON_READY_MESSAGE);
+        displayOperation(surface.guide ? "The editor is ready. Starting the saved prop guide." : COMPARISON_READY_MESSAGE);
     };
 
     const updateOutliner = (response) => {
@@ -466,6 +543,10 @@ export const attachShowcaseSurface = (documentRef, transport, {
         if (preset) {
             comparisonPrepared = true;
             setText(surface.outlinerTarget, `${preset.outlinerLabel} - all selected`);
+            showAutoSnapDisabled();
+        } else if (response.action === "reset_scene" && response.code === "authored_scene_reset") {
+            comparisonPrepared = true;
+            setText(surface.outlinerTarget, "All full-coverage objects selected");
             showAutoSnapDisabled();
         } else if (response.action === "clean_scene" || response.action === "reset_scene") {
             comparisonPrepared = false;
@@ -482,6 +563,14 @@ export const attachShowcaseSurface = (documentRef, transport, {
     };
 
     const handleResponse = (raw) => {
+        const nextTutorial = parseTutorialState(raw);
+        if (surface.guide && nextTutorial) {
+            if (tutorialState && nextTutorial.revision <= tutorialState.revision) return;
+            tutorialState = nextTutorial;
+            setText(surface.outlinerTarget, nextTutorial.step === "sandbox" ? `Selected ${nextTutorial.prop}` : "Saved prop group selected");
+            render();
+            return;
+        }
         const response = parseShowcaseResult(raw);
         if (!response || !pendingRequest || response.requestId !== pendingRequest.requestId
             || response.action !== pendingRequest.action) return;
@@ -499,43 +588,57 @@ export const attachShowcaseSurface = (documentRef, transport, {
         render();
     };
 
-    const handleControl = (event) => {
-        const control = event.currentTarget;
+    const sendCommand = (commandId) => {
         if (connectionState !== "connected" || !sessionReady || pendingRequest
-            || !(control instanceof HTMLButtonElement) || control.disabled) return;
-
+            || tutorialState?.phase === "running") return false;
         let request;
-        try {
-            request = createShowcaseCommand(control.dataset.command);
-        } catch {
-            displayOperation("That showcase control is unavailable.");
-            return;
-        }
-
+        try { request = createShowcaseCommand(commandId); }
+        catch { displayOperation("That showcase control is unavailable."); return false; }
+        // Set pending before emitting: synchronous transports cannot lose a result.
+        pendingRequest = request;
         let accepted = false;
-        try {
-            accepted = transport.emitUIInteraction(request) === true;
-        } catch {
-            accepted = false;
-        }
+        try { accepted = transport.emitUIInteraction(request) === true; } catch {}
         if (!accepted) {
+            clearPending();
             displayConnection("error");
             displayOperation("The showcase command could not be sent.");
-            return;
+            return false;
         }
-
-        pendingRequest = request;
-        displayOperation("Showcase action sent — awaiting result…");
+        if (pendingRequest !== request) return true;
+        displayOperation("Showcase action sent — awaiting the editor result.");
         render();
-        pendingTimer = window.setTimeout(() => {
+        // Guided LandSnap may be progressive. Never unlock a second operation
+        // merely because a timer elapsed while the real solver is still running.
+        if (!GUIDE_ACTIONS.has(request.action)) pendingTimer = window.setTimeout(() => {
             if (!pendingRequest || pendingRequest.requestId !== request.requestId) return;
             clearPending();
             displayOperation("The showcase did not confirm that action. Try again or reset the scene.");
             render();
         }, 10_000);
+        return true;
+    };
+    const maybeStartGuide = () => {
+        if (!surface.guide || guideStartSent || guideStartTimer !== null || pendingRequest
+            || !sessionReady || connectionState !== "connected" || detached) return;
+        const generation = guideStartGeneration;
+        // The native per-source limit includes the readiness probe. Wait beyond
+        // its 100 ms interval rather than bypassing that owner-side safeguard.
+        guideStartTimer = window.setTimeout(() => {
+            if (generation !== guideStartGeneration || detached) return;
+            guideStartTimer = null;
+            if (connectionState === "connected" && sessionReady && !pendingRequest
+                && tutorialState?.phase !== "running") guideStartSent = sendCommand("guide-start");
+            render();
+        }, 200);
+        render();
+    };
+    const handleControl = (event) => {
+        const control = event.currentTarget;
+        if (!(control instanceof HTMLButtonElement) || control.disabled) return;
+        sendCommand(control.dataset.command);
     };
 
-    if (!isTransport(transport, brokerSession !== null)) {
+    if (!isTransport(transport, brokerSession !== null || Boolean(surface.guide))) {
         setText(surface.mount, "Start a demo session to load the interactive view.");
         render();
         displayOperation("Start the demo to enable these actions.");
@@ -552,10 +655,14 @@ export const attachShowcaseSurface = (documentRef, transport, {
         if (detached) return;
         if (typeof nextState !== "string" || !CONNECTION_STATES.has(nextState)) return;
         const wasConnected = connectionState === "connected";
-        if (nextState !== "connected") clearPending();
+        if (nextState !== "connected") {
+            clearGuideStart();
+            clearPending();
+            if (surface.guide) { sessionReady = false; tutorialState = null; guideStartSent = false; }
+        }
         if (nextState === "connected") {
             streamLossReported = false;
-            if (brokerSession === null) {
+            if (brokerSession === null && !surface.guide) {
                 sessionReady = true;
                 showFreshSessionExample();
             }
@@ -568,14 +675,16 @@ export const attachShowcaseSurface = (documentRef, transport, {
             onStreamLoss();
         }
         displayConnection(nextState);
+        maybeStartGuide();
     });
-    if (brokerSession !== null) {
+    if (brokerSession !== null || surface.guide) {
         transport.onSessionReady(() => {
             if (detached) return;
             sessionReady = true;
             showFreshSessionExample();
             render();
             onSessionReady();
+            maybeStartGuide();
         });
     }
     transport.onResponse(handleResponse);
@@ -598,6 +707,7 @@ export const attachShowcaseSurface = (documentRef, transport, {
     return Object.freeze({
         detach() {
             detached = true;
+            clearGuideStart();
             clearPending();
             surface.controls.forEach((control) => control.removeEventListener("click", handleControl));
             [surface.calibrationSize, surface.calibrationLayout].forEach((control) => {
