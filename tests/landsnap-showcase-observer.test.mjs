@@ -9,6 +9,7 @@ import {
     createObserverSignallingUrl,
     isObserverCapabilityEnabled,
     isObserverSessionUrl,
+    installObserverSurface,
     parseObserverTicket,
 } from "../scripts/landsnap-showcase-observer.js";
 import {
@@ -263,4 +264,40 @@ test("observer transport waits for video and disconnects only its PS2 peer", asy
     await mounted;
     transport.disconnect();
     assert.equal(streams[0].disconnected, 1);
+});
+
+
+test("watch surface is available only to waiters and stops its peer on admission", async () => {
+    const events = new Map();
+    const node = () => ({ hidden: true, disabled: true, dataset: {}, textContent: "", setAttribute() {}, addEventListener(type, fn) { this[type] = fn; } });
+    const section = node(), action = node(), mount = node(), player = node(), status = node();
+    const nodes = new Map([
+        ["landsnap-showcase-observer", section], ["landsnap-showcase-observer-action", action],
+        ["landsnap-showcase-observer-mount", mount], ["landsnap-showcase-observer-player", player],
+        ["landsnap-showcase-observer-status", status],
+    ]);
+    const windowRef = {
+        LandSnapShowcaseCapabilities: { observer: true }, LandSnapShowcaseQueueLease: { status: "starting" },
+        addEventListener(type, fn) { events.set(type, fn); }, removeEventListener() {},
+    };
+    let requests = 0, disconnects = 0;
+    const surface = installObserverSurface({ getElementById: id => nodes.get(id) }, windowRef, {
+        service: { async requestTicket() { requests++; return {}; }, async claim() { return {}; } },
+        transportFactory: async () => ({ async mount() {}, disconnect() { disconnects++; } }),
+    });
+    assert.equal(section.hidden, true, "preparing does not promise an active demo to watch");
+    windowRef.LandSnapShowcaseQueueLease = { status: "waiting" };
+    events.get("landsnap-showcase-lease-change")();
+    assert.equal(section.hidden, false);
+    assert.equal(action.disabled, false);
+    assert.equal(requests, 0, "watching requires the visitor's explicit choice");
+    await surface.controller.start(player);
+    assert.equal(surface.controller.getState(), "watching");
+    assert.equal(requests, 1);
+    windowRef.LandSnapShowcaseQueueLease = { status: "ready" };
+    events.get("landsnap-showcase-lease-change")();
+    assert.equal(section.hidden, true);
+    assert.equal(disconnects, 1);
+    assert.equal(surface.controller.getState(), "idle");
+    surface.destroy();
 });

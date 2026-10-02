@@ -18,6 +18,7 @@ export const SHOWCASE_PLAYER_PATH = /^\/api\/landsnap-showcase\/session\/v1\/pla
 export const SESSION_READY_ACTION = "session_ready";
 export const SESSION_READY_MAX_ATTEMPTS = 3;
 export const SESSION_READY_RETRY_DELAY_MS = 1_000;
+export const SESSION_READY_RESPONSE_TIMEOUT_MS = 5_000;
 
 const INPUT_KEYS = Object.freeze(["gamepad", "keyboard", "mouse", "touch", "xr"]);
 const BRIDGE_KEYS = Object.freeze(["action", "requestId", "type", "version"]);
@@ -40,10 +41,12 @@ const COMMAND_ACTIONS = new Set([
     "clean_scene",
     "select_previous_fixture",
     "select_next_fixture",
+    "select_all_fixtures",
     "focus_selected_fixture",
 ]);
 const REQUEST_ID_PATTERN = /^[A-Za-z0-9_-]{8,64}$/;
 const SESSION_TOKEN_PATTERN = /^[A-Za-z0-9._~-]{24,512}$/;
+const LEASE_ID_PATTERN = /^[A-Za-z0-9_-]{16,128}$/;
 const PROTOCOL_VERSION = "landsnap-showcase-v1";
 const RESPONSE_KEYS = Object.freeze(["action", "code", "requestId", "result", "type", "version"]);
 let sessionReadyRequestSequence = 0;
@@ -97,7 +100,8 @@ const parseSessionReadyResponse = (raw) => {
         && typeof candidate.requestId === "string"
         && REQUEST_ID_PATTERN.test(candidate.requestId)
         && ((candidate.result === "success" && candidate.code === SESSION_READY_ACTION)
-            || (candidate.result === "rejected" && candidate.code === "session_initializing"))
+            || (candidate.result === "rejected" && ["session_initializing", "operation_rejected", "operation_failed"].includes(candidate.code))
+            || (candidate.result === "error" && candidate.code === "operation_failed"))
         ? candidate
         : null;
 };
@@ -228,13 +232,23 @@ export const createPublicShowcaseTransportWithDependencies = (
     let sessionReadyRequestId = null;
     let sessionReadyAttempt = 0;
     let sessionReadyRetryTimer = null;
+    let dataChannelOpen = false;
+    let readyClaimExpiresAt = 0;
+    let readyLeaseId = null;
+    let readySessionUrl = null;
+    let disposed = false;
+    let readinessFailed = false;
 
     const reportState = (nextState) => {
         connectionState = nextState;
         listeners.forEach((listener) => listener(nextState));
     };
     const reportSessionReady = () => {
-        if (sessionReady) return;
+        if (disposed || readinessFailed || sessionReady || !dataChannelOpen) return;
+        if (readyClaimExpiresAt <= now()) {
+            failSessionReady();
+            return;
+        }
         clearSessionReadyRetry();
         sessionReadyRequestId = null;
         sessionReady = true;
@@ -247,7 +261,11 @@ export const createPublicShowcaseTransportWithDependencies = (
         sessionReadyRetryTimer = null;
     };
     const sendSessionReady = () => {
-        if (!stream || sessionReady || sessionReadyAttempt >= SESSION_READY_MAX_ATTEMPTS) return;
+        if (disposed || readinessFailed || !stream || !dataChannelOpen || sessionReady || sessionReadyAttempt >= SESSION_READY_MAX_ATTEMPTS) return;
+        if (readyClaimExpiresAt <= now()) {
+            failSessionReady();
+            return;
+        }
         sessionReadyAttempt += 1;
         sessionReadyRequestId = `session_ready_${++sessionReadyRequestSequence}`;
         const accepted = stream.emitUIInteraction({
@@ -256,35 +274,73 @@ export const createPublicShowcaseTransportWithDependencies = (
             action: SESSION_READY_ACTION,
             requestId: sessionReadyRequestId,
         });
-        if (accepted !== true) reportState("error");
+        if (accepted !== true) {
+            failSessionReady();
+            return;
+        }
+        // A lost response must not hold a connected visitor indefinitely.
+        // Each retry has a new ID, so a late response cannot activate it.
+        if (!sessionReady && typeof timers.setTimeout === "function") {
+            clearSessionReadyRetry();
+            sessionReadyRetryTimer = timers.setTimeout(() => {
+                sessionReadyRetryTimer = null;
+                scheduleSessionReadyRetry();
+            }, Math.min(SESSION_READY_RESPONSE_TIMEOUT_MS, Math.max(0, readyClaimExpiresAt - now())));
+        }
     };
     const failSessionReady = () => {
+        if (disposed) return;
+        readinessFailed = true;
         clearSessionReadyRetry();
         sessionReadyRequestId = null;
+        dataChannelOpen = false;
         reportState("error");
     };
     const scheduleSessionReadyRetry = () => {
         clearSessionReadyRetry();
-        if (sessionReadyAttempt >= SESSION_READY_MAX_ATTEMPTS || typeof timers.setTimeout !== "function") {
+        sessionReadyRequestId = null;
+        if (disposed) return;
+        if (readyClaimExpiresAt <= now() || sessionReadyAttempt >= SESSION_READY_MAX_ATTEMPTS || typeof timers.setTimeout !== "function") {
             failSessionReady();
             return;
         }
         sessionReadyRetryTimer = timers.setTimeout(() => {
             sessionReadyRetryTimer = null;
             sendSessionReady();
-        }, SESSION_READY_RETRY_DELAY_MS);
+        }, Math.min(SESSION_READY_RETRY_DELAY_MS, Math.max(0, readyClaimExpiresAt - now())));
     };
 
     return Object.freeze({
+        updateReadyLease(lease) {
+            // Only the bootstrap's current validated same-lease ready record
+            // can renew this handshake. The consumed ticket is not a session clock.
+            if (disposed || !isPlainRecord(lease) || lease.status !== "ready"
+                || typeof lease.leaseId !== "string" || !LEASE_ID_PATTERN.test(lease.leaseId)
+                || !Number.isSafeInteger(lease.readyClaimExpiresAt) || lease.readyClaimExpiresAt <= now()
+                || !isPublicBrokerSession(lease.session, locationRef, now())
+                || lease.session.expiresAt > lease.readyClaimExpiresAt
+                || (readyLeaseId !== null && readyLeaseId !== lease.leaseId)
+                || (readySessionUrl !== null && readySessionUrl !== lease.session.url)) return false;
+            readyLeaseId = lease.leaseId;
+            readySessionUrl = lease.session.url;
+            readyClaimExpiresAt = lease.readyClaimExpiresAt;
+            return true;
+        },
         async mount(mountElement, options) {
-            if (mounted || !mountElement || typeof mountElement.replaceChildren !== "function") {
+            if (disposed || mounted || !mountElement || typeof mountElement.replaceChildren !== "function") {
                 throw new TypeError("The public Showcase stream mount is unavailable.");
             }
             assertMountOptions(options, locationRef, now());
+            if (readySessionUrl !== null && readySessionUrl !== options.session.url) {
+                throw new TypeError("The ready lease does not authorize this player path.");
+            }
+            readySessionUrl = options.session.url;
+            if (readyClaimExpiresAt === 0) readyClaimExpiresAt = options.session.expiresAt;
             mounted = true;
             reportState("connecting");
             try {
                 await primePublicShowcaseSession(fetchImpl, options.session, locationRef, now);
+                if (disposed) return;
                 const { signallingUrl } = createPublicSessionEndpoints(options.session, locationRef, now());
                 mountElement.replaceChildren();
                 const config = new LocalConfig({
@@ -298,19 +354,21 @@ export const createPublicShowcaseTransportWithDependencies = (
                     }),
                 });
                 stream = new LocalPixelStreaming(config, { videoElementParent: mountElement });
-                stream.addEventListener("webRtcConnecting", () => reportState("connecting"));
-                stream.addEventListener("webRtcConnected", () => reportState("connected"));
-                stream.addEventListener("webRtcFailed", () => reportState("error"));
+                stream.addEventListener("webRtcConnecting", () => { if (!disposed && !readinessFailed) reportState("connecting"); });
+                stream.addEventListener("webRtcConnected", () => { if (!disposed && !readinessFailed) reportState("connected"); });
+                stream.addEventListener("webRtcFailed", failSessionReady);
                 // dataChannelOpen means the transport exists, while the editor may
                 // still be finishing reset_ready/encoder setup. The broker promotes
                 // ready to active only after Unreal confirms session_ready.
                 stream.addEventListener("dataChannelOpen", () => {
+                    if (disposed || readinessFailed) return;
+                    dataChannelOpen = true;
                     if (sessionReady || sessionReadyRequestId || sessionReadyRetryTimer !== null) return;
                     sendSessionReady();
                 });
                 stream.addEventListener("webRtcDisconnected", () => {
-                    // A missing acknowledgement is bounded by the broker's
-                    // ready-claim expiry; never retry without a correlated response.
+                    if (disposed) return;
+                    dataChannelOpen = false;
                     clearSessionReadyRetry();
                     sessionReadyRequestId = null;
                     sessionReadyAttempt = 0;
@@ -318,25 +376,37 @@ export const createPublicShowcaseTransportWithDependencies = (
                     reportState("disconnected");
                 });
                 stream.addResponseEventListener(SHOWCASE_RESPONSE_LISTENER, (response) => {
+                    if (disposed) return;
                     const candidate = parseSessionReadyResponse(response);
                     if (candidate && candidate.requestId === sessionReadyRequestId) {
                         if (candidate.result === "success") reportSessionReady();
-                        else scheduleSessionReadyRetry();
+                        else if (candidate.code === "session_initializing") {
+                            // A correlated initializing reply is progress, not
+                            // silence or a terminal result. The broker claim
+                            // still bounds startup, including renewed leases.
+                            sessionReadyAttempt = 0;
+                            scheduleSessionReadyRetry();
+                        } else failSessionReady();
                     }
                     responseListeners.forEach((listener) => listener(response));
                 });
                 stream.connect();
             } catch (error) {
+                if (disposed) return;
                 reportState("error");
                 throw error;
             }
         },
         emitUIInteraction(payload) {
             // session_ready is reserved for the transport lifecycle handshake.
-            if (!stream || !isAllowlistedShowcasePayload(payload) || payload.action === SESSION_READY_ACTION) return false;
+            if (disposed || !stream || !isAllowlistedShowcasePayload(payload) || payload.action === SESSION_READY_ACTION) return false;
             return stream.emitUIInteraction(payload) === true;
         },
         disconnect() {
+            if (disposed) return;
+            disposed = true;
+            sessionReady = false;
+            dataChannelOpen = false;
             clearSessionReadyRetry();
             sessionReadyRequestId = null;
             if (stream && typeof stream.disconnect === "function") stream.disconnect();

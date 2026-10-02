@@ -1912,17 +1912,18 @@ body.landsnap-page {
 .landsnap-showcase-embed[open] .landsnap-showcase-embed-action-chevron { transform: rotate(180deg); }
 
 .landsnap-showcase-coming-soon {
+    --demo-warning: #f4a340;
     display: grid;
     grid-template-columns: auto minmax(0, 1fr);
     gap: 14px;
     align-items: start;
     margin: clamp(14px, 2.5vw, 26px) clamp(14px, 2.5vw, 26px) 0;
     padding: 16px 18px;
-    border: 1px solid rgba(91, 216, 226, 0.34);
-    border-left: 3px solid #61d8e1;
+    border: 1px solid rgba(244, 163, 64, 0.38);
+    border-left: 3px solid var(--demo-warning);
     background:
-        linear-gradient(105deg, rgba(71, 199, 214, 0.08), transparent 58%),
-        #172126;
+        linear-gradient(105deg, rgba(244, 163, 64, 0.09), transparent 58%),
+        #252019;
     box-shadow: inset 0 1px rgba(255, 255, 255, 0.025);
 }
 
@@ -1930,13 +1931,13 @@ body.landsnap-page {
     width: 16px;
     height: 4px;
     margin-top: 7px;
-    background: #61d8e1;
-    box-shadow: 0 0 0 1px rgba(97, 216, 225, 0.18), 0 0 12px rgba(97, 216, 225, 0.2);
+    background: var(--demo-warning);
+    box-shadow: 0 0 0 1px rgba(244, 163, 64, 0.18), 0 0 12px rgba(244, 163, 64, 0.16);
 }
 
 .landsnap-showcase-coming-soon .eyebrow {
     margin: 0 0 5px;
-    color: #76e2e9;
+    color: var(--demo-warning);
     font-size: 0.56rem;
 }
 

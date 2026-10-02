@@ -12,7 +12,7 @@
  * half-configured waiting-room control.
  */
 
-import { isPublicShowcaseHost } from "./landsnap-showcase-queue.js?v=20260926-arcade-ready-v5";
+import { isPublicShowcaseHost } from "./landsnap-showcase-queue.js?v=20260930-session-recovery-v1";
 
 export const OBSERVER_PROTOCOL_VERSION = "landsnap-showcase-observer-v1";
 export const OBSERVER_SESSION_PATH = "/api/landsnap-showcase/observer/v1/session";
@@ -261,7 +261,7 @@ export const createObserverController = ({
  * fetched only after a visitor explicitly chooses the read-only watch action.
  */
 export const createLazyObserverTransportFactory = () => async () => {
-    const { createObserverShowcaseTransport } = await import("./vendor/landsnap-showcase-ps2-observer.js?v=20260925-observer-transport");
+    const { createObserverShowcaseTransport } = await import("./vendor/landsnap-showcase-ps2-observer.js?v=20260930-session-recovery-v1");
     return createObserverShowcaseTransport();
 };
 
@@ -298,14 +298,16 @@ const installObserverSurface = (
                 : next === "error"
                     ? "Read-only viewing is unavailable right now."
                     : next === "connecting"
-                        ? "Connecting to the active demo in read-only mode."
-                : "Waiting for a live session.";
+                        ? "Connecting to the active demo. Your place in line is held while the video loads."
+                : ["requesting", "claiming"].includes(next)
+                    ? "Opening read-only viewing. Your place in line is held."
+                    : "Watch the active visitor use LandSnap while you wait. Your place in line is held.";
         },
         onPromote: () => { void windowRef.LandSnapShowcaseQueue?.recheck?.(); },
     });
     const sync = () => {
         const lease = windowRef.LandSnapShowcaseQueueLease;
-        const waiting = lease?.status === "waiting" || lease?.status === "starting";
+        const waiting = lease?.status === "waiting";
         section.hidden = !waiting;
         if (controller.getState() === "idle" || controller.getState() === "error") {
             action.disabled = !waiting;

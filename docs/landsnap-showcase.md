@@ -8,6 +8,12 @@ The dedicated host must allow only `https://ns-tx.com` as a framing ancestor (fo
 
 The dedicated host owns the queue, broker relay, signalling, and warm-editor supervisor. It is reached through the server's direct DNS and port-forwarded HTTPS/WebSocket and WebRTC routes. There is no Worker, tunnel, visitor-selected endpoint, or browser-to-host control route in this static site. The supervisor, not a visitor request, owns editor startup, restart, and reset readiness.
 
+Queue lease and event URLs are fixed to `https://showcase.ns-tx.com`; the product page never posts a relative lease route on GitHub Pages. The product frame waits 30 seconds for its authenticated-origin shell message before reporting that the frame could not load, which does not establish that the host is down. Its orange work-in-progress warning remains visible even when the shell is healthy.
+
+Waiters may explicitly choose **Watch live demo** without giving up their queue position. The observer surface appears only for `waiting`, stays read-only, waits for video initialization, and disconnects its peer when admission changes to `ready`. The waiting overlay scrolls on short screens and includes the watch button in its keyboard focus cycle. A second live browser is still required to prove concurrent viewing.
+
+After the presenter's data channel opens, `session_ready` retries on a correlated `session_initializing` reply or five seconds of silence. There are at most three attempts with a one-second retry delay, bounded by the ticket expiry. Only a success for the current request activates readiness. Success, stream failure, disconnect, and exhausted retries clear the timer. These retries do not recover a dead stream or extend a server-side offer deadline.
+
 The website never launches or restarts Unreal, starts a host, selects a streamer, exposes a signalling endpoint, or sends a host-control action. `scripts/landsnap-showcase-local.js` is the one loopback-only exception for local acceptance work: it imports the bundled Epic UE 5.8 frontend only on `127.0.0.1`, `localhost`, or `[::1]`, then locks the local `Editor` streamer in code. No URL, hash, query parameter, storage value, or visitor-controlled field can alter that configuration.
 
 ## One-session broker contract
@@ -68,7 +74,11 @@ window.LandSnapShowcasePixelStreaming = {
 };
 ```
 
-The page imports the public player only after the visitor presses **Start Demo** for the current exact `showcase.ns-tx.com` ready lease. The click authorization is bound to that lease ID and player path, so a replacement lease requires a new click. The player mounts only with the broker-provided session ticket, has no configured streamer ID, and keeps controls disabled until both the transport is connected and Pixel Streaming reports its data channel open. A disconnect, player error, ticket expiry, or lease expiry clears the local stream UI, disconnects the transport, and re-requests broker `status`. The browser does not attempt to restart Unreal.
+The page imports the public player only after the visitor presses **Start Demo** for the current exact `showcase.ns-tx.com` ready lease. The click authorization is bound to that lease ID and player path, so a replacement lease requires a new click. The player mounts only with the broker-provided session ticket and has no configured streamer ID. Controls require both a connected transport and the correlated Unreal `session_ready` acknowledgement.
+
+A healthy mounted peer survives ticket rotation. The ticket expires as admission authorization; after exchange, the current broker-issued ready-claim deadline bounds the readiness handshake. The bootstrap renews that deadline only from valid ready records for the same lease and player path. Correlated `session_initializing` replies are progress and may retry while that claim is live; three unanswered requests still fail, and terminal rejections fail immediately. No six-minute browser timer or server deadline extension is introduced.
+
+Stream loss rechecks broker `status` without sending `leave`. A recovered peer remains mounted. A closed or failed peer can be replaced only when the broker supplies a fresh valid ready ticket for the same started lease and path; the consumed ticket is never replayed and SDK auto-reconnect remains disabled. An active response alone cannot authorize a new player connection. Terminal outcomes revoke the Start Demo authorization and show a deliberate availability retry. Explicit exit and lease expiry still retire the transport, and delayed imports, ticket exchanges, or status responses cannot restore a retired session. The browser does not attempt to restart Unreal.
 
 Loopback acceptance retains its fixed local transport shape:
 
@@ -94,7 +104,7 @@ The adapter must use `emitUIInteraction()` for the fixed payload registry below.
 `SHOWCASE_COMMANDS` in `scripts/landsnap-showcase.js` is the only command-name registry. The Unreal bridge must accept only complete, no-argument interaction records with a local request ID:
 
 ```json
-{"version":"landsnap-showcase-v1","type":"command","action":"snap_selected|undo|redo|reset_scene|previous_scenario|next_scenario|toggle_autosnap|prepare_small_row|prepare_medium_row|prepare_large_row|prepare_small_coverage|prepare_medium_coverage|prepare_large_coverage|clean_scene|select_previous_fixture|select_next_fixture|focus_selected_fixture","requestId":"locally-generated-id"}
+{"version":"landsnap-showcase-v1","type":"command","action":"snap_selected|undo|redo|reset_scene|previous_scenario|next_scenario|toggle_autosnap|prepare_small_row|prepare_medium_row|prepare_large_row|prepare_small_coverage|prepare_medium_coverage|prepare_large_coverage|clean_scene|select_previous_fixture|select_next_fixture|select_all_fixtures|focus_selected_fixture","requestId":"locally-generated-id"}
 ```
 
 The bridge independently validates the exact object shape, action, session state, scenario/selection bounds, and one-operation-at-a-time policy. It replies with bounded JSON containing only `version`, `type`, `action`, `requestId`, `result`, and a known `code`. The browser ignores malformed, oversized, unsolicited, stale, or unknown responses and maps codes to fixed local text; it never renders bridge-provided copy or HTML.
@@ -109,3 +119,8 @@ The bridge independently validates the exact object shape, action, session state
 6. Run `npm run test:landsnap-showcase` and `npm run security:payloads`. Check desktop and a 320px-wide viewport: queue text remains readable, controls stack, focus is visible, and no horizontal overflow appears.
 
 This proves the static site contract and local frontend gate. It does not prove the broker, relay isolation, private port exposure, sign-in supervisor, warm-editor recovery, rate limits, session cookie enforcement, or Unreal-side behavior; those need deployment-level verification.
+
+
+### Select All bridge integration
+
+The Outliner sends `select_all_fixtures` as a fixed, no-argument command. Backend scope is every spawned demo fixture in the current prepared scene; terrain and unrelated actors must stay outside this selection. Reply with the existing exact `operation-result` envelope: correlated `action` and `requestId`, `result: "success"`, and `code: "fixture_selected"`. The frontend updates the Outliner and Review only on that acknowledgement. With no prepared fixtures, use `result: "rejected"`, `code: "fixture_unavailable"`; existing `operation_rejected` and `operation_failed` codes remain supported. The button uses the normal session-ready and one-operation-at-a-time gates. Prepare → Select All → Snap Selected is the visitor workflow. This frontend change does not prove Unreal selection or live snapping; backend implementation and outside-network acceptance are owned by the server team.

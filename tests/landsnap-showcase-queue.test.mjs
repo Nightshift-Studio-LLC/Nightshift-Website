@@ -257,8 +257,10 @@ test("queue presentation follows the supervised warm-editor lifecycle without te
     assert.equal(active.showSessionCountdown, true);
     assert.equal(active.sessionCountdown, "05:00 remaining");
     const ended = getQueuePresentation({ status: "ended" }, now);
-    assert.equal(ended.title, "Resetting the demo");
-    assert.equal(ended.showRetry, false);
+    assert.equal(ended.title, "Your demo has ended");
+    assert.equal(ended.showRetry, true);
+    assert.equal(getQueuePresentation({ status: "expired" }, now).showRetry, true);
+    assert.equal(getQueuePresentation({ status: "cleanup" }, now).showRetry, false);
     const unavailable = getQueuePresentation({ status: "unavailable" }, now);
     assert.equal(unavailable.message, "Please try again.");
     assert.equal(unavailable.showRetry, true);
@@ -475,7 +477,7 @@ test("only the dedicated Showcase host can use the fixed same-origin broker path
     const now = 1_700_000_000_000;
     const calls = [];
     const client = createQueueServiceClient({
-        locationRef: { hostname: "showcase.ns-tx.com", origin: "https://showcase.ns-tx.com" },
+        locationRef: { hostname: "showcase.ns-tx.com", origin: "https://showcase.ns-tx.com", protocol: "https:" },
         fetchImpl: async (url, options) => {
             calls.push({ url, options });
             return { ok: false };
@@ -494,6 +496,14 @@ test("only the dedicated Showcase host can use the fixed same-origin broker path
         locationRef: { hostname: "ns-tx.com", origin: "https://ns-tx.com" },
     });
     await assert.rejects(productPageClient.request("join"), /unavailable/);
+    assert.equal(calls.length, 1, "the product origin cannot send a relative lease POST");
+    for (const locationRef of [
+        { hostname: "showcase.ns-tx.com", origin: "http://showcase.ns-tx.com", protocol: "http:" },
+        { hostname: "showcase.ns-tx.com", origin: "https://ns-tx.com", protocol: "https:" },
+    ]) {
+        const invalidOriginClient = createQueueServiceClient({ locationRef, fetchImpl: async () => { throw new Error("must not fetch"); } });
+        await assert.rejects(invalidOriginClient.request("join"), /unavailable/);
+    }
 
     const controller = createQueueLeaseController({
         service: { async request() { throw new Error("offline"); } },

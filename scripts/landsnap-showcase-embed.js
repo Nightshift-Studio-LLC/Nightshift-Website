@@ -1,12 +1,12 @@
 // Keep the product-page frame on one allowlisted public origin. The framed
 // shell owns queue cookies, broker tickets, and the Pixel Streaming relay.
-export const SHOWCASE_EMBED_ORIGIN = "https://showcase.ns-tx.com/?v=20260926-gradient-cta-v13";
-export const SHOWCASE_LOCAL_PREVIEW_PATH = "./LandSnapShowcase.html?v=20260926-gradient-cta-v13";
+export const SHOWCASE_EMBED_ORIGIN = "https://showcase.ns-tx.com/?v=20260930-session-recovery-v1";
+export const SHOWCASE_LOCAL_PREVIEW_PATH = "./LandSnapShowcase.html?v=20260930-session-recovery-v1";
 export const SHOWCASE_SHELL_READY_MESSAGE = "landsnap-showcase-shell-ready";
 export const SHOWCASE_SHELL_READY_VERSION = 1;
 export const SHOWCASE_LIFECYCLE_MESSAGE = "landsnap-showcase-lifecycle";
 export const SHOWCASE_LIFECYCLE_VERSION = 1;
-export const SHOWCASE_CONNECTION_TIMEOUT_MS = 12000;
+export const SHOWCASE_CONNECTION_TIMEOUT_MS = 30000;
 
 const LOOPBACK_HOSTS = new Set(["127.0.0.1", "localhost", "::1", "[::1]"]);
 const SHOWCASE_LIFECYCLE_STATES = new Set([
@@ -49,8 +49,8 @@ const STATUS_COPY = Object.freeze({
     }),
     unavailable: Object.freeze({
         label: "Connection problem",
-        title: "Demo temporarily unavailable",
-        message: "We couldn’t open the demo here. No session was started.",
+        title: "Demo frame could not load",
+        message: "The demo frame did not respond on this connection. Retry loading it; this does not confirm the demo host is offline.",
         retry: true,
     }),
 });
@@ -168,7 +168,10 @@ export const installEmbeddedShowcase = (
         if (message?.kind === "lifecycle") mirrorLifecycle(message.state);
     };
 
-    const handleFrameError = () => setEmbeddedShowcaseStatus(surface, "unavailable");
+    const handleFrameError = () => {
+        clearConnectionTimer();
+        setEmbeddedShowcaseStatus(surface, "unavailable");
+    };
     const retryConnection = () => {
         if (expander.open !== true) expander.open = true;
         showLoading();

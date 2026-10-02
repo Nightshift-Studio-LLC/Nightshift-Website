@@ -23,10 +23,10 @@ test("the product page embeds the fixed dedicated Showcase host without top-leve
     assert.match(productPage, /data-landsnap-showcase-frame/);
     assert.match(productPage, /data-landsnap-showcase-status/);
     assert.match(productPage, /data-landsnap-showcase-retry/);
-    assert.match(productPage, /class="landsnap-showcase-coming-soon"/);
-    assert.match(productPage, /Public Showcase launch coming soon/);
-    assert.match(productPage, /this preview remains available during rollout/);
-    assert.match(productPage, /src="https:\/\/showcase\.ns-tx\.com\/\?v=20260926-gradient-cta-v13"/);
+    assert.match(productPage, /data-landsnap-showcase-rollout/);
+    assert.match(productPage, /Demo in progress/);
+    assert.match(productPage, /Bugs and interruptions may occur/);
+    assert.match(productPage, /src="https:\/\/showcase\.ns-tx\.com\/\?v=20260930-session-recovery-v1"/);
     assert.match(productPage, /landsnap-showcase-embed\.js/);
     assert.match(productPage, /allow="autoplay; fullscreen; clipboard-read; clipboard-write"/);
     assert.match(productPage, /sandbox="allow-scripts allow-same-origin allow-forms allow-pointer-lock allow-presentation"/);
@@ -46,6 +46,7 @@ test("the product shell stays nonblank until an exact-origin child handshake arr
     const cleared = new Set();
     const childWindow = {};
     const status = { hidden: false, dataset: {} };
+    const rollout = { hidden: false };
     const label = {};
     const title = {};
     const message = {};
@@ -72,6 +73,7 @@ test("the product shell stays nonblank until an exact-origin child handshake arr
         ["[data-landsnap-showcase-expander]", expander],
         ["[data-landsnap-showcase-frame]", frame],
         ["[data-landsnap-showcase-status]", status],
+        ["[data-landsnap-showcase-rollout]", rollout],
         ["[data-landsnap-showcase-status-label]", label],
         ["[data-landsnap-showcase-status-title]", title],
         ["[data-landsnap-showcase-status-message]", message],
@@ -108,6 +110,7 @@ test("the product shell stays nonblank until an exact-origin child handshake arr
         data: { type: SHOWCASE_SHELL_READY_MESSAGE, version: SHOWCASE_SHELL_READY_VERSION },
     });
     assert.equal(status.hidden, false);
+    assert.equal(rollout.hidden, false);
 
     listeners.get("window:message")({
         source: childWindow,
@@ -115,6 +118,7 @@ test("the product shell stays nonblank until an exact-origin child handshake arr
         data: { type: SHOWCASE_SHELL_READY_MESSAGE, version: SHOWCASE_SHELL_READY_VERSION },
     });
     assert.equal(status.hidden, true);
+    assert.equal(rollout.hidden, false, "demo warning remains visible after the shell is healthy");
     assert.equal(attributes.get("aria-busy"), "false");
 
     listeners.get("window:message")({
@@ -128,6 +132,7 @@ test("the product shell stays nonblank until an exact-origin child handshake arr
 
     retryListeners.get("click")();
     assert.equal(status.dataset.state, "loading");
+    assert.equal(rollout.hidden, false);
     assert.equal(attributes.get("src"), "about:blank");
     const reload = timers.findLast(({ delay }) => delay === 0);
     reload.callback();
@@ -137,7 +142,7 @@ test("the product shell stays nonblank until an exact-origin child handshake arr
     assert.equal(cleared.has(timeoutIndex), false);
     timers[timeoutIndex].callback();
     assert.equal(status.dataset.state, "unavailable");
-    assert.equal(title.textContent, "Demo temporarily unavailable");
+    assert.equal(title.textContent, "Demo frame could not load");
     assert.equal(retry.hidden, false);
 });
 

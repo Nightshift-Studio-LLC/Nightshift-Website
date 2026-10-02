@@ -114,6 +114,7 @@ test("each public control has one fixed no-argument command envelope", () => {
         "clean-scene": "clean_scene",
         "select-previous-fixture": "select_previous_fixture",
         "select-next-fixture": "select_next_fixture",
+        "select-all-fixtures": "select_all_fixtures",
         "focus-selected-fixture": "focus_selected_fixture",
     };
     assert.deepEqual(Object.fromEntries(Object.entries(SHOWCASE_COMMANDS).map(([id, value]) => [id, value.action])), expected);
@@ -255,7 +256,7 @@ test("viewport notifications use fixed copy for connecting, stream failures, and
     assert.deepEqual(SHOWCASE_NOTIFICATION_CODES.connecting, {
         level: "warning",
         title: "Connecting to stream",
-        message: "Your Unreal session is ready. We’re connecting the browser stream now.",
+        message: "We’re connecting the live stream. A slow connection can take a little longer; your demo timer has not started yet.",
     });
     assert.deepEqual(SHOWCASE_NOTIFICATION_CODES.server_offline, {
         level: "error",
@@ -394,4 +395,69 @@ test("surface waits for Start Demo, then keeps the mounted transport across a sa
     assert.equal(mounts, 1, "loopback Start Demo mounts without requiring a broker session URL");
     loopbackWindowRef.listeners.get("landsnap-showcase-lease-change")();
     assert.equal(mounts, 1, "the same loopback lease does not remount after authorization");
+});
+
+
+test("Select All is allowlisted by both transports and accepts only its agreed response", async () => {
+    const { isAllowlistedShowcasePayload: publicGate } = await import("../tools/landsnap/landsnap-showcase-ps2-public-entry.js");
+    const { isAllowlistedShowcasePayload: localGate } = await import("../tools/landsnap/landsnap-showcase-ps2-local-entry.js");
+    const command = createShowcaseCommand("select-all-fixtures", "request_select_all");
+    assert.equal(publicGate(command), true);
+    assert.equal(localGate(command), true);
+    assert.equal(publicGate({ ...command, actors: ["terrain"] }), false);
+    const reply = {
+        version: SHOWCASE_PROTOCOL_VERSION, type: "operation-result", action: "select_all_fixtures",
+        requestId: "request_select_all", result: "success", code: "fixture_selected",
+    };
+    assert.equal(parseShowcaseResult(JSON.stringify(reply))?.message,
+        "All prepared demo objects are selected. Choose Snap Selected to run LandSnap.");
+    assert.equal(parseShowcaseResult(JSON.stringify({ ...reply, code: "completed" })), null);
+    assert.equal(parseShowcaseResult(JSON.stringify({ ...reply, result: "rejected", code: "fixture_unavailable" }))?.result, "rejected");
+});
+
+
+test("Select All confirmation requires both the pending action and request ID", async () => {
+    const { attachShowcaseSurface } = await import("../scripts/landsnap-showcase.js");
+    const previousWindow = globalThis.window, previousButton = globalThis.HTMLButtonElement;
+    class Button {
+        constructor() { this.dataset = { command: "select-all-fixtures" }; }
+        setAttribute() {}
+        addEventListener(type, listener) { this[type] = listener; }
+        removeEventListener() {}
+    }
+    globalThis.HTMLButtonElement = Button;
+    globalThis.window = { setTimeout() { return 1; }, clearTimeout() {} };
+    let attached;
+    try {
+        const button = new Button(), status = { textContent: "" }, outliner = { textContent: "Prepared objects" };
+        let connection, response, sent;
+        const transport = {
+            mount() { connection("connected"); },
+            emitUIInteraction(command) { sent = command; return true; },
+            onConnectionState(listener) { connection = listener; }, onResponse(listener) { response = listener; },
+        };
+        const documentRef = {
+            getElementById(id) { return {
+                "landsnap-showcase-stream-mount": { dataset: {}, setAttribute() {} },
+                "landsnap-showcase-operation-status": status, "landsnap-showcase-outliner-target": outliner,
+            }[id] || null; },
+            querySelectorAll() { return [button]; },
+        };
+        attached = attachShowcaseSurface(documentRef, transport);
+        button.click({ currentTarget: button });
+        assert.equal(button.disabled, true);
+        assert.equal(outliner.textContent, "Prepared objects", "no optimistic selection confirmation");
+        const reply = { version: SHOWCASE_PROTOCOL_VERSION, type: "operation-result", action: "select_next_fixture",
+            requestId: sent.requestId, result: "success", code: "fixture_selected" };
+        response(JSON.stringify(reply));
+        assert.equal(button.disabled, true, "a different action cannot clear the pending command");
+        assert.equal(outliner.textContent, "Prepared objects");
+        response(JSON.stringify({ ...reply, action: "select_all_fixtures" }));
+        assert.equal(button.disabled, false);
+        assert.equal(outliner.textContent, "All demo objects selected");
+    } finally {
+        attached?.detach();
+        if (previousWindow === undefined) delete globalThis.window; else globalThis.window = previousWindow;
+        if (previousButton === undefined) delete globalThis.HTMLButtonElement; else globalThis.HTMLButtonElement = previousButton;
+    }
 });

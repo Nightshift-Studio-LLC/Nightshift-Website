@@ -11,6 +11,7 @@ export const SHOWCASE_QUEUE_PROTOCOL_VERSION = "landsnap-showcase-queue-v2";
 export const SHOWCASE_LEASE_DURATION_MS = 5 * 60 * 1000;
 export const SHOWCASE_QUEUE_PATH = "/api/landsnap-showcase/queue/v1/lease";
 export const SHOWCASE_QUEUE_EVENTS_PATH = "/api/landsnap-showcase/queue/v1/events";
+export const SHOWCASE_QUEUE_ORIGIN = "https://showcase.ns-tx.com";
 export const SHOWCASE_START_REQUEST_EVENT = "landsnap-showcase-start-requested";
 
 // The public queue lives only on the dedicated Nukebox showcase origin.
@@ -253,11 +254,14 @@ export const createQueueServiceClient = ({
     locationRef = globalThis.location,
 } = {}) => {
     const hostname = locationRef?.hostname;
-    const serviceUrl = isPublicShowcaseHost(hostname)
-        ? new URL(SHOWCASE_QUEUE_PATH, locationRef.origin).toString()
+    const dedicatedOrigin = isPublicShowcaseHost(hostname)
+        && locationRef?.protocol === "https:"
+        && locationRef?.origin === SHOWCASE_QUEUE_ORIGIN;
+    const serviceUrl = dedicatedOrigin
+        ? new URL(SHOWCASE_QUEUE_PATH, SHOWCASE_QUEUE_ORIGIN).toString()
         : null;
-    const eventsUrl = isPublicShowcaseHost(hostname)
-        ? new URL(SHOWCASE_QUEUE_EVENTS_PATH, locationRef.origin).toString()
+    const eventsUrl = dedicatedOrigin
+        ? new URL(SHOWCASE_QUEUE_EVENTS_PATH, SHOWCASE_QUEUE_ORIGIN).toString()
         : null;
 
     return Object.freeze({
@@ -268,6 +272,7 @@ export const createQueueServiceClient = ({
                 mode: "same-origin",
                 credentials: "include",
                 cache: "no-store",
+                redirect: "error",
                 headers: { "Content-Type": "application/json", "Accept": "application/json" },
                 body: JSON.stringify(createRequestPayload(operation)),
             });
@@ -324,6 +329,7 @@ export const createQueueLeaseController = ({
     let eventSourceGeneration = 0;
     let started = false;
     let suspended = false;
+    let requestGeneration = 0;
 
     const publish = () => {
         onUpdate(lease);
@@ -375,9 +381,13 @@ export const createQueueLeaseController = ({
     const nextOperation = () => ["ready", "active"].includes(lease.status) ? "heartbeat" : "status";
     const refresh = async (operation = nextOperation()) => {
         if (!started || suspended) return lease;
+        const generation = ++requestGeneration;
         try {
-            return apply(await service.request(operation));
+            const raw = await service.request(operation);
+            if (generation !== requestGeneration || !started || suspended) return lease;
+            return apply(raw);
         } catch {
+            if (generation !== requestGeneration || !started || suspended) return lease;
             // Preserve the last broker-owned timing while a backgrounded phone
             // or a brief network interruption reconnects. Replacing a waiting
             // lease here would allow the next status response to reset its
@@ -398,6 +408,7 @@ export const createQueueLeaseController = ({
             if (guard?.leaseId
                 && typeof candidate?.leaseId === "string"
                 && candidate.leaseId !== guard.leaseId) return lease;
+            requestGeneration += 1;
             return apply(candidate);
         } catch {
             return lease;
@@ -427,6 +438,7 @@ export const createQueueLeaseController = ({
     const suspend = () => {
         if (!started || suspended) return lease;
         suspended = true;
+        requestGeneration += 1;
         stopTimer();
         closeEventSource();
         return lease;
@@ -451,6 +463,7 @@ export const createQueueLeaseController = ({
             return joined;
         },
         async restart() {
+            requestGeneration += 1;
             stopTimer();
             closeEventSource();
             started = true;
@@ -484,17 +497,19 @@ export const createQueueLeaseController = ({
             return refresh("status");
         },
         async leave() {
+            const generation = ++requestGeneration;
             lease = createCleanupLease();
-            publish();
             started = false;
             suspended = false;
             stopTimer();
             closeEventSource();
+            publish();
             try {
                 await service.request("leave");
             } catch {
                 // Page shutdown still makes a best-effort fixed-endpoint beacon below.
             }
+            if (generation !== requestGeneration || started) return lease;
             lease = createIdleLease();
             return publish();
         },
@@ -701,7 +716,7 @@ export const getQueuePresentation = (lease, now = Date.now(), { launchRequested 
             state: "connecting",
             alert: "Opening demo",
             title: "Opening LandSnap Showcase",
-            message: "Connecting the stream. Your five-minute session begins only after the connection is ready.",
+            message: "Connecting the live stream may take a little longer on a slow connection. Your five-minute session begins only after the connection is ready.",
             position: "—",
             estimate: "—",
             countdown: "—",
@@ -726,9 +741,11 @@ export const getQueuePresentation = (lease, now = Date.now(), { launchRequested 
         return Object.freeze({
             visible: true,
             state,
-            alert: "Resetting",
-            title: "Resetting the demo",
-            message: "Your session has ended. The demo will be ready again shortly.",
+            alert: state === "cleanup" ? "Resetting" : "Demo ended",
+            title: state === "cleanup" ? "Resetting the demo" : "Your demo has ended",
+            message: state === "cleanup"
+                ? "Your session has ended. The demo will be ready again shortly."
+                : "Your previous attempt ended. Check again for demo availability.",
             position: "—",
             estimate: "—",
             countdown: "—",
@@ -740,7 +757,7 @@ export const getQueuePresentation = (lease, now = Date.now(), { launchRequested 
             showLaunchProgress: false,
             note: "",
             showTryDemo: false,
-            showRetry: false,
+            showRetry: state !== "cleanup",
             showLeave: false,
             showEndSession: false,
         });
@@ -839,7 +856,7 @@ export const renderQueueSurface = (surface, lease, now = Date.now(), launchReque
         surface.note.textContent = presentation.note;
     }
     if (surface.launchProgress) surface.launchProgress.hidden = !presentation.showLaunchProgress;
-    if (["requesting", "starting", "waiting", "connecting", "cleanup", "expired", "ended", "unavailable"].includes(presentation.state)) {
+    if (!presentation.showRetry && ["requesting", "starting", "waiting", "connecting", "cleanup", "expired", "ended", "unavailable"].includes(presentation.state)) {
         surface.overlay.setAttribute("aria-busy", "true");
     } else {
         surface.overlay.removeAttribute("aria-busy");
@@ -915,7 +932,11 @@ export const installShowcaseQueueGate = (windowRef = globalThis.window, document
     if (surface.overlay) {
         surface.overlay.addEventListener("keydown", (event) => {
             if (event.key !== "Tab") return;
-            const focusable = [surface.tryDemo, surface.startDemo, surface.retry, surface.leave]
+            const observer = documentRef.getElementById("landsnap-showcase-observer");
+            const watch = observer && !observer.hidden
+                ? documentRef.getElementById("landsnap-showcase-observer-action")
+                : null;
+            const focusable = [surface.tryDemo, surface.startDemo, surface.retry, surface.leave, watch]
                 .filter((control) => control && !control.hidden && !control.disabled);
             if (!focusable.length) return;
             const current = focusable.indexOf(documentRef.activeElement);

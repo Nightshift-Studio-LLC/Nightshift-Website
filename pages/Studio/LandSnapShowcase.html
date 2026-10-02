@@ -11,13 +11,13 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="../../images/icons/nightshift.ico">
-    <link rel="stylesheet" href="../../styles/landsnap-showcase.css?v=20260926-gradient-cta-v13">
-    <script src="../../scripts/landsnap-showcase-capabilities.js?v=20260925-observer-live"></script>
-    <script type="module" src="../../scripts/landsnap-showcase-queue.js?v=20260926-arcade-ready-v5"></script>
-    <script type="module" src="../../scripts/landsnap-showcase-observer.js?v=20260926-arcade-ready-v5"></script>
-    <script type="module" src="../../scripts/landsnap-showcase-local.js?v=20260926-arcade-ready-v5"></script>
-    <script type="module" src="../../scripts/landsnap-showcase-public.js?v=20260926-arcade-ready-v5"></script>
-    <script type="module" src="../../scripts/landsnap-showcase.js?v=20260926-arcade-ready-v5"></script>
+    <link rel="stylesheet" href="../../styles/landsnap-showcase.css?v=20260930-session-recovery-v1">
+    <script src="../../scripts/landsnap-showcase-capabilities.js?v=20260930-session-recovery-v1"></script>
+    <script type="module" src="../../scripts/landsnap-showcase-queue.js?v=20260930-session-recovery-v1"></script>
+    <script type="module" src="../../scripts/landsnap-showcase-observer.js?v=20260930-session-recovery-v1"></script>
+    <script type="module" src="../../scripts/landsnap-showcase-local.js?v=20260930-session-recovery-v1"></script>
+    <script type="module" src="../../scripts/landsnap-showcase-public.js?v=20260930-session-recovery-v1"></script>
+    <script type="module" src="../../scripts/landsnap-showcase.js?v=20260930-session-recovery-v1"></script>
 </head>
 <body class="landsnap-showcase-page">
     <a class="landsnap-showcase-skip-link" href="#showcase-main">Skip to showcase controls</a>
@@ -65,7 +65,7 @@
                     </div>
                 </div>
 
-                <p class="landsnap-showcase-pointer-guidance"><strong>How to try it:</strong> use Demo objects to select an object, then choose an action.</p>
+                <p class="landsnap-showcase-pointer-guidance"><strong>How to try it:</strong> prepare a demo scene, choose Select All in the Outliner, then Snap Selected.</p>
 
             </div>
 
@@ -89,11 +89,11 @@
                     <span>Scene</span>
                     <div>
                         <button id="landsnap-showcase-previous-scenario" class="landsnap-showcase-icon-button" type="button" data-command="previous-scenario" disabled aria-label="Previous scenario">
-                            <span aria-hidden="true">←</span>
+                            <span aria-hidden="true"><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="m6 4-4 4 4 4M2 8h12"/></svg></span>
                         </button>
                         <output id="landsnap-showcase-scenario-name" aria-live="polite">Awaiting stream</output>
                         <button id="landsnap-showcase-next-scenario" class="landsnap-showcase-icon-button" type="button" data-command="next-scenario" disabled aria-label="Next scenario">
-                            <span aria-hidden="true">→</span>
+                            <span aria-hidden="true"><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="m10 4 4 4-4 4M2 8h12"/></svg></span>
                         </button>
                     </div>
                 </div>
@@ -104,10 +104,10 @@
                         <span>Snap Selected</span>
                     </button>
                     <div class="landsnap-showcase-history-actions">
-                        <button id="landsnap-showcase-undo" class="landsnap-showcase-action" type="button" data-command="undo" disabled><span class="landsnap-showcase-action-glyph" aria-hidden="true">↶</span>Undo</button>
-                        <button id="landsnap-showcase-redo" class="landsnap-showcase-action" type="button" data-command="redo" disabled><span class="landsnap-showcase-action-glyph" aria-hidden="true">↷</span>Redo</button>
+                        <button id="landsnap-showcase-undo" class="landsnap-showcase-action" type="button" data-command="undo" disabled><span class="landsnap-showcase-action-glyph" aria-hidden="true"><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M5 3 2 6l3 3M2 6h7a3.5 3.5 0 0 1 0 7"/></svg></span><span>Undo</span></button>
+                        <button id="landsnap-showcase-redo" class="landsnap-showcase-action" type="button" data-command="redo" disabled><span class="landsnap-showcase-action-glyph" aria-hidden="true"><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="m11 3 3 3-3 3m3-3H7a3.5 3.5 0 0 0 0 7"/></svg></span><span>Redo</span></button>
                     </div>
-                    <button id="landsnap-showcase-reset-scene" class="landsnap-showcase-action landsnap-showcase-action-reset" type="button" data-command="reset-scene" disabled><span class="landsnap-showcase-action-glyph" aria-hidden="true">↺</span>Reset Object Positions</button>
+                    <button id="landsnap-showcase-reset-scene" class="landsnap-showcase-action landsnap-showcase-action-reset" type="button" data-command="reset-scene" disabled><span class="landsnap-showcase-action-glyph" aria-hidden="true"><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M3 3v4h4M3 7a5 5 0 1 1 1 5"/></svg></span><span>Reset Object Positions</span></button>
                     <button id="landsnap-showcase-toggle-autosnap" class="landsnap-showcase-action" type="button" data-command="toggle-autosnap" aria-pressed="false" disabled>
                         <img class="landsnap-showcase-action-icon" src="../../images/landsnap/Icon40-Auto.png" alt="" aria-hidden="true">
                         <span>AutoSnap: Off</span>
@@ -128,9 +128,9 @@
                                 </select>
                             </label>
                         </div>
-                        <button id="landsnap-showcase-prepare-fixtures" class="landsnap-showcase-action" type="button" data-command="prepare-medium-row" disabled><span class="landsnap-showcase-action-glyph" aria-hidden="true">▦</span><span>Prepare Medium Row</span></button>
+                        <button id="landsnap-showcase-prepare-fixtures" class="landsnap-showcase-action" type="button" data-command="prepare-medium-row" disabled><span class="landsnap-showcase-action-glyph" aria-hidden="true"><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><rect x="2.5" y="2.5" width="11" height="11" rx="1"/><path d="M6 3v10m4-10v10M3 6h10M3 10h10"/></svg></span><span>Prepare Medium Row</span></button>
                     </div>
-                    <button id="landsnap-showcase-clean-scene" class="landsnap-showcase-action landsnap-showcase-action-clean" type="button" data-command="clean-scene" disabled><span class="landsnap-showcase-action-glyph" aria-hidden="true">⌫</span>Remove Demo Objects</button>
+                    <button id="landsnap-showcase-clean-scene" class="landsnap-showcase-action landsnap-showcase-action-clean" type="button" data-command="clean-scene" disabled><span class="landsnap-showcase-action-glyph" aria-hidden="true"><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M6 3h8v10H6L1 8Z"/><path d="m8 6 4 4m0-4-4 4"/></svg></span><span>Remove Demo Objects</span></button>
                 </div>
                 </div>
 
@@ -143,11 +143,12 @@
                     </div>
                     <div class="landsnap-showcase-outliner-body">
                         <div class="landsnap-showcase-outliner-select">
-                            <button class="landsnap-showcase-icon-button" type="button" data-command="select-previous-fixture" disabled aria-label="Select previous demo object"><span aria-hidden="true">←</span></button>
+                            <button class="landsnap-showcase-icon-button" type="button" data-command="select-previous-fixture" disabled aria-label="Select previous demo object"><span aria-hidden="true"><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="m6 4-4 4 4 4M2 8h12"/></svg></span></button>
                             <output id="landsnap-showcase-outliner-target" aria-live="polite">No demo objects prepared</output>
-                            <button class="landsnap-showcase-icon-button" type="button" data-command="select-next-fixture" disabled aria-label="Select next demo object"><span aria-hidden="true">→</span></button>
+                            <button class="landsnap-showcase-icon-button" type="button" data-command="select-next-fixture" disabled aria-label="Select next demo object"><span aria-hidden="true"><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="m10 4 4 4-4 4M2 8h12"/></svg></span></button>
                         </div>
-                        <button class="landsnap-showcase-action" type="button" data-command="focus-selected-fixture" disabled><span class="landsnap-showcase-action-glyph" aria-hidden="true">⌖</span>Focus Selected</button>
+                        <button id="landsnap-showcase-select-all" class="landsnap-showcase-action" type="button" data-command="select-all-fixtures" disabled><span class="landsnap-showcase-action-glyph" aria-hidden="true"><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M5 2H2v3m9-3h3v3M2 11v3h3m6 0h3v-3"/><path d="m5 8 2 2 4-4"/></svg></span><span>Select All</span></button>
+                        <button class="landsnap-showcase-action" type="button" data-command="focus-selected-fixture" disabled><span class="landsnap-showcase-action-glyph" aria-hidden="true"><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><circle cx="8" cy="8" r="4"/><path d="M8 1v4m0 6v4M1 8h4m6 0h4"/></svg></span><span>Focus Selected</span></button>
                     </div>
                 </section>
 
@@ -191,12 +192,12 @@
                                 <p class="landsnap-showcase-section-label">Waiting room</p>
                                 <h2 id="landsnap-showcase-observer-title">Watch while waiting</h2>
                             </div>
-                            <button id="landsnap-showcase-observer-action" class="landsnap-showcase-observer-action" type="button" disabled aria-disabled="true" data-observer-capability="unavailable" aria-describedby="landsnap-showcase-observer-status">Watch while waiting</button>
+                            <button id="landsnap-showcase-observer-action" class="landsnap-showcase-observer-action" type="button" disabled aria-disabled="true" data-observer-capability="unavailable" aria-describedby="landsnap-showcase-observer-status">Watch live demo</button>
                         </div>
                         <div id="landsnap-showcase-observer-mount" class="landsnap-showcase-observer-video" role="region" aria-label="Read-only waiting room observer video" aria-live="polite" aria-busy="false" data-observer-capability="unavailable">
                             <span class="landsnap-showcase-observer-grid" aria-hidden="true"></span>
                             <div id="landsnap-showcase-observer-player" class="landsnap-showcase-observer-player"></div>
-                            <p id="landsnap-showcase-observer-status" class="landsnap-showcase-observer-status" role="status">Waiting for a live session.</p>
+                            <p id="landsnap-showcase-observer-status" class="landsnap-showcase-observer-status" role="status">Watch the active visitor use LandSnap while you wait. Your place in line is held.</p>
                         </div>
                     </section>
                     <dl class="landsnap-showcase-queue-metrics">

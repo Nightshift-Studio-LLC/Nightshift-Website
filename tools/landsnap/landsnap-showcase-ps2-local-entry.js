@@ -40,6 +40,7 @@ const COMMAND_ACTIONS = new Set([
     "clean_scene",
     "select_previous_fixture",
     "select_next_fixture",
+    "select_all_fixtures",
     "focus_selected_fixture",
 ]);
 const REQUEST_ID_PATTERN = /^[A-Za-z0-9_-]{8,64}$/;

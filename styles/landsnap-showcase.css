@@ -237,6 +237,11 @@ body.landsnap-showcase-page.landsnap-showcase-embedded.landsnap-showcase-queue-o
     display: none;
 }
 
+.landsnap-showcase-queue-overlay[data-queue-state="waiting"] {
+    overflow-y: auto;
+    align-items: start;
+}
+
 .landsnap-showcase-queue-card {
     width: min(540px, 100%);
     padding: clamp(22px, 4vw, 38px);
@@ -957,6 +962,7 @@ body.landsnap-showcase-page.landsnap-showcase-embedded.landsnap-showcase-queue-o
     align-items: flex-end;
     justify-content: space-between;
     gap: 16px;
+    flex-wrap: wrap;
 }
 
 .landsnap-showcase-observer-heading h2 {
@@ -1064,8 +1070,8 @@ body.landsnap-showcase-page.landsnap-showcase-embedded.landsnap-showcase-queue-o
     align-items: center;
     gap: 7px;
     min-height: 34px;
-    padding: 6px 14px 5px;
-    border-bottom: 2px solid #56a6dc;
+    padding: 6px 14px;
+    border-bottom: 2px solid var(--landsnap-green);
     color: #f2f2f2;
     font-size: 0.78rem;
     font-weight: 600;
@@ -1161,7 +1167,7 @@ body.landsnap-showcase-page.landsnap-showcase-embedded.landsnap-showcase-queue-o
 
 .landsnap-showcase-scenario-controls > div {
     display: grid;
-    grid-template-columns: 36px minmax(0, 1fr) 36px;
+    grid-template-columns: 32px minmax(0, 1fr) 32px;
     align-items: center;
     gap: 8px;
     margin-top: 8px;
@@ -1180,7 +1186,7 @@ body.landsnap-showcase-page.landsnap-showcase-embedded.landsnap-showcase-queue-o
 
 .landsnap-showcase-action-stack {
     display: grid;
-    gap: 6px;
+    gap: 8px;
     background: #242424;
 }
 
@@ -1216,7 +1222,7 @@ body.landsnap-showcase-page.landsnap-showcase-embedded.landsnap-showcase-queue-o
 }
 
 .landsnap-showcase-calibration-fields select:not(:disabled):hover {
-    border-color: #5e9bc4;
+    border-color: var(--landsnap-green);
 }
 
 .landsnap-showcase-calibration-fields select:disabled {
@@ -1238,7 +1244,7 @@ body.landsnap-showcase-page.landsnap-showcase-embedded.landsnap-showcase-queue-o
     background: linear-gradient(#3b3b3b, #303030);
     box-shadow: inset 0 1px rgba(255, 255, 255, 0.07);
     color: #d8d8d8;
-    font: 0.77rem Arial, "Segoe UI", sans-serif;
+    font: 500 0.77rem/1.25 "Segoe UI", Arial, sans-serif;
     letter-spacing: 0;
     text-transform: none;
 }
@@ -1247,17 +1253,17 @@ body.landsnap-showcase-page.landsnap-showcase-embedded.landsnap-showcase-queue-o
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 7px;
+    gap: 8px;
     width: 100%;
-    min-height: 31px;
-    padding: 6px 10px;
+    min-height: 34px;
+    padding: 7px 10px;
     text-align: center;
 }
 
 .landsnap-showcase-icon-button {
     display: grid;
-    width: 31px;
-    height: 28px;
+    width: 32px;
+    height: 32px;
     place-items: center;
     padding: 0;
     font-size: 0.9rem;
@@ -1279,23 +1285,49 @@ body.landsnap-showcase-page.landsnap-showcase-embedded.landsnap-showcase-queue-o
 
 .landsnap-showcase-action:not(:disabled):hover,
 .landsnap-showcase-icon-button:not(:disabled):hover {
-    border-color: #5e9bc4;
+    border-color: var(--landsnap-green);
     background: linear-gradient(#4d4d4d, #3a3a3a);
     cursor: pointer;
 }
 
 .landsnap-showcase-action-icon {
+    display: block;
+    flex: 0 0 18px;
     width: 18px;
     height: 18px;
     object-fit: contain;
 }
 
 .landsnap-showcase-action-glyph {
+    display: grid;
+    flex: 0 0 18px;
+    width: 18px;
+    height: 18px;
+    place-items: center;
+    color: var(--landsnap-green);
+}
+
+.landsnap-showcase-action-glyph svg,
+.landsnap-showcase-icon-button svg {
+    display: block;
     width: 16px;
-    color: #a9cde6;
-    font-family: "Segoe UI Symbol", sans-serif;
-    font-size: 0.95rem;
-    line-height: 1;
+    height: 16px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.landsnap-showcase-action:not(:disabled):active,
+.landsnap-showcase-icon-button:not(:disabled):active {
+    background: #2c3428;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.landsnap-showcase-action[aria-pressed="true"]:not(:disabled) {
+    border-color: var(--landsnap-green);
+    background: linear-gradient(#35402d, #2b3426);
 }
 
 .landsnap-showcase-action:focus-visible,
@@ -1328,7 +1360,7 @@ body.landsnap-showcase-page.landsnap-showcase-embedded.landsnap-showcase-queue-o
 
 .landsnap-showcase-outliner-select {
     display: grid;
-    grid-template-columns: 31px minmax(0, 1fr) 31px;
+    grid-template-columns: 32px minmax(0, 1fr) 32px;
     align-items: center;
     gap: 6px;
 }
@@ -1350,7 +1382,17 @@ body.landsnap-showcase-page.landsnap-showcase-embedded.landsnap-showcase-queue-o
 }
 
 .landsnap-showcase-operation {
+    padding: 12px 14px;
+    border-top: 1px solid #3a3a3a;
     background: #242424;
+}
+
+.landsnap-showcase-operation > p {
+    margin: 0;
+}
+
+#landsnap-showcase-operation-status {
+    margin-top: 8px;
 }
 
 .landsnap-showcase-review-row small {
@@ -1380,7 +1422,7 @@ body.landsnap-showcase-page.landsnap-showcase-embedded.landsnap-showcase-queue-o
 
 .landsnap-showcase-review-guidance strong {
     flex: 0 0 auto;
-    color: #a9cde6;
+    color: var(--landsnap-green);
     font-weight: 600;
 }
 

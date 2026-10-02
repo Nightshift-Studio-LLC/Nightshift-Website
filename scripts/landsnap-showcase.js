@@ -91,6 +91,7 @@ export const SHOWCASE_COMMANDS = Object.freeze({
     "clean-scene": Object.freeze({ action: "clean_scene" }),
     "select-previous-fixture": Object.freeze({ action: "select_previous_fixture" }),
     "select-next-fixture": Object.freeze({ action: "select_next_fixture" }),
+    "select-all-fixtures": Object.freeze({ action: "select_all_fixtures" }),
     "focus-selected-fixture": Object.freeze({ action: "focus_selected_fixture" }),
 });
 
@@ -108,7 +109,7 @@ export const SHOWCASE_NOTIFICATION_CODES = Object.freeze({
     connecting: Object.freeze({
         level: "warning",
         title: "Connecting to stream",
-        message: "Your Unreal session is ready. We’re connecting the browser stream now.",
+        message: "We’re connecting the live stream. A slow connection can take a little longer; your demo timer has not started yet.",
     }),
     server_offline: Object.freeze({
         level: "error",
@@ -162,6 +163,7 @@ const RESULT_CODES_BY_ACTION = Object.freeze({
     clean_scene: new Set(["scene_cleaned", "operation_rejected", "operation_failed"]),
     select_previous_fixture: new Set(["fixture_selected", "fixture_unavailable", "operation_rejected", "operation_failed"]),
     select_next_fixture: new Set(["fixture_selected", "fixture_unavailable", "operation_rejected", "operation_failed"]),
+    select_all_fixtures: new Set(["fixture_selected", "fixture_unavailable", "operation_rejected", "operation_failed"]),
     focus_selected_fixture: new Set(["fixture_focused", "fixture_unavailable", "operation_rejected", "operation_failed"]),
 });
 const RESULT_TYPE_BY_CODE = Object.freeze({
@@ -261,7 +263,9 @@ export const parseShowcaseResult = (raw) => {
         requestId: candidate.requestId,
         action: candidate.action,
         result: candidate.result,
-        message: RESULT_MESSAGES[candidate.code],
+        message: candidate.action === "select_all_fixtures" && candidate.code === "fixture_selected"
+            ? "All prepared demo objects are selected. Choose Snap Selected to run LandSnap."
+            : RESULT_MESSAGES[candidate.code],
     });
 };
 
@@ -428,6 +432,8 @@ export const attachShowcaseSurface = (documentRef, transport, {
             setText(surface.outlinerTarget, preset.outlinerLabel);
         } else if (response.action === "clean_scene") {
             setText(surface.outlinerTarget, "No demo objects prepared");
+        } else if (response.action === "select_all_fixtures") {
+            setText(surface.outlinerTarget, "All demo objects selected");
         } else if (response.action === "select_previous_fixture" || response.action === "select_next_fixture") {
             setText(surface.outlinerTarget, "Selected demo object");
         } else if (response.action === "focus_selected_fixture") {
@@ -437,7 +443,9 @@ export const attachShowcaseSurface = (documentRef, transport, {
 
     const handleResponse = (raw) => {
         const response = parseShowcaseResult(raw);
-        if (!response || !pendingRequest || response.requestId !== pendingRequest.requestId) return;
+        if (!response || !pendingRequest
+            || response.requestId !== pendingRequest.requestId
+            || response.action !== pendingRequest.action) return;
 
         clearPending();
         displayOperation(response.message);
