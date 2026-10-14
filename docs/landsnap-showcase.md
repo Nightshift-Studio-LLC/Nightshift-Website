@@ -35,6 +35,7 @@ The broker identifies the visitor with a secure, HttpOnly, SameSite cookie scope
 
 ```json
 {"protocol":"landsnap-showcase-queue-v2","status":"idle","pollAfterMs":1000}
+{"protocol":"landsnap-showcase-queue-v2","status":"pending","pollAfterMs":5000}
 {"protocol":"landsnap-showcase-queue-v2","status":"starting","phase":"preparing","leaseId":"opaque-server-id","expectedReadyAt":1730000000000,"preparationExpiresAt":1730000000000,"preparationRemainingMs":30000,"preparationOverdue":false,"pollAfterMs":1000}
 {"protocol":"landsnap-showcase-queue-v2","status":"waiting","position":1,"estimatedWaitMs":300000,"activeLeaseDeadline":1730000300000,"pollAfterMs":1000}
 {"protocol":"landsnap-showcase-queue-v2","status":"ready","phase":"ready","leaseId":"opaque-server-id","readyClaimExpiresAt":1730000090000,"heartbeatAfterMs":15000,"sessionUrl":"/api/landsnap-showcase/session/v1/player/opaque-player-id","sessionToken":"short-lived-signed-opaque-ticket","sessionTokenExpiresAt":1730000090000}
@@ -47,6 +48,16 @@ The broker identifies the visitor with a secure, HttpOnly, SameSite cookie scope
 Before opening Pixel Streaming, the dedicated shell makes one exact ticket exchange: `POST sessionUrl` with `Authorization: Bearer sessionToken`, `credentials: include`, `cache: no-store`, and `redirect: error`. The broker consumes the ticket, returns `204 No Content`, and sets a Secure, HttpOnly, SameSite cookie scoped to that player path. The frontend then opens `wss://showcase.ns-tx.com` on that same validated player path. The ticket is never appended to a URL, stored in the DOM, logged, or exposed to a visitor-controlled configuration field.
 
 The broker owns the atomic state transition:
+
+When cleanup or an admission limit delays promotion with no visitor owning the
+slot, the gateway returns `pending`. The shell shows **Checking demo
+availability**, keeps the request's order and polls automatically, without
+claiming another session is active, showing a queue position or starting the
+five-minute clock. Resume uses `status`; explicit Leave cancels the request.
+The parent mirrors this as its existing `preparing` lifecycle state. Deploy
+the matching child queue client before enabling this gateway response; older
+exact-schema clients do not accept `pending`. This changes the presentation
+of deferred admission, not the existing admission limits or actual readiness.
 
 1. At Windows sign-in, the supervisor starts one fixed restricted editor and keeps it registered. `idle` means the streamer is reset-ready and no visitor owns the slot.
 2. If a visitor arrives while the host is not reset-ready, reserve the slot and return `starting`/`preparing` while the supervisor warms or restarts the editor. A warm reset-ready editor does not cold-start per lease.

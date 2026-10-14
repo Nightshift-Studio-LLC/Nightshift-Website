@@ -19,6 +19,7 @@ export const SHOWCASE_START_REQUEST_EVENT = "landsnap-showcase-start-requested";
 const PUBLIC_SHOWCASE_HOSTS = new Set(["showcase.ns-tx.com"]);
 const LOCAL_SHOWCASE_HOSTS = new Set(["127.0.0.1", "localhost", "[::1]"]);
 const RESPONSE_KEYS = Object.freeze({
+    pending: Object.freeze(["pollAfterMs", "protocol", "status"]),
     waiting: Object.freeze(["activeLeaseDeadline", "estimatedWaitMs", "pollAfterMs", "position", "protocol", "status"]),
     starting: Object.freeze(["expectedReadyAt", "leaseId", "phase", "pollAfterMs", "preparationExpiresAt", "preparationOverdue", "preparationRemainingMs", "protocol", "status"]),
     ready: Object.freeze(["heartbeatAfterMs", "leaseId", "phase", "protocol", "readyClaimExpiresAt", "sessionToken", "sessionTokenExpiresAt", "sessionUrl", "status"]),
@@ -33,7 +34,7 @@ const MAX_HEARTBEAT_MS = 60_000;
 const MAX_SESSION_TICKET_MS = 2 * 60 * 1000;
 const MAX_PUBLIC_WAIT_MS = 12 * 60 * 60 * 1000;
 const QUEUE_OPERATIONS = new Set(["join", "status", "heartbeat", "leave"]);
-const SUBSCRIBABLE_LEASE_STATES = new Set(["starting", "waiting", "ready", "active"]);
+const SUBSCRIBABLE_LEASE_STATES = new Set(["pending", "starting", "waiting", "ready", "active"]);
 const OPAQUE_ID_PATTERN = /^[A-Za-z0-9_-]{16,128}$/;
 const SESSION_TOKEN_PATTERN = /^[A-Za-z0-9._~-]{24,512}$/;
 const SESSION_URL_PREFIX = "/api/landsnap-showcase/session/v1/player/";
@@ -67,6 +68,13 @@ export const isPublicShowcaseHost = (hostname) =>
 
 export const parseQueueLease = (raw, now = Date.now()) => {
     if (!isPlainRecord(raw) || raw.protocol !== SHOWCASE_QUEUE_PROTOCOL_VERSION) return null;
+
+    // Pending holds admission order without asserting ownership or inventing
+    // a queue position, preparation deadline, or usable-session countdown.
+    if (raw.status === "pending") {
+        if (!hasExactKeys(raw, RESPONSE_KEYS.pending) || !Number.isSafeInteger(raw.pollAfterMs)) return null;
+        return Object.freeze({ status: "pending", pollAfterMs: clamp(raw.pollAfterMs, MIN_POLL_MS, MAX_POLL_MS) });
+    }
 
     if (raw.status === "idle") {
         if (!hasExactKeys(raw, RESPONSE_KEYS.idle) || !Number.isSafeInteger(raw.pollAfterMs)) return null;
@@ -350,7 +358,7 @@ export const createQueueLeaseController = ({
             schedule(Math.min(next.heartbeatAfterMs, Math.max(MIN_POLL_MS, refreshAt - now() - 1_000)));
         } else if (next.status === "active") {
             schedule(Math.min(next.heartbeatAfterMs, Math.max(MIN_POLL_MS, next.sessionExpiresAt - now() - 1_000)));
-        } else if (next.status === "starting" || next.status === "waiting") {
+        } else if (["pending", "starting", "waiting"].includes(next.status)) {
             schedule(next.pollAfterMs);
         } else if (next.status === "ended") {
             schedule(next.pollAfterMs);
@@ -392,7 +400,7 @@ export const createQueueLeaseController = ({
             // or a brief network interruption reconnects. Replacing a waiting
             // lease here would allow the next status response to reset its
             // displayed deadline.
-            if (!["waiting", "starting", "ready", "active"].includes(lease.status)) {
+            if (!["pending", "waiting", "starting", "ready", "active"].includes(lease.status)) {
                 lease = createUnavailableLease();
                 publish();
             }
@@ -614,6 +622,30 @@ export const getQueuePresentation = (lease, now = Date.now(), { launchRequested 
         });
     }
 
+    if (state === "pending") {
+        return Object.freeze({
+            visible: true,
+            state,
+            alert: "Checking availability",
+            title: "Checking demo availability",
+            message: "The demo cannot admit you yet. We’ll check automatically; you can leave at any time.",
+            position: "—",
+            estimate: "—",
+            countdown: "—",
+            countdownSeconds: 0,
+            showMetrics: false,
+            showPreparation: false,
+            preparation: "",
+            showNote: true,
+            showLaunchProgress: false,
+            note: "Your five-minute session has not started yet.",
+            showTryDemo: false,
+            showRetry: false,
+            showLeave: true,
+            showEndSession: false,
+        });
+    }
+
     if (starting) {
         return Object.freeze({
             visible: true,
@@ -813,6 +845,7 @@ export const renderQueueSurface = (surface, lease, now = Date.now(), launchReque
         surface.alertIcon.textContent = ({
             idle: "●",
             requesting: "…",
+            pending: "◷",
             starting: "◷",
             waiting: "◷",
             connecting: "…",
@@ -864,7 +897,7 @@ export const renderQueueSurface = (surface, lease, now = Date.now(), launchReque
         surface.note.textContent = presentation.note;
     }
     if (surface.launchProgress) surface.launchProgress.hidden = !presentation.showLaunchProgress;
-    if (!presentation.showRetry && ["requesting", "starting", "waiting", "connecting", "cleanup", "expired", "ended", "unavailable"].includes(presentation.state)) {
+    if (!presentation.showRetry && ["requesting", "pending", "starting", "waiting", "connecting", "cleanup", "expired", "ended", "unavailable"].includes(presentation.state)) {
         surface.overlay.setAttribute("aria-busy", "true");
     } else {
         surface.overlay.removeAttribute("aria-busy");

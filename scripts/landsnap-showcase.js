@@ -64,7 +64,7 @@ export const announceShowcaseLifecycle = (windowRef, state) => {
 
 export const getShowcaseLifecycleFromLease = (lease) => {
     if (lease?.status === "waiting") return "queued";
-    if (lease?.status === "starting") return "preparing";
+    if (["pending", "starting"].includes(lease?.status)) return "preparing";
     if (lease?.status === "ready") return "idle";
     if (lease?.status === "active") return "ready";
     if (["cleanup", "expired", "ended"].includes(lease?.status)) return "cleanup";

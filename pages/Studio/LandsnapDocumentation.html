@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LandSnap Documentation | Setup, Settings &amp; Workflows</title>
+    <meta name="description" content="The LandSnap 2.0 user guide for Unreal Engine 5.8: installation, AutoSnap, surface modes, settings, size tiers, review, and troubleshooting.">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="canonical" href="https://ns-tx.com/pages/Studio/LandsnapDocumentation.html">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="LandSnap Documentation">
+    <meta property="og:description" content="A practical reference for setup, placement, AutoSnap, settings, and review in Unreal Editor.">
+    <meta property="og:url" content="https://ns-tx.com/pages/Studio/LandsnapDocumentation.html">
+    <meta property="og:image" content="https://ns-tx.com/images/landsnap/FAB-thumbnail-v2.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="icon" type="image/x-icon" href="../../images/icons/nightshift.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wdth,wght@75..100,400;75..100,500;75..100,600;75..100,700&amp;family=Tektur:wght@500;600&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../styles/landsnap-docs.css">
+    <script defer src="../../scripts/landsnap-docs.js"></script>
+</head>
+<body>
+    <a class="docs-skip" href="#main-content">Skip to documentation</a>
+    <header class="docs-header">
+        <div class="docs-header-inner">
+            <a class="docs-brand" href="Landsnap.html" aria-label="LandSnap product page"><span class="docs-wordmark">LandSnap</span><span class="docs-brand-label">Documentation</span></a>
+            <nav aria-label="Related pages">
+                <a class="docs-overview-link" href="Landsnap.html">Product overview</a>
+                <a href="Landsnap.html#documentation">Original guide</a>
+                <a class="docs-fab" href="https://www.fab.com/listings/4ad39cca-a866-4112-bbfb-4972e2d2eb99" target="_blank" rel="noopener noreferrer">Get on Fab ↗</a>
+            </nav>
+        </div>
+    </header>
+    <div class="docs-layout">
+        <aside class="docs-sidebar" aria-label="Documentation index">
+            <div class="docs-sidebar-inner">
+                <details class="docs-index" open>
+                    <summary>Browse documentation</summary>
+                    <div class="docs-index-body">
+                        <div class="docs-version">Version 2.0 · Unreal Engine 5.8</div>
+                        <div class="docs-search" hidden>
+                            <label for="docs-search">Find a topic</label>
+                            <input id="docs-search" type="search" placeholder="e.g. hotkeys, collision…" aria-controls="docs-navigation" autocomplete="off">
+                            <p class="docs-search-status" id="docs-search-status" role="status" aria-live="polite"></p>
+                        </div>
+                        <nav id="docs-navigation" aria-label="Documentation topics">
+                            <div class="docs-nav-group"><h2>Get started</h2><ul>
+                                <li><a href="#quick-start">Quick start</a></li>
+                                <li><a href="#installation">Installation</a></li>
+                                <li><a href="#controls">Panel &amp; controls</a></li>
+                            </ul></div>
+                            <div class="docs-nav-group"><h2>Placement</h2><ul>
+                                <li><a href="#autosnap">AutoSnap</a></li>
+                                <li><a href="#surfaces">Surface modes</a></li>
+                                <li><a href="#placement">Actors, particles &amp; splines</a></li>
+                                <li><a href="#review">Review &amp; repair</a></li>
+                            </ul></div>
+                            <div class="docs-nav-group"><h2>Reference</h2><ul>
+                                <li><a href="#settings">Settings reference</a></li>
+                                <li><a href="#size-tiers">Size tiers</a></li>
+                                <li><a href="#terrain-fitting">Large objects &amp; terrain</a></li>
+                                <li><a href="#calibration">Calibration</a></li>
+                                <li><a href="#mcp">MCP integration</a></li>
+                                <li><a href="#troubleshooting">Troubleshooting</a></li>
+                            </ul></div>
+                        </nav>
+                        <div class="docs-sidebar-footer">Need the overview?<a href="Landsnap.html#documentation">Read the original guide ↗</a><a href="../contact.html">Contact Nightshift</a></div>
+                    </div>
+                </details>
+            </div>
+        </aside>
+        <main class="docs-main" id="main-content" tabindex="-1">
+            <article class="docs-article">
+                <header class="docs-intro">
+                    <p class="docs-eyebrow">Nightshift / Unreal Editor tools</p>
+                    <h1>LandSnap documentation</h1>
+                    <p class="docs-lede">A practical guide to placing actors on terrain. Start with a selection, snap it to a valid surface, then review and refine the result.</p>
+                    <div class="docs-meta" aria-label="Guide compatibility"><span>LandSnap 2.0</span><span>Unreal Engine 5.8</span><span>Win64</span><span>Editor-only</span></div>
+                    <nav class="docs-start-links" aria-label="Common tasks"><a href="#quick-start">Make your first snap →</a><a href="#settings">Look up a setting →</a><a href="#troubleshooting">Solve a problem →</a></nav>
+                </header>
+
+                <section class="docs-section" id="quick-start">
+                    <div class="docs-section-header"><span class="docs-section-number" aria-hidden="true">01</span><h2>Quick start</h2><a class="docs-anchor" href="#quick-start" aria-label="Link to Quick start">#</a></div>
+                    <p>LandSnap snaps selected actors, particle systems, spline components, and spline mesh components onto supported surfaces. All placement work happens in Unreal Editor.</p>
+                    <ol class="docs-steps">
+                        <li><strong>Open the panel.</strong> After <a href="#installation">installing LandSnap</a>, choose <strong>Window → LandSnap Panel</strong> and dock it beside your viewport.</li>
+                        <li><strong>Select your objects.</strong> Start with a rigid mesh actor above a loaded Landscape. Mixed actor and spline selections are also supported.</li>
+                        <li><strong>Choose a surface mode.</strong> In <strong>Placement Studio → Snap Targets</strong>, use <strong>Only Terrain Surfaces</strong> for Landscape or UE 5.8 Mesh Terrain.</li>
+                        <li><strong>Snap the selection.</strong> Click <strong>Snap Selected</strong> or press <kbd>Ctrl</kbd> + <kbd>↓</kbd>.</li>
+                        <li><strong>Inspect the result.</strong> Check the viewport and the <strong>Needs Review</strong> list. Use Undo to restore placement, or <a href="#review">review and repair</a> an unresolved result.</li>
+                    </ol>
+                    <aside class="docs-note"><p><strong>Start with the defaults.</strong> Tune offsets, trace reach, and size tiers when a particular asset or surface needs it. A rigid object may still need manual adjustment on uneven ground.</p></aside>
+                </section>
+
+                <section class="docs-section" id="installation">
+                    <div class="docs-section-header"><span class="docs-section-number" aria-hidden="true">02</span><h2>Installation</h2><a class="docs-anchor" href="#installation" aria-label="Link to Installation">#</a></div>
+                    <div class="docs-table-wrap"><table><caption>Requirements</caption><thead><tr><th scope="col">Requirement</th><th scope="col">Supported target</th></tr></thead><tbody>
+                        <tr><th scope="row">Engine</th><td>Unreal Engine 5.8</td></tr>
+                        <tr><th scope="row">Platform</th><td>Win64 editor</td></tr>
+                        <tr><th scope="row">Scope</th><td>Editor plugin; no runtime gameplay component or packaged-build cost</td></tr>
+                        <tr><th scope="row">Agent integration</th><td>Optional. The core placement workflow works independently of MCP.</td></tr>
+                    </tbody></table></div>
+                    <ol>
+                        <li>Install LandSnap from Fab. For a project-local plugin folder, use <code>YourProject/Plugins/LandSnap/</code>.</li>
+                        <li>Open the project and enable <strong>LandSnap</strong> in <strong>Edit → Plugins</strong> if prompted.</li>
+                        <li>Restart Unreal Editor. Allow a module rebuild if required for your installation.</li>
+                        <li>Open <strong>Window → LandSnap Panel</strong>. A clean configuration also shows the <strong>Snap Selected</strong> and <strong>AutoSnap</strong> toolbar buttons.</li>
+                    </ol>
+                    <p>The Fab install contains both the core <code>LandSnap</code> module and the <code>LandSnapMCP</code> adapter. Enable <a href="#mcp">agent integration</a> separately when you want to connect a client.</p>
+                </section>
+
+                <section class="docs-section" id="controls">
+                    <div class="docs-section-header"><span class="docs-section-number" aria-hidden="true">03</span><h2>Panel &amp; controls</h2><a class="docs-anchor" href="#controls" aria-label="Link to Panel and controls">#</a></div>
+                    <p><strong>Placement Studio</strong> contains the main snap action, surface settings, and review controls. The panel edits the same live settings used by toolbar actions and hotkeys. You can also find them in <strong>Editor Preferences → Plugins → LandSnap</strong>.</p>
+                    <div class="docs-table-wrap"><table><caption>Daily controls</caption><thead><tr><th scope="col">Action</th><th scope="col">Where to find it</th><th scope="col">Default shortcut</th></tr></thead><tbody>
+                        <tr><th scope="row">Snap Selected</th><td>Panel, toolbar, or selected actor's viewport right-click <strong>Snapping</strong> submenu</td><td><kbd>Ctrl</kbd> + <kbd>↓</kbd></td></tr>
+                        <tr><th scope="row">AutoSnap</th><td>Checkable toolbar button or panel mode setting</td><td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>↓</kbd></td></tr>
+                        <tr><th scope="row">Open the panel</th><td><strong>Window → LandSnap Panel</strong></td><td>—</td></tr>
+                        <tr><th scope="row">Review a placement</th><td>Placement Studio's <strong>Needs Review</strong> list</td><td>—</td></tr>
+                    </tbody></table></div>
+                    <h3>Rebind hotkeys</h3>
+                    <p>Use <strong>Setup → Hotkeys → Snap Selected Hotkey</strong> or <strong>AutoSnap Toggle Hotkey</strong>. These apply live and stay synchronized with <strong>Editor Preferences → Keyboard Shortcuts → LandSnap Plugin</strong>.</p>
+                    <h3>Configure the toolbar</h3>
+                    <p><strong>Setup → Configure Hotbar</strong> can hide either toolbar button. Its panel control and shortcut remain available. The compatibility spline-only command remains available for existing integrations; the unified <strong>Snap Selected</strong> action handles splines in the normal workflow.</p>
+                </section>
+
+                <section class="docs-section" id="autosnap">
+                    <div class="docs-section-header"><span class="docs-section-number" aria-hidden="true">04</span><h2>AutoSnap</h2><a class="docs-anchor" href="#autosnap" aria-label="Link to AutoSnap">#</a></div>
+                    <p>AutoSnap is one global editor mode. Turn it on to settle eligible placements, duplicates, pastes, and completed edits. It waits for editing to stop before running a snap and verification pass.</p>
+                    <ol>
+                        <li>Click <strong>AutoSnap</strong> in the toolbar or press <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>↓</kbd>.</li>
+                        <li>Leave <strong>AutoSnap Target Mode</strong> at <strong>Terrain / Mesh Terrain</strong> for terrain placement.</li>
+                        <li>Place or edit one eligible object. After the edit settles, inspect its placement and any review result.</li>
+                        <li>Toggle AutoSnap off when you want to place freely.</li>
+                    </ol>
+                    <div class="docs-table-wrap"><table><caption>AutoSnap behavior defaults</caption><thead><tr><th scope="col">Setting</th><th scope="col">Default</th><th scope="col">Behavior</th></tr></thead><tbody>
+                        <tr><th scope="row">Enable AutoSnap Mode</th><td>Off</td><td>Matches the toolbar toggle.</td></tr>
+                        <tr><th scope="row">AutoSnap Target Mode</th><td>Terrain / Mesh Terrain</td><td>Choose <strong>Use Normal Snap Targets</strong> to reuse the manual surface filters, including tagged targets.</td></tr>
+                        <tr><th scope="row">AutoSnap Settle Delay</th><td>0.08 s</td><td>Quiet period after an eligible edit.</td></tr>
+                        <tr><th scope="row">Allow Z Correction</th><td>On</td><td>Preserves a deliberate Z-only actor height adjustment.</td></tr>
+                        <tr><th scope="row">Allow Rotation Fine-Tuning</th><td>Off</td><td>When enabled, preserves rotation-only actor edits after earlier queued work finishes. Re-snap if the new orientation changes ground contact.</td></tr>
+                        <tr><th scope="row">AutoSnap Repair Attempts</th><td>2</td><td>Allows 0–2 bounded verification repair attempts after the initial placement.</td></tr>
+                        <tr><th scope="row">Enable Heuristic Fallback</th><td>Off</td><td>Optionally searches configured rotation and scale candidates for unresolved results.</td></tr>
+                    </tbody></table></div>
+                    <aside class="docs-note"><p><strong>Use Snap Selected for multiple actors.</strong> AutoSnap ignores edits while more than one actor is selected. Cameras, lights, empty helpers, target terrain, and editor system actors are excluded.</p></aside>
+                    <p>Stock spline-point and spline-mesh endpoint/tangent edits also enter the deferred AutoSnap workflow. Programmatic spline changes that bypass normal editor notifications require an explicit snap.</p>
+                </section>
+
+                <section class="docs-section" id="surfaces">
+                    <div class="docs-section-header"><span class="docs-section-number" aria-hidden="true">05</span><h2>Surface modes</h2><a class="docs-anchor" href="#surfaces" aria-label="Link to Surface modes">#</a></div>
+                    <p>Choose your valid targets under <strong>Placement Studio → Snap Targets → Surface Types</strong>. Terrain-only and tagged-only are mutually exclusive; exactly one surface mode is active.</p>
+                    <div class="docs-table-wrap"><table><caption>Choosing a target policy</caption><thead><tr><th scope="col">Mode</th><th scope="col">Valid targets</th><th scope="col">Typical use</th></tr></thead><tbody>
+                        <tr><th scope="row">Only Terrain Surfaces</th><td>Unreal Landscape and recognized UE 5.8 Mesh Terrain actors/components</td><td>Props, buildings, and spline placement on terrain</td></tr>
+                        <tr><th scope="row">Only Tagged Surfaces</th><td>Actors/components matching your configured surface tags</td><td>Designer-owned roads, platforms, or mesh surfaces</td></tr>
+                    </tbody></table></div>
+                    <h3>Set up a tagged surface</h3>
+                    <ol>
+                        <li>Add an Actor or Component tag to the intended target, for example <code>SnapSurface</code>.</li>
+                        <li>Add that same tag to LandSnap's allowed surface tags in <strong>Snap Targets → Tag Filters</strong>.</li>
+                        <li>Enable the corresponding Actor-tag or Component-tag check.</li>
+                        <li>Choose <strong>Only Tagged Surfaces</strong> and run <strong>Snap Selected</strong>.</li>
+                    </ol>
+                    <p>Ignore tags exclude unwanted surfaces. An empty allowed-tag list in tagged-only mode produces no valid target. The mode enables its required Visibility trace fallback automatically; disabling that fallback switches the surface mode back to terrain-only.</p>
+                    <aside class="docs-note"><p><strong>Tagged placement is surface-based.</strong> The selected object's footprint should reasonably cover the target. Tags do not turn snapping into unrestricted object stacking.</p></aside>
+                </section>
+
+                <section class="docs-section" id="placement">
+                    <div class="docs-section-header"><span class="docs-section-number" aria-hidden="true">06</span><h2>Actors, particles &amp; splines</h2><a class="docs-anchor" href="#placement" aria-label="Link to Actors, particles and splines">#</a></div>
+                    <div class="docs-table-wrap"><table><caption>Selection and placement behavior</caption><thead><tr><th scope="col">Selection</th><th scope="col">What LandSnap moves</th><th scope="col">Useful settings</th></tr></thead><tbody>
+                        <tr><th scope="row">Rigid actor / ordinary component</th><td>The actor; selecting an ordinary component targets its owner.</td><td>Bounds-bottom or pivot placement, normal alignment, preserved yaw, Z Offset</td></tr>
+                        <tr><th scope="row">Niagara / Cascade actor</th><td>The actor pivot by default, with rotation preserved.</td><td><strong>Snap Particle Actors By Pivot</strong>; optional particle normal alignment</td></tr>
+                        <tr><th scope="row">Spline Component</th><td>Spline points, without also moving the owner as a whole actor.</td><td>Spline Z Offset, normal alignment, alignment point cap</td></tr>
+                        <tr><th scope="row">Spline Mesh Component</th><td>Segment endpoints; optional segment alignment is experimental.</td><td>Spline offset and segment normal alignment</td></tr>
+                    </tbody></table></div>
+                    <h3>Rigid actors</h3>
+                    <p>Bounds-bottom placement helps objects with off-center pivots rest on the ground. Use pivot placement when the asset's origin is the intended contact point. Surface-normal alignment tilts the object to the target; preserved yaw keeps its heading.</p>
+                    <h3>Particle systems</h3>
+                    <p>Simulated visual bounds can change between frames, so particle placement uses a stable actor pivot by default and bypasses mesh footprint, convex, concave, and bounce correction. An offset child emitter still follows the actor pivot. Enable <strong>Snap Targets → Particle Systems → Align Particle Systems to Surface Normal</strong> only for emitters that should rotate with the terrain.</p>
+                    <h3>Splines</h3>
+                    <p>Select the spline owner or the components directly, then run the same <strong>Snap Selected</strong> action. Mixed selections can include actors, spline points, and spline meshes. Use the point cap for long splines when alignment updates are expensive.</p>
+                </section>
+
+                <section class="docs-section" id="review">
+                    <div class="docs-section-header"><span class="docs-section-number" aria-hidden="true">07</span><h2>Review &amp; repair</h2><a class="docs-anchor" href="#review" aria-label="Link to Review and repair">#</a></div>
+                    <p>Placement is verified against the exact captured target. Questionable results remain in <strong>Needs Review</strong>, with bounds and status information to help you inspect them.</p>
+                    <div class="docs-table-wrap"><table><caption>Reading a result</caption><thead><tr><th scope="col">Result</th><th scope="col">Meaning / next step</th></tr></thead><tbody>
+                        <tr><th scope="row">Landed</th><td>Passed the applicable contact policy. Inspect the visual result for your scene.</td></tr>
+                        <tr><th scope="row">3/4 Corners</th><td>The retained pose has exactly three measured support corners. Inspect the remaining corner.</td></tr>
+                        <tr><th scope="row">Floating</th><td>Sampled gaps exceed the applicable tolerance. Check collision, offsets, and repair options.</td></tr>
+                        <tr><th scope="row">Penetrating</th><td>Sampled burial exceeds the applicable policy. Review terrain shape and the asset footprint.</td></tr>
+                        <tr><th scope="row">Wrong surface</th><td>Verification found a different target. Check filters, overlapping surfaces, and collision.</td></tr>
+                        <tr><th scope="row">Insufficient target hits</th><td>Coverage is incomplete. Load the target region or move the footprint away from its boundary.</td></tr>
+                        <tr><th scope="row">Excessive angle</th><td>Alignment exceeds the applicable angle limit. Inspect the slope and alignment settings.</td></tr>
+                        <tr><th scope="row">No initial target</th><td>The initial snap could not find a valid surface. Check target mode, tags, trace reach, and collision.</td></tr>
+                    </tbody></table></div>
+                    <ol>
+                        <li>Use <strong>Review Issues</strong>, <strong>Previous</strong>, and <strong>Next</strong> to inspect entries without changing their placement.</li>
+                        <li>Run <strong>Heuristic Repair Selected</strong> for the active entry, or <strong>Heuristic Repair All Errored</strong> for retryable entries.</li>
+                        <li>Watch the bounded candidate search. Use <strong>Stop Repair</strong> to stop an active job.</li>
+                        <li>Make any deliberate manual correction. Use <strong>Mark Resolved</strong> when you accept the result; it clears the warning rather than moving the actor or proving new contact.</li>
+                    </ol>
+                    <p>Repair uses enabled yaw, pitch, roll, and optional uniform-scale candidates. An unsuccessful search restores its post-snap baseline. Ordinary <strong>Snap Selected</strong> keeps its baseline by default; <strong>Enable Heuristic search post Snap</strong> opts a single manual actor into the visible search. Multi-actor snapping retains the queued baseline workflow.</p>
+                    <h3>Large selections and Undo</h3>
+                    <p>Eligible rigid batches prepare across editor frames and publish bounded groups under one Undo step. <strong>Keep Published Batches When Cancelled</strong> is on by default: an explicit Cancel keeps completed, target-verified groups and leaves pending actors unchanged. Disable it for all-or-nothing cancellation. Settings, world, or Undo/Redo interruptions restore the original invocation.</p>
+                </section>
+
+                <section class="docs-section" id="settings">
+                    <div class="docs-section-header"><span class="docs-section-number" aria-hidden="true">08</span><h2>Settings reference</h2><a class="docs-anchor" href="#settings" aria-label="Link to Settings reference">#</a></div>
+                    <p>Use the searchable panel settings or <strong>Editor Preferences → Plugins → LandSnap</strong>. Some controls appear only with advanced settings enabled or with a manual Custom tier. Values below describe fresh defaults; your saved preferences may differ.</p>
+                    <div class="docs-table-wrap" role="region" aria-label="Placement settings table" tabindex="0"><table class="docs-table-wide"><caption>Core placement settings · distances in centimeters / Unreal units</caption><thead><tr><th scope="col">Setting</th><th scope="col">Default</th><th scope="col">Purpose</th></tr></thead><tbody>
+                        <tr><th scope="row">Z Offset</th><td>0</td><td>Additional vertical offset after snapping; use a small lift or burial intentionally.</td></tr>
+                        <tr><th scope="row">Trace Up Distance</th><td>100,000</td><td>How far above the actor the initial trace starts.</td></tr>
+                        <tr><th scope="row">Trace Down Distance</th><td>200,000</td><td>Downward search reach for terrain below the actor.</td></tr>
+                        <tr><th scope="row">Trace Channel</th><td>WorldStatic</td><td>The collision channel used for snap traces.</td></tr>
+                        <tr><th scope="row">Align To Normal</th><td>On</td><td>Tilts rigid actors to follow the surface.</td></tr>
+                        <tr><th scope="row">Preserve Yaw</th><td>On</td><td>Keeps the actor's heading during normal alignment.</td></tr>
+                        <tr><th scope="row">Pivot Aware Bottom</th><td>On</td><td>Uses bounds-bottom placement for rigid objects.</td></tr>
+                        <tr><th scope="row">Snap Pivot To Hit</th><td>Off</td><td>Places the actor origin directly at the hit point.</td></tr>
+                        <tr><th scope="row">Use Normal Push Placement</th><td>Off</td><td>Pushes along the surface normal rather than world Z during aligned placement.</td></tr>
+                        <tr><th scope="row">Large Actor Tolerance Scale</th><td>1.0</td><td>Adjusts eligible physical-large Landscape contact/burial bands, clamped to 0.1–10.0. Floating tolerance never scales.</td></tr>
+                    </tbody></table></div>
+                    <div class="docs-table-wrap"><table><caption>Heuristic search and feedback</caption><thead><tr><th scope="col">Setting</th><th scope="col">Default</th><th scope="col">Purpose</th></tr></thead><tbody>
+                        <tr><th scope="row">Enable Heuristic search post Snap</th><td>Off</td><td>Runs a visible search after an unresolved single-actor manual snap.</td></tr>
+                        <tr><th scope="row">Allow Yaw Rotation</th><td>On</td><td>Permits bounded clockwise/counterclockwise repair candidates.</td></tr>
+                        <tr><th scope="row">Allow Pitch / Roll Rotation</th><td>On</td><td>Permits bounded tilt candidates around the actor's local axes.</td></tr>
+                        <tr><th scope="row">Allow Uniform Scaling</th><td>Off</td><td>Opts into scale changes during search.</td></tr>
+                        <tr><th scope="row">Max Heuristic Search Time</th><td>2 s</td><td>Shared soft time budget; an in-progress candidate finishes before the next budget check.</td></tr>
+                        <tr><th scope="row">Enable Snap VFX</th><td>Off</td><td>Optional green outline acknowledgement for successful placement.</td></tr>
+                    </tbody></table></div>
+                    <p>Warnings, sounds, AutoSnap sound mute, and debug output are configured separately. Debug drawings and verbose logging can make large selections more expensive; enable them for focused diagnosis.</p>
+                </section>
+
+                <section class="docs-section" id="size-tiers">
+                    <div class="docs-section-header"><span class="docs-section-number" aria-hidden="true">09</span><h2>Size tiers</h2><a class="docs-anchor" href="#size-tiers" aria-label="Link to Size tiers">#</a></div>
+                    <p>Size tiers tune trace reach, convex thresholds, and bounce correction for different asset scales. Choose an automatic classifier or a manual tier. Tier selection itself does not choose a different placement solver.</p>
+                    <h3>Automatic sizing</h3>
+                    <p>The default <strong>Mixed</strong> range is <strong>100–25,000 cm</strong>, using logarithmic buckets. Select a size source: scaled Mesh Asset Bounds, Render Bounds, or Actor Bounds. Values outside the range clamp to the smallest or largest tier.</p>
+                    <div class="docs-table-wrap"><table><caption>Auto range profiles</caption><thead><tr><th scope="col">Range profile</th><th scope="col">Range (cm)</th><th scope="col">Use</th></tr></thead><tbody>
+                        <tr><th scope="row">Props</th><td>25–3,000</td><td>Small to medium props</td></tr>
+                        <tr><th scope="row">Mixed</th><td>100–25,000</td><td>General scenes; default range</td></tr>
+                        <tr><th scope="row">Large Structures</th><td>500–200,000</td><td>Large architectural assets</td></tr>
+                        <tr><th scope="row">Custom</th><td>Your Min / Max</td><td>A project-specific range</td></tr>
+                    </tbody></table></div>
+                    <p><strong>Log</strong> uses logarithmic spacing; <strong>Linear</strong> uses evenly spaced size bins; <strong>Quantile</strong> uses selection-derived thresholds. Use <strong>Auto-Range From Selection (p5/p95)</strong> to derive bounds, or <strong>Rebuild Quantiles From Selection</strong> to rebuild Quantile thresholds.</p>
+                    <p>The separate asset profile can be Auto, Props, Architecture, Foliage / Organic, Vehicles, or Custom. Auto resolves it per actor from tags, class, and shape. The Custom asset profile disables tier overrides and uses manual advanced values.</p>
+                    <h3>Manual tier reference</h3>
+                    <p class="docs-table-hint">Distances are in Unreal units (cm). On narrow screens, scroll the table horizontally.</p>
+                    <div class="docs-table-wrap" role="region" aria-label="Manual size tier values" tabindex="0"><table class="docs-table-size"><caption>Recommended tier values</caption><thead><tr><th scope="col">Tier</th><th scope="col">Convex trace lift</th><th scope="col">Convex trace depth</th><th scope="col">Convex threshold</th><th scope="col">Extra push</th><th scope="col">Bounce threshold</th><th scope="col">Bounce max distance</th></tr></thead><tbody>
+                        <tr><th scope="row">XXXTiny</th><td>25</td><td>1,250</td><td>0.0625</td><td>0.3125</td><td>0.0001</td><td>0.05</td></tr>
+                        <tr><th scope="row">XXTiny</th><td>50</td><td>2,500</td><td>0.125</td><td>0.625</td><td>0.00025</td><td>0.1</td></tr>
+                        <tr><th scope="row">XTiny</th><td>100</td><td>5,000</td><td>0.25</td><td>1.25</td><td>0.00075</td><td>1</td></tr>
+                        <tr><th scope="row">Tiny</th><td>200</td><td>300</td><td>0.5</td><td>2.5</td><td>0.0025</td><td>2.5</td></tr>
+                        <tr><th scope="row">Small</th><td>300</td><td>5,000</td><td>1</td><td>5</td><td>0.25</td><td>5</td></tr>
+                        <tr><th scope="row">Medium</th><td>800</td><td>40,000</td><td>2</td><td>10</td><td>1</td><td>40</td></tr>
+                        <tr><th scope="row">Large</th><td>12,800</td><td>640,000</td><td>32</td><td>100</td><td>12</td><td>45</td></tr>
+                        <tr><th scope="row">XLarge</th><td>18,000</td><td>1,200,000</td><td>48</td><td>160</td><td>24</td><td>50</td></tr>
+                        <tr><th scope="row">XXLarge</th><td>27,000</td><td>1,800,000</td><td>72</td><td>220</td><td>36</td><td>75</td></tr>
+                        <tr><th scope="row">XXXLarge</th><td>45,000</td><td>3,000,000</td><td>120</td><td>320</td><td>60</td><td>150</td></tr>
+                    </tbody></table></div>
+                    <p>Use a manual <strong>Custom</strong> tier for individual advanced values. A calibration tier is a fixture size reference; it does not change the production classifier.</p>
+                </section>
+
+                <section class="docs-section" id="terrain-fitting">
+                    <div class="docs-section-header"><span class="docs-section-number" aria-hidden="true">10</span><h2>Large objects &amp; terrain</h2><a class="docs-anchor" href="#terrain-fitting" aria-label="Link to Large objects and terrain">#</a></div>
+                    <p>Rigid placement uses representative bottom-footprint samples rather than every underside vertex. Ordinary coverage uses nine points: four corners, four edge midpoints, and the center.</p>
+                    <p>Eligible Landscape footprints at least <strong>500 UU (5 m) on both local axes</strong> can use nine exact-target terrain heights to infer pitch and roll, followed by corner seating and bounded support-edge fitting. This physical-large policy is separate from the size-tier classifier.</p>
+                    <p>Convex Saddle describes a crest, Concave Saddle a bowl, and Diagonal Saddle opposing curvature. These labels describe measured terrain shape. They do not alone prove contact or successful recovery; unresolved results stay visible for review.</p>
+                    <aside class="docs-note"><p><strong>Precision has a scope.</strong> The ordinary 0.5 cm gap/penetration audit threshold is measured along the captured target normal. It does not promise 0.5 cm world-Z accuracy or continuous contact beneath an entire building. Large fitting has its own bounded contact/burial policy.</p></aside>
+                    <h3>World Partition and terrain boundaries</h3>
+                    <p>Load the relevant cells so target collision can be sampled. Leave room around a footprint for rotation: an object near a Landscape edge may tilt beyond available coverage and remain unresolved. Landscape streaming proxies belonging to the same Landscape GUID are recognized as the same logical target.</p>
+                    <h3>Experimental Mesh Terrain deformation</h3>
+                    <p>Ordinary Mesh Terrain snapping works independently of deformation. For optional terrain shaping, enable <strong>Setup → Experimental Settings → Enable Mesh Terrain (Experimental)</strong>. This reveals <strong>Mesh Terrain Settings(Experimental)</strong> with <strong>Deform Under Selected</strong> and the default-off <strong>Deform After Snap</strong> workflow.</p>
+                    <p>The owned modifier supports a grayscale deformation map, blend behavior, depth, footprint padding, falloff, and priority controls. Repeated actions update or replace the owned component instead of stacking duplicates.</p>
+                    <aside class="docs-note docs-note--experimental"><p><strong>Experimental workflow.</strong> Deformation applies to UE 5.8 Mesh Terrain, not standard Landscape heightmaps or tagged static meshes. Its world-space XY footprint may need a custom map for irregular foundations, stairs, or basements.</p></aside>
+                </section>
+
+                <section class="docs-section" id="calibration">
+                    <div class="docs-section-header"><span class="docs-section-number" aria-hidden="true">11</span><h2>Calibration</h2><a class="docs-anchor" href="#calibration" aria-label="Link to Calibration">#</a></div>
+                    <p>Use <strong>Setup → Calibration</strong> to prepare repeatable test objects in a suitable test level. Creating a fixture prepares a selection; run <strong>Snap Selected</strong> to test placement.</p>
+                    <div class="docs-table-wrap"><table><caption>Native calibration fixtures</caption><thead><tr><th scope="col">Fixture</th><th scope="col">Layout</th><th scope="col">Purpose</th></tr></thead><tbody>
+                        <tr><th scope="row">Scatter Test</th><td>Seeded 500-cube fixture</td><td>Mixed-scale placement and repeat testing</td></tr>
+                        <tr><th scope="row">Domino · Single Row</th><td>12 cubes by default; configurable 2–500</td><td>Compare a chosen production size reference across a row</td></tr>
+                        <tr><th scope="row">Domino · Full Map Coverage</th><td>Inset 2 km square; capped at 22 × 22 (484 actors)</td><td>Sparse placement samples across a larger region</td></tr>
+                    </tbody></table></div>
+                    <p>Domino exposes ten size references from XXXTiny through XXXLarge, with a default <strong>8.73%</strong> cube-width gap. The selected tier sizes the fixture; snapping still uses your production classifier and tuning.</p>
+                    <p>Complete fixtures can be reselected after moving or snapping them. Creation fails closed on partial, mismatched, mixed, or colliding ownership evidence. <strong>Clean</strong> targets exact-owned loaded fixtures independently of the current dropdown; it does not broadly delete actors by label or folder. Load relevant regions and resolve unloaded fixture conflicts before proceeding.</p>
+                </section>
+
+                <section class="docs-section" id="mcp">
+                    <div class="docs-section-header"><span class="docs-section-number" aria-hidden="true">12</span><h2>MCP integration</h2><a class="docs-anchor" href="#mcp" aria-label="Link to MCP integration">#</a></div>
+                    <p>The included <code>LandSnapMCP</code> editor module lets a compatible client inspect settings, snap a bounded selection, verify exact targets, and run review repair. Epic's UE 5.8 MCP and Toolset Registry features are experimental; core manual placement remains independent.</p>
+                    <ol>
+                        <li>Open <strong>Setup → MCP</strong> and choose <strong>Enable Agent Integration</strong>, or <strong>Configure Agent Integration</strong> if onboarding was dismissed.</li>
+                        <li>Confirm the editor's setup prompt. Restart when requested if Epic's Model Context Protocol plugin was newly enabled or its URL path changed.</li>
+                        <li>Connect your client to the local endpoint, normally <code>http://127.0.0.1:8000/mcp</code>.</li>
+                        <li>Discover <code>LandSnapMCP.LandSnapToolsetDefinition</code> and inspect the available tools. With Unreal tool search enabled, use <code>list_toolsets</code>, <code>describe_toolset</code>, and <code>call_tool</code>.</li>
+                    </ol>
+                    <div class="docs-table-wrap"><table><caption>Transport and mutation are separate opt-ins</caption><thead><tr><th scope="col">Capability</th><th scope="col">Requirement</th></tr></thead><tbody>
+                        <tr><th scope="row">Read-only status</th><td>Configured local transport; try <code>GetStatus</code>.</td></tr>
+                        <tr><th scope="row">Agent-driven changes</th><td>Set Windows User environment variable <code>LANDSNAP_AGENT_ENABLED</code> to <code>1</code> before launch, restart the launcher/editor, and confirm <strong>Agent mutations: Enabled</strong>.</td></tr>
+                        <tr><th scope="row">Provider credentials</th><td>LandSnap requires no provider API key. Any credentials belong to the external client and should stay in operating-system environment variables.</td></tr>
+                    </tbody></table></div>
+                    <p>Keep the endpoint on loopback. Transport activation does not grant mutation permission. The adapter works with selected actors, exact paths, and Outliner folders; it does not create, position, or select actors itself.</p>
+                </section>
+
+                <section class="docs-section" id="troubleshooting">
+                    <div class="docs-section-header"><span class="docs-section-number" aria-hidden="true">13</span><h2>Troubleshooting</h2><a class="docs-anchor" href="#troubleshooting" aria-label="Link to Troubleshooting">#</a></div>
+                    <div class="docs-table-wrap"><table><caption>Common symptoms and first checks</caption><thead><tr><th scope="col">Symptom</th><th scope="col">First checks</th></tr></thead><tbody>
+                        <tr><th scope="row">No movement / no target</th><td>Confirm selection, surface mode, allowed tags, loaded collision, and trace reach. Terrain target actors and unsupported editor helpers are not placement objects.</td></tr>
+                        <tr><th scope="row">Object floats or sinks</th><td>Inspect pivot/bounds-bottom choice, Z Offset, mesh collision, and terrain shape. Use the review result to guide repair.</td></tr>
+                        <tr><th scope="row">Missing simple collision warning</th><td>Inspect the Static Mesh asset's collision. Missing or inaccurate collision can reduce trace reliability even when the visible geometry looks correct.</td></tr>
+                        <tr><th scope="row">Tagged surface is ignored</th><td>Check allowed tags and tag-check scope, ignore tags, target collision, and Only Tagged Surfaces. The allowed list must not be empty.</td></tr>
+                        <tr><th scope="row">AutoSnap ignores an edit</th><td>Check the global toggle and single-actor selection. Z-only edits are preserved by default; rotation-only edits may be preserved when fine-tuning is enabled.</td></tr>
+                        <tr><th scope="row">Emitter rotates unexpectedly</th><td>Disable particle normal alignment to preserve actor orientation.</td></tr>
+                        <tr><th scope="row">Toolbar button is absent</th><td>Use Window → LandSnap Panel and check Setup → Configure Hotbar.</td></tr>
+                        <tr><th scope="row">Large batch is slow</th><td>Work in bounded groups, review frame-budget controls, and turn off unnecessary debug drawing/logging.</td></tr>
+                        <tr><th scope="row">Footprint loses target coverage</th><td>Load the relevant World Partition cells and allow an inset from the terrain boundary for tilt.</td></tr>
+                        <tr><th scope="row">Agent mutation is blocked</th><td>Confirm the OS environment flag was set before the editor and launcher started. Read-only transport availability does not enable mutation.</td></tr>
+                    </tbody></table></div>
+                    <h3>Limits to expect</h3>
+                    <p>Very thin meshes, extreme slopes, highly concave targets, and broad rigid footprints may need tuning or manual placement. A bounded repair search may finish without a conforming result. Inspect the final pose and keep unresolved results visible until you make an intentional decision.</p>
+                    <p>For help, <a href="../contact.html">contact Nightshift</a> with your engine version, target type, relevant settings, and a screenshot of the selection and review result.</p>
+                </section>
+                <footer class="docs-footer"><p>LandSnap · Nightshift Studio LLC</p><p><a href="Landsnap.html">Product overview</a> · <a href="#main-content">Back to top ↑</a></p></footer>
+            </article>
+        </main>
+    </div>
+</body>
+</html>

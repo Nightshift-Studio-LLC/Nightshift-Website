@@ -267,6 +267,56 @@ test("queue presentation follows the supervised warm-editor lifecycle without te
     assert.equal(unavailable.showLeave, false);
 });
 
+test("unowned admission stays pending without a false queue, survives resume and promotes without rejoining", async () => {
+    const now = 1_700_000_000_000;
+    const pending = { protocol: SHOWCASE_QUEUE_PROTOCOL_VERSION, status: "pending", pollAfterMs: 5_000 };
+    assert.equal(parseQueueLease(pending, now)?.status, "pending");
+    assert.equal(parseQueueLease({ ...pending, leaseId: opaqueId }, now), null);
+    assert.equal(parseQueueLease({ ...pending, pollAfterMs: "5000" }, now), null);
+    const presentation = getQueuePresentation(parseQueueLease(pending, now), now);
+    assert.equal(presentation.title, "Checking demo availability");
+    assert.equal(presentation.showMetrics, false);
+    assert.equal(presentation.showLeave, true);
+    assert.equal(presentation.showTryDemo, false);
+    assert.equal(presentation.countdownSeconds, 0);
+    assert.doesNotMatch(presentation.message, /another session|number .* in line/i);
+
+    const operations = [];
+    const timers = [];
+    let available = false;
+    let fail = false;
+    let subscribed = 0;
+    const controller = createQueueLeaseController({ now: () => now,
+        service: {
+            async request(operation) {
+                operations.push(operation);
+                if (fail) throw new Error("temporary network interruption");
+                return available ? readyLease(now) : pending;
+            },
+            subscribe() { subscribed++; return { close() {} }; },
+        },
+        setTimer(callback, delay) { timers.push({ callback, delay }); return timers.length; }, clearTimer() {},
+    });
+    await controller.start();
+    assert.equal(controller.getLease().status, "pending");
+    assert.equal(subscribed, 1);
+    assert.equal(timers.at(-1).delay, 5_000);
+    fail = true;
+    await controller.recheck();
+    assert.equal(controller.getLease().status, "pending");
+    fail = false;
+    controller.suspend();
+    await controller.resume();
+    assert.equal(subscribed, 2);
+    available = true;
+    await controller.recheck();
+    assert.equal(controller.getLease().status, "ready");
+    assert.deepEqual(operations, ["join", "status", "status", "status"]);
+    await controller.leave();
+    assert.equal(operations.at(-1), "leave");
+    assert.equal(controller.getLease().status, "idle");
+});
+
 test("Try Demo joins once, then uses status until ready and heartbeat only for a ready lease", async () => {
     let now = 1_700_000_000_000;
     const operations = [];

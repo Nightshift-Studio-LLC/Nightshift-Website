@@ -93,6 +93,7 @@ test("the framed shell sends only fixed lifecycle states to the exact parent ori
     assert.equal(getShowcaseLifecycleFromLease({ status: "idle" }), "idle");
     assert.equal(getShowcaseLifecycleFromLease({ status: "waiting" }), "queued");
     assert.equal(getShowcaseLifecycleFromLease({ status: "starting" }), "preparing");
+    assert.equal(getShowcaseLifecycleFromLease({ status: "pending" }), "preparing");
     assert.equal(getShowcaseLifecycleFromLease({ status: "ready" }), "idle");
     assert.equal(getShowcaseLifecycleFromLease({ status: "active" }), "ready");
     assert.equal(getShowcaseLifecycleFromLease({ status: "expired" }), "cleanup");
