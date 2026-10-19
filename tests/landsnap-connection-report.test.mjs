@@ -62,6 +62,26 @@ test("normal visits, wrong origins, and approximate fragments do not touch the d
     ]) assert.equal(createBrowserConnectionReport(location, document), null);
 });
 
+test("the report remains inside the terminal dialog, outside the inert controls panel", () => {
+    const made = [];
+    const card = { append(node) { this.child = node; } };
+    const doc = {
+        body: { append() { assert.fail("Use the existing terminal dialog"); } },
+        getElementById() { return null; },
+        querySelector(selector) { assert.equal(selector, ".landsnap-showcase-queue-card"); return card; },
+        createElement(tag) {
+            const node = { tag, children: [], append(...children) { this.children.push(...children); }, setAttribute() {}, addEventListener() {} };
+            made.push(node);
+            return node;
+        },
+    };
+    const recorder = createBrowserConnectionReport({ hostname: "showcase.ns-tx.com", protocol: "https:", hash: "#connection-report" }, doc);
+    assert.equal(card.child.id, "landsnap-connection-report");
+    assert.ok(made.some((node) => node.id === "landsnap-connection-report-heading"));
+    assert.ok(made.some((node) => node.id === "landsnap-connection-report-save"));
+    recorder.retire();
+});
+
 test("timeline captures negotiation and data readiness without inspecting event payloads", async () => {
     const { recorder, stream } = fixture();
     recorder.attach(stream);

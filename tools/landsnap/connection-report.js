@@ -160,12 +160,14 @@ export const createBrowserConnectionReport = (locationRef = globalThis.location,
     panel.id = "landsnap-connection-report";
     panel.className = "landsnap-showcase-disclosure";
     const heading = documentRef.createElement("summary");
+    heading.id = "landsnap-connection-report-heading";
     heading.textContent = "Connection report — diagnostic mode";
     const description = documentRef.createElement("p");
     description.textContent = "Records up to two minutes on this device. Save after the attempt ends. No credentials, SDP or network addresses are included. Nothing is uploaded.";
     const status = documentRef.createElement("p");
     status.setAttribute("role", "status");
     const button = documentRef.createElement("button");
+    button.id = "landsnap-connection-report-save";
     button.type = "button";
     button.className = "landsnap-showcase-action";
     button.textContent = "Save connection report";
@@ -183,6 +185,8 @@ export const createBrowserConnectionReport = (locationRef = globalThis.location,
         setTimeout(() => URL.revokeObjectURL(url), 1_000);
     });
     panel.append(heading, description, status, button);
-    (documentRef.querySelector(".landsnap-showcase-panel-primary") ?? documentRef.body).append(panel);
+    // Terminal queue states cover the workspace and make its controls inert.
+    // Keep the download inside that dialog so failed attempts remain saveable.
+    (documentRef.querySelector(".landsnap-showcase-queue-card") ?? documentRef.body).append(panel);
     return recorder;
 };

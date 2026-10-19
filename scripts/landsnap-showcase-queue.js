@@ -977,7 +977,10 @@ export const installShowcaseQueueGate = (windowRef = globalThis.window, document
             const watch = observer && !observer.hidden
                 ? documentRef.getElementById("landsnap-showcase-observer-action")
                 : null;
-            const focusable = [surface.tryDemo, surface.startDemo, surface.retry, surface.leave, watch]
+            const report = documentRef.getElementById("landsnap-connection-report");
+            const reportHeading = report ? documentRef.getElementById("landsnap-connection-report-heading") : null;
+            const reportSave = report?.open ? documentRef.getElementById("landsnap-connection-report-save") : null;
+            const focusable = [surface.tryDemo, surface.startDemo, surface.retry, surface.leave, watch, reportHeading, reportSave]
                 .filter((control) => control && !control.hidden && !control.disabled);
             if (!focusable.length) return;
             const current = focusable.indexOf(documentRef.activeElement);
