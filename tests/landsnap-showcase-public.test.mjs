@@ -102,6 +102,40 @@ const dependencies = Object.freeze({
     TextParameters: FakeText,
 });
 
+test("opt-in evidence follows the real readiness lifecycle and retires before teardown", async () => {
+    const codes = [];
+    let attached = null;
+    const diagnostics = {
+        record(code) { codes.push(code); },
+        attach(stream) { attached = stream; },
+        retire() { assert.equal(attached.disconnected, undefined); codes.push("retired"); },
+    };
+    const transport = createPublicShowcaseTransportWithDependencies(
+        dependencies, publicLocation, async () => ({ status: 204 }), () => now, createFakeTimers(), diagnostics,
+    );
+    await transport.mount({ replaceChildren() {} }, { session: brokerSession, input: mouseOnlyInput });
+    assert.equal(attached, FakePixelStreaming.latest);
+    attached.events.get("dataChannelOpen")();
+    const request = attached.sent[0];
+    attached.responses.get(SHOWCASE_RESPONSE_LISTENER)(JSON.stringify({
+        version: "landsnap-showcase-v1", type: "operation-result", action: "session_ready",
+        requestId: request.requestId, result: "success", code: "session_ready",
+    }));
+    transport.disconnect();
+    assert.deepEqual(codes, ["ticket-exchanged", "readiness-submitted", "readiness-confirmed", "retired"]);
+    assert.equal(attached.disconnected, true);
+});
+
+test("a rejected ticket retains only a fixed mount failure and starts no SDK stream", async () => {
+    const codes = [];
+    const diagnostics = { record(code) { codes.push(code); }, attach() { assert.fail("Rejected ticket must not mount"); }, retire() { codes.push("retired"); } };
+    const transport = createPublicShowcaseTransportWithDependencies(
+        dependencies, publicLocation, async () => ({ status: 403 }), () => now, createFakeTimers(), diagnostics,
+    );
+    await assert.rejects(transport.mount({ replaceChildren() {} }, { session: brokerSession, input: mouseOnlyInput }));
+    assert.deepEqual(codes, ["mount-failed", "retired"]);
+});
+
 const createFakeTimers = () => {
     let nextId = 0;
     const pending = new Map();

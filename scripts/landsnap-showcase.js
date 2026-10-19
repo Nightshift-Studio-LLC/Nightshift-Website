@@ -1,4 +1,4 @@
-import { parseTutorialState, getTutorialCopy } from "./landsnap-showcase-guide.js?v=20261015-queue-admission-v1";
+import { parseTutorialState, getTutorialCopy } from "./landsnap-showcase-guide.js?v=20261019-connection-report-v1";
 
 /*
  * Browser-side control surface for the LandSnap Showcase.

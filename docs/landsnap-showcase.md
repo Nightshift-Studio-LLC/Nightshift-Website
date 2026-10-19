@@ -1,5 +1,40 @@
 # LandSnap Showcase web integration
 
+## Opt-in connection evidence
+
+The proposed `20261019-connection-report-v1` release adds a device-local report
+for the unresolved cellular connection failure. This source change is not live
+deployment evidence. On the dedicated HTTPS host only, the exact fragment
+`#connection-report` enables a diagnostic disclosure after Start Demo. Normal
+visits create no recorder, interval or report UI. The fragment selects only
+observation; it cannot select a signalling endpoint, streamer, lease or setting.
+
+After one attempt, open **Connection report — diagnostic mode** and select
+**Save connection report**. It remains available after transport teardown.
+Each new connection attempt replaces the previous report. Collection stops
+after two minutes, retains at most 160 events, marks truncation, and permits
+only one outstanding statistics request. It does not reconnect, change
+timeouts, request a lease, alter settings or emit a control command.
+
+The JSON contains UTC start time, relative event times, bounded state enums,
+offer/answer presence, candidate and relay counts, selected-pair types and
+protocol, video bytes/decoded frames, data-message counts, and readiness
+milestones. A nominated-pair fallback is explicitly distinguished from a
+transport-selected pair. `readiness-submitted` means the SDK accepted the
+UIInteraction request; it is not proof that Unreal received it. Video
+initialization likewise is not decoded-frame proof. Missing statistics remain
+unknown, not a network-failure verdict. SDK event/error payloads, raw SDP,
+candidate addresses/ports/IDs, URLs, cookies, tickets and raw statistics never
+enter the report. Nothing is uploaded or persisted by the page; saving is an
+explicit local download.
+
+Correlate its UTC time with the server's admitted/subscribed/offer/terminal
+receipt and TURN health from the same attempt. First determine whether the
+answer was set, ICE connected, video decoded, the data channel opened, and
+`session_ready` completed. No stage proves the next. Preserve the existing
+strict queue protocol and server deadline, and do not weaken networking or
+lengthen the session merely to hide a failed handshake.
+
 ## Scope
 
 The production Showcase is the dedicated `https://showcase.ns-tx.com/` host on the Nukebox. `pages/Studio/Landsnap.html#showcase` keeps the complete Showcase in its existing expandable section through one fixed, responsive iframe; it never redirects the top-level page or loads queue, player, or Pixel Streaming code itself. `pages/Studio/LandSnapShowcase.html` is the direct-shell source that the dedicated host serves inside that frame. The Showcase uses one restricted visitor session at a time with Unreal Engine 5.8.3 and Pixel Streaming 2 with **Stream Level Editor**. One supervised editor starts at Windows sign-in and remains warm between visitors; Full Editor remains a trusted local workflow only.

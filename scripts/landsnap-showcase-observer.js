@@ -12,8 +12,8 @@
  * half-configured waiting-room control.
  */
 
-import { parseTutorialState, getTutorialCopy } from "./landsnap-showcase-guide.js?v=20261015-queue-admission-v1";
-import { isPublicShowcaseHost } from "./landsnap-showcase-queue.js?v=20261015-queue-admission-v1";
+import { parseTutorialState, getTutorialCopy } from "./landsnap-showcase-guide.js?v=20261019-connection-report-v1";
+import { isPublicShowcaseHost } from "./landsnap-showcase-queue.js?v=20261019-connection-report-v1";
 
 export const OBSERVER_PROTOCOL_VERSION = "landsnap-showcase-observer-v1";
 export const OBSERVER_SESSION_PATH = "/api/landsnap-showcase/observer/v1/session";
@@ -282,7 +282,7 @@ export const createObserverController = ({
  * fetched only after a visitor explicitly chooses the read-only watch action.
  */
 export const createLazyObserverTransportFactory = () => async () => {
-    const { createObserverShowcaseTransport } = await import("./vendor/landsnap-showcase-ps2-observer.js?v=20261015-queue-admission-v1");
+    const { createObserverShowcaseTransport } = await import("./vendor/landsnap-showcase-ps2-observer.js?v=20261019-connection-report-v1");
     return createObserverShowcaseTransport();
 };
 

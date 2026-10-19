@@ -11,6 +11,7 @@ import {
     PixelStreaming,
     TextParameters,
 } from "@epicgames-ps/lib-pixelstreamingfrontend-ue5.8";
+import { createBrowserConnectionReport } from "./connection-report.js";
 
 export const PUBLIC_SHOWCASE_HOST = "showcase.ns-tx.com";
 export const SHOWCASE_RESPONSE_LISTENER = "landsnap-showcase-response";
@@ -226,6 +227,7 @@ export const createPublicShowcaseTransportWithDependencies = (
     fetchImpl = globalThis.fetch,
     now = Date.now,
     timers = globalThis,
+    diagnostics = null,
 ) => {
     const {
         Config: LocalConfig,
@@ -271,6 +273,7 @@ export const createPublicShowcaseTransportWithDependencies = (
         clearSessionReadyRetry();
         sessionReadyRequestId = null;
         sessionReady = true;
+        diagnostics?.record("readiness-confirmed");
         sessionReadyListeners.forEach((listener) => listener());
     };
     const clearSessionReadyRetry = () => {
@@ -297,6 +300,7 @@ export const createPublicShowcaseTransportWithDependencies = (
             failSessionReady();
             return;
         }
+        diagnostics?.record("readiness-submitted");
         // A lost response must not hold a connected visitor indefinitely.
         // Each retry has a new ID, so a late response cannot activate it.
         if (!sessionReady && typeof timers.setTimeout === "function") {
@@ -310,6 +314,7 @@ export const createPublicShowcaseTransportWithDependencies = (
     const failSessionReady = () => {
         if (disposed) return;
         readinessFailed = true;
+        diagnostics?.record("readiness-failed");
         clearSessionReadyRetry();
         sessionReadyRequestId = null;
         dataChannelOpen = false;
@@ -360,6 +365,7 @@ export const createPublicShowcaseTransportWithDependencies = (
             try {
                 await primePublicShowcaseSession(fetchImpl, options.session, locationRef, now);
                 if (disposed) return;
+                diagnostics?.record("ticket-exchanged");
                 const { signallingUrl } = createPublicSessionEndpoints(options.session, locationRef, now());
                 mountElement.replaceChildren();
                 const config = new LocalConfig({
@@ -409,9 +415,12 @@ export const createPublicShowcaseTransportWithDependencies = (
                     }
                     responseListeners.forEach((listener) => listener(response));
                 });
+                diagnostics?.attach(stream);
                 stream.connect();
             } catch (error) {
                 if (disposed) return;
+                diagnostics?.record("mount-failed");
+                diagnostics?.retire();
                 reportState("error");
                 throw error;
             }
@@ -423,6 +432,7 @@ export const createPublicShowcaseTransportWithDependencies = (
         },
         disconnect() {
             if (disposed) return;
+            diagnostics?.retire();
             disposed = true;
             sessionReady = false;
             dataChannelOpen = false;
@@ -453,4 +463,4 @@ export const createPublicShowcaseTransport = () => createPublicShowcaseTransport
     OptionParameters,
     PixelStreaming,
     TextParameters,
-});
+}, globalThis.location, globalThis.fetch, Date.now, globalThis, createBrowserConnectionReport());

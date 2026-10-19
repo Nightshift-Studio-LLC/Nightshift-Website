@@ -26,7 +26,7 @@ test("the product page embeds the fixed dedicated Showcase host without top-leve
     assert.match(productPage, /data-landsnap-showcase-rollout/);
     assert.match(productPage, /Demo in progress/);
     assert.match(productPage, /Bugs and interruptions may occur/);
-    assert.match(productPage, /src="https:\/\/showcase\.ns-tx\.com\/\?v=20261015-queue-admission-v1"/);
+    assert.match(productPage, /src="https:\/\/showcase\.ns-tx\.com\/\?v=20261019-connection-report-v1"/);
     assert.match(productPage, /landsnap-showcase-embed\.js/);
     assert.match(productPage, /allow="autoplay; fullscreen; clipboard-read; clipboard-write"/);
     assert.match(productPage, /sandbox="allow-scripts allow-same-origin allow-forms allow-pointer-lock allow-presentation"/);
@@ -306,7 +306,7 @@ test("reconciled showcase retains original icons and Select All alongside the gu
 test("reconciled embed and child imports share a fixed local release version", async () => {
     const child = await readSource("../pages/Studio/LandSnapShowcase.html");
     const product = await readSource("../pages/Studio/Landsnap.html");
-    const release = "20261015-queue-admission-v1";
+    const release = "20261019-connection-report-v1";
     assert.equal(SHOWCASE_EMBED_ORIGIN, `https://showcase.ns-tx.com/?v=${release}`);
     assert.equal(SHOWCASE_LOCAL_PREVIEW_PATH, `./LandSnapShowcase.html?v=${release}`);
     assert.ok(product.includes(`src="${SHOWCASE_EMBED_ORIGIN}"`));
