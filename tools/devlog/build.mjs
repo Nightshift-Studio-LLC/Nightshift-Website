@@ -362,46 +362,10 @@ const groupPostsByMonth = (posts) => {
     return groups;
 };
 
-const softwareItems = [
-    ["Unreal", "https://www.unrealengine.com/", "/images/icons/software/unreal-engine.svg"],
-    ["Source 2", "https://developer.valvesoftware.com/wiki/Source_2", "/images/icons/software/source-2.svg"],
-    ["Enfusion", "https://enfusionengine.com/", "/images/icons/software/enfusion.svg"],
-    ["RAGE", "https://docs.fivem.net/docs/", "/images/icons/software/rage.svg"],
-    ["Blender", "https://www.blender.org/", "/images/icons/software/blender.svg"],
-    ["Adobe 3D", "https://www.adobe.com/products/substance3d.html", "/images/icons/software/adobe-3d.svg"],
-    ["Affinity Suite", "https://affinity.serif.com/", "/images/icons/software/affinity-suite.png"],
-    ["Gaea 2.0", "https://quadspinner.com/gaea/", "/images/icons/software/gaea.png"],
-    ["CC5", "https://www.reallusion.com/character-creator/", "/images/icons/software/cc5.png"],
-    ["iClone 8", "https://www.reallusion.com/iclone/", "/images/icons/software/iclone-8.png"],
-    ["Marvelous Designer", "https://www.marvelousdesigner.com/", "/images/icons/software/marvelous-designer.png"],
-    ["Ornatrix", "https://ephere.com/plugins/ornatrix/", "/images/icons/software/ornatrix.png"],
-    ["FruityLoops", "https://www.image-line.com/fl-studio/", "/images/icons/software/fl-studio.png"],
-    ["VS Code", "https://code.visualstudio.com/", "/images/icons/software/vs-code.png"],
-    ["Visual Studio", "https://visualstudio.microsoft.com/", "/images/icons/software/visual-studio.svg"],
-    ["GitHub", "https://github.com/", "/images/icons/software/github.svg"],
-    ["Git LFS", "https://git-lfs.com/", "/images/icons/software/git-lfs.svg"],
-    ["GitHub Pages", "https://pages.github.com/", "/images/icons/software/github-pages.svg"],
-    ["Wix", "https://www.wix.com/", "/images/icons/software/wix.svg"],
-    ["Stripe", "https://stripe.com/", "/images/icons/software/stripe.svg"],
-    ["Obsidian", "https://obsidian.md/", "/images/icons/software/obsidian.svg"],
-    ["Codex", "https://openai.com/codex/", "/images/icons/software/openai.png"],
-];
-
-const softwareMarqueeItems = () => softwareItems
-    .map(([label, href, icon]) => `<a class="software-marquee-item hover-sound" href="${href}" target="_blank" rel="noopener noreferrer"><img class="software-marquee-icon" src="${icon}" alt="" aria-hidden="true" loading="lazy"><span>${escapeHtml(label)}</span></a>`)
-    .join("");
-
-const softwareMarquee = () => `
-            <section class="software-marquee-section" aria-label="Software used by Nightshift">
-                <div class="software-marquee"><div class="software-marquee-track">
-                    <div class="software-marquee-group">${softwareMarqueeItems()}</div>
-                    <div class="software-marquee-group" aria-hidden="true">${softwareMarqueeItems()}</div>
-                </div></div>
-            </section>`;
+// Retired software strip source is preserved in _includes/software-marquee/archive.json.
 
 const footerMarkup = (_pagePrefix) => `
         <footer class="site-footer panel">
-${softwareMarquee()}
             <div class="footer-grid">
                 <div class="footer-column"><span>Primary routes</span><a class="hover-sound" href="/">Home</a><a class="hover-sound" href="/pages/games.html">Games</a><a class="hover-sound" href="/pages/contact.html">Contact</a></div>
                 <div class="footer-column"><span>Public records</span><a class="hover-sound" href="/pages/DevLog/index.html">Devlog</a><a href="https://www.epicgames.com/site/en-US/privacypolicy" target="_blank" rel="noopener noreferrer">Epic Privacy Policy</a><a href="#">Nightshift Privacy Policy</a><a href="#">Applicant Privacy Policy</a></div>
@@ -670,6 +634,15 @@ const build = async () => {
     await fs.writeFile(path.join(outDir, "devlog.html"), indexMarkup);
     for (const post of posts) {
         await fs.writeFile(path.join(postsDir, `${post.slug}.html`), renderPost(post));
+    }
+    // Retain legacy posts without Markdown sources, but omit their retired software strip too.
+    const currentPostFiles = new Set(posts.map((post) => `${post.slug}.html`));
+    for (const file of await fs.readdir(postsDir)) {
+        if (!file.endsWith(".html") || currentPostFiles.has(file)) continue;
+        const legacyPath = path.join(postsDir, file);
+        const original = await fs.readFile(legacyPath, "utf8");
+        const updated = original.replace(/^[\t ]*<section class="software-marquee-section"[^>]*>[\s\S]*?<\/section>\r?\n?/gm, "");
+        if (updated !== original) await fs.writeFile(legacyPath, updated);
     }
 };
 
